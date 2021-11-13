@@ -1,0 +1,3 @@
+curso_id,disciplina_id,tipo_vinculo,semestre_oferta
+
+curso_id,disciplina_id -> tipo_vinculo,semestre_oferta

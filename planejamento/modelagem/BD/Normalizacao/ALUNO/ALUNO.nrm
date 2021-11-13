@@ -1,0 +1,4 @@
+usuario_id,curso_id,matricula
+
+usuario_id -> curso_id,matricula
+matricula -> curso_id,usuario_id

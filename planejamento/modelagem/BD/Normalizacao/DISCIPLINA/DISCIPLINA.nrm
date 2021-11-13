@@ -1,0 +1,4 @@
+id,codigo,nome,ch
+
+id -> codigo,nome,ch
+codigo -> id,nome,ch

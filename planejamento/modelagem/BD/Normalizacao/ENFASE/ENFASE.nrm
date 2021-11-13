@@ -1,0 +1,3 @@
+curso_id,id,nome,cho,chom
+
+curso_id,id -> nome,cho,chom
