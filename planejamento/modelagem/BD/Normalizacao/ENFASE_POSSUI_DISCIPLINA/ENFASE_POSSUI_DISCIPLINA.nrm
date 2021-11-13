@@ -1,0 +1,3 @@
+enfase_curso_id,enfase_codigo,disciplina_id,semestre_oferta
+
+enfase_curso_id,enfase_codigo,disciplina_id -> semestre_oferta

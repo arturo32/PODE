@@ -1,0 +1,5 @@
+id,nome,email,senha
+
+id -> nome,email,senha
+email -> id,nome,senha
+email,senha -> id,nome

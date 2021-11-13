@@ -1,0 +1,9 @@
+RELAÇÕES SEM DEPENDÊNCIA FUNCIONAL
+
+- administrador;
+- aluno_escolhe_pes;
+- aluno_opta_enfase;
+- disciplina_corequesito_disciplina;
+- disciplina_prerequesito_disciplina;
+- disciplina_equivalente_disciplina;
+- aluno_opta_disciplina;
