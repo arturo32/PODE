@@ -13,4 +13,19 @@ public class Estudante extends Usuario {
     @NotNull
     @OneToMany
     private Set<Vinculo> vinculos;
+
+    public Estudante() {
+    }
+
+    public Estudante(String nome, String email, String senha) {
+        super(nome, email, senha);
+    }
+
+    public Set<Vinculo> getVinculos() {
+        return vinculos;
+    }
+
+    public void setVinculos(Set<Vinculo> vinculos) {
+        this.vinculos = vinculos;
+    }
 }

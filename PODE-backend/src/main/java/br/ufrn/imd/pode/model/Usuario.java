@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public abstract class Usuario extends AbstractModel<Long> {
@@ -10,14 +11,17 @@ public abstract class Usuario extends AbstractModel<Long> {
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "id_seq_usuario", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @NotBlank
     @Column(unique = true)
     private String nome;
 
+    @NotNull
     @NotBlank
     @Column(unique = true)
     private String email;
 
+    @NotNull
     @NotBlank
     private String senha;
 

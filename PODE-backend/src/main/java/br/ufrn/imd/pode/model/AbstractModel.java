@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -35,7 +36,7 @@ public abstract class AbstractModel<PK extends Serializable> {
     @JsonIgnore
     private LocalDateTime dataExclusao;
 
-    @Column
+    @NotNull
     private Boolean ativo = true;
 
     public abstract PK getId();
