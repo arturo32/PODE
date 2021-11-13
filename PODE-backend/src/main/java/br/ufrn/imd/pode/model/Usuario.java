@@ -4,7 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
+@Entity(name = "usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Usuario extends AbstractModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
