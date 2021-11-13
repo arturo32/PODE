@@ -59,8 +59,8 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="curso_obrigatorias",
             joinColumns={@JoinColumn(name="curso_id")},
-            inverseJoinColumns={@JoinColumn(name="disciplina_semestre_id")})
-    private Set<DisciplinaSemestre> disciplinasObrigatorias;
+            inverseJoinColumns={@JoinColumn(name="disciplina_periodo_id")})
+    private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="curso_optativas",
@@ -71,7 +71,7 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
     public Curso() {
     }
 
-    public Curso(String codigo, String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chmp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado, Set<DisciplinaSemestre> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
+    public Curso(String codigo, String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chmp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado, Set<DisciplinaPeriodo> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
         this.codigo = codigo;
         this.nome = nome;
         this.chm = chm;
@@ -195,11 +195,11 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
     }
 
     @Override
-    public Set<DisciplinaSemestre> getDisciplinasObrigatorias() {
+    public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
         return disciplinasObrigatorias;
     }
 
-    public void setDisciplinasObrigatorias(Set<DisciplinaSemestre> disciplinasObrigatorias) {
+    public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
         this.disciplinasObrigatorias = disciplinasObrigatorias;
     }
 

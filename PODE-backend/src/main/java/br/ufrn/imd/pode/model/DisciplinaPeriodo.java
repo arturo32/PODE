@@ -4,11 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "disciplina_semestre")
-public class DisciplinaSemestre extends AbstractModel<Long> {
+@Table(name = "disciplina_periodo")
+public class DisciplinaPeriodo extends AbstractModel<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA_SEMESTRE")
-    @SequenceGenerator(name = "SEQ_DISCIPLINA_SEMESTRE", sequenceName = "id_seq_disciplina_semestre", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA_PERIODO")
+    @SequenceGenerator(name = "SEQ_DISCIPLINA_PERIODO", sequenceName = "id_seq_disciplina_periodo", allocationSize = 1)
     private Long id;
 
     @ManyToOne
@@ -16,14 +16,14 @@ public class DisciplinaSemestre extends AbstractModel<Long> {
     private Disciplina disciplina;
 
     @NotNull
-    private Integer semestre;
+    private Integer periodo;
 
-    public DisciplinaSemestre() {
+    public DisciplinaPeriodo() {
     }
 
-    public DisciplinaSemestre(Disciplina disciplina, Integer semestre) {
+    public DisciplinaPeriodo(Disciplina disciplina, Integer periodo) {
         this.disciplina = disciplina;
-        this.semestre = semestre;
+        this.periodo = periodo;
     }
 
     @Override
@@ -44,11 +44,11 @@ public class DisciplinaSemestre extends AbstractModel<Long> {
         this.disciplina = disciplina;
     }
 
-    public Integer getSemestre() {
-        return semestre;
+    public Integer getPeriodo() {
+        return periodo;
     }
 
-    public void setSemestre(Integer semestre) {
-        this.semestre = semestre;
+    public void setPeriodo(Integer periodo) {
+        this.periodo = periodo;
     }
 }

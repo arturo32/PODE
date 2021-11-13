@@ -29,13 +29,13 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="enfase_obrigatorias",
             joinColumns={@JoinColumn(name="enfase_id")},
-            inverseJoinColumns={@JoinColumn(name="disciplina_semestre_id")})
-    private Set<DisciplinaSemestre> disciplinasObrigatorias;
+            inverseJoinColumns={@JoinColumn(name="disciplina_periodo_id")})
+    private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
     public Enfase() {
     }
 
-    public Enfase(String nome, Curso curso, Set<DisciplinaSemestre> disciplinasObrigatorias) {
+    public Enfase(String nome, Curso curso, Set<DisciplinaPeriodo> disciplinasObrigatorias) {
         this.nome = nome;
         this.curso = curso;
         this.disciplinasObrigatorias = disciplinasObrigatorias;
@@ -69,7 +69,7 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 
     public Integer getChEspecifica() {
         Integer cho_especifica = 0;
-        for (DisciplinaSemestre disciplina: this.disciplinasObrigatorias) {
+        for (DisciplinaPeriodo disciplina: this.disciplinasObrigatorias) {
             cho_especifica += disciplina.getDisciplina().getCh();
         }
         return cho_especifica;
@@ -121,8 +121,8 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
     }
 
     @Override
-    public Set<DisciplinaSemestre> getDisciplinasObrigatorias() {
-        Set<DisciplinaSemestre> resultado = this.curso.getDisciplinasObrigatorias();
+    public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
+        Set<DisciplinaPeriodo> resultado = this.curso.getDisciplinasObrigatorias();
         resultado.addAll(this.disciplinasObrigatorias);
         return resultado;
     }
@@ -131,7 +131,7 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
     public Set<Disciplina> getDisciplinasOptativas() {
         Set<Disciplina> resultado = this.curso.getDisciplinasOptativas();
         Set<Disciplina> obrigatorias = new ArrayList<>(this.disciplinasObrigatorias).
-                stream().map(DisciplinaSemestre::getDisciplina).collect(Collectors.toSet());
+                stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
         resultado.removeAll(obrigatorias);
         return resultado;
     }
@@ -142,7 +142,7 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
         return false;
     }
 
-    public void setDisciplinasObrigatorias(Set<DisciplinaSemestre> disciplinasObrigatorias) {
+    public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
         this.disciplinasObrigatorias = disciplinasObrigatorias;
     }
 }

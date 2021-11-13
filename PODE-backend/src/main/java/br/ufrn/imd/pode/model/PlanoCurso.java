@@ -15,14 +15,14 @@ public class PlanoCurso extends AbstractModel<Long> {
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="disciplinas_cursadas",
             joinColumns={@JoinColumn(name="plano_curso_id")},
-            inverseJoinColumns={@JoinColumn(name="disciplina_semestre_id")})
-    private Set<DisciplinaSemestre> disciplinasCursadas;
+            inverseJoinColumns={@JoinColumn(name="disciplina_periodo_id")})
+    private Set<DisciplinaPeriodo> disciplinasCursadas;
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="disciplinas_pendentes",
             joinColumns={@JoinColumn(name="plano_curso_id")},
-            inverseJoinColumns={@JoinColumn(name="disciplina_semestre_id")})
-    private Set<DisciplinaSemestre> disciplinasPendentes;
+            inverseJoinColumns={@JoinColumn(name="disciplina_periodo_id")})
+    private Set<DisciplinaPeriodo> disciplinasPendentes;
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="pes_interesse",
@@ -33,7 +33,7 @@ public class PlanoCurso extends AbstractModel<Long> {
     public PlanoCurso() {
     }
 
-    public PlanoCurso(Set<DisciplinaSemestre> disciplinasCursadas, Set<DisciplinaSemestre> disciplinasPendentes, Set<Pes> pesInteresse) {
+    public PlanoCurso(Set<DisciplinaPeriodo> disciplinasCursadas, Set<DisciplinaPeriodo> disciplinasPendentes, Set<Pes> pesInteresse) {
         this.disciplinasCursadas = disciplinasCursadas;
         this.disciplinasPendentes = disciplinasPendentes;
         this.pesInteresse = pesInteresse;
@@ -49,19 +49,19 @@ public class PlanoCurso extends AbstractModel<Long> {
         this.id = id;
     }
 
-    public Set<DisciplinaSemestre> getDisciplinasCursadas() {
+    public Set<DisciplinaPeriodo> getDisciplinasCursadas() {
         return disciplinasCursadas;
     }
 
-    public void setDisciplinasCursadas(Set<DisciplinaSemestre> disciplinasCursadas) {
+    public void setDisciplinasCursadas(Set<DisciplinaPeriodo> disciplinasCursadas) {
         this.disciplinasCursadas = disciplinasCursadas;
     }
 
-    public Set<DisciplinaSemestre> getDisciplinasPendentes() {
+    public Set<DisciplinaPeriodo> getDisciplinasPendentes() {
         return disciplinasPendentes;
     }
 
-    public void setDisciplinasPendentes(Set<DisciplinaSemestre> disciplinasPendentes) {
+    public void setDisciplinasPendentes(Set<DisciplinaPeriodo> disciplinasPendentes) {
         this.disciplinasPendentes = disciplinasPendentes;
     }
 

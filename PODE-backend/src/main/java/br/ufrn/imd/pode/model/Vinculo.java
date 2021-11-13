@@ -3,6 +3,7 @@ package br.ufrn.imd.pode.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "vinculo")
@@ -27,8 +28,11 @@ public class Vinculo extends AbstractModel<Long> {
     @ManyToOne
     private Curso curso;
 
-    @ManyToOne
-    private Enfase enfase;
+    @ManyToMany
+    @JoinTable(name="vinculo_enfase",
+            joinColumns={@JoinColumn(name="vinculo_id")},
+            inverseJoinColumns={@JoinColumn(name="enfase_id")})
+    private List<Enfase> enfase;
 
     @NotNull
     @ManyToOne
@@ -86,11 +90,11 @@ public class Vinculo extends AbstractModel<Long> {
         this.curso = gradePrimaria;
     }
 
-    public Enfase getEnfase() {
+    public List<Enfase> getEnfase() {
         return enfase;
     }
 
-    public void setEnfase(Enfase enfase) {
+    public void setEnfase(List<Enfase> enfase) {
         this.enfase = enfase;
     }
 

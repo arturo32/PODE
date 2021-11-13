@@ -1,7 +1,7 @@
 package br.ufrn.imd.pode.interfaces;
 
 import br.ufrn.imd.pode.model.Disciplina;
-import br.ufrn.imd.pode.model.DisciplinaSemestre;
+import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 
 import java.util.Set;
 
@@ -24,7 +24,7 @@ public interface IGradeCurricularPrimaria {
 
     Integer getPrazoEsperado();
 
-    Set<DisciplinaSemestre> getDisciplinasObrigatorias();
+    Set<DisciplinaPeriodo> getDisciplinasObrigatorias();
 
     Set<Disciplina> getDisciplinasOptativas();
 
