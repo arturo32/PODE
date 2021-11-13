@@ -15,13 +15,12 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
     @SequenceGenerator(name = "SEQ_CURSO", sequenceName = "id_seq_curso", allocationSize = 1)
     private Long id;
 
-    @NotNull
     @NotBlank
     @Column(unique = true)
     private String codigo;
 
-    @NotNull
     @NotBlank
+    @Column(unique = true)
     private String nome;
 
     @NotNull
