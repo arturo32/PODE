@@ -3,9 +3,8 @@ package br.ufrn.imd.pode.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "usuario")
-public class Usuario extends AbstractModel<Long> {
+@MappedSuperclass
+public abstract class Usuario extends AbstractModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "id_seq_usuario", allocationSize = 1)
