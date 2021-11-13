@@ -4,7 +4,10 @@ import br.ufrn.imd.pode.interfaces.IGradeCurricularPrimaria;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "enfase")
@@ -14,10 +17,12 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
     @SequenceGenerator(name = "SEQ_ENFASE", sequenceName = "id_seq_enfase", allocationSize = 1)
     private Long id;
 
+    @NotNull
     @NotBlank
     @Column(unique = true)
     private String nome;
 
+    @NotNull
     @OneToOne
     private Curso curso;
 
@@ -62,6 +67,14 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
         this.curso = curso;
     }
 
+    public Integer getChEspecifica() {
+        Integer cho_especifica = 0;
+        for (DisciplinaSemestre disciplina: this.disciplinasObrigatorias) {
+            cho_especifica += disciplina.getDisciplina().getCh();
+        }
+        return cho_especifica;
+    }
+
     @Override
     public Integer getChm() {
         return this.curso.getChm();
@@ -69,31 +82,26 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 
     @Override
     public Integer getCho() {
-        //TODO
-        return this.curso.getCho();
+        return this.curso.getCho() + this.getChEspecifica();
     }
 
     @Override
     public Integer getChom() {
-        //TODO
-        return this.curso.getChom();
+        return this.curso.getChom() - this.getChEspecifica();
     }
 
     @Override
     public Integer getChcm() {
-        //TODO
         return this.curso.getChcm();
     }
 
     @Override
     public Integer getChem() {
-        //TODO
         return this.curso.getChem();
     }
 
     @Override
     public Integer getChmp() {
-        //TODO
         return this.curso.getChmp();
     }
 
@@ -114,14 +122,18 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 
     @Override
     public Set<DisciplinaSemestre> getDisciplinasObrigatorias() {
-        //TODO
-        return this.disciplinasObrigatorias;
+        Set<DisciplinaSemestre> resultado = this.curso.getDisciplinasObrigatorias();
+        resultado.addAll(this.disciplinasObrigatorias);
+        return resultado;
     }
 
     @Override
     public Set<Disciplina> getDisciplinasOptativas() {
-        //TODO
-        return this.curso.getDisciplinasOptativas();
+        Set<Disciplina> resultado = this.curso.getDisciplinasOptativas();
+        Set<Disciplina> obrigatorias = new ArrayList<>(this.disciplinasObrigatorias).
+                stream().map(DisciplinaSemestre::getDisciplina).collect(Collectors.toSet());
+        resultado.removeAll(obrigatorias);
+        return resultado;
     }
 
     @Override
@@ -131,7 +143,6 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
     }
 
     public void setDisciplinasObrigatorias(Set<DisciplinaSemestre> disciplinasObrigatorias) {
-        //TODO
         this.disciplinasObrigatorias = disciplinasObrigatorias;
     }
 }
