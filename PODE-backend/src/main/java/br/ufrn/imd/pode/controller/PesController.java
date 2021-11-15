@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "pes")
 public class PesController extends GenericController<Pes, Long> {
 
-    private PesService service;
+	private PesService service;
 
-    @Autowired
-    public void setService(PesService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(PesService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Pes, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Pes, Long> service() {
+		return this.service;
+	}
 }

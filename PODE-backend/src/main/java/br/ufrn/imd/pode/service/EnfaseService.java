@@ -12,20 +12,20 @@ import javax.transaction.Transactional;
 @Transactional
 public class EnfaseService extends GenericService<Enfase, Long> {
 
-    private EnfaseRepository repository;
+	private EnfaseRepository repository;
 
 
-    @Override
-    protected GenericRepository<Enfase, Long> repository() {
-        return this.repository;
-    }
+	@Override
+	protected GenericRepository<Enfase, Long> repository() {
+		return this.repository;
+	}
 
-    public EnfaseRepository getRepository() {
-        return repository;
-    }
+	public EnfaseRepository getRepository() {
+		return repository;
+	}
 
-    @Autowired
-    public void setRepository(EnfaseRepository repository) {
-        this.repository = repository;
-    }
+	@Autowired
+	public void setRepository(EnfaseRepository repository) {
+		this.repository = repository;
+	}
 }

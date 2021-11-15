@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "curso")
 public class CursoController extends GenericController<Curso, Long> {
 
-    private CursoService service;
+	private CursoService service;
 
-    @Autowired
-    public void setService(CursoService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(CursoService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Curso, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Curso, Long> service() {
+		return this.service;
+	}
 }

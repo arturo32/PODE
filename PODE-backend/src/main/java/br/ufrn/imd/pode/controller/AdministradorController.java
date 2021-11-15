@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "administrador")
 public class AdministradorController extends GenericController<Administrador, Long> {
 
-    private AdministradorService service;
+	private AdministradorService service;
 
-    @Autowired
-    public void setService(AdministradorService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(AdministradorService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Administrador, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Administrador, Long> service() {
+		return this.service;
+	}
 }

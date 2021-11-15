@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "enfase")
 public class EnfaseController extends GenericController<Enfase, Long> {
 
-    private EnfaseService service;
+	private EnfaseService service;
 
-    @Autowired
-    public void setService(EnfaseService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(EnfaseService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Enfase, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Enfase, Long> service() {
+		return this.service;
+	}
 }

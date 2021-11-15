@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -8,50 +9,50 @@ import javax.validation.constraints.NotNull;
 public abstract class Usuario extends AbstractModel<Long> {
 
 
-    @NotNull
-    @NotBlank
-    @Column(unique = true)
-    private String nome;
+	@NotNull
+	@NotBlank
+	@Column(unique = true)
+	private String nome;
 
-    @NotNull
-    @NotBlank
-    @Column(unique = true)
-    private String email;
+	@NotNull
+	@NotBlank
+	@Column(unique = true)
+	private String email;
 
-    @NotNull
-    @NotBlank
-    private String senha;
+	@NotNull
+	@NotBlank
+	private String senha;
 
-    public Usuario() {
-    }
+	public Usuario() {
+	}
 
-    public Usuario(String nome, String email, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
+	public Usuario(String nome, String email, String senha) {
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getSenha() {
-        return senha;
-    }
+	public String getSenha() {
+		return senha;
+	}
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 }

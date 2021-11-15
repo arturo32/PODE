@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "vinculo")
 public class VinculoController extends GenericController<Vinculo, Long> {
 
-    private VinculoService service;
+	private VinculoService service;
 
-    @Autowired
-    public void setService(VinculoService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(VinculoService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Vinculo, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Vinculo, Long> service() {
+		return this.service;
+	}
 }

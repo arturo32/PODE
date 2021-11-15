@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class PesService extends GenericService<Pes, Long>{
+public class PesService extends GenericService<Pes, Long> {
 
 	private PesRepository repository;
 

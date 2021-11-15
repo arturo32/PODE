@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "disciplina")
 public class DisciplinaController extends GenericController<Disciplina, Long> {
 
-    private DisciplinaService service;
+	private DisciplinaService service;
 
-    @Autowired
-    public void setService(DisciplinaService service) {
-        this.service = service;
-    }
+	@Autowired
+	public void setService(DisciplinaService service) {
+		this.service = service;
+	}
 
-    @Override
-    protected GenericService<Disciplina, Long> service() {
-        return this.service;
-    }
+	@Override
+	protected GenericService<Disciplina, Long> service() {
+		return this.service;
+	}
 }
