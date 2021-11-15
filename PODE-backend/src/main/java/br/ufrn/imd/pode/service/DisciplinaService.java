@@ -28,4 +28,8 @@ public class DisciplinaService extends GenericService<Disciplina, Long> {
 	public void setRepository(DisciplinaRepository repository) {
 		this.repository = repository;
 	}
+
+	public void salvar(Disciplina disciplina){
+		this.repository.save(disciplina);
+	}
 }
