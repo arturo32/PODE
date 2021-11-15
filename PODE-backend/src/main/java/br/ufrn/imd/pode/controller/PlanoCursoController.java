@@ -1,0 +1,27 @@
+package br.ufrn.imd.pode.controller;
+
+import br.ufrn.imd.pode.model.Pes;
+import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.service.GenericService;
+import br.ufrn.imd.pode.service.PesService;
+import br.ufrn.imd.pode.service.PlanoCursoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "plano_curso")
+public class PlanoCursoController extends GenericController<PlanoCurso, Long> {
+
+	private PlanoCursoService service;
+
+	@Autowired
+	public void setService(PlanoCursoService service) {
+		this.service = service;
+	}
+
+	@Override
+	protected GenericService<PlanoCurso, Long> service() {
+		return this.service;
+	}
+}

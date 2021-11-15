@@ -9,100 +9,100 @@ import java.util.List;
 @Table(name = "vinculo")
 public class Vinculo extends AbstractModel<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VINCULO")
-    @SequenceGenerator(name = "SEQ_VINCULO", sequenceName = "id_seq_vinculo", allocationSize = 1)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VINCULO")
+	@SequenceGenerator(name = "SEQ_VINCULO", sequenceName = "id_seq_vinculo", allocationSize = 1)
+	private Long id;
 
-    @NotBlank
-    @Column(unique = true)
-    private String matricula;
+	@NotBlank
+	@Column(unique = true)
+	private String matricula;
 
-    @NotNull
-    private Integer periodoInicial;
+	@NotNull
+	private Integer periodoInicial;
 
-    @NotNull
-    private Integer periodoAtual;
+	@NotNull
+	private Integer periodoAtual;
 
-    @NotNull
-    @ManyToOne
-    private Curso curso;
+	@NotNull
+	@ManyToOne
+	private Curso curso;
 
-    @ManyToMany
-    @JoinTable(name="vinculo_enfase",
-            joinColumns={@JoinColumn(name="vinculo_id")},
-            inverseJoinColumns={@JoinColumn(name="enfase_id")})
-    private List<Enfase> enfase;
+	@ManyToMany
+	@JoinTable(name = "vinculo_enfase",
+			joinColumns = {@JoinColumn(name = "vinculo_id")},
+			inverseJoinColumns = {@JoinColumn(name = "enfase_id")})
+	private List<Enfase> enfase;
 
-    @NotNull
-    @ManyToOne
-    private PlanoCurso planoCurso;
+	@NotNull
+	@ManyToOne
+	private PlanoCurso planoCurso;
 
-    public Vinculo() {
-    }
+	public Vinculo() {
+	}
 
-    public Vinculo(String matricula, Integer periodoInicial, Integer periodoAtual, Curso curso) {
-        this.matricula = matricula;
-        this.periodoInicial = periodoInicial;
-        this.periodoAtual = periodoAtual;
-        this.curso = curso;
-    }
+	public Vinculo(String matricula, Integer periodoInicial, Integer periodoAtual, Curso curso) {
+		this.matricula = matricula;
+		this.periodoInicial = periodoInicial;
+		this.periodoAtual = periodoAtual;
+		this.curso = curso;
+	}
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getMatricula() {
-        return matricula;
-    }
+	public String getMatricula() {
+		return matricula;
+	}
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
 
-    public Integer getPeriodoInicial() {
-        return periodoInicial;
-    }
+	public Integer getPeriodoInicial() {
+		return periodoInicial;
+	}
 
-    public void setPeriodoInicial(Integer periodoInicial) {
-        this.periodoInicial = periodoInicial;
-    }
+	public void setPeriodoInicial(Integer periodoInicial) {
+		this.periodoInicial = periodoInicial;
+	}
 
-    public Integer getPeriodoAtual() {
-        return periodoAtual;
-    }
+	public Integer getPeriodoAtual() {
+		return periodoAtual;
+	}
 
-    public void setPeriodoAtual(Integer periodoAtual) {
-        this.periodoAtual = periodoAtual;
-    }
+	public void setPeriodoAtual(Integer periodoAtual) {
+		this.periodoAtual = periodoAtual;
+	}
 
-    public Curso getCurso() {
-        return curso;
-    }
+	public Curso getCurso() {
+		return curso;
+	}
 
-    public void setCurso(Curso gradePrimaria) {
-        this.curso = gradePrimaria;
-    }
+	public void setCurso(Curso gradePrimaria) {
+		this.curso = gradePrimaria;
+	}
 
-    public List<Enfase> getEnfase() {
-        return enfase;
-    }
+	public List<Enfase> getEnfase() {
+		return enfase;
+	}
 
-    public void setEnfase(List<Enfase> enfase) {
-        this.enfase = enfase;
-    }
+	public void setEnfase(List<Enfase> enfase) {
+		this.enfase = enfase;
+	}
 
-    public PlanoCurso getPlanoCurso() {
-        return planoCurso;
-    }
+	public PlanoCurso getPlanoCurso() {
+		return planoCurso;
+	}
 
-    public void setPlanoCurso(PlanoCurso planoCurso) {
-        this.planoCurso = planoCurso;
-    }
+	public void setPlanoCurso(PlanoCurso planoCurso) {
+		this.planoCurso = planoCurso;
+	}
 }

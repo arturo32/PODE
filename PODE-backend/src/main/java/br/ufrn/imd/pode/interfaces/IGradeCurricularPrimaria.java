@@ -6,27 +6,27 @@ import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import java.util.Set;
 
 public interface IGradeCurricularPrimaria {
-    Integer getChm();
+	Integer getChm();
 
-    Integer getCho();
+	Integer getCho();
 
-    Integer getChom();
+	Integer getChom();
 
-    Integer getChcm();
+	Integer getChcm();
 
-    Integer getChem();
+	Integer getChem();
 
-    Integer getChmp();
+	Integer getChmp();
 
-    Integer getPrazoMinimo();
+	Integer getPrazoMinimo();
 
-    Integer getPrazoMaximo();
+	Integer getPrazoMaximo();
 
-    Integer getPrazoEsperado();
+	Integer getPrazoEsperado();
 
-    Set<DisciplinaPeriodo> getDisciplinasObrigatorias();
+	Set<DisciplinaPeriodo> getDisciplinasObrigatorias();
 
-    Set<Disciplina> getDisciplinasOptativas();
+	Set<Disciplina> getDisciplinasOptativas();
 
-    Boolean concluida(Set<Disciplina> disciplinas);
+	Boolean concluida(Set<Disciplina> disciplinas);
 }

@@ -4,5 +4,5 @@ import br.ufrn.imd.pode.model.Administrador;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdministradorRepository extends GenericRepository<Administrador, Long>{
+public interface AdministradorRepository extends GenericRepository<Administrador, Long> {
 }
