@@ -1,14 +1,17 @@
 package br.ufrn.imd.pode.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
 @Table(name = "estudante")
 public class Estudante extends Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ESTUDANTE")
+    @SequenceGenerator(name = "SEQ_ESTUDANTE", sequenceName = "id_seq_estudante", allocationSize = 1)
+    private Long id;
 
     @NotNull
     @OneToMany
@@ -19,6 +22,16 @@ public class Estudante extends Usuario {
 
     public Estudante(String nome, String email, String senha) {
         super(nome, email, senha);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Set<Vinculo> getVinculos() {

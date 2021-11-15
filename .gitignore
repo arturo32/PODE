@@ -25,3 +25,6 @@ hs_err_pid*
 .vscode/*
 venv/*
 .idea/*
+
+#Node
+PODE-frontend/pode/node_modules/*
