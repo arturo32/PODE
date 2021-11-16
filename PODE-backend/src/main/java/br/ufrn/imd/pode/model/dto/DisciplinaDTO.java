@@ -15,7 +15,7 @@ public class DisciplinaDTO extends AbstractDTO {
 
 	private Set<DisciplinaDTO> corequisitos;
 
-	private Set<DisciplinaDTO> equivalentes;
+	private String equivalentes;
 
 	public DisciplinaDTO() {
 		this.prerequisitos = new HashSet<>();
@@ -70,11 +70,11 @@ public class DisciplinaDTO extends AbstractDTO {
 		this.corequisitos = corequisitos;
 	}
 
-	public Set<DisciplinaDTO> getEquivalentes() {
+	public String getEquivalentes() {
 		return equivalentes;
 	}
 
-	public void setEquivalentes(Set<DisciplinaDTO> equivalentes) {
+	public void setEquivalentes(String equivalentes) {
 		this.equivalentes = equivalentes;
 	}
 }
