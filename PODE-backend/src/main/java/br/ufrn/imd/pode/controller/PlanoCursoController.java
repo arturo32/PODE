@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.service.GenericService;
 import br.ufrn.imd.pode.service.PesService;
 import br.ufrn.imd.pode.service.PlanoCursoService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "plano_curso")
-public class PlanoCursoController extends GenericController<PlanoCurso, Long> {
+public class PlanoCursoController extends GenericController<PlanoCurso, PlanoCursoDTO, Long> {
 
 	private PlanoCursoService service;
 
@@ -21,7 +22,7 @@ public class PlanoCursoController extends GenericController<PlanoCurso, Long> {
 	}
 
 	@Override
-	protected GenericService<PlanoCurso, Long> service() {
+	protected GenericService<PlanoCurso, PlanoCursoDTO, Long> service() {
 		return this.service;
 	}
 }

@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.Curso;
+import br.ufrn.imd.pode.model.dto.CursoDTO;
 import br.ufrn.imd.pode.service.CursoService;
 import br.ufrn.imd.pode.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "curso")
-public class CursoController extends GenericController<Curso, Long> {
+public class CursoController extends GenericController<Curso, CursoDTO, Long> {
 
 	private CursoService service;
 
@@ -19,7 +20,7 @@ public class CursoController extends GenericController<Curso, Long> {
 	}
 
 	@Override
-	protected GenericService<Curso, Long> service() {
+	protected GenericService<Curso, CursoDTO, Long> service() {
 		return this.service;
 	}
 }

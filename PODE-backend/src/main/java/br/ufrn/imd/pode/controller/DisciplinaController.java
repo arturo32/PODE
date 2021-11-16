@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/disciplina")
-public class DisciplinaController extends GenericController<Disciplina, Long>{
+public class DisciplinaController extends GenericController<Disciplina, DisciplinaDTO, Long>{
 
 	DisciplinaService disciplinaService;
 
@@ -28,7 +28,7 @@ public class DisciplinaController extends GenericController<Disciplina, Long>{
 	}
 
 	@Override
-	protected GenericService<Disciplina, Long> service() {
+	protected GenericService<Disciplina, DisciplinaDTO, Long> service() {
 		return this.disciplinaService;
 	}
 }
