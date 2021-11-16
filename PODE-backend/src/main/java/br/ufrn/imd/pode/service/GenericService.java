@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.AbstractModel;
+import br.ufrn.imd.pode.model.dto.AbstractDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,10 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public abstract class GenericService<T extends AbstractModel<PK>, PK extends Serializable> {
+public abstract class GenericService<T extends AbstractModel<PK>, Dto extends AbstractDTO, PK extends Serializable> {
 
 	protected String modelName;
 
@@ -22,8 +24,20 @@ public abstract class GenericService<T extends AbstractModel<PK>, PK extends Ser
 		this.modelName = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
 	}
 
-	private String getModelName() {
+	public String getModelName() {
 		return this.modelName;
+	}
+
+	public abstract Dto convertToDto(T entity);
+
+	public abstract T convertToEntity(Dto dto);
+
+	public List<Dto> convertToDTOList(List<T> entities) {
+		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	public List<T> convertToEntityList(List<Dto> dtos) {
+		return dtos.stream().map(this::convertToEntity).collect(Collectors.toList());
 	}
 
 	protected abstract GenericRepository<T, PK> repository();

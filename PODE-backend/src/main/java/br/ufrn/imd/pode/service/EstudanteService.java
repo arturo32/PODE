@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.model.Estudante;
+import br.ufrn.imd.pode.model.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repository.EstudanteRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,19 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class EstudanteService extends GenericService<Estudante, Long> {
+public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteRepository repository;
 
+	@Override
+	public EstudanteDTO convertToDto(Estudante entity) {
+		return null;
+	}
+
+	@Override
+	public Estudante convertToEntity(EstudanteDTO dto) {
+		return null;
+	}
 
 	@Override
 	protected GenericRepository<Estudante, Long> repository() {
