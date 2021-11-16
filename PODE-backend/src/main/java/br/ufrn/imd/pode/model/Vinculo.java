@@ -42,6 +42,12 @@ public class Vinculo extends AbstractModel<Long> {
     @ManyToOne
     private PlanoCurso planoCurso;
 
+    @ManyToOne
+    @JoinColumn(name = "estudante_id")
+    private Estudante estudante;
+
+
+
     public Vinculo() {
         this.enfase = new ArrayList<>();
     }
@@ -120,5 +126,13 @@ public class Vinculo extends AbstractModel<Long> {
 
     public void setPlanoCurso(PlanoCurso planoCurso) {
         this.planoCurso = planoCurso;
+    }
+
+    public Estudante getEstudante() {
+        return estudante;
+    }
+
+    public void setEstudante(Estudante estudante) {
+        this.estudante = estudante;
     }
 }

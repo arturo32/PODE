@@ -18,7 +18,7 @@ public class Estudante extends Usuario {
     private Long id;
 
     @NotNull
-    @OneToMany
+    @OneToMany(mappedBy = "estudante", cascade = {CascadeType.ALL})
     private Set<Vinculo> vinculos;
 
     public Estudante() {
