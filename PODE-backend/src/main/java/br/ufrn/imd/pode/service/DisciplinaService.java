@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
@@ -23,7 +24,33 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	@Override
 	public Disciplina convertToEntity(DisciplinaDTO dto) {
-		return null;
+		if (dto.getId() != null) {
+			return this.findById(dto.getId());
+		}
+		Disciplina disciplina = new Disciplina();
+		disciplina.setId(dto.getId());
+		disciplina.setCodigo(dto.getCodigo());
+		disciplina.setNome(dto.getNome());
+		disciplina.setCh(dto.getCh());
+
+		//todo Validar expresão de equivalência
+		disciplina.setEquivalentes(dto.getEquivalentes());
+
+		for (DisciplinaDTO prerequisito : dto.getPrerequisitos()) {
+			if (prerequisito.getId() != null) {
+				disciplina.getPrerequisitos().add(this.findById(prerequisito.getId()));
+			} else {
+				throw new EntityNotFoundException("Não é possível cadastrar uma disciplina nova como prerequisito de outra.");
+			}
+		}
+		for (DisciplinaDTO corequisito : dto.getCorequisitos()) {
+			if (corequisito.getId() != null) {
+				disciplina.getCorequisitos().add(this.findById(corequisito.getId()));
+			} else {
+				throw new EntityNotFoundException("Não é possível cadastrar uma disciplina nova como corequisito de outra.");
+			}
+		}
+		return disciplina;
 	}
 
 	@Override
