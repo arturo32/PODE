@@ -16,6 +16,9 @@ public class VinculoDTO extends AbstractDTO {
 
 	private PlanoCursoDTO planoCurso;
 
+	private EstudanteDTO estudante;
+
+
 	public String getMatricula() {
 		return matricula;
 	}
@@ -62,5 +65,13 @@ public class VinculoDTO extends AbstractDTO {
 
 	public void setPlanoCurso(PlanoCursoDTO planoCurso) {
 		this.planoCurso = planoCurso;
+	}
+
+	public EstudanteDTO getEstudante() {
+		return estudante;
+	}
+
+	public void setEstudante(EstudanteDTO estudante) {
+		this.estudante = estudante;
 	}
 }

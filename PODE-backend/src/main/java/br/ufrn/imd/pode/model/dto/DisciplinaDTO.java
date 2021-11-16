@@ -17,7 +17,7 @@ public class DisciplinaDTO extends AbstractDTO {
 
 	private Set<DisciplinaDTO> equivalentes;
 
-	public DisciplinaDTO(){
+	public DisciplinaDTO() {
 		this.prerequisitos = new HashSet<>();
 		this.corequisitos = new HashSet<>();
 		this.equivalentes = new HashSet<>();

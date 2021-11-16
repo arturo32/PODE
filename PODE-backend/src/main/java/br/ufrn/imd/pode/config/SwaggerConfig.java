@@ -11,18 +11,17 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Classe de configuração do Swagger
- *
  */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    @Bean
-    public Docket api() {
-        TypeResolver typeResolver = new TypeResolver();
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("br.ufrn.imd.pode.controller"))
-                .paths(PathSelectors.any())
-                .build();
-    }
+	@Bean
+	public Docket api() {
+		TypeResolver typeResolver = new TypeResolver();
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("br.ufrn.imd.pode.controller"))
+				.paths(PathSelectors.any())
+				.build();
+	}
 }

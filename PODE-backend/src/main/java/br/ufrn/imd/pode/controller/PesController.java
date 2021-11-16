@@ -1,9 +1,7 @@
 package br.ufrn.imd.pode.controller;
 
-import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.dto.PesDTO;
-import br.ufrn.imd.pode.service.EstudanteService;
 import br.ufrn.imd.pode.service.GenericService;
 import br.ufrn.imd.pode.service.PesService;
 import org.springframework.beans.factory.annotation.Autowired;

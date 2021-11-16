@@ -5,13 +5,13 @@ import br.ufrn.imd.pode.model.Disciplina;
 import java.util.Set;
 
 public interface IGradeCurricularSecundaria {
-    Integer getChm();
+	Integer getChm();
 
-    Integer getCho();
+	Integer getCho();
 
-    Set<Disciplina> getDisciplinasObrigatorias();
+	Set<Disciplina> getDisciplinasObrigatorias();
 
-    Set<Disciplina> getDisciplinasOptativas();
+	Set<Disciplina> getDisciplinasOptativas();
 
-    Boolean concluida(Set<Disciplina> disciplinas);
+	Boolean concluida(Set<Disciplina> disciplinas);
 }

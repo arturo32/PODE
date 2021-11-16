@@ -1,10 +1,8 @@
 package br.ufrn.imd.pode.controller;
 
-import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.PlanoCurso;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.service.GenericService;
-import br.ufrn.imd.pode.service.PesService;
 import br.ufrn.imd.pode.service.PlanoCursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -40,7 +40,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		this.repository = repository;
 	}
 
-	public void salvar(Disciplina disciplina){
+	public void salvar(Disciplina disciplina) {
 		this.repository.save(disciplina);
 	}
 }

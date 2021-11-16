@@ -61,13 +61,13 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	private Integer prazoEsperado;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "curso_obrigatorias",
+	@JoinTable(name = "curso_disciplina_obrigatoria",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
 	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "curso_optativas",
+	@JoinTable(name = "curso_disciplina_optativa",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<Disciplina> disciplinasOptativas;
@@ -91,16 +91,16 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	public Curso(CursoDTO curso){
+	public Curso(CursoDTO curso) {
 		this.disciplinasObrigatorias = new HashSet<>();
 		this.disciplinasOptativas = new HashSet<>();
 		this.id = curso.getId();
 		this.codigo = curso.getCodigo();
 		this.nome = curso.getNome();
-		for(DisciplinaDTO disciplinaOptativa : curso.getDisciplinasOptativas()){
+		for (DisciplinaDTO disciplinaOptativa : curso.getDisciplinasOptativas()) {
 			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
 		}
-		for(DisciplinaPeriodoDTO disciplinaObrigatoria : curso.getDisciplinasObrigatorias()){
+		for (DisciplinaPeriodoDTO disciplinaObrigatoria : curso.getDisciplinasObrigatorias()) {
 			this.disciplinasObrigatorias.add(new DisciplinaPeriodo(disciplinaObrigatoria));
 		}
 	}

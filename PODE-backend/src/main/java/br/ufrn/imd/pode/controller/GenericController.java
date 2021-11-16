@@ -16,7 +16,7 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 
 	@GetMapping
 	public List<Dto> findAll(@RequestParam("limite") Integer limite,
-	                       @RequestParam("pagina") Integer pagina) {
+							 @RequestParam("pagina") Integer pagina) {
 		return service().convertToDTOList(service().findAll(limite, pagina));
 	}
 
