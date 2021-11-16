@@ -28,27 +28,27 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	private String nome;
 
 	@NotNull
-	// carga horaria minima
+	//Carga horária mínima
 	private Integer chm;
 
 	@NotNull
-	// carga horaria obrigatoria
+	//Carga horária obrigatória
 	private Integer cho;
 
 	@NotNull
-	// carga horaria optativa minima
+	//Carga horária optativa minima
 	private Integer chom;
 
 	@NotNull
-	// carga horaria complementar minima
+	//Carga horária complementar mínima
 	private Integer chcm;
 
 	@NotNull
-	// carga horaria eletiva maxima
+	//Carga horária eletiva máxima
 	private Integer chem;
 
 	@NotNull
-	// carga horaria maxima por periodo
+	//Carga horária máxima por período
 	private Integer chmp;
 
 	@NotNull

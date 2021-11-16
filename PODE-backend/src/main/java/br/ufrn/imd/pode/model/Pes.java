@@ -24,11 +24,11 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 	private String nome;
 
 	@NotNull
-	// carga horaria minima
+	//Carga horária mínima
 	private Integer chm;
 
 	@NotNull
-	// carga horaria obrigatoria
+	//Carga horária obrigatória
 	private Integer cho;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
