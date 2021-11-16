@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.service.DisciplinaPeriodoService;
 import br.ufrn.imd.pode.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "disciplina_periodo")
-public class DisciplinaPeriodoController extends GenericController<DisciplinaPeriodo, Long> {
+public class DisciplinaPeriodoController extends GenericController<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
 
 	private DisciplinaPeriodoService service;
 
@@ -19,7 +20,7 @@ public class DisciplinaPeriodoController extends GenericController<DisciplinaPer
 	}
 
 	@Override
-	protected GenericService<DisciplinaPeriodo, Long> service() {
+	protected GenericService<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> service() {
 		return this.service;
 	}
 }

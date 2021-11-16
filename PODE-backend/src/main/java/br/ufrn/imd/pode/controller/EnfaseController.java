@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.Enfase;
+import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.service.EnfaseService;
 import br.ufrn.imd.pode.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "enfase")
-public class EnfaseController extends GenericController<Enfase, Long> {
+public class EnfaseController extends GenericController<Enfase, EnfaseDTO, Long> {
 
 	private EnfaseService service;
 
@@ -19,7 +20,7 @@ public class EnfaseController extends GenericController<Enfase, Long> {
 	}
 
 	@Override
-	protected GenericService<Enfase, Long> service() {
+	protected GenericService<Enfase, EnfaseDTO, Long> service() {
 		return this.service;
 	}
 }

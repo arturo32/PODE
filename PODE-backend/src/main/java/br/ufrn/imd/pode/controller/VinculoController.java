@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.dto.VinculoDTO;
 import br.ufrn.imd.pode.service.GenericService;
 import br.ufrn.imd.pode.service.VinculoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "vinculo")
-public class VinculoController extends GenericController<Vinculo, Long> {
+public class VinculoController extends GenericController<Vinculo, VinculoDTO, Long> {
 
 	private VinculoService service;
 
@@ -19,7 +20,7 @@ public class VinculoController extends GenericController<Vinculo, Long> {
 	}
 
 	@Override
-	protected GenericService<Vinculo, Long> service() {
+	protected GenericService<Vinculo, VinculoDTO, Long> service() {
 		return this.service;
 	}
 }

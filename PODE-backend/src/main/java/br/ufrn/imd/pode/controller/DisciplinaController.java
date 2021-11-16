@@ -1,25 +1,34 @@
 package br.ufrn.imd.pode.controller;
 
 import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.service.DisciplinaService;
 import br.ufrn.imd.pode.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "disciplina")
-public class DisciplinaController extends GenericController<Disciplina, Long> {
+@RequestMapping("/api/disciplina")
+public class DisciplinaController extends GenericController<Disciplina, DisciplinaDTO, Long>{
 
-	private DisciplinaService service;
+	DisciplinaService disciplinaService;
+
+	public DisciplinaService getDisciplinaService() {
+		return disciplinaService;
+	}
 
 	@Autowired
-	public void setService(DisciplinaService service) {
-		this.service = service;
+	public void setDisciplinaService(DisciplinaService disciplinaService) {
+		this.disciplinaService = disciplinaService;
 	}
 
 	@Override
-	protected GenericService<Disciplina, Long> service() {
-		return this.service;
+	protected GenericService<Disciplina, DisciplinaDTO, Long> service() {
+		return this.disciplinaService;
 	}
 }
