@@ -1,13 +1,8 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Disciplina;
-import br.ufrn.imd.pode.model.DisciplinaPeriodo;
-
 import java.util.Set;
 
-public class CursoDTO {
-
-	private Long id;
+public class CursoDTO extends AbstractDTO {
 
 	private String codigo;
 
@@ -40,14 +35,6 @@ public class CursoDTO {
 	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
 
 	private Set<DisciplinaDTO> disciplinasOptativas;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCodigo() {
 		return codigo;

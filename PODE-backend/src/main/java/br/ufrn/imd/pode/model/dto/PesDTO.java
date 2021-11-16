@@ -1,17 +1,8 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Disciplina;
-
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-public class PesDTO {
-	private Long id;
+public class PesDTO extends AbstractDTO {
 
 	private String nome;
 
@@ -24,14 +15,6 @@ public class PesDTO {
 	private Set<DisciplinaDTO> disciplinasObrigatorias;
 
 	private Set<DisciplinaDTO> disciplinasOptativas;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNome() {
 		return nome;

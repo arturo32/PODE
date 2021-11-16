@@ -3,23 +3,13 @@ package br.ufrn.imd.pode.model.dto;
 
 import java.util.Set;
 
-public class EnfaseDTO {
-
-	private Long id;
+public class EnfaseDTO extends AbstractDTO {
 
 	private String nome;
 
 	private CursoDTO curso;
 
 	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNome() {
 		return nome;

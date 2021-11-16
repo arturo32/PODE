@@ -1,20 +1,10 @@
 package br.ufrn.imd.pode.model.dto;
 
-public class DisciplinaPeriodoDTO {
-
-	private Long id;
+public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	private DisciplinaDTO disciplina;
 
 	private Integer periodo;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public DisciplinaDTO getDisciplina() {
 		return disciplina;

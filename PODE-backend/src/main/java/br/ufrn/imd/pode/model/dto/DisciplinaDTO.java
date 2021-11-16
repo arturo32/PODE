@@ -1,16 +1,9 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Disciplina;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DisciplinaDTO {
-
-	private Long id;
+public class DisciplinaDTO extends AbstractDTO {
 
 	private String codigo;
 
@@ -36,15 +29,6 @@ public class DisciplinaDTO {
 		this.nome = novaDisciplina.getNome();
 		this.ch = novaDisciplina.getCh();
 	}*/
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCodigo() {
 		return codigo;

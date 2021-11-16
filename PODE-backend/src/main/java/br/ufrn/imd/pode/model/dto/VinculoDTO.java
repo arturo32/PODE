@@ -1,17 +1,8 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Curso;
-import br.ufrn.imd.pode.model.Enfase;
-import br.ufrn.imd.pode.model.PlanoCurso;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class VinculoDTO {
-
-	private Long id;
+public class VinculoDTO extends AbstractDTO {
 
 	private String matricula;
 
@@ -24,14 +15,6 @@ public class VinculoDTO {
 	private List<EnfaseDTO> enfase;
 
 	private PlanoCursoDTO planoCurso;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getMatricula() {
 		return matricula;
