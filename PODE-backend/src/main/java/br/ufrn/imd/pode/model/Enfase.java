@@ -1,6 +1,6 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.interfaces.IGradeCurricularPrimaria;
+import br.ufrn.imd.pode.model.interfaces.IGradeCurricularPrimaria;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 
@@ -113,8 +113,13 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 	}
 
 	@Override
-	public Integer getChmp() {
-		return this.curso.getChmp();
+	public Integer getChmaxp() {
+		return this.curso.getChmaxp();
+	}
+
+	@Override
+	public Integer getChminp() {
+		return this.curso.getChminp();
 	}
 
 	@Override
