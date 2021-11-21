@@ -1,8 +1,5 @@
 package br.ufrn.imd.pode.model.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class DisciplinaDTO extends AbstractDTO {
 
 	private String codigo;
@@ -11,16 +8,13 @@ public class DisciplinaDTO extends AbstractDTO {
 
 	private Integer ch;
 
-	private Set<DisciplinaDTO> prerequisitos;
+	private String prerequisitos;
 
-	private Set<DisciplinaDTO> corequisitos;
+	private String corequisitos;
 
 	private String equivalentes;
 
 	public DisciplinaDTO() {
-		this.prerequisitos = new HashSet<>();
-		this.corequisitos = new HashSet<>();
-		this.equivalentes = new HashSet<>();
 	}
 
 	/*public DisciplinaDTO(Disciplina novaDisciplina) {
@@ -54,19 +48,19 @@ public class DisciplinaDTO extends AbstractDTO {
 		this.ch = ch;
 	}
 
-	public Set<DisciplinaDTO> getPrerequisitos() {
+	public String getPrerequisitos() {
 		return prerequisitos;
 	}
 
-	public void setPrerequisitos(Set<DisciplinaDTO> prerequisitos) {
+	public void setPrerequisitos(String prerequisitos) {
 		this.prerequisitos = prerequisitos;
 	}
 
-	public Set<DisciplinaDTO> getCorequisitos() {
+	public String getCorequisitos() {
 		return corequisitos;
 	}
 
-	public void setCorequisitos(Set<DisciplinaDTO> corequisitos) {
+	public void setCorequisitos(String corequisitos) {
 		this.corequisitos = corequisitos;
 	}
 

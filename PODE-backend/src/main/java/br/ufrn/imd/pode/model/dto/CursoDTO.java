@@ -4,8 +4,6 @@ import java.util.Set;
 
 public class CursoDTO extends AbstractDTO {
 
-	private String codigo;
-
 	private String nome;
 
 	// carga horaria minima
@@ -35,14 +33,6 @@ public class CursoDTO extends AbstractDTO {
 	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
 
 	private Set<DisciplinaDTO> disciplinasOptativas;
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
 
 	public String getNome() {
 		return nome;
