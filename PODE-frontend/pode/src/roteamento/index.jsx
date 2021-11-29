@@ -2,16 +2,16 @@ import React from 'react';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Home from '../screen/home';
-import Subject from '../screen/subject';
+import PaginaInicial from '../tela/inicio';
+import PaginaDisciplinas from '../tela/disciplinas';
 
 const Router = () => {
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/subject" element={<Subject />} />
-                <Route path="*" element={<Home />} />
+                <Route path="/disciplinas" element={<PaginaDisciplinas />} />
+                <Route path="*" element={<PaginaInicial />} />
             </Routes>
         </BrowserRouter>
     );

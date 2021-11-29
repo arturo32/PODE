@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Router from './router';
+import Roteamento from './roteamento';
 
 import './index.css';
 
-ReactDOM.render(<Router />, document.getElementById('root'));
+ReactDOM.render(<Roteamento />, document.getElementById('root'));

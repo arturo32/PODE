@@ -6,15 +6,21 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+import Tabela from '../../componente/tabela';
+
 import { createSubject } from './service';
 
-const Subject = (props) => {
+function createData(name, calories, fat) {
+    return { name, calories, fat };
+}
+
+const Disciplinas = (props) => {
 
     const [code, setCode] = useState('');
     const [name, setName] = useState('');
     const [ch, setCh] = useState('');
 
-    const submit = () => {
+    const enviar = () => {
         createSubject({ code, name, ch });
     };
 
@@ -64,16 +70,26 @@ const Subject = (props) => {
                         <Button
                             variant="outlined"
                             disabled={!code || !name || !ch}
-                            onClick={() => submit()}
+                            onClick={() => enviar()}
                         >
                             ENVIAR
                         </Button>
                     </Grid>
                 </Grid>
             </form>
+            <Tabela
+                rows={[
+                    createData('Cupcake', 305, 3.7),
+                    createData('Donut', 452, 25.0),
+                    createData('Eclair', 262, 16.0),
+                    createData('Frozen yoghurt', 159, 6.0),
+                    createData('Gingerbread', 356, 16.0),
+                    createData('Honeycomb', 408, 3.2),
+                ]}
+            />
         </Container>
     );
 
 };
 
-export default Subject;
+export default Disciplinas;
