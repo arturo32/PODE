@@ -17,9 +17,6 @@ public class Disciplina extends AbstractModel<Long> {
 	private Long id;
 
 	@NotNull
-	private Long id_componente;
-
-	@NotNull
 	@NotBlank
 	@Column(unique = true)
 	private String codigo;
@@ -40,8 +37,7 @@ public class Disciplina extends AbstractModel<Long> {
 	public Disciplina() {
 	}
 
-	public Disciplina(Long id_componente, String codigo, String nome, Integer ch) {
-		this.id_componente = id_componente;
+	public Disciplina(String codigo, String nome, Integer ch) {
 		this.codigo = codigo;
 		this.nome = nome;
 		this.ch = ch;
@@ -110,13 +106,5 @@ public class Disciplina extends AbstractModel<Long> {
 
 	public void setEquivalentes(String equivalentes) {
 		this.equivalentes = equivalentes;
-	}
-
-	public Long getId_componente() {
-		return id_componente;
-	}
-
-	public void setId_componente(Long id_componente) {
-		this.id_componente = id_componente;
 	}
 }

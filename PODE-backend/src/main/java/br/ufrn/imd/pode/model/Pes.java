@@ -48,6 +48,12 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.disciplinasOptativas = new HashSet<>();
 	}
 
+	public Pes(String nome, Integer chm, Integer cho) {
+		this.nome = nome;
+		this.chm = chm;
+		this.cho = cho;
+	}
+
 	public Pes(String nome, Integer chm, Integer cho, Set<Disciplina> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
 		this.nome = nome;
 		this.chm = chm;

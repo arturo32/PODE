@@ -19,9 +19,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	@SequenceGenerator(name = "SEQ_CURSO", sequenceName = "id_seq_curso", allocationSize = 1)
 	private Long id;
 
-	@NotNull
-	private Long curriculo_id;
-
 	@NotBlank
 	@Column(unique = true)
 	private String nome;
@@ -235,13 +232,5 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	public Boolean concluida(Set<Disciplina> disciplinas) {
 		// TODO
 		return false;
-	}
-
-	public Long getCurriculo_id() {
-		return curriculo_id;
-	}
-
-	public void setCurriculo_id(Long curriculo_id) {
-		this.curriculo_id = curriculo_id;
 	}
 }

@@ -2,8 +2,12 @@ package br.ufrn.imd.pode.config;
 
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.Enfase;
+import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.repository.CursoRepository;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
+import br.ufrn.imd.pode.repository.EnfaseRepository;
+import br.ufrn.imd.pode.repository.PesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class DatabaseLoader implements ApplicationRunner {
@@ -25,6 +29,10 @@ public class DatabaseLoader implements ApplicationRunner {
 
 	private CursoRepository cursoRepository;
 
+	private EnfaseRepository enfaseRepository;
+
+	private PesRepository pesRepository;
+
 	@Autowired
 	public void setDisciplinaRepository(DisciplinaRepository disciplinaRepository) {
 		this.disciplinaRepository = disciplinaRepository;
@@ -35,24 +43,36 @@ public class DatabaseLoader implements ApplicationRunner {
 		this.cursoRepository = cursoRepository;
 	}
 
+	@Autowired
+	public void setEnfaseRepository(EnfaseRepository enfaseRepository) {
+		this.enfaseRepository = enfaseRepository;
+	}
+
+	@Autowired
+	public void setPesRepository(PesRepository pesRepository) {
+		this.pesRepository = pesRepository;
+	}
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (dbmode.equals("create")) {
 			inserirDisciplinas();
-			inserir_cursos();
+			inserirCursos();
+			inserirEnfases();
+			inserirPes();
+			System.out.println("DONE");
 		}
 	}
 
 	private void inserirDisciplinas() {
-		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/disciplinas_ti.csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/disciplinas.csv"))) {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				System.out.println(Arrays.toString(values));
-				Disciplina disciplina = new Disciplina(Long.parseLong(values[0]), values[1], values[2], Integer.parseInt(values[5]));
-				disciplina.setEquivalentes(values[6]);
-				disciplina.setPrerequisitos(values[7]);
-				disciplina.setCorequisitos(values[8]);
+				String[] values = line.split(";", -1);
+				Disciplina disciplina = new Disciplina(values[0], values[1], Integer.parseInt(values[4]));
+				disciplina.setEquivalentes(values[5]);
+				disciplina.setPrerequisitos(values[6]);
+				disciplina.setCorequisitos(values[7]);
 				this.disciplinaRepository.save(disciplina);
 			}
 		} catch (IOException e) {
@@ -60,12 +80,12 @@ public class DatabaseLoader implements ApplicationRunner {
 		}
 	}
 
-	private void inserir_cursos() {
+	private void inserirCursos() {
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_ti.csv"))) {
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(",", -1);
-				Curso curso = new Curso(values[2] + values[1],
+				Curso curso = new Curso(values[2] + " - " + values[1],
 						Integer.parseInt(values[6]),
 						Integer.parseInt(values[7]),
 						Integer.parseInt(values[8]),
@@ -78,6 +98,33 @@ public class DatabaseLoader implements ApplicationRunner {
 						Integer.parseInt(values[4])
 				);
 				this.cursoRepository.save(curso);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void inserirEnfases() {
+		Curso curso = cursoRepository.getOne(2L);
+		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/enfases_ti.csv"))) {
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",", -1);
+				Enfase enfase = new Enfase(values[2] + " - " + values[1], curso);
+				this.enfaseRepository.save(enfase);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void inserirPes() {
+		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_pes.csv"))) {
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",", -1);
+				Pes pes = new Pes(values[1], Integer.parseInt(values[2]), Integer.parseInt(values[2]));
+				this.pesRepository.save(pes);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

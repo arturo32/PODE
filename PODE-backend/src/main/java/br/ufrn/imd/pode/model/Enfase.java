@@ -39,6 +39,11 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 		this.disciplinasObrigatorias = new HashSet<>();
 	}
 
+	public Enfase(String nome, Curso curso) {
+		this.nome = nome;
+		this.curso = curso;
+	}
+
 	public Enfase(String nome, Curso curso, Set<DisciplinaPeriodo> disciplinasObrigatorias) {
 		this.nome = nome;
 		this.curso = curso;
