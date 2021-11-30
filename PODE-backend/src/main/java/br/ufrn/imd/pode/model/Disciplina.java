@@ -23,15 +23,19 @@ public class Disciplina extends AbstractModel<Long> {
 
 	@NotNull
 	@NotBlank
+	@Column(length = 1024)
 	private String nome;
 
 	@NotNull
 	private Integer ch;
 
+	@Column(length = 1024)
 	private String prerequisitos;
 
+	@Column(length = 1024)
 	private String corequisitos;
 
+	@Column(length = 1024)
 	private String equivalentes;
 
 	public Disciplina() {
