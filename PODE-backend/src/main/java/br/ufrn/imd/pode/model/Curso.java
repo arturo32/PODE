@@ -64,13 +64,13 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	@JoinTable(name = "curso_disciplina_obrigatoria",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
+	private Set<DisciplinaPeriodo> disciplinasObrigatorias = new HashSet<>();
 
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "curso_disciplina_optativa",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinasOptativas;
+	private Set<Disciplina> disciplinasOptativas = new HashSet<>();
 
 	public Curso() {
 	}
@@ -232,5 +232,13 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	public Boolean concluida(Set<Disciplina> disciplinas) {
 		// TODO
 		return false;
+	}
+
+	public void adicionarDisciplinaObrigatoria(DisciplinaPeriodo disciplinaPeriodo) {
+		this.disciplinasObrigatorias.add(disciplinaPeriodo);
+	}
+
+	public void adicionarDisciplinaOptativa(Disciplina disciplina) {
+		this.disciplinasOptativas.add(disciplina);
 	}
 }

@@ -33,7 +33,7 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 	@JoinTable(name = "enfase_disciplina_obrigatoria",
 			joinColumns = {@JoinColumn(name = "enfase_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
+	private Set<DisciplinaPeriodo> disciplinasObrigatorias = new HashSet<>();
 
 	public Enfase() {
 		this.disciplinasObrigatorias = new HashSet<>();
@@ -167,4 +167,13 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
+
+	public Set<DisciplinaPeriodo> getDisciplinasObrigatoriasEspecificas() {
+		return this.disciplinasObrigatorias;
+	}
+
+	public void adicionarDisciplinaObrigatoria(DisciplinaPeriodo disciplinaPeriodo) {
+		this.disciplinasObrigatorias.add(disciplinaPeriodo);
+	}
+
 }
