@@ -59,12 +59,12 @@ public class DatabaseLoader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (dbmode.equals("create")) {
-			inserirDisciplinas();
-			inserirCursos();
-			inserirEnfases();
-			inserirPes();
-			inserirDisciplasCursos();
-			inserirDisciplinaPes();
+//			inserirDisciplinas();
+//			inserirCursos();
+//			inserirEnfases();
+//			inserirPes();
+//			inserirDisciplasCursos();
+//			inserirDisciplinaPes();
 			System.out.println("DONE");
 		}
 	}
