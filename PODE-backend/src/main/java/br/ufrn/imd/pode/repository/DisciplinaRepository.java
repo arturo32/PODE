@@ -12,7 +12,7 @@ import java.util.Set;
 @Repository
 public interface DisciplinaRepository extends GenericRepository<Disciplina, Long> {
 
-	Optional<Disciplina> findDisciplinaByAtivoIsTrueAndCodigoIs(@NotNull @NotBlank String codigo);
+	Set<Disciplina> findDisciplinasByAtivoIsTrueAndCodigoIs(@NotNull @NotBlank String codigo);
 
 	Set<Disciplina> findDisciplinasByAtivoIsTrueAndCodigoIn(Collection<@NotNull @NotBlank String> codigos);
 }

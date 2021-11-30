@@ -1,7 +1,13 @@
 package br.ufrn.imd.pode.config;
 
+
 import br.ufrn.imd.pode.model.*;
 import br.ufrn.imd.pode.repository.*;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -13,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Component
@@ -59,39 +66,53 @@ public class DatabaseLoader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (dbmode.equals("create")) {
-//			inserirDisciplinas();
-//			inserirCursos();
-//			inserirEnfases();
-//			inserirPes();
-//			inserirDisciplasCursos();
-//			inserirDisciplinaPes();
+			inserirDisciplinas();
+			inserirCursos();
+			inserirEnfases();
+			inserirPes();
+			inserirDisciplasCursos();
+			inserirDisciplinaPes();
 			System.out.println("DONE");
 		}
 	}
 
-	@Transactional
 	void inserirDisciplinas() {
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/disciplinas.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(";", -1);
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(false)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
 				Disciplina disciplina = new Disciplina(values[0], values[1], Integer.parseInt(values[4]));
 				disciplina.setEquivalentes(values[5]);
 				disciplina.setPrerequisitos(values[6]);
 				disciplina.setCorequisitos(values[7]);
 				this.disciplinaRepository.save(disciplina);
+
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
 	void inserirCursos() {
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_ti.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
 				Curso curso = new Curso(values[2] + " - " + values[1],
 						Integer.parseInt(values[6]),
 						Integer.parseInt(values[7]),
@@ -106,175 +127,250 @@ public class DatabaseLoader implements ApplicationRunner {
 				);
 				this.cursoRepository.save(curso);
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
 	void inserirEnfases() {
 		Curso curso = cursoRepository.getOne(2L);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/enfases_ti.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
 				Enfase enfase = new Enfase(values[2] + " - " + values[1], curso);
 				this.enfaseRepository.save(enfase);
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
 	void inserirPes() {
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_pes.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
 				Pes pes = new Pes(values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]));
 				this.pesRepository.save(pes);
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
 	void inserirDisciplasCursos() {
 		Curso curso = cursoRepository.getOne(2L);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/obrigatorias_diurno.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/optativas_diurno.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[0]);
-				if (disciplina.isPresent()) {
-					curso.adicionarDisciplinaOptativa(disciplina.get());
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[0]);
+				for (Disciplina d:disciplinas) {
+					curso.adicionarDisciplinaOptativa(d);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 
 		curso = cursoRepository.getOne(1L);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/obrigatorias_noturno.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/optativas_noturno.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[0]);
-				if (disciplina.isPresent()) {
-					curso.adicionarDisciplinaOptativa(disciplina.get());
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[0]);
+				for (Disciplina d:disciplinas) {
+					curso.adicionarDisciplinaOptativa(d);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 
 		Enfase enfase = enfaseRepository.getOne(1L);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/obrigatorias_dev_soft.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 		enfase = enfaseRepository.getOne(2L);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/obrigatorias_comput.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional
 	void inserirDisciplinaPes() {
 		long last_id = 0L;
 		long current_id = 0L;
 		Pes pes = pesRepository.getOne(current_id+1);
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/curriculo_componente_pes.csv"))) {
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] values = line.split(",", -1);
+			CSVParser parser = new CSVParserBuilder()
+					.withSeparator(',')
+					.withIgnoreQuotations(true)
+					.build();
+			CSVReader csvReader = new CSVReaderBuilder(br)
+					.withSkipLines(1)
+					.withCSVParser(parser)
+					.build();
+
+			String [] values;
+			while ((values = csvReader.readNext()) != null) {
 				current_id = Long.parseLong(values[1]);
 				if (last_id != current_id) {
 					last_id = current_id;
 					pes = pesRepository.getOne(current_id+1);
 				}
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[3]);
-				if (disciplina.isPresent()) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[3]);
+				for (Disciplina d:disciplinas) {
 					if (values[2].equals("OPTATIVA")) {
-						pes.adicionarDisciplinaOptativa(disciplina.get());
+						pes.adicionarDisciplinaOptativa(d);
 					} else {
-						pes.adicionarDisciplinaObrigatoria(disciplina.get());
+						pes.adicionarDisciplinaObrigatoria(d);
 					}
 					this.pesRepository.save(pes);
-				} else {
-					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
+				}
+				if (disciplinas.isEmpty()) {
+					System.err.println("PES - Disciplina de código '"+ values[3] +"' não encontrada.");
 				}
 			}
-		} catch (IOException e) {
+		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
 	}
