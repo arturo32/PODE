@@ -26,5 +26,8 @@ hs_err_pid*
 venv/*
 .idea/*
 
-#Node
+# Node
 PODE-frontend/pode/node_modules/*
+
+# PostgreSQL
+postgres

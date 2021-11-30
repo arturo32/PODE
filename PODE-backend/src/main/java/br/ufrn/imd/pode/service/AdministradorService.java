@@ -17,13 +17,13 @@ public class AdministradorService extends GenericService<Administrador, Administ
 
 	@Override
 	public AdministradorDTO convertToDto(Administrador entity) {
-		//TODO
+		// TODO
 		return null;
 	}
 
 	@Override
 	public Administrador convertToEntity(AdministradorDTO dto) {
-		//TODO
+		// TODO
 		return null;
 	}
 
