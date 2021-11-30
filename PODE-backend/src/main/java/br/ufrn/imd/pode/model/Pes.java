@@ -35,17 +35,23 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 	@JoinTable(name = "pes_disciplina_obrigatoria",
 			joinColumns = {@JoinColumn(name = "pes_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinasObrigatorias;
+	private Set<Disciplina> disciplinasObrigatorias = new HashSet<>();
 
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "pes_disciplina_optativa",
 			joinColumns = {@JoinColumn(name = "pes_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinasOptativas;
+	private Set<Disciplina> disciplinasOptativas = new HashSet<>();
 
 	public Pes() {
 		this.disciplinasObrigatorias = new HashSet<>();
 		this.disciplinasOptativas = new HashSet<>();
+	}
+
+	public Pes(String nome, Integer chm, Integer cho) {
+		this.nome = nome;
+		this.chm = chm;
+		this.cho = cho;
 	}
 
 	public Pes(String nome, Integer chm, Integer cho, Set<Disciplina> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
@@ -128,5 +134,13 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 	public Boolean concluida(Set<Disciplina> disciplinas) {
 		// TODO
 		return false;
+	}
+
+	public void adicionarDisciplinaObrigatoria(Disciplina disciplina) {
+		this.disciplinasObrigatorias.add(disciplina);
+	}
+
+	public void adicionarDisciplinaOptativa(Disciplina disciplina) {
+		this.disciplinasOptativas.add(disciplina);
 	}
 }

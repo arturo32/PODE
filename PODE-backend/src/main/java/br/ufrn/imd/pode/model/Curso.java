@@ -1,6 +1,6 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.interfaces.IGradeCurricularPrimaria;
+import br.ufrn.imd.pode.model.interfaces.IGradeCurricularPrimaria;
 import br.ufrn.imd.pode.model.dto.CursoDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
@@ -18,10 +18,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CURSO")
 	@SequenceGenerator(name = "SEQ_CURSO", sequenceName = "id_seq_curso", allocationSize = 1)
 	private Long id;
-
-	@NotBlank
-	@Column(unique = true)
-	private String codigo;
 
 	@NotBlank
 	@Column(unique = true)
@@ -48,8 +44,12 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	private Integer chem;
 
 	@NotNull
+	//Carga horária mínima por período
+	private Integer chminp;
+
+	@NotNull
 	//Carga horária máxima por período
-	private Integer chmp;
+	private Integer chmaxp;
 
 	@NotNull
 	private Integer prazoMinimo;
@@ -64,38 +64,35 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	@JoinTable(name = "curso_disciplina_obrigatoria",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
+	private Set<DisciplinaPeriodo> disciplinasObrigatorias = new HashSet<>();
 
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "curso_disciplina_optativa",
 			joinColumns = {@JoinColumn(name = "curso_id")},
 			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinasOptativas;
+	private Set<Disciplina> disciplinasOptativas = new HashSet<>();
 
 	public Curso() {
 	}
 
-	public Curso(String codigo, String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chmp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado, Set<DisciplinaPeriodo> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
-		this.codigo = codigo;
+	public Curso(String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chminp, Integer chmaxp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado) {
 		this.nome = nome;
 		this.chm = chm;
 		this.cho = cho;
 		this.chom = chom;
 		this.chcm = chcm;
 		this.chem = chem;
-		this.chmp = chmp;
+		this.chminp = chminp;
+		this.chmaxp = chmaxp;
 		this.prazoMinimo = prazoMinimo;
 		this.prazoMaximo = prazoMaximo;
 		this.prazoEsperado = prazoEsperado;
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
-		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
 	public Curso(CursoDTO curso) {
 		this.disciplinasObrigatorias = new HashSet<>();
 		this.disciplinasOptativas = new HashSet<>();
 		this.id = curso.getId();
-		this.codigo = curso.getCodigo();
 		this.nome = curso.getNome();
 		for (DisciplinaDTO disciplinaOptativa : curso.getDisciplinasOptativas()) {
 			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
@@ -113,14 +110,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	@Override
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 	public String getNome() {
@@ -177,12 +166,21 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	}
 
 	@Override
-	public Integer getChmp() {
-		return chmp;
+	public Integer getChminp() {
+		return chminp;
 	}
 
-	public void setChmp(Integer chmp) {
-		this.chmp = chmp;
+	public void setChminp(Integer chminp) {
+		this.chminp = chminp;
+	}
+
+	@Override
+	public Integer getChmaxp() {
+		return chmaxp;
+	}
+
+	public void setChmaxp(Integer chmaxp) {
+		this.chmaxp = chmaxp;
 	}
 
 	@Override
@@ -234,5 +232,13 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 	public Boolean concluida(Set<Disciplina> disciplinas) {
 		// TODO
 		return false;
+	}
+
+	public void adicionarDisciplinaObrigatoria(DisciplinaPeriodo disciplinaPeriodo) {
+		this.disciplinasObrigatorias.add(disciplinaPeriodo);
+	}
+
+	public void adicionarDisciplinaOptativa(Disciplina disciplina) {
+		this.disciplinasOptativas.add(disciplina);
 	}
 }

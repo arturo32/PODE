@@ -28,17 +28,9 @@ public class Disciplina extends AbstractModel<Long> {
 	@NotNull
 	private Integer ch;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "disciplina_prerequisitos",
-			joinColumns = {@JoinColumn(name = "disciplina_id")},
-			inverseJoinColumns = {@JoinColumn(name = "prerequisito_id")})
-	private Set<Disciplina> prerequisitos = new HashSet<>();
+	private String prerequisitos;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "disciplina_corequisitos",
-			joinColumns = {@JoinColumn(name = "disciplina_id")},
-			inverseJoinColumns = {@JoinColumn(name = "corequisito_id")})
-	private Set<Disciplina> corequisitos = new HashSet<>();
+	private String corequisitos;
 
 	private String equivalentes;
 
@@ -56,12 +48,6 @@ public class Disciplina extends AbstractModel<Long> {
 		this.codigo = disciplina.getCodigo();
 		this.nome = disciplina.getNome();
 		this.ch = disciplina.getCh();
-		for (DisciplinaDTO prerequisito : disciplina.getPrerequisitos()) {
-			this.prerequisitos.add(new Disciplina(prerequisito));
-		}
-		for (DisciplinaDTO corequisito : disciplina.getCorequisitos()) {
-			this.corequisitos.add(new Disciplina(corequisito));
-		}
 	}
 
 	@Override
@@ -98,19 +84,19 @@ public class Disciplina extends AbstractModel<Long> {
 		this.ch = ch;
 	}
 
-	public Set<Disciplina> getPrerequisitos() {
+	public String getPrerequisitos() {
 		return prerequisitos;
 	}
 
-	public void setPrerequisitos(Set<Disciplina> prerequisitos) {
+	public void setPrerequisitos(String prerequisitos) {
 		this.prerequisitos = prerequisitos;
 	}
 
-	public Set<Disciplina> getCorequisitos() {
+	public String getCorequisitos() {
 		return corequisitos;
 	}
 
-	public void setCorequisitos(Set<Disciplina> corequisitos) {
+	public void setCorequisitos(String corequisitos) {
 		this.corequisitos = corequisitos;
 	}
 

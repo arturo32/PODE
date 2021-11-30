@@ -1,4 +1,4 @@
-package br.ufrn.imd.pode.interfaces;
+package br.ufrn.imd.pode.model.interfaces;
 
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
@@ -16,7 +16,9 @@ public interface IGradeCurricularPrimaria {
 
 	Integer getChem();
 
-	Integer getChmp();
+	Integer getChmaxp();
+
+	Integer getChminp();
 
 	Integer getPrazoMinimo();
 
