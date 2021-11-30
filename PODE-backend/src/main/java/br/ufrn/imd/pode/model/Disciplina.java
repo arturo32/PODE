@@ -18,11 +18,11 @@ public class Disciplina extends AbstractModel<Long> {
 
 	@NotNull
 	@NotBlank
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String codigo;
 
-	@NotNull
-	@NotBlank
+//	@NotNull
+//	@NotBlank
 	@Column(length = 1024)
 	private String nome;
 

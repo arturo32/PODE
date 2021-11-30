@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +63,10 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	public void salvar(Disciplina disciplina) {
 		this.repository.save(disciplina);
+	}
+
+	public Set<Disciplina> findDisciplinasByCodigo(String codigo) {
+		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
 	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se atendem a expressão de equivalencia)

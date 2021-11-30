@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Component
@@ -76,7 +77,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	}
 
 	void inserirDisciplinas() {
-		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/disciplinas_ti.csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/disciplinas.csv"))) {
 			CSVParser parser = new CSVParserBuilder()
 					.withSeparator(',')
 					.withIgnoreQuotations(false)
@@ -188,13 +189,14 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -213,11 +215,12 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[0]);
-				if (disciplina.isPresent()) {
-					curso.adicionarDisciplinaOptativa(disciplina.get());
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[0]);
+				for (Disciplina d:disciplinas) {
+					curso.adicionarDisciplinaOptativa(d);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -238,13 +241,14 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -263,11 +267,12 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[0]);
-				if (disciplina.isPresent()) {
-					curso.adicionarDisciplinaOptativa(disciplina.get());
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[0]);
+				for (Disciplina d:disciplinas) {
+					curso.adicionarDisciplinaOptativa(d);
 					this.cursoRepository.save(curso);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -288,13 +293,14 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -314,13 +320,14 @@ public class DatabaseLoader implements ApplicationRunner {
 
 			String [] values;
 			while ((values = csvReader.readNext()) != null) {
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[1]);
-				if (disciplina.isPresent()) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(disciplina.get(), Integer.parseInt(values[0]));
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
+				for (Disciplina d:disciplinas) {
+					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
 					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("Disciplina de código '"+ values[1] +"' não encontrada.");
 				}
 			}
@@ -350,15 +357,16 @@ public class DatabaseLoader implements ApplicationRunner {
 					last_id = current_id;
 					pes = pesRepository.getOne(current_id+1);
 				}
-				Optional<Disciplina> disciplina = disciplinaRepository.findDisciplinaByAtivoIsTrueAndCodigoIs(values[3]);
-				if (disciplina.isPresent()) {
+				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[3]);
+				for (Disciplina d:disciplinas) {
 					if (values[2].equals("OPTATIVA")) {
-						pes.adicionarDisciplinaOptativa(disciplina.get());
+						pes.adicionarDisciplinaOptativa(d);
 					} else {
-						pes.adicionarDisciplinaObrigatoria(disciplina.get());
+						pes.adicionarDisciplinaObrigatoria(d);
 					}
 					this.pesRepository.save(pes);
-				} else {
+				}
+				if (disciplinas.isEmpty()) {
 					System.err.println("PES - Disciplina de código '"+ values[3] +"' não encontrada.");
 				}
 			}
