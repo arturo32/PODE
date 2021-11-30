@@ -1,6 +1,6 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.interfaces.IGradeCurricularSecundaria;
+import br.ufrn.imd.pode.model.interfaces.IGradeCurricularSecundaria;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
 

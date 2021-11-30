@@ -1,4 +1,4 @@
-package br.ufrn.imd.pode.interfaces;
+package br.ufrn.imd.pode.model.interfaces;
 
 import br.ufrn.imd.pode.model.Disciplina;
 
