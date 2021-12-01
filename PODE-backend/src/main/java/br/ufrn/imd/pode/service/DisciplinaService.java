@@ -59,24 +59,50 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
-	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se
-	// atendem a expressão de equivalencia)
-	public boolean checarEquivalencia(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
-		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
-		String eq = disciplina_alvo.getEquivalentes();
-		if (eq == null || eq.isEmpty()) {
-			return false;
-		}
-		eq = eq.replace(" E ", " && ");
-		eq = eq.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z][A-Z][A-Z]\\d\\d\\d\\d)").matcher(eq);
-		while (matcher.find()) {
+	public boolean checarEquivalencia(Set<String> codigos, String expressao) {
+		expressao = expressao.replace(" E ", " && ");
+		expressao = expressao.replace(" OU ", " || ");
+		Matcher matcher = Pattern.compile("([A-Z][A-Z][A-Z]\\d\\d\\d\\d)").matcher(expressao);
+		while(matcher.find()){
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String eval = String.valueOf(codigos.contains(matcher.group(i)));
-				eq = eq.replace(matcher.group(i), eval);
+				expressao = expressao.replace(matcher.group(i), eval);
 			}
 		}
-		return (boolean) MVEL.eval(eq);
+		return (boolean) MVEL.eval(expressao);
+	}
+
+	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se atendem a expressão de equivalencia)
+	public boolean checarEquivalencia(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
+		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
+		String expressao = disciplina_alvo.getEquivalentes();
+		if (expressao == null || expressao.isEmpty()) {
+			return false;
+		}
+		return checarEquivalencia(codigos, expressao);
+	}
+
+	public boolean checarPrerequisitos(Set<String> codigos, String expressao) {
+		expressao = expressao.replace(" E ", " && ");
+		expressao = expressao.replace(" OU ", " || ");
+		Matcher matcher = Pattern.compile("([A-Z][A-Z][A-Z]\\d\\d\\d\\d)").matcher(expressao);
+		while(matcher.find()){
+			for (int i = 0; i < matcher.groupCount(); i++) {
+				String eval = String.valueOf(checarEquivalencia(codigos, matcher.group(i)));
+				expressao = expressao.replace(matcher.group(i), eval);
+			}
+		}
+		return (boolean) MVEL.eval(expressao);
+	}
+
+	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina alvo (se atendem a expressão de prerequisito)
+	public boolean checarPrerequisitos(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
+		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
+		String expressao = disciplina_alvo.getPrerequisitos();
+		if (expressao == null || expressao.isEmpty()) {
+			return false;
+		}
+		return checarPrerequisitos(codigos, expressao);
 	}
 
 	public Disciplina salvar(Disciplina disciplina) {
