@@ -46,4 +46,24 @@ public class ApplicationTests {
             Assert.assertFalse(disciplinaService.checarEquivalencia(test, d));
         }
     }
+
+    @Test
+    public void prerequisito() {
+        Set<Disciplina> disciplina = disciplinaService.findDisciplinasByCodigo("DIM0121");
+        Set<Disciplina> test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("IMD0028"));
+
+        for (Disciplina d:disciplina) {
+            Assert.assertTrue(disciplinaService.checarPrerequisitos(test, d));
+        }
+
+        test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("DIM0115"));
+        for (Disciplina d:disciplina) {
+            Assert.assertTrue(disciplinaService.checarPrerequisitos(test, d));
+        }
+
+        test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("IMD0022"));
+        for (Disciplina d:disciplina) {
+            Assert.assertFalse(disciplinaService.checarPrerequisitos(test, d));
+        }
+    }
 }
