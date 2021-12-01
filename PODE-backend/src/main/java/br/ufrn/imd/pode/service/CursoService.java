@@ -1,7 +1,9 @@
 package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
+import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
@@ -26,38 +28,38 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 	private DisciplinaService disciplinaService;
 
 	@Override
-	public CursoDTO convertToDto(Curso entity) {
+	public CursoDTO convertToDto(Curso curso) {
 		return null;
 	}
 
 	@Override
-	public Curso convertToEntity(CursoDTO dto) {
+	public Curso convertToEntity(CursoDTO cursoDTO) {
 		Curso curso = new Curso();
-		curso.setId(dto.getId());
-		curso.setCodigo(dto.getCodigo());
-		curso.setNome(dto.getNome());
-		curso.setChm(dto.getChm());
-		curso.setCho(dto.getCho());
-		curso.setChom(dto.getChom());
-		curso.setChcm(dto.getChcm());
-		curso.setChem(dto.getChem());
-		curso.setChmp(dto.getChmp());
-		curso.setPrazoMinimo(dto.getPrazoMinimo());
-		curso.setPrazoMaximo(dto.getPrazoMaximo());
-		curso.setPrazoEsperado(dto.getPrazoEsperado());
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : dto.getDisciplinasObrigatorias()) {
+		curso.setId(cursoDTO.getId());
+		curso.setNome(cursoDTO.getNome());
+		curso.setChm(cursoDTO.getChm());
+		curso.setCho(cursoDTO.getCho());
+		curso.setChom(cursoDTO.getChom());
+		curso.setChcm(cursoDTO.getChcm());
+		curso.setChem(cursoDTO.getChem());
+		curso.setChminp(cursoDTO.getChminp());
+		curso.setChmaxp(cursoDTO.getChmaxp());
+		curso.setPrazoMinimo(cursoDTO.getPrazoMinimo());
+		curso.setPrazoMaximo(cursoDTO.getPrazoMaximo());
+		curso.setPrazoEsperado(cursoDTO.getPrazoEsperado());
+		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : cursoDTO.getDisciplinasObrigatorias()) {
 			if (disciplinaPeriodoDTO.getId() != null) {
 				curso.getDisciplinasObrigatorias()
 						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
 			} else {
-				throw new EntityNotFoundException("Disciplina obrigatória inexistente");
+				throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 			}
 		}
-		for (DisciplinaDTO disciplinaDTO : dto.getDisciplinasOptativas()) {
+		for (DisciplinaDTO disciplinaDTO : cursoDTO.getDisciplinasOptativas()) {
 			if (disciplinaDTO.getId() != null) {
 				curso.getDisciplinasOptativas().add(this.disciplinaService.findById(disciplinaDTO.getId()));
 			} else {
-				throw new EntityNotFoundException("Disciplina optativa inexistente");
+				throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 			}
 		}
 		return curso;
@@ -73,12 +75,12 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 	}
 
 	@Autowired
-	public void setRepository(CursoRepository repository) {
-		this.repository = repository;
+	public void setRepository(CursoRepository cursoRepository) {
+		this.repository = cursoRepository;
 	}
 
 	public DisciplinaPeriodoService getDisciplinaPeriodoService() {
-		return disciplinaPeriodoService;
+		return this.disciplinaPeriodoService;
 	}
 
 	@Autowired
@@ -87,7 +89,7 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 	}
 
 	public DisciplinaService getDisciplinaService() {
-		return disciplinaService;
+		return this.disciplinaService;
 	}
 
 	@Autowired
@@ -96,129 +98,157 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 	}
 
 	public Curso salvar(Curso curso) {
-		String excecao = "";
-		if (curso.getCodigo() == null || curso.getCodigo().isEmpty()) {
-			excecao += "Código inválido";
-		}
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+		/** verifica nome */
 		if (curso.getNome() == null || curso.getNome().isEmpty()) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "Nome inválido";
+			exceptionHelper.add("nome inválido");
 		}
+		/** verifica chm */
+		boolean statusChm = false;
 		if (curso.getChm() == null || curso.getChm() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "chm inválido";
+			exceptionHelper.add("chm inválido");
+		} else {
+			statusChm = true;
 		}
+		/** verifica cho */
+		boolean statusCho = false;
 		if (curso.getCho() == null || curso.getCho() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "cho inválido";
+			exceptionHelper.add("cho inválido");
+		} else {
+			statusCho = true;
 		}
+		/** verifica chom */
+		boolean statusChom = false;
 		if (curso.getChom() == null || curso.getChom() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "chom inválido";
+			exceptionHelper.add("chom inválido");
+		} else {
+			statusChom = true;
 		}
+		/** verifica chcm */
+		boolean statusChcm = false;
 		if (curso.getChcm() == null || curso.getChcm() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "chcm inválido";
+			exceptionHelper.add("chcm inválido");
+		} else {
+			statusChcm = true;
 		}
+		/** verifica cho em relação a chm */
+		if (statusCho && statusChm) {
+			if (curso.getCho() > curso.getChm()) {
+				exceptionHelper.add("impossível cho ser maior do que chm");
+			}
+		}
+		/** verifica chom em relação a chm */
+		if (statusChom && statusChm) {
+			if (curso.getChom() > curso.getChm()) {
+				exceptionHelper.add("impossível chom ser maior do que chm");
+			}
+		}
+		/** verifica chcm em relação a chm */
+		if (statusChcm && statusChm) {
+			if (curso.getChcm() > curso.getChm()) {
+				exceptionHelper.add("impossível chcm ser maior do que chm");
+			}
+		}
+		/** verifica a relacao entre cho, chom, chcm e chm */
+		if (statusCho && statusChm && statusChom && statusChcm) {
+			if ((curso.getCho() + curso.getChom() + curso.getChcm()) != curso.getChm()) {
+				exceptionHelper.add("cho, chom e chcm somados deve resultar em chm");
+			}
+		}
+		/** verifica chem */
 		if (curso.getChem() == null || curso.getChem() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "chem inválido";
+			exceptionHelper.add("chem inválido");
 		}
-		if (curso.getChmp() == null || curso.getChmp() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "chmp inválido";
+		/** verifica chminp */
+		boolean chminp = false;
+		if (curso.getChminp() == null || curso.getChminp() <= 0) {
+			exceptionHelper.add("chminp inválido");
+		} else {
+			chminp = true;
 		}
-		Boolean statusPrazoMinimo = false;
+		/** verifica chmaxp */
+		boolean chmaxp = false;
+		if (curso.getChmaxp() == null || curso.getChmaxp() <= 0) {
+			exceptionHelper.add("chmaxp inválido");
+		} else {
+			chmaxp = true;
+		}
+		/** verifica a relacao entre chminp e chmaxp */
+		if (chminp && chmaxp) {
+			if (curso.getChminp() > curso.getChmaxp()) {
+				exceptionHelper.add("impossível chminp ser maior do que chmaxp");
+			}
+		}
+		/** verifica prazoMinimo */
+		boolean statusPrazoMinimo = false;
 		if (curso.getPrazoMinimo() == null || curso.getPrazoMinimo() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "prazoMinimo inválido";
+			exceptionHelper.add("prazoMinimo inválido");
 		} else {
 			statusPrazoMinimo = true;
 		}
-		Boolean statusPrazoMaximo = false;
+		/** verifica prazoMaximo */
+		boolean statusPrazoMaximo = false;
 		if (curso.getPrazoMaximo() == null || curso.getPrazoMaximo() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "prazoMaximo inválido";
+			exceptionHelper.add("prazoMaximo inválido");
 		} else {
 			statusPrazoMaximo = true;
 		}
-		Boolean statusPrazoEsperado = false;
+		/** verifica prazoEsperado */
+		boolean statusPrazoEsperado = false;
 		if (curso.getPrazoEsperado() == null || curso.getPrazoEsperado() <= 0) {
-			if (!excecao.isEmpty()) {
-				excecao += ", ";
-			}
-			excecao += "prazoEsperado inválido";
+			exceptionHelper.add("prazoEsperado inválido");
 		} else {
 			statusPrazoEsperado = true;
 		}
+		/** verifica a relacao entre prazoMinimo, prazoMaximo e prazoEsperado */
 		if (statusPrazoMinimo && statusPrazoMaximo && statusPrazoEsperado) {
 			if (curso.getPrazoMinimo() > curso.getPrazoMaximo()) {
-				if (!excecao.isEmpty()) {
-					excecao += ", ";
-				}
-				excecao += "impossível prazoMinimo ser maior do que prazoMaximo";
+				exceptionHelper.add("impossível prazoMinimo ser maior do que prazoMaximo");
 			}
 			if (curso.getPrazoEsperado() < curso.getPrazoMinimo()) {
-				if (!excecao.isEmpty()) {
-					excecao += ", ";
-				}
-				excecao += "impossível prazoEsperado ser menor do que prazoMinimo";
+				exceptionHelper.add("impossível prazoEsperado ser menor do que prazoMinimo");
 			}
 			if (curso.getPrazoEsperado() > curso.getPrazoMaximo()) {
-				if (!excecao.isEmpty()) {
-					excecao += ", ";
-				}
-				excecao += "impossível prazoEsperado ser maior do que prazoMaximo";
+				exceptionHelper.add("impossível prazoEsperado ser maior do que prazoMaximo");
 			}
 		}
+		/** verifica disciplinasObrigatorias */
 		if (curso.getDisciplinasObrigatorias() != null) {
 			Iterator<DisciplinaPeriodo> iterador = curso.getDisciplinasObrigatorias().iterator();
 			while (iterador.hasNext()) {
 				DisciplinaPeriodo disciplinaPeriodo = iterador.next();
-				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() <= 0) {
-					if (!excecao.isEmpty()) {
-						excecao += ", ";
+				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
+					exceptionHelper.add("disciplinaObrigatoria inconsistente");
+				} else {
+					try {
+						this.disciplinaPeriodoService.findById(disciplinaPeriodo.getId());
+					} catch (EntityNotFoundException entityNotFoundException) {
+						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo.getId() + ") inexistente");
 					}
-					excecao += "disciplinasObrigatorias inválido";
-					break;
 				}
 			}
 		}
+		/** verifica disciplinasOptativas */
 		if (curso.getDisciplinasOptativas() != null) {
 			Iterator<Disciplina> iterador = curso.getDisciplinasOptativas().iterator();
 			while (iterador.hasNext()) {
 				Disciplina disciplina = iterador.next();
-				if (disciplina.getId() == null || disciplina.getId() <= 0) {
-					if (!excecao.isEmpty()) {
-						excecao += ", ";
+				if (disciplina.getId() == null || disciplina.getId() < 0) {
+					exceptionHelper.add("disciplinaOptativa inconsistente");
+				} else {
+					try {
+						this.disciplinaService.findById(disciplina.getId());
+					} catch (EntityNotFoundException entityNotFoundException) {
+						exceptionHelper.add("disciplinaOptativa(id=" + disciplina.getId() + ") inexistente");
 					}
-					excecao += "disciplinasOptativas inválido";
-					break;
 				}
 			}
 		}
-		if (excecao.isEmpty()) {
+		/** verifica se existe exceçao */
+		if (exceptionHelper.getMessage().isEmpty()) {
 			return this.save(curso);
 		} else {
-			throw new ValidationException(excecao);
+			throw new ValidationException(exceptionHelper.getMessage());
 		}
 	}
 

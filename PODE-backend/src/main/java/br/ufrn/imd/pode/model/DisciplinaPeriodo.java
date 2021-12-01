@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "disciplina_periodo")
+@Table(name = "disciplinaperiodo")
 public class DisciplinaPeriodo extends AbstractModel<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA_PERIODO")

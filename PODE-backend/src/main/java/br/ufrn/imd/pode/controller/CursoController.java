@@ -20,8 +20,8 @@ public class CursoController extends GenericController<Curso, CursoDTO, Long> {
 	private CursoService service;
 
 	@Autowired
-	public void setService(CursoService service) {
-		this.service = service;
+	public void setService(CursoService cursoService) {
+		this.service = cursoService;
 	}
 
 	@Override

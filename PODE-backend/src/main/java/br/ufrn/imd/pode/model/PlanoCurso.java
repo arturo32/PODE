@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "plano_curso")
+@Table(name = "planocurso")
 public class PlanoCurso extends AbstractModel<Long> {
 
 	@Id
@@ -93,4 +93,5 @@ public class PlanoCurso extends AbstractModel<Long> {
 	public void setPesInteresse(Set<Pes> pesInteresse) {
 		this.pesInteresse = pesInteresse;
 	}
+
 }

@@ -15,12 +15,13 @@ public class AdministradorController extends GenericController<Administrador, Ad
 	private AdministradorService service;
 
 	@Autowired
-	public void setService(AdministradorService service) {
-		this.service = service;
+	public void setService(AdministradorService administradorService) {
+		this.service = administradorService;
 	}
 
 	@Override
 	protected GenericService<Administrador, AdministradorDTO, Long> service() {
 		return this.service;
 	}
+
 }

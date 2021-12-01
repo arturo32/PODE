@@ -21,8 +21,11 @@ public class CursoDTO extends AbstractDTO {
 	// carga horaria eletiva maxima
 	private Integer chem;
 
-	// carga horaria maxima por periodo
-	private Integer chmp;
+	// Carga horária mínima por período
+	private Integer chminp;
+
+	// Carga horária máxima por período
+	private Integer chmaxp;
 
 	private Integer prazoMinimo;
 
@@ -82,12 +85,20 @@ public class CursoDTO extends AbstractDTO {
 		this.chem = chem;
 	}
 
-	public Integer getChmp() {
-		return chmp;
+	public Integer getChminp() {
+		return chminp;
 	}
 
-	public void setChmp(Integer chmp) {
-		this.chmp = chmp;
+	public void setChminp(Integer chminp) {
+		this.chminp = chminp;
+	}
+
+	public Integer getChmaxp() {
+		return chmaxp;
+	}
+
+	public void setChmaxp(Integer chmaxp) {
+		this.chmaxp = chmaxp;
 	}
 
 	public Integer getPrazoMinimo() {
