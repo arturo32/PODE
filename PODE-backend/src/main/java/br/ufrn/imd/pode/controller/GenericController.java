@@ -29,6 +29,16 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 		return ResponseEntity.ok(service().convertToDto(service().save(service().validate(dto))));
 	}
 
+	@PutMapping
+	public ResponseEntity<Dto> saveUpdate(@Valid @RequestBody Dto dto) {
+		return ResponseEntity.ok(service().convertToDto(service().saveUpdate(service().validate(dto))));
+	}
+
+	@PatchMapping
+	public ResponseEntity<Dto> update(@Valid @RequestBody Dto dto) {
+		return ResponseEntity.ok(service().convertToDto(service().update(service().validate(dto))));
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Dto> delete(@PathVariable(value = "id") PK id) {
 		service().deleteById(id);

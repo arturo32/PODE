@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.AbstractModel;
 import br.ufrn.imd.pode.model.dto.AbstractDTO;
@@ -61,6 +62,24 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T save(Dto dto) {
+		if (dto.getId() != null) {
+			throw new BusinessException("Entidade do tipo '" + this.getModelName()
+					+ "' com id: '" + dto.getId() + "'já existe, caso queira modificá-la, use o método update");
+		}
+		return repository().save(convertToEntity(dto));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public T saveUpdate(Dto dto) {
+		return repository().save(convertToEntity(dto));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public T update(Dto dto) {
+		if (dto.getId() == null) {
+			throw new BusinessException("Entidade do tipo '" + this.getModelName()
+					+ "' com id: '" + dto.getId() + "'ainda não existe, caso queira salvá-la, use o método save");
+		}
 		return repository().save(convertToEntity(dto));
 	}
 
