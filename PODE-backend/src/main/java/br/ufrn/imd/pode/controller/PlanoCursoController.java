@@ -29,9 +29,4 @@ public class PlanoCursoController extends GenericController<PlanoCurso, PlanoCur
 		return this.service;
 	}
 	
-	@Override
-	public ResponseEntity<PlanoCursoDTO> save(@Valid @RequestBody PlanoCurso planoCurso) {
-		return ResponseEntity.ok(service().convertToDto(this.service.salvar(planoCurso)));
-	}
-
 }

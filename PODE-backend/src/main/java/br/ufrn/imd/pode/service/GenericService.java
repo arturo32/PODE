@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.AbstractModel;
 import br.ufrn.imd.pode.model.dto.AbstractDTO;
@@ -32,6 +33,8 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public abstract T convertToEntity(Dto dto);
 
+	public abstract Dto validate(Dto dto);
+
 	public List<Dto> convertToDTOList(List<T> entities) {
 		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
@@ -45,7 +48,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public T findById(PK id) {
 		Optional<T> entity = repository().findById(id);
-		if (!entity.isPresent()) {
+		if (entity.isEmpty()) {
 			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
 					+ "' de id: '" + id + "' não encontrada");
 		}
@@ -58,8 +61,26 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T save(T entity) {
-		return repository().save(entity);
+	public T save(Dto dto) {
+		if (dto.getId() != null) {
+			throw new BusinessException("Entidade do tipo '" + this.getModelName()
+					+ "' com id: '" + dto.getId() + "'já existe, caso queira modificá-la, use o método update");
+		}
+		return repository().save(convertToEntity(dto));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public T saveUpdate(Dto dto) {
+		return repository().save(convertToEntity(dto));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public T update(Dto dto) {
+		if (dto.getId() == null) {
+			throw new BusinessException("Entidade do tipo '" + this.getModelName()
+					+ "' com id: '" + dto.getId() + "'ainda não existe, caso queira salvá-la, use o método save");
+		}
+		return repository().save(convertToEntity(dto));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -70,7 +91,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteById(PK id) {
 		Optional<T> entity = repository().findById(id);
-		if (!entity.isPresent()) {
+		if (entity.isEmpty()) {
 			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
 					+ "' de id: '" + id + "' não encontrada");
 		} else {

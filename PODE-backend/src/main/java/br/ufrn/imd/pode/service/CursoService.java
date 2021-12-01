@@ -5,8 +5,6 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Curso;
-import br.ufrn.imd.pode.model.Disciplina;
-import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.dto.CursoDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
@@ -14,8 +12,6 @@ import br.ufrn.imd.pode.repository.CursoRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
 
 import javax.transaction.Transactional;
 
@@ -97,110 +93,111 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		this.disciplinaService = disciplinaService;
 	}
 
-	public Curso salvar(Curso curso) {
+	@Override
+	public CursoDTO validate(CursoDTO curso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/** verifica nome */
+		/* verifica nome */
 		if (curso.getNome() == null || curso.getNome().isEmpty()) {
 			exceptionHelper.add("nome inválido");
 		}
-		/** verifica chm */
+		/* verifica chm */
 		boolean statusChm = false;
 		if (curso.getChm() == null || curso.getChm() <= 0) {
 			exceptionHelper.add("chm inválido");
 		} else {
 			statusChm = true;
 		}
-		/** verifica cho */
+		/* verifica cho */
 		boolean statusCho = false;
 		if (curso.getCho() == null || curso.getCho() <= 0) {
 			exceptionHelper.add("cho inválido");
 		} else {
 			statusCho = true;
 		}
-		/** verifica chom */
+		/* verifica chom */
 		boolean statusChom = false;
 		if (curso.getChom() == null || curso.getChom() <= 0) {
 			exceptionHelper.add("chom inválido");
 		} else {
 			statusChom = true;
 		}
-		/** verifica chcm */
+		/* verifica chcm */
 		boolean statusChcm = false;
 		if (curso.getChcm() == null || curso.getChcm() <= 0) {
 			exceptionHelper.add("chcm inválido");
 		} else {
 			statusChcm = true;
 		}
-		/** verifica cho em relação a chm */
+		/* verifica cho em relação a chm */
 		if (statusCho && statusChm) {
 			if (curso.getCho() > curso.getChm()) {
 				exceptionHelper.add("impossível cho ser maior do que chm");
 			}
 		}
-		/** verifica chom em relação a chm */
+		/* verifica chom em relação a chm */
 		if (statusChom && statusChm) {
 			if (curso.getChom() > curso.getChm()) {
 				exceptionHelper.add("impossível chom ser maior do que chm");
 			}
 		}
-		/** verifica chcm em relação a chm */
+		/* verifica chcm em relação a chm */
 		if (statusChcm && statusChm) {
 			if (curso.getChcm() > curso.getChm()) {
 				exceptionHelper.add("impossível chcm ser maior do que chm");
 			}
 		}
-		/** verifica a relacao entre cho, chom, chcm e chm */
+		/* verifica a relacao entre cho, chom, chcm e chm */
 		if (statusCho && statusChm && statusChom && statusChcm) {
 			if ((curso.getCho() + curso.getChom() + curso.getChcm()) != curso.getChm()) {
 				exceptionHelper.add("cho, chom e chcm somados deve resultar em chm");
 			}
 		}
-		/** verifica chem */
+		/* verifica chem */
 		if (curso.getChem() == null || curso.getChem() <= 0) {
 			exceptionHelper.add("chem inválido");
 		}
-		/** verifica chminp */
+		/* verifica chminp */
 		boolean chminp = false;
 		if (curso.getChminp() == null || curso.getChminp() <= 0) {
 			exceptionHelper.add("chminp inválido");
 		} else {
 			chminp = true;
 		}
-		/** verifica chmaxp */
+		/* verifica chmaxp */
 		boolean chmaxp = false;
 		if (curso.getChmaxp() == null || curso.getChmaxp() <= 0) {
 			exceptionHelper.add("chmaxp inválido");
 		} else {
 			chmaxp = true;
 		}
-		/** verifica a relacao entre chminp e chmaxp */
+		/* verifica a relacao entre chminp e chmaxp */
 		if (chminp && chmaxp) {
 			if (curso.getChminp() > curso.getChmaxp()) {
 				exceptionHelper.add("impossível chminp ser maior do que chmaxp");
 			}
 		}
-		/** verifica prazoMinimo */
+		/* verifica prazoMinimo */
 		boolean statusPrazoMinimo = false;
 		if (curso.getPrazoMinimo() == null || curso.getPrazoMinimo() <= 0) {
 			exceptionHelper.add("prazoMinimo inválido");
 		} else {
 			statusPrazoMinimo = true;
 		}
-		/** verifica prazoMaximo */
+		/* verifica prazoMaximo */
 		boolean statusPrazoMaximo = false;
 		if (curso.getPrazoMaximo() == null || curso.getPrazoMaximo() <= 0) {
 			exceptionHelper.add("prazoMaximo inválido");
 		} else {
 			statusPrazoMaximo = true;
 		}
-		/** verifica prazoEsperado */
+		/* verifica prazoEsperado */
 		boolean statusPrazoEsperado = false;
 		if (curso.getPrazoEsperado() == null || curso.getPrazoEsperado() <= 0) {
 			exceptionHelper.add("prazoEsperado inválido");
 		} else {
 			statusPrazoEsperado = true;
 		}
-		/** verifica a relacao entre prazoMinimo, prazoMaximo e prazoEsperado */
+		/* verifica a relacao entre prazoMinimo, prazoMaximo e prazoEsperado */
 		if (statusPrazoMinimo && statusPrazoMaximo && statusPrazoEsperado) {
 			if (curso.getPrazoMinimo() > curso.getPrazoMaximo()) {
 				exceptionHelper.add("impossível prazoMinimo ser maior do que prazoMaximo");
@@ -212,11 +209,9 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 				exceptionHelper.add("impossível prazoEsperado ser maior do que prazoMaximo");
 			}
 		}
-		/** verifica disciplinasObrigatorias */
+		/* verifica disciplinasObrigatorias */
 		if (curso.getDisciplinasObrigatorias() != null) {
-			Iterator<DisciplinaPeriodo> iterador = curso.getDisciplinasObrigatorias().iterator();
-			while (iterador.hasNext()) {
-				DisciplinaPeriodo disciplinaPeriodo = iterador.next();
+			for (DisciplinaPeriodoDTO disciplinaPeriodo : curso.getDisciplinasObrigatorias()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
@@ -228,11 +223,9 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 				}
 			}
 		}
-		/** verifica disciplinasOptativas */
+		/* verifica disciplinasOptativas */
 		if (curso.getDisciplinasOptativas() != null) {
-			Iterator<Disciplina> iterador = curso.getDisciplinasOptativas().iterator();
-			while (iterador.hasNext()) {
-				Disciplina disciplina = iterador.next();
+			for (DisciplinaDTO disciplina : curso.getDisciplinasOptativas()) {
 				if (disciplina.getId() == null || disciplina.getId() < 0) {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {
@@ -244,9 +237,9 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 				}
 			}
 		}
-		/** verifica se existe exceçao */
+		/* verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(curso);
+			return curso;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

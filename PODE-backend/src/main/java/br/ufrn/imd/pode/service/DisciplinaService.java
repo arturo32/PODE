@@ -62,8 +62,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarEquivalencia(Set<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z][A-Z][A-Z]\\d\\d\\d\\d)").matcher(expressao);
-		while(matcher.find()){
+		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
+		while (matcher.find()) {
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String eval = String.valueOf(codigos.contains(matcher.group(i)));
 				expressao = expressao.replace(matcher.group(i), eval);
@@ -85,8 +85,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarPrerequisitos(Set<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z][A-Z][A-Z]\\d\\d\\d\\d)").matcher(expressao);
-		while(matcher.find()){
+		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
+		while (matcher.find()) {
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String eval = String.valueOf(checarEquivalencia(codigos, matcher.group(i)));
 				expressao = expressao.replace(matcher.group(i), eval);
@@ -105,29 +105,30 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return checarPrerequisitos(codigos, expressao);
 	}
 
-	public Disciplina salvar(Disciplina disciplina) {
+	@Override
+	public DisciplinaDTO validate(DisciplinaDTO disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/** verifica codigo */
+		/* verifica codigo */
 		if (disciplina.getCodigo() == null || disciplina.getCodigo().isEmpty()) {
 			exceptionHelper.add("codigo inválido");
 		} else {
-			Matcher matcher = Pattern.compile("[a-zA-Z]{3}[0-9]{4}").matcher(disciplina.getCodigo());
+			Matcher matcher = Pattern.compile("[A-Z]{3}[0-9]{4}").matcher(disciplina.getCodigo());
 			if (!matcher.find()) {
 				exceptionHelper.add("formato de codigo inválido(exemplo: ABC1234)");
 			}
 		}
-		/** verifica nome */
+		/* verifica nome */
 		if (disciplina.getNome() == null || disciplina.getNome().isEmpty()) {
 			exceptionHelper.add("nome inválido");
 		}
-		/** verifica ch */
+		/* verifica ch */
 		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
 			exceptionHelper.add("ch inválido");
 		}
 		// TODO verificar prequisitos, equivalencias e corequisitos
-		/** verifica se existe exceçao */
+		/* verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(disciplina);
+			return disciplina;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

@@ -4,8 +4,6 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.DisciplinaPeriodo;
-import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.PlanoCurso;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
@@ -14,8 +12,6 @@ import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PlanoCursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
 
 import javax.transaction.Transactional;
 
@@ -92,13 +88,12 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.pesService = pesService;
 	}
 
-	public PlanoCurso salvar(PlanoCurso planoCurso) {
+	@Override
+	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/** verifica disciplinasCursadas */
+		/* verifica disciplinasCursadas */
 		if (planoCurso.getDisciplinasCursadas() != null) {
-			Iterator<DisciplinaPeriodo> iterador = planoCurso.getDisciplinasCursadas().iterator();
-			while (iterador.hasNext()) {
-				DisciplinaPeriodo disciplinaPeriodo = iterador.next();
+			for (DisciplinaPeriodoDTO disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
 					exceptionHelper.add("disciplinaCursada inconsistente");
 				} else {
@@ -110,11 +105,9 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				}
 			}
 		}
-		/** verifica disciplinasPendentes */
+		/* verifica disciplinasPendentes */
 		if (planoCurso.getDisciplinasPendentes() != null) {
-			Iterator<DisciplinaPeriodo> iterador = planoCurso.getDisciplinasPendentes().iterator();
-			while (iterador.hasNext()) {
-				DisciplinaPeriodo disciplinaPeriodo = iterador.next();
+			for (DisciplinaPeriodoDTO disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
 					exceptionHelper.add("disciplinaPendente inconsistente");
 				} else {
@@ -126,11 +119,9 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				}
 			}
 		}
-		/** verifica pesInteresse */
+		/* verifica pesInteresse */
 		if (planoCurso.getPesInteresse() != null) {
-			Iterator<Pes> iterador = planoCurso.getPesInteresse().iterator();
-			while (iterador.hasNext()) {
-				Pes pes = iterador.next();
+			for (PesDTO pes : planoCurso.getPesInteresse()) {
 				if (pes.getId() == null || pes.getId() < 0) {
 					exceptionHelper.add("disciplinaPendente inconsistente");
 				} else {
@@ -142,9 +133,9 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				}
 			}
 		}
-		/** verifica se existe exceçao */
+		/* verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(planoCurso);
+			return planoCurso;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

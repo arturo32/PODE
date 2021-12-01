@@ -4,7 +4,6 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
@@ -12,8 +11,6 @@ import br.ufrn.imd.pode.repository.EnfaseRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
 
 import javax.transaction.Transactional;
 
@@ -83,13 +80,14 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		this.disciplinaPeriodoService = disciplinaPeriodoService;
 	}
 
-	public Enfase salvar(Enfase enfase) {
+	@Override
+	public EnfaseDTO validate(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/** verifica nome */
+		/* verifica nome */
 		if (enfase.getNome() == null || enfase.getNome().isEmpty()) {
 			exceptionHelper.add("nome inválido");
 		}
-		/** verifica curso */
+		/* verifica curso */
 		if (enfase.getCurso().getId() == null || enfase.getCurso().getId() < 0) {
 			exceptionHelper.add("curso inconsistente");
 		} else {
@@ -99,11 +97,9 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				exceptionHelper.add("curso inexistente");
 			}
 		}
-		/** verifica disciplinas obrigatorias */
+		/* verifica disciplinas obrigatorias */
 		if (enfase.getDisciplinasObrigatorias() != null) {
-			Iterator<DisciplinaPeriodo> iterador = enfase.getDisciplinasObrigatorias().iterator();
-			while (iterador.hasNext()) {
-				DisciplinaPeriodo disciplinaPeriodo = iterador.next();
+			for (DisciplinaPeriodoDTO disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
@@ -115,9 +111,9 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				}
 			}
 		}
-		/** verifica se existe exceçao */
+		/* verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(enfase);
+			return enfase;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

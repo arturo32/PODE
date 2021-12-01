@@ -26,6 +26,12 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 	}
 
 	@Override
+	public EstudanteDTO validate(EstudanteDTO dto) {
+		// TODO
+		return dto;
+	}
+
+	@Override
 	protected GenericRepository<Estudante, Long> repository() {
 		return this.repository;
 	}
