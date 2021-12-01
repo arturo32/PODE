@@ -34,7 +34,6 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		disciplina.setCodigo(disciplinaDTO.getCodigo());
 		disciplina.setNome(disciplinaDTO.getNome());
 		disciplina.setCh(disciplinaDTO.getCh());
-		// TODO validar expressões de equivalência
 		disciplina.setPrerequisitos(disciplinaDTO.getPrerequisitos());
 		disciplina.setCorequisitos(disciplinaDTO.getCorequisitos());
 		disciplina.setEquivalentes(disciplinaDTO.getEquivalentes());
@@ -125,7 +124,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
 			exceptionHelper.add("ch inválido");
 		}
-		// TODO verificar prequisitos, equivalencias e corequisitos
+		// TODO verificar expressões de prequisitos, equivalencias e corequisitos
 		/* verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return disciplina;

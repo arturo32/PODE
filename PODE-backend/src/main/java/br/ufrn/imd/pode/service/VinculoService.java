@@ -22,12 +22,14 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 
 	@Override
 	public Vinculo convertToEntity(VinculoDTO dto) {
-		return null;
+		// TODO conversão
+		Vinculo vinculo = new Vinculo(dto);
+		return vinculo;
 	}
 
 	@Override
 	public VinculoDTO validate(VinculoDTO dto) {
-		// TODO
+		// TODO validação
 		return dto;
 	}
 

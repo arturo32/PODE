@@ -228,12 +228,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	@Override
-	public Boolean concluida(Set<Disciplina> disciplinas) {
-		// TODO
-		return false;
-	}
-
 	public void adicionarDisciplinaObrigatoria(DisciplinaPeriodo disciplinaPeriodo) {
 		this.disciplinasObrigatorias.add(disciplinaPeriodo);
 	}

@@ -22,12 +22,14 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 
 	@Override
 	public Estudante convertToEntity(EstudanteDTO dto) {
-		return null;
+		// TODO conversão
+		Estudante estudante = new Estudante(dto);
+		return estudante;
 	}
 
 	@Override
 	public EstudanteDTO validate(EstudanteDTO dto) {
-		// TODO
+		// TODO validação
 		return dto;
 	}
 

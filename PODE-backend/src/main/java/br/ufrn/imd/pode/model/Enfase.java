@@ -158,12 +158,6 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 		return resultado;
 	}
 
-	@Override
-	public Boolean concluida(Set<Disciplina> disciplinas) {
-		// TODO
-		return false;
-	}
-
 	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
