@@ -26,6 +26,12 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	}
 
 	@Override
+	public VinculoDTO validate(VinculoDTO dto) {
+		// TODO
+		return dto;
+	}
+
+	@Override
 	protected GenericRepository<Vinculo, Long> repository() {
 		return this.repository;
 	}

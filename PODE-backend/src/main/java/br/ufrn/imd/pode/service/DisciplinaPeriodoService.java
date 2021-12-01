@@ -62,7 +62,8 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		this.disciplinaService = disciplinaService;
 	}
 
-	public DisciplinaPeriodo salvar(DisciplinaPeriodo disciplinaPeriodo) {
+	@Override
+	public DisciplinaPeriodoDTO validate(DisciplinaPeriodoDTO disciplinaPeriodo) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica disciplina */
 		if (disciplinaPeriodo.getDisciplina().getId() == null || disciplinaPeriodo.getDisciplina().getId() < 0) {
@@ -80,10 +81,9 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		}
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(disciplinaPeriodo);
+			return disciplinaPeriodo;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
 	}
-
 }

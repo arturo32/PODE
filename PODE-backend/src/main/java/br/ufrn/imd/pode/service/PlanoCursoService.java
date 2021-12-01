@@ -92,7 +92,8 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.pesService = pesService;
 	}
 
-	public PlanoCurso salvar(PlanoCurso planoCurso) {
+	@Override
+	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica disciplinasCursadas */
 		if (planoCurso.getDisciplinasCursadas() != null) {
@@ -144,7 +145,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		}
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(planoCurso);
+			return planoCurso;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

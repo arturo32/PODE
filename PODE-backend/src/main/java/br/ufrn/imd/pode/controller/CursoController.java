@@ -29,9 +29,4 @@ public class CursoController extends GenericController<Curso, CursoDTO, Long> {
 		return this.service;
 	}
 
-	@Override
-	public ResponseEntity<CursoDTO> save(@Valid @RequestBody Curso curso) {
-		return ResponseEntity.ok(this.service().convertToDto(this.service.salvar(curso)));
-	}
-
 }

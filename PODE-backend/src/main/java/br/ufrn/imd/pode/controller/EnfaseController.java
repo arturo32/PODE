@@ -29,9 +29,5 @@ public class EnfaseController extends GenericController<Enfase, EnfaseDTO, Long>
 		return this.service;
 	}
 
-	@Override
-	public ResponseEntity<EnfaseDTO> save(@Valid @RequestBody Enfase enfase) {
-		return ResponseEntity.ok(service().convertToDto(this.service.salvar(enfase)));
-	}
 
 }

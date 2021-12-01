@@ -32,6 +32,8 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public abstract T convertToEntity(Dto dto);
 
+	public abstract Dto validate(Dto dto);
+
 	public List<Dto> convertToDTOList(List<T> entities) {
 		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
@@ -58,8 +60,8 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T save(T entity) {
-		return repository().save(entity);
+	public T save(Dto dto) {
+		return repository().save(convertToEntity(dto));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

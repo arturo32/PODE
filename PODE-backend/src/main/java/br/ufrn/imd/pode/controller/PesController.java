@@ -29,9 +29,4 @@ public class PesController extends GenericController<Pes, PesDTO, Long> {
 		return this.service;
 	}
 
-	@Override
-	public ResponseEntity<PesDTO> save(@Valid @RequestBody Pes pes) {
-		return ResponseEntity.ok(service().convertToDto(this.service.salvar(pes)));
-	}
-
 }

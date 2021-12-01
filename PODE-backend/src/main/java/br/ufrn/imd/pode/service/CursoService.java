@@ -97,7 +97,8 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		this.disciplinaService = disciplinaService;
 	}
 
-	public Curso salvar(Curso curso) {
+	@Override
+	public CursoDTO validate(CursoDTO curso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica nome */
 		if (curso.getNome() == null || curso.getNome().isEmpty()) {
@@ -246,7 +247,7 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		}
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(curso);
+			return curso;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

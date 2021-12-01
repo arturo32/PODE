@@ -83,7 +83,8 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		this.disciplinaPeriodoService = disciplinaPeriodoService;
 	}
 
-	public Enfase salvar(Enfase enfase) {
+	@Override
+	public EnfaseDTO validate(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica nome */
 		if (enfase.getNome() == null || enfase.getNome().isEmpty()) {
@@ -117,7 +118,7 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		}
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(enfase);
+			return enfase;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

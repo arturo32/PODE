@@ -27,6 +27,12 @@ public class AdministradorService extends GenericService<Administrador, Administ
 	}
 
 	@Override
+	public AdministradorDTO validate(AdministradorDTO dto) {
+		// TODO
+		return dto;
+	}
+
+	@Override
 	protected GenericRepository<Administrador, Long> repository() {
 		return this.repository;
 	}

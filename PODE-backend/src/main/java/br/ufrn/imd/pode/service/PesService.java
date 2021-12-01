@@ -76,7 +76,8 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 		this.disciplinaService = disciplinaService;
 	}
 
-	public Pes salvar(Pes pes) {
+	@Override
+	public PesDTO validate(PesDTO pes) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica nome */
 		if (pes.getNome() == null || pes.getNome().isEmpty()) {
@@ -136,7 +137,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 		}
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(pes);
+			return pes;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

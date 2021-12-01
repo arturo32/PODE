@@ -105,7 +105,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return checarPrerequisitos(codigos, expressao);
 	}
 
-	public Disciplina salvar(Disciplina disciplina) {
+	@Override
+	public DisciplinaDTO validate(DisciplinaDTO disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/** verifica codigo */
 		if (disciplina.getCodigo() == null || disciplina.getCodigo().isEmpty()) {
@@ -127,7 +128,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		// TODO verificar prequisitos, equivalencias e corequisitos
 		/** verifica se existe exceçao */
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return this.save(disciplina);
+			return disciplina;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}

@@ -33,9 +33,5 @@ public class DisciplinaController extends GenericController<Disciplina, Discipli
 		return this.service;
 	}
 
-	@Override
-	public ResponseEntity<DisciplinaDTO> save(@Valid @RequestBody Disciplina disciplina) {
-		return ResponseEntity.ok(service().convertToDto(this.service.salvar(disciplina)));
-	}
 
 }
