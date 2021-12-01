@@ -16,8 +16,8 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	VinculoRepository repository;
 
 	@Override
-	public VinculoDTO convertToDto(Vinculo entity) {
-		return null;
+	public VinculoDTO convertToDto(Vinculo vinculo) {
+		return new VinculoDTO(vinculo);
 	}
 
 	@Override

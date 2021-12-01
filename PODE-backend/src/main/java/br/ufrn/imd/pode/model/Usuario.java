@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @MappedSuperclass
 public abstract class Usuario extends AbstractModel<Long> {
 
-
 	@NotNull
 	@NotBlank
 	@Column(unique = true)

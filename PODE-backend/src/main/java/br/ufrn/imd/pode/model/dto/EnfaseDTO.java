@@ -1,6 +1,8 @@
 package br.ufrn.imd.pode.model.dto;
 
 
+import br.ufrn.imd.pode.model.Enfase;
+
 import java.util.Set;
 
 public class EnfaseDTO extends AbstractDTO {
@@ -10,6 +12,12 @@ public class EnfaseDTO extends AbstractDTO {
 	private CursoDTO curso;
 
 	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
+
+	public EnfaseDTO(Enfase enfase) {
+		setId(enfase.getId());
+		setNome(enfase.getNome());
+		setCurso(new CursoDTO(enfase.getCurso()));
+	}
 
 	public String getNome() {
 		return nome;

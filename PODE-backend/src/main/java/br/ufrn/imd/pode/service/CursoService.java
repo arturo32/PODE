@@ -29,7 +29,7 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 
 	@Override
 	public CursoDTO convertToDto(Curso curso) {
-		return null;
+		return new CursoDTO(curso);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 
 	@Override
 	public EnfaseDTO convertToDto(Enfase enfase) {
-		return null;
+		return new EnfaseDTO(enfase);
 	}
 
 	@Override

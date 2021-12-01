@@ -17,8 +17,7 @@ public class AdministradorService extends GenericService<Administrador, Administ
 
 	@Override
 	public AdministradorDTO convertToDto(Administrador administrador) {
-		// TODO
-		return null;
+		return new AdministradorDTO(administrador);
 	}
 
 	@Override

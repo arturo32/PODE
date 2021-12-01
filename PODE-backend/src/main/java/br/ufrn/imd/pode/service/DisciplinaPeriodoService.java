@@ -22,7 +22,7 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 
 	@Override
 	public DisciplinaPeriodoDTO convertToDto(DisciplinaPeriodo disciplinaPeriodo) {
-		return null;
+		return new DisciplinaPeriodoDTO(disciplinaPeriodo);
 	}
 
 	@Override

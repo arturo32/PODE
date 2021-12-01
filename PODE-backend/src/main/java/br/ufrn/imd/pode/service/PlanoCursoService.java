@@ -29,7 +29,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	@Override
 	public PlanoCursoDTO convertToDto(PlanoCurso planoCurso) {
-		return null;
+		return new PlanoCursoDTO(planoCurso);
 	}
 
 	@Override

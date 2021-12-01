@@ -1,5 +1,7 @@
 package br.ufrn.imd.pode.model.dto;
 
+import br.ufrn.imd.pode.model.Disciplina;
+
 public class DisciplinaDTO extends AbstractDTO {
 
 	private String codigo;
@@ -17,12 +19,15 @@ public class DisciplinaDTO extends AbstractDTO {
 	public DisciplinaDTO() {
 	}
 
-	/*public DisciplinaDTO(Disciplina novaDisciplina) {
-		this.id = novaDisciplina.getId();
-		this.codigo = novaDisciplina.getCodigo();
-		this.nome = novaDisciplina.getNome();
-		this.ch = novaDisciplina.getCh();
-	}*/
+	public DisciplinaDTO(Disciplina entity) {
+		this.setId(entity.getId());
+		this.setCodigo(entity.getCodigo());
+		this.setNome(entity.getNome());
+		this.setCh(entity.getCh());
+		this.setPrerequisitos(entity.getPrerequisitos());
+		this.setCorequisitos(entity.getPrerequisitos());
+		this.setEquivalentes(entity.getEquivalentes());
+	}
 
 	public String getCodigo() {
 		return codigo;

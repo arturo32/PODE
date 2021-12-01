@@ -24,7 +24,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	@Override
 	public DisciplinaDTO convertToDto(Disciplina disciplina) {
-		return null;
+		return new DisciplinaDTO(disciplina);
 	}
 
 	@Override

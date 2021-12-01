@@ -1,5 +1,9 @@
 package br.ufrn.imd.pode.model.dto;
 
+import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.Pes;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class PesDTO extends AbstractDTO {
@@ -12,9 +16,22 @@ public class PesDTO extends AbstractDTO {
 	// carga horaria obrigatoria
 	private Integer cho;
 
-	private Set<DisciplinaDTO> disciplinasObrigatorias;
+	private Set<DisciplinaDTO> disciplinasObrigatorias = new HashSet<>();
 
-	private Set<DisciplinaDTO> disciplinasOptativas;
+	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
+
+	public PesDTO(Pes pes) {
+		this.setId(pes.getId());
+		this.setNome(pes.getNome());
+		this.setChm(pes.getChm());
+		this.setCho(pes.getCho());
+		for(Disciplina disciplina : pes.getDisciplinasObrigatorias()){
+			this.disciplinasObrigatorias.add(new DisciplinaDTO(disciplina));
+		}
+		for(Disciplina disciplina : pes.getDisciplinasOptativas()){
+			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
+		}
+	}
 
 	public String getNome() {
 		return nome;

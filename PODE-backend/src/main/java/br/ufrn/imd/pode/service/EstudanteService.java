@@ -16,8 +16,8 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 	private EstudanteRepository repository;
 
 	@Override
-	public EstudanteDTO convertToDto(Estudante entity) {
-		return null;
+	public EstudanteDTO convertToDto(Estudante estudante) {
+		return new EstudanteDTO(estudante);
 	}
 
 	@Override

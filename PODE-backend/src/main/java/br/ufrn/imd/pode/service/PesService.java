@@ -26,7 +26,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 
 	@Override
 	public PesDTO convertToDto(Pes pes) {
-		return null;
+		return new PesDTO(pes);
 	}
 
 	@Override

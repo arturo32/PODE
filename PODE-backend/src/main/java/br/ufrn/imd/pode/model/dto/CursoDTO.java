@@ -1,5 +1,10 @@
 package br.ufrn.imd.pode.model.dto;
 
+import br.ufrn.imd.pode.model.Curso;
+import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class CursoDTO extends AbstractDTO {
@@ -33,9 +38,30 @@ public class CursoDTO extends AbstractDTO {
 
 	private Integer prazoEsperado;
 
-	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
+	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias = new HashSet<>();
 
-	private Set<DisciplinaDTO> disciplinasOptativas;
+	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
+
+	public CursoDTO(Curso curso) {
+		this.setId(curso.getId());
+		this.setNome(curso.getNome());
+		this.setChm(curso.getChm());
+		this.setCho(curso.getCho());
+		this.setChom(curso.getChom());
+		this.setChcm(curso.getChcm());
+		this.setChem(curso.getChem());
+		this.setChminp(curso.getChminp());
+		this.setChmaxp(curso.getChmaxp());
+		this.setPrazoMinimo(curso.getPrazoMinimo());
+		this.setPrazoMaximo(curso.getPrazoMaximo());
+		this.setPrazoEsperado(curso.getPrazoEsperado());
+		for(DisciplinaPeriodo disciplinaPeriodo : curso.getDisciplinasObrigatorias()){
+			this.disciplinasObrigatorias.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
+		}
+		for(Disciplina disciplina : curso.getDisciplinasOptativas()){
+			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
+		}
+	}
 
 	public String getNome() {
 		return nome;
