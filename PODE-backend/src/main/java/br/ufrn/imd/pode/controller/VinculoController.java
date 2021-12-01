@@ -23,4 +23,5 @@ public class VinculoController extends GenericController<Vinculo, VinculoDTO, Lo
 	protected GenericService<Vinculo, VinculoDTO, Long> service() {
 		return this.service;
 	}
+
 }

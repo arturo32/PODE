@@ -23,4 +23,5 @@ public class EstudanteController extends GenericController<Estudante, EstudanteD
 	protected GenericService<Estudante, EstudanteDTO, Long> service() {
 		return this.service;
 	}
+
 }

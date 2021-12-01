@@ -1,5 +1,7 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.ValidationException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
@@ -20,28 +22,22 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	private DisciplinaRepository repository;
 
-
 	@Override
-	public DisciplinaDTO convertToDto(Disciplina entity) {
+	public DisciplinaDTO convertToDto(Disciplina disciplina) {
 		return null;
 	}
 
 	@Override
-	public Disciplina convertToEntity(DisciplinaDTO dto) {
-		if (dto.getId() != null) {
-			return this.findById(dto.getId());
-		}
+	public Disciplina convertToEntity(DisciplinaDTO disciplinaDTO) {
 		Disciplina disciplina = new Disciplina();
-		disciplina.setId(dto.getId());
-		disciplina.setCodigo(dto.getCodigo());
-		disciplina.setNome(dto.getNome());
-		disciplina.setCh(dto.getCh());
-
-		//todo Validar expressões de equivalência
-		disciplina.setPrerequisitos(dto.getPrerequisitos());
-		disciplina.setCorequisitos(dto.getCorequisitos());
-		disciplina.setEquivalentes(dto.getEquivalentes());
-
+		disciplina.setId(disciplinaDTO.getId());
+		disciplina.setCodigo(disciplinaDTO.getCodigo());
+		disciplina.setNome(disciplinaDTO.getNome());
+		disciplina.setCh(disciplinaDTO.getCh());
+		// TODO validar expressões de equivalência
+		disciplina.setPrerequisitos(disciplinaDTO.getPrerequisitos());
+		disciplina.setCorequisitos(disciplinaDTO.getCorequisitos());
+		disciplina.setEquivalentes(disciplinaDTO.getEquivalentes());
 		return disciplina;
 	}
 
@@ -55,12 +51,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	}
 
 	@Autowired
-	public void setRepository(DisciplinaRepository repository) {
-		this.repository = repository;
-	}
-
-	public void salvar(Disciplina disciplina) {
-		this.repository.save(disciplina);
+	public void setRepository(DisciplinaRepository disciplinaRepository) {
+		this.repository = disciplinaRepository;
 	}
 
 	public Set<Disciplina> findDisciplinasByCodigo(String codigo) {
@@ -103,7 +95,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return (boolean) MVEL.eval(expressao);
 	}
 
-	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se atendem a expressão de equivalencia)
+	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina alvo (se atendem a expressão de prerequisito)
 	public boolean checarPrerequisitos(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
@@ -112,4 +104,33 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		}
 		return checarPrerequisitos(codigos, expressao);
 	}
+
+	public Disciplina salvar(Disciplina disciplina) {
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+		/** verifica codigo */
+		if (disciplina.getCodigo() == null || disciplina.getCodigo().isEmpty()) {
+			exceptionHelper.add("codigo inválido");
+		} else {
+			Matcher matcher = Pattern.compile("[a-zA-Z]{3}[0-9]{4}").matcher(disciplina.getCodigo());
+			if (!matcher.find()) {
+				exceptionHelper.add("formato de codigo inválido(exemplo: ABC1234)");
+			}
+		}
+		/** verifica nome */
+		if (disciplina.getNome() == null || disciplina.getNome().isEmpty()) {
+			exceptionHelper.add("nome inválido");
+		}
+		/** verifica ch */
+		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
+			exceptionHelper.add("ch inválido");
+		}
+		// TODO verificar prequisitos, equivalencias e corequisitos
+		/** verifica se existe exceçao */
+		if (exceptionHelper.getMessage().isEmpty()) {
+			return this.save(disciplina);
+		} else {
+			throw new ValidationException(exceptionHelper.getMessage());
+		}
+	}
+
 }

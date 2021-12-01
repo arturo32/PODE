@@ -16,13 +16,13 @@ public class AdministradorService extends GenericService<Administrador, Administ
 	private AdministradorRepository repository;
 
 	@Override
-	public AdministradorDTO convertToDto(Administrador entity) {
+	public AdministradorDTO convertToDto(Administrador administrador) {
 		// TODO
 		return null;
 	}
 
 	@Override
-	public Administrador convertToEntity(AdministradorDTO dto) {
+	public Administrador convertToEntity(AdministradorDTO administradorDTO) {
 		// TODO
 		return null;
 	}
@@ -33,11 +33,12 @@ public class AdministradorService extends GenericService<Administrador, Administ
 	}
 
 	public AdministradorRepository getRepository() {
-		return repository;
+		return this.repository;
 	}
 
 	@Autowired
-	public void setRepository(AdministradorRepository repository) {
-		this.repository = repository;
+	public void setRepository(AdministradorRepository administradorRepository) {
+		this.repository = administradorRepository;
 	}
+
 }

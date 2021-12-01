@@ -4,7 +4,12 @@ import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.service.DisciplinaPeriodoService;
 import br.ufrn.imd.pode.service.GenericService;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,4 +28,10 @@ public class DisciplinaPeriodoController extends GenericController<DisciplinaPer
 	protected GenericService<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> service() {
 		return this.service;
 	}
+
+	@Override
+	public ResponseEntity<DisciplinaPeriodoDTO> save(@Valid @RequestBody DisciplinaPeriodo disciplinaPeriodo) {
+		return ResponseEntity.ok(service().convertToDto(this.service.salvar(disciplinaPeriodo)));
+	}
+
 }
