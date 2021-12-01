@@ -47,7 +47,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public T findById(PK id) {
 		Optional<T> entity = repository().findById(id);
-		if (!entity.isPresent()) {
+		if (entity.isEmpty()) {
 			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
 					+ "' de id: '" + id + "' não encontrada");
 		}
@@ -72,7 +72,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteById(PK id) {
 		Optional<T> entity = repository().findById(id);
-		if (!entity.isPresent()) {
+		if (entity.isEmpty()) {
 			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
 					+ "' de id: '" + id + "' não encontrada");
 		} else {
