@@ -29,7 +29,7 @@ public class VinculoDTO extends AbstractDTO {
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
 		this.setCurso(new CursoDTO(vinculo.getCurso()));
-		for(Enfase enfase : vinculo.getEnfase()){
+		for(Enfase enfase : vinculo.getEnfases()){
 			this.enfase.add(new EnfaseDTO(enfase));
 		}
 		this.setPlanoCurso(new PlanoCursoDTO(vinculo.getPlanoCurso()));
