@@ -9,6 +9,7 @@ import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PesRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,19 +35,30 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 		pes.setChm(pesDTO.getChm());
 		pes.setCho(pesDTO.getCho());
 		for (DisciplinaDTO disciplinaDTO : pesDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaDTO.getId() != null) {
-				pes.getDisciplinasObrigatorias().add(this.disciplinaService.findById(disciplinaDTO.getId()));
-			} else {
+			if (disciplinaDTO.getId() == null) {
+				throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
+			}
+
+			try {
+				pes.getDisciplinasObrigatorias()
+						.add(this.disciplinaService.findById(disciplinaDTO.getId()));
+			} catch (EntityNotFoundException entityNotFoundException){
 				throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 			}
 		}
+
 		for (DisciplinaDTO disciplinaDTO : pesDTO.getDisciplinasOptativas()) {
-			if (disciplinaDTO.getId() != null) {
-				pes.getDisciplinasOptativas().add(this.disciplinaService.findById(disciplinaDTO.getId()));
-			} else {
+			if (disciplinaDTO.getId() == null) {
+				throw new InconsistentEntityException("disciplinaOptativa inconsistente");
+			}
+			try {
+				pes.getDisciplinasOptativas()
+						.add(this.disciplinaService.findById(disciplinaDTO.getId()));
+			} catch (EntityNotFoundException entityNotFoundException){
 				throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 			}
 		}
+
 		return pes;
 	}
 
@@ -76,31 +88,36 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 	@Override
 	public PesDTO validate(PesDTO pes) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/* verifica nome */
-		if (pes.getNome() == null || pes.getNome().isEmpty()) {
+
+		//Verifica nome
+		if (StringUtils.isEmpty(pes.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-		/* verifica chm */
+
+		//Verifica chm
 		boolean statusChm = false;
 		if (pes.getChm() == null || pes.getChm() <= 0) {
 			exceptionHelper.add("chm inválido");
 		} else {
 			statusChm = true;
 		}
-		/* verifica cho */
+
+		//Verifica cho
 		boolean statusCho = false;
 		if (pes.getCho() == null || pes.getCho() <= 0) {
 			exceptionHelper.add("cho inválido");
 		} else {
 			statusCho = true;
 		}
-		/* verifica cho em relação a chm */
+
+		//Verifica cho em relação a chm
 		if (statusCho && statusChm) {
 			if (pes.getCho() > pes.getChm()) {
 				exceptionHelper.add("impossível cho ser maior do que chm");
 			}
 		}
-		/* verifica disciplinasObrigatorias */
+
+		//Verifica disciplinasObrigatorias
 		if (pes.getDisciplinasObrigatorias() != null) {
 			for (DisciplinaDTO disciplina : pes.getDisciplinasObrigatorias()) {
 				if (disciplina.getId() == null || disciplina.getId() < 0) {
@@ -114,7 +131,8 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 				}
 			}
 		}
-		/* verifica disciplinasOptativas */
+
+		//Verifica disciplinasOptativas
 		if (pes.getDisciplinasOptativas() != null) {
 			for (DisciplinaDTO disciplina : pes.getDisciplinasOptativas()) {
 				if (disciplina.getId() == null || disciplina.getId() < 0) {
@@ -128,7 +146,8 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 				}
 			}
 		}
-		/* verifica se existe exceçao */
+
+		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return pes;
 		} else {

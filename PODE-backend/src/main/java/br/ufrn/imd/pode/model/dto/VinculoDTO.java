@@ -16,7 +16,7 @@ public class VinculoDTO extends AbstractDTO {
 
 	private CursoDTO curso;
 
-	private List<EnfaseDTO> enfase = new ArrayList<>();
+	private List<EnfaseDTO> enfases = new ArrayList<>();
 
 	private PlanoCursoDTO planoCurso;
 
@@ -32,7 +32,7 @@ public class VinculoDTO extends AbstractDTO {
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
 		this.setCurso(new CursoDTO(vinculo.getCurso()));
 		for (Enfase enfase : vinculo.getEnfases()) {
-			this.enfase.add(new EnfaseDTO(enfase));
+			this.enfases.add(new EnfaseDTO(enfase));
 		}
 		this.setPlanoCurso(new PlanoCursoDTO(vinculo.getPlanoCurso()));
 		this.setEstudante(new EstudanteDTO(vinculo.getEstudante()));
@@ -70,12 +70,12 @@ public class VinculoDTO extends AbstractDTO {
 		this.curso = curso;
 	}
 
-	public List<EnfaseDTO> getEnfase() {
-		return enfase;
+	public List<EnfaseDTO> getEnfases() {
+		return enfases;
 	}
 
-	public void setEnfase(List<EnfaseDTO> enfase) {
-		this.enfase = enfase;
+	public void setEnfases(List<EnfaseDTO> enfases) {
+		this.enfases = enfases;
 	}
 
 	public PlanoCursoDTO getPlanoCurso() {

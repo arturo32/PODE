@@ -130,12 +130,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	@Override
-	public Boolean concluida(Set<Disciplina> disciplinas) {
-		// TODO
-		return false;
-	}
-
 	public void adicionarDisciplinaObrigatoria(Disciplina disciplina) {
 		this.disciplinasObrigatorias.add(disciplina);
 	}
