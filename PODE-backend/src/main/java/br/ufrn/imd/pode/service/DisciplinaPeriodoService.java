@@ -29,12 +29,16 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 	public DisciplinaPeriodo convertToEntity(DisciplinaPeriodoDTO disciplinaPeriodoDTO) {
 		DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo();
 		disciplinaPeriodo.setId(disciplinaPeriodoDTO.getId());
-		if (disciplinaPeriodoDTO.getDisciplina().getId() != null) {
-			disciplinaPeriodo
-					.setDisciplina(this.disciplinaService.findById(disciplinaPeriodoDTO.getDisciplina().getId()));
-		} else {
+		if (disciplinaPeriodoDTO.getDisciplina().getId() == null) {
 			throw new InconsistentEntityException("disciplina inconsistente");
 		}
+		try {
+			disciplinaPeriodo
+					.setDisciplina(this.disciplinaService.findById(disciplinaPeriodoDTO.getDisciplina().getId()));
+		} catch (EntityNotFoundException entityNotFoundException){
+			throw new InconsistentEntityException("disciplina inconsistente");
+		}
+
 		disciplinaPeriodo.setPeriodo(disciplinaPeriodoDTO.getPeriodo());
 		return disciplinaPeriodo;
 	}

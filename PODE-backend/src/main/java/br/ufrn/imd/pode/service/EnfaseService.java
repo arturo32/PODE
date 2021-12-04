@@ -9,6 +9,7 @@ import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.repository.EnfaseRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,19 +33,29 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		Enfase enfase = new Enfase();
 		enfase.setId(enfaseDTO.getId());
 		enfase.setNome(enfaseDTO.getNome());
-		if (enfaseDTO.getCurso().getId() != null) {
-			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
-		} else {
+		if (enfaseDTO.getCurso().getId() == null) {
 			throw new InconsistentEntityException("curso inconsistente");
 		}
+
+		try{
+			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
+		} catch (EntityNotFoundException entityNotFoundException){
+			throw new InconsistentEntityException("curso inconsistente");
+		}
+
 		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : enfaseDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaPeriodoDTO.getId() != null) {
+			if (disciplinaPeriodoDTO.getId() == null) {
+				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+			}
+
+			try {
 				enfase.getDisciplinasObrigatorias()
 						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} else {
+			} catch (EntityNotFoundException entityNotFoundException){
 				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
 			}
 		}
+
 		return enfase;
 	}
 
@@ -84,7 +95,7 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 	public EnfaseDTO validate(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/* verifica nome */
-		if (enfase.getNome() == null || enfase.getNome().isEmpty()) {
+		if (StringUtils.isEmpty(enfase.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
 		/* verifica curso */

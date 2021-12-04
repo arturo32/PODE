@@ -6,6 +6,7 @@ import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,7 +76,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarEquivalencia(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getEquivalentes();
-		if (expressao == null || expressao.isEmpty()) {
+		if (StringUtils.isEmpty(expressao)) {
 			return false;
 		}
 		return checarEquivalencia(codigos, expressao);
@@ -98,7 +99,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarPrerequisitos(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
-		if (expressao == null || expressao.isEmpty()) {
+		if (StringUtils.isEmpty(expressao)) {
 			return false;
 		}
 		return checarPrerequisitos(codigos, expressao);
@@ -109,7 +110,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica código
-		if (disciplina.getCodigo() == null || disciplina.getCodigo().isEmpty()) {
+		if (StringUtils.isEmpty(disciplina.getCodigo())) {
 			exceptionHelper.add("codigo inválido");
 		} else {
 			Matcher matcher = Pattern.compile("[A-Z]{3}[0-9]{4}").matcher(disciplina.getCodigo());
@@ -119,14 +120,14 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		}
 
 		//Verifica nome
-		if (disciplina.getNome() == null || disciplina.getNome().isEmpty()) {
+		if (StringUtils.isEmpty(disciplina.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
 		//Verifica carga horária
 		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
 			exceptionHelper.add("ch inválido");
 		}
-		
+
 		// TODO verificar expressões de prequisitos, equivalencias e corequisitos
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
