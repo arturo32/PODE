@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "vinculo")
+@RequestMapping("/api/vinculo")
 public class VinculoController extends GenericController<Vinculo, VinculoDTO, Long> {
 
 	private VinculoService service;

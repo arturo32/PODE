@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "administrador")
+@RequestMapping("/api/administrador")
 public class AdministradorController extends GenericController<Administrador, AdministradorDTO, Long> {
 
 	private AdministradorService service;

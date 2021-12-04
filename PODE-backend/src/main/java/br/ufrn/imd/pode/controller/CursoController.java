@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "curso")
+@RequestMapping("/api/curso")
 public class CursoController extends GenericController<Curso, CursoDTO, Long> {
 
 	private CursoService service;

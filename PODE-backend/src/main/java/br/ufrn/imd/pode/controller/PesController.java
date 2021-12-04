@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "pes")
+@RequestMapping("/api/pes")
 public class PesController extends GenericController<Pes, PesDTO, Long> {
 
 	private PesService service;
