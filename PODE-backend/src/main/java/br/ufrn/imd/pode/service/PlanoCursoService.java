@@ -49,7 +49,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				throw new InconsistentEntityException("disciplinaPendente inconsistente");
 			}
 
-			try{
+			try {
 				planoCurso.getDisciplinasPendentes()
 						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
 			} catch (EntityNotFoundException entityNotFoundException) {
