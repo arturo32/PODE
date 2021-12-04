@@ -7,8 +7,8 @@ import javax.persistence.*;
 public class Administrador extends Usuario {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ESTUDANTE")
-	@SequenceGenerator(name = "SEQ_ESTUDANTE", sequenceName = "id_seq_estudante", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADMNISTRADOR")
+	@SequenceGenerator(name = "SEQ_ADMNISTRADOR", sequenceName = "id_seq_administrador", allocationSize = 1)
 	private Long id;
 
 	public Administrador() {

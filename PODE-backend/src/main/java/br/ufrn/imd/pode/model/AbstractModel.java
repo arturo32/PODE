@@ -73,31 +73,6 @@ public abstract class AbstractModel<PK extends Serializable> {
 		this.dataExclusao = dataExclusao;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		AbstractModel<?> other = (AbstractModel<?>) obj;
-		if (getId() == null) {
-			return other.getId() == null;
-		} else return getId().equals(other.getId());
-	}
-
 	@PreUpdate
 	public void preUpdate() {
 		this.dataModificacao = LocalDateTime.now();
