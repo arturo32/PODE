@@ -42,6 +42,9 @@ public class CursoDTO extends AbstractDTO {
 
 	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
 
+	public CursoDTO() {
+	}
+
 	public CursoDTO(Curso curso) {
 		this.setId(curso.getId());
 		this.setNome(curso.getNome());
@@ -55,10 +58,10 @@ public class CursoDTO extends AbstractDTO {
 		this.setPrazoMinimo(curso.getPrazoMinimo());
 		this.setPrazoMaximo(curso.getPrazoMaximo());
 		this.setPrazoEsperado(curso.getPrazoEsperado());
-		for(DisciplinaPeriodo disciplinaPeriodo : curso.getDisciplinasObrigatorias()){
+		for (DisciplinaPeriodo disciplinaPeriodo : curso.getDisciplinasObrigatorias()) {
 			this.disciplinasObrigatorias.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
 		}
-		for(Disciplina disciplina : curso.getDisciplinasOptativas()){
+		for (Disciplina disciplina : curso.getDisciplinasOptativas()) {
 			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
 		}
 	}
