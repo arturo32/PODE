@@ -94,11 +94,13 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 	@Override
 	public EnfaseDTO validate(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/* verifica nome */
+
+		//Verifica nome
 		if (StringUtils.isEmpty(enfase.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-		/* verifica curso */
+
+		//Verifica curso
 		if (enfase.getCurso().getId() == null || enfase.getCurso().getId() < 0) {
 			exceptionHelper.add("curso inconsistente");
 		} else {
@@ -108,7 +110,8 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				exceptionHelper.add("curso inexistente");
 			}
 		}
-		/* verifica disciplinas obrigatorias */
+
+		//Verifica disciplinas obrigatórias
 		if (enfase.getDisciplinasObrigatorias() != null) {
 			for (DisciplinaPeriodoDTO disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
@@ -122,7 +125,8 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				}
 			}
 		}
-		/* verifica se existe exceçao */
+
+		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return enfase;
 		} else {
