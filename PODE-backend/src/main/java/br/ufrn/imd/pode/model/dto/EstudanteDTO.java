@@ -10,11 +10,14 @@ public class EstudanteDTO extends UsuarioDTO {
 
 	private Set<VinculoDTO> vinculos = new HashSet<>();
 
+	public EstudanteDTO() {
+	}
+
 	public EstudanteDTO(Estudante estudante) {
 		this.setId(estudante.getId());
 		this.setNome(estudante.getNome());
 		this.setEmail(estudante.getEmail());
-		for(Vinculo vinculo : estudante.getVinculos()){
+		for (Vinculo vinculo : estudante.getVinculos()) {
 			this.vinculos.add(new VinculoDTO(vinculo));
 		}
 	}

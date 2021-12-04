@@ -4,6 +4,9 @@ import br.ufrn.imd.pode.model.Administrador;
 
 public class AdministradorDTO extends UsuarioDTO {
 
+	public AdministradorDTO() {
+	}
+
 	public AdministradorDTO(Administrador administrador) {
 		this.setId(administrador.getId());
 		this.setNome(administrador.getNome());

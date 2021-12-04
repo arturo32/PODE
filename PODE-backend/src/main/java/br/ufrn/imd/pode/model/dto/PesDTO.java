@@ -20,15 +20,18 @@ public class PesDTO extends AbstractDTO {
 
 	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
 
+	public PesDTO() {
+	}
+
 	public PesDTO(Pes pes) {
 		this.setId(pes.getId());
 		this.setNome(pes.getNome());
 		this.setChm(pes.getChm());
 		this.setCho(pes.getCho());
-		for(Disciplina disciplina : pes.getDisciplinasObrigatorias()){
+		for (Disciplina disciplina : pes.getDisciplinasObrigatorias()) {
 			this.disciplinasObrigatorias.add(new DisciplinaDTO(disciplina));
 		}
-		for(Disciplina disciplina : pes.getDisciplinasOptativas()){
+		for (Disciplina disciplina : pes.getDisciplinasOptativas()) {
 			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
 		}
 	}
