@@ -9,6 +9,7 @@ import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.VinculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 
@@ -46,15 +47,15 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 		}
 
 		//Busca enfases
-		for(EnfaseDTO enfaseDTO : dto.getEnfases()) {
+		for (EnfaseDTO enfaseDTO : dto.getEnfases()) {
 			if(enfaseDTO.getId() == null){
-				throw new InconsistentEntityException("enfases inconsistentes");
+				throw new InconsistentEntityException("enfase inconsistente");
 			}
 			try {
 				vinculo.getEnfases()
 						.add(this.enfaseService.findById(enfaseDTO.getId()));
 			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("enfases inconsistentes");
+				throw new InconsistentEntityException("enfase inconsistente");
 			}
 		}
 

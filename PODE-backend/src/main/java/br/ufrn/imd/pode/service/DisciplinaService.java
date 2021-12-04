@@ -6,7 +6,7 @@ import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

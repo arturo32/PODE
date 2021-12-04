@@ -9,7 +9,7 @@ import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.repository.EnfaseRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

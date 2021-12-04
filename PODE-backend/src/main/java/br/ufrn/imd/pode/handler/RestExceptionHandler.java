@@ -2,7 +2,7 @@ package br.ufrn.imd.pode.handler;
 
 import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.Ordered;
