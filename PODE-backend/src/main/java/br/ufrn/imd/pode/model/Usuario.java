@@ -11,16 +11,16 @@ public abstract class Usuario extends AbstractModel<Long> {
 	@NotNull
 	@NotBlank
 	@Column(unique = true)
-	private String nome;
+	protected String nome;
 
 	@NotNull
 	@NotBlank
 	@Column(unique = true)
-	private String email;
+	protected String email;
 
 	@NotNull
 	@NotBlank
-	private String senha;
+	protected String senha;
 
 	public Usuario() {
 	}

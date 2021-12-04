@@ -1,10 +1,12 @@
 package br.ufrn.imd.pode.model.dto;
 
-
 public abstract class UsuarioDTO extends AbstractDTO {
 
-	private String nome;
-	private String email;
+	protected String nome;
+	protected String email;
+
+	public UsuarioDTO() {
+	}
 
 	public String getNome() {
 		return nome;

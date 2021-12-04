@@ -65,7 +65,8 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 	@Override
 	public DisciplinaPeriodoDTO validate(DisciplinaPeriodoDTO disciplinaPeriodo) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/* verifica disciplina */
+
+		//Verifica disciplina
 		if (disciplinaPeriodo.getDisciplina().getId() == null || disciplinaPeriodo.getDisciplina().getId() < 0) {
 			exceptionHelper.add("disciplina inconsistente");
 		} else {
@@ -75,11 +76,12 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 				exceptionHelper.add("disciplina inexistente");
 			}
 		}
-		/* verifica periodo */
+
+		//Verifica período
 		if (disciplinaPeriodo.getPeriodo() == null || disciplinaPeriodo.getPeriodo() <= 0) {
 			exceptionHelper.add("periodo inválido");
 		}
-		/* verifica se existe exceçao */
+		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return disciplinaPeriodo;
 		} else {

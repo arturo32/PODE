@@ -4,7 +4,6 @@ import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class VinculoDTO extends AbstractDTO {
@@ -23,19 +22,21 @@ public class VinculoDTO extends AbstractDTO {
 
 	private EstudanteDTO estudante;
 
+	public VinculoDTO() {
+	}
+
 	public VinculoDTO(Vinculo vinculo) {
 		this.setId(vinculo.getId());
 		this.setMatricula(vinculo.getMatricula());
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
 		this.setCurso(new CursoDTO(vinculo.getCurso()));
-		for(Enfase enfase : vinculo.getEnfase()){
+		for (Enfase enfase : vinculo.getEnfases()) {
 			this.enfase.add(new EnfaseDTO(enfase));
 		}
 		this.setPlanoCurso(new PlanoCursoDTO(vinculo.getPlanoCurso()));
 		this.setEstudante(new EstudanteDTO(vinculo.getEstudante()));
 	}
-
 
 	public String getMatricula() {
 		return matricula;
