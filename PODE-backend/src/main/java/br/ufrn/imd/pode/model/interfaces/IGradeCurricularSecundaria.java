@@ -12,6 +12,4 @@ public interface IGradeCurricularSecundaria {
 	Set<Disciplina> getDisciplinasObrigatorias();
 
 	Set<Disciplina> getDisciplinasOptativas();
-
-	Boolean concluida(Set<Disciplina> disciplinas);
 }
