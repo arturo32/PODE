@@ -50,14 +50,6 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
-	public Enfase(EnfaseDTO enfase) {
-		this.id = enfase.getId();
-		this.curso = new Curso(enfase.getCurso());
-		for (DisciplinaPeriodoDTO disciplinaObrigatoria : enfase.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new DisciplinaPeriodo(disciplinaObrigatoria));
-		}
-	}
-
 	@Override
 	public Long getId() {
 		return id;

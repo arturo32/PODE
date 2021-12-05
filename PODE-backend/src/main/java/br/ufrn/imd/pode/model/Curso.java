@@ -89,19 +89,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.prazoEsperado = prazoEsperado;
 	}
 
-	public Curso(CursoDTO curso) {
-		this.disciplinasObrigatorias = new HashSet<>();
-		this.disciplinasOptativas = new HashSet<>();
-		this.id = curso.getId();
-		this.nome = curso.getNome();
-		for (DisciplinaDTO disciplinaOptativa : curso.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
-		}
-		for (DisciplinaPeriodoDTO disciplinaObrigatoria : curso.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new DisciplinaPeriodo(disciplinaObrigatoria));
-		}
-	}
-
 	@Override
 	public Long getId() {
 		return id;

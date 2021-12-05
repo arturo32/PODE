@@ -3,13 +3,11 @@ package br.ufrn.imd.pode.service;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.model.Vinculo;
-import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.model.dto.VinculoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.VinculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 
@@ -31,52 +29,54 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	@Override
 	public Vinculo convertToEntity(VinculoDTO dto) {
 		Vinculo vinculo = new Vinculo();
+
+		//Se for uma edição
+		if (dto.getId() != null) {
+			vinculo = this.findById(dto.getId());
+		}
+
 		vinculo.setId(dto.getId());
-		vinculo.setMatricula(dto.getMatricula());
-		vinculo.setPeriodoInicial(dto.getPeriodoInicial());
-		vinculo.setPeriodoAtual(dto.getPeriodoAtual());
+		if (dto.getMatricula() != null) {
+			vinculo.setMatricula(dto.getMatricula());
+		}
+		if (dto.getPeriodoInicial() != null) {
+			vinculo.setPeriodoInicial(dto.getPeriodoInicial());
+		}
+		if (dto.getPeriodoAtual() != null) {
+			vinculo.setPeriodoAtual(dto.getPeriodoAtual());
+		}
 
 		//Busca curso
-		if(vinculo.getCurso().getId() == null){
-			throw new InconsistentEntityException("curso inconsistente");
-		}
-		try {
-			vinculo.setCurso(this.cursoService.findById(vinculo.getCurso().getId()));
-		} catch (EntityNotFoundException entityNotFoundException) {
-			throw new InconsistentEntityException("curso inconsistente");
-		}
-
-		//Busca enfases
-		for (EnfaseDTO enfaseDTO : dto.getEnfases()) {
-			if(enfaseDTO.getId() == null){
-				throw new InconsistentEntityException("enfase inconsistente");
-			}
+		if(dto.getCurso() != null){
 			try {
-				vinculo.getEnfases()
-						.add(this.enfaseService.findById(enfaseDTO.getId()));
+				vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("curso inconsistente");
+			}
+		}
+		//Busca enfase
+		if(dto.getEnfase() != null){
+			try {
+				vinculo.setEnfase(this.enfaseService.findById(dto.getEnfase()));
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("enfase inconsistente");
 			}
 		}
-
 		//Busca plano de curso
-		if(vinculo.getPlanoCurso().getId() == null){
-			throw new InconsistentEntityException("planoCurso inconsistente");
+		if(dto.getPlanoCurso() != null){
+			try {
+				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getPlanoCurso()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("planoCurso inconsistente");
+			}
 		}
-		try {
-			vinculo.setPlanoCurso(this.planoCursoService.findById(vinculo.getPlanoCurso().getId()));
-		} catch (EntityNotFoundException entityNotFoundException) {
-			throw new InconsistentEntityException("planoCurso inconsistente");
-		}
-
 		//Busca estudante
-		if(vinculo.getEstudante().getId() == null){
-			throw new InconsistentEntityException("estudante inconsistente");
-		}
-		try {
-			vinculo.setEstudante(this.estudanteService.findById(vinculo.getEstudante().getId()));
-		} catch (EntityNotFoundException entityNotFoundException) {
-			throw new InconsistentEntityException("estudante inconsistente");
+		if(dto.getEstudante() != null){
+			try {
+				vinculo.setEstudante(this.estudanteService.findById(dto.getEstudante()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("estudante inconsistente");
+			}
 		}
 
 		return vinculo;

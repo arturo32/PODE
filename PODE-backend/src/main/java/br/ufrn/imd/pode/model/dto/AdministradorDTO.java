@@ -11,5 +11,6 @@ public class AdministradorDTO extends UsuarioDTO {
 		this.setId(administrador.getId());
 		this.setNome(administrador.getNome());
 		this.setEmail(administrador.getEmail());
+		this.setSenha(administrador.getSenha());
 	}
 }

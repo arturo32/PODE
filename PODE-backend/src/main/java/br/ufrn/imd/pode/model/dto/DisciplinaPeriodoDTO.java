@@ -1,10 +1,12 @@
 package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DisciplinaPeriodoDTO extends AbstractDTO {
 
-	private DisciplinaDTO disciplina;
+	@JsonProperty("id-disciplina")
+	private Long idDisciplina;
 
 	private Integer periodo;
 
@@ -13,16 +15,16 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	public DisciplinaPeriodoDTO(DisciplinaPeriodo disciplinaPeriodo) {
 		this.setId(disciplinaPeriodo.getId());
-		this.setDisciplina(new DisciplinaDTO(disciplinaPeriodo.getDisciplina()));
+		this.setIdDisciplina(disciplinaPeriodo.getDisciplina().getId());
 		this.setPeriodo(disciplinaPeriodo.getPeriodo());
 	}
 
-	public DisciplinaDTO getDisciplina() {
-		return disciplina;
+	public Long getIdDisciplina() {
+		return idDisciplina;
 	}
 
-	public void setDisciplina(DisciplinaDTO disciplina) {
-		this.disciplina = disciplina;
+	public void setIdDisciplina(Long idDisciplina) {
+		this.idDisciplina = idDisciplina;
 	}
 
 	public Integer getPeriodo() {
