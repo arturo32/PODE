@@ -29,15 +29,34 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	}
 
 	@Override
-	public Disciplina convertToEntity(DisciplinaDTO disciplinaDTO) {
+	public Disciplina convertToEntity(DisciplinaDTO dto) {
 		Disciplina disciplina = new Disciplina();
-		disciplina.setId(disciplinaDTO.getId());
-		disciplina.setCodigo(disciplinaDTO.getCodigo());
-		disciplina.setNome(disciplinaDTO.getNome());
-		disciplina.setCh(disciplinaDTO.getCh());
-		disciplina.setPrerequisitos(disciplinaDTO.getPrerequisitos());
-		disciplina.setCorequisitos(disciplinaDTO.getCorequisitos());
-		disciplina.setEquivalentes(disciplinaDTO.getEquivalentes());
+
+		//Se for uma edição
+		if (dto.getId() != null) {
+			disciplina = this.findById(dto.getId());
+		}
+
+		disciplina.setId(dto.getId());
+		if (dto.getCodigo() != null){
+			disciplina.setCodigo(dto.getCodigo());
+		}
+		if (dto.getNome() != null){
+			disciplina.setNome(dto.getNome());
+		}
+		if (dto.getCh() != null){
+			disciplina.setCh(dto.getCh());
+		}
+		if (dto.getPrerequisitos() != null){
+			disciplina.setPrerequisitos(dto.getPrerequisitos());
+		}
+		if (dto.getCorequisitos() != null){
+			disciplina.setCorequisitos(dto.getCorequisitos());
+		}
+		if (dto.getEquivalentes() != null){
+			disciplina.setEquivalentes(dto.getEquivalentes());
+		}
+
 		return disciplina;
 	}
 

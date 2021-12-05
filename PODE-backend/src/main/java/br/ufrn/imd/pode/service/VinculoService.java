@@ -32,17 +32,11 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	@Override
 	public Vinculo convertToEntity(VinculoDTO dto) {
 		Vinculo vinculo = new Vinculo();
+
+		//Se for uma edição
 		if (dto.getId() != null) {
 			vinculo = repository.getOne(dto.getId());
-			if (dto.getMatricula() != null) {
-				vinculo.setMatricula(dto.getMatricula());
-			}
-			if (dto.getPeriodoInicial() != null) {
-				vinculo.setPeriodoInicial(dto.getPeriodoInicial());
-			}
-			if (dto.getPeriodoAtual() != null) {
-				vinculo.setPeriodoAtual(dto.getPeriodoAtual());
-			}
+
 			//Busca curso
 			if(dto.getCurso() != null){
 				try {
@@ -76,11 +70,11 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 				}
 			}
 
-		} else {
-			vinculo.setId(dto.getId());
-			vinculo.setMatricula(dto.getMatricula());
-			vinculo.setPeriodoInicial(dto.getPeriodoInicial());
-			vinculo.setPeriodoAtual(dto.getPeriodoAtual());
+		}
+
+		//Se for um cadastro novo
+		else {
+
 			try {
 				vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
 			} catch (EntityNotFoundException entityNotFoundException) {
@@ -101,6 +95,19 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 				throw new InconsistentEntityException("estudante inconsistente");
 			}
 		}
+
+		vinculo.setId(dto.getId());
+		if (dto.getMatricula() != null) {
+			vinculo.setMatricula(dto.getMatricula());
+		}
+		if (dto.getPeriodoInicial() != null) {
+			vinculo.setPeriodoInicial(dto.getPeriodoInicial());
+		}
+		if (dto.getPeriodoAtual() != null) {
+			vinculo.setPeriodoAtual(dto.getPeriodoAtual());
+		}
+
+
 
 		return vinculo;
 	}

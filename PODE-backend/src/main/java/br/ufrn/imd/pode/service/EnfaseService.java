@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 
 @Service
 @Transactional
@@ -29,30 +30,41 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 	}
 
 	@Override
-	public Enfase convertToEntity(EnfaseDTO enfaseDTO) {
+	public Enfase convertToEntity(EnfaseDTO dto) {
 		Enfase enfase = new Enfase();
-		enfase.setId(enfaseDTO.getId());
-		enfase.setNome(enfaseDTO.getNome());
-		if (enfaseDTO.getCurso().getId() == null) {
-			throw new InconsistentEntityException("curso inconsistente");
+
+		//Se for uma edição
+		if (dto.getId() != null) {
+			enfase = this.findById(dto.getId());
 		}
 
-		try{
-			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
+		enfase.setId(dto.getId());
+		if(dto.getNome() != null){
+			enfase.setNome(dto.getNome());
+		}
+
+		if (dto.getCurso().getId() == null) {
+			throw new InconsistentEntityException("curso inconsistente");
+		}
+		try {
+			enfase.setCurso(this.cursoService.findById(dto.getCurso().getId()));
 		} catch (EntityNotFoundException entityNotFoundException){
 			throw new InconsistentEntityException("curso inconsistente");
 		}
 
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : enfaseDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaPeriodoDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
-			}
+		if (dto.getDisciplinasObrigatorias() != null) {
+			enfase.setDisciplinasObrigatorias(new HashSet<>());
+			for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : dto.getDisciplinasObrigatorias()) {
+				if (disciplinaPeriodoDTO.getId() == null) {
+					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				}
 
-			try {
-				enfase.getDisciplinasObrigatorias()
-						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException){
-				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				try {
+					enfase.getDisciplinasObrigatorias()
+							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
+				} catch (EntityNotFoundException entityNotFoundException){
+					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				}
 			}
 		}
 

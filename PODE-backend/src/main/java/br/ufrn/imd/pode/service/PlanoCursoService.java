@@ -32,46 +32,64 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	@Override
-	public PlanoCurso convertToEntity(PlanoCursoDTO planoCursoDTO) {
+	public PlanoCurso convertToEntity(PlanoCursoDTO dto) {
 		PlanoCurso planoCurso = new PlanoCurso();
-		planoCurso.setId(planoCursoDTO.getId());
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : planoCursoDTO.getDisciplinasCursadas()) {
-			if (disciplinaPeriodoDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaCursada inconsistente");
-			}
 
-			try {
-				planoCurso.getDisciplinasCursadas()
-						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("disciplinaCursada inconsistente");
+		//Se for uma edição
+		if (dto.getId() != null) {
+			planoCurso = this.findById(planoCurso.getId());
+		}
+
+		planoCurso.setId(dto.getId());
+		if (dto.getDisciplinasCursadas() != null) {
+			planoCurso.setDisciplinasCursadas(new HashSet<>());
+			for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : dto.getDisciplinasCursadas()) {
+				if (disciplinaPeriodoDTO.getId() == null) {
+					throw new InconsistentEntityException("disciplinaCursada inconsistente");
+				}
+
+				try {
+					planoCurso.getDisciplinasCursadas()
+							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
+				} catch (EntityNotFoundException entityNotFoundException) {
+					throw new InconsistentEntityException("disciplinaCursada inconsistente");
+				}
 			}
 		}
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : planoCursoDTO.getDisciplinasPendentes()) {
-			if (disciplinaPeriodoDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaPendente inconsistente");
-			}
 
-			try {
-				planoCurso.getDisciplinasPendentes()
-						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("disciplinaPendente inconsistente");
+		if (dto.getDisciplinasPendentes() != null){
+			planoCurso.setDisciplinasPendentes(new HashSet<>());
+			for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : dto.getDisciplinasPendentes()) {
+				if (disciplinaPeriodoDTO.getId() == null) {
+					throw new InconsistentEntityException("disciplinaPendente inconsistente");
+				}
+
+				try {
+					planoCurso.getDisciplinasPendentes()
+							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
+				} catch (EntityNotFoundException entityNotFoundException) {
+					throw new InconsistentEntityException("disciplinaPendente inconsistente");
+				}
 			}
 		}
-		for (PesDTO desDTO : planoCursoDTO.getPesInteresse()) {
-			if (desDTO.getId() == null) {
-				throw new InconsistentEntityException("pes inconsistente");
-			}
 
-			try {
-				planoCurso.getPesInteresse()
-						.add(this.pesService.findById(desDTO.getId()));
-			}
-			catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("pes inconsistente");
+		if (dto.getPesInteresse() != null) {
+			planoCurso.setPesInteresse(new HashSet<>());
+			for (PesDTO desDTO : dto.getPesInteresse()) {
+				if (desDTO.getId() == null) {
+					throw new InconsistentEntityException("pes inconsistente");
+				}
+
+				try {
+					planoCurso.getPesInteresse()
+							.add(this.pesService.findById(desDTO.getId()));
+				}
+				catch (EntityNotFoundException entityNotFoundException) {
+					throw new InconsistentEntityException("pes inconsistente");
+				}
 			}
 		}
+
 		return planoCurso;
 	}
 

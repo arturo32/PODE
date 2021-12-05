@@ -27,7 +27,9 @@ public class VinculoDTO extends AbstractDTO {
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
 		this.setCurso(vinculo.getCurso().getId());
-		this.setEnfase(vinculo.getEnfase().getId());
+		if(vinculo.getEnfase() != null){
+			this.setEnfase(vinculo.getEnfase().getId());
+		}
 		this.setPlanoCurso(vinculo.getPlanoCurso().getId());
 		this.setEstudante(vinculo.getEstudante().getId());
 	}

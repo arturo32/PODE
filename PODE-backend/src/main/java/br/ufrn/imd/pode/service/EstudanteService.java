@@ -1,9 +1,11 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Estudante;
+import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repository.EstudanteRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -37,32 +41,33 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 	@Override
 	public Estudante convertToEntity(EstudanteDTO dto) {
 		Estudante estudante = new Estudante();
+
+		//Se for uma edição
 		if (dto.getId() != null) {
-			estudante = repository.getOne(dto.getId());
-			if (dto.getNome() != null) {
-				estudante.setNome(dto.getNome());
-			}
-			if (dto.getEmail() != null) {
-				estudante.setEmail(dto.getEmail());
-			}
-			if (dto.getSenha() != null) {
-				estudante.setSenha(dto.getSenha());
-			}
-			if (dto.getVinculos() != null) {
-				for (Long idVinculo: dto.getVinculos()) {
-					try {
-						estudante.getVinculos().add(this.vinculoService.findById(idVinculo));
-					} catch (Exception e) {
-						throw new InconsistentEntityException("vinculo inconsistente");
-					}
+			estudante = this.findById(dto.getId());
+		}
+
+		estudante.setId(dto.getId());
+		if (dto.getNome() != null) {
+			estudante.setNome(dto.getNome());
+		}
+		if (dto.getEmail() != null) {
+			estudante.setEmail(dto.getEmail());
+		}
+		if (dto.getSenha() != null) {
+			estudante.setSenha(dto.getSenha());
+		}
+
+		if(dto.getVinculos() != null){
+			estudante.setVinculos(new HashSet<>());
+
+			for (Long idVinculo: dto.getVinculos()) {
+				try {
+					estudante.getVinculos().add(this.vinculoService.findById(idVinculo));
+				} catch (EntityNotFoundException entityNotFoundException) {
+					throw new InconsistentEntityException("vinculo inconsistente");
 				}
 			}
-
-		} else {
-			estudante.setId(dto.getId());
-			estudante.setNome(dto.getNome());
-			estudante.setEmail(dto.getEmail());
-			estudante.setSenha(dto.getSenha());
 		}
 
 		return estudante;

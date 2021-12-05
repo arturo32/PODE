@@ -21,11 +21,25 @@ public class AdministradorService extends GenericService<Administrador, Administ
 	}
 
 	@Override
-	public Administrador convertToEntity(AdministradorDTO administradorDTO) {
+	public Administrador convertToEntity(AdministradorDTO dto) {
 		Administrador administrador = new Administrador();
-		administrador.setId(administradorDTO.getId());
-		administrador.setNome(administradorDTO.getNome());
-		administrador.setEmail(administradorDTO.getEmail());
+
+		//Se for uma edição
+		if (dto.getId() != null){
+			administrador = this.findById(administrador.getId());
+		}
+
+		administrador.setId(dto.getId());
+		if (dto.getNome() != null) {
+			administrador.setNome(dto.getNome());
+		}
+		if (dto.getEmail() != null) {
+			administrador.setEmail(dto.getEmail());
+		}
+		if (dto.getSenha() != null) {
+			administrador.setSenha(dto.getSenha());
+		}
+
 		return administrador;
 	}
 
