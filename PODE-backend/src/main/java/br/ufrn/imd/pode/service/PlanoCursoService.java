@@ -5,6 +5,7 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
@@ -159,6 +160,10 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
+	}
+
+	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
+		return repository.findPlanoCursoByVinculoId(vinculoId);
 	}
 
 }

@@ -65,18 +65,18 @@ public class DatabaseLoader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (dbmode.equals("create")) {
-//			inserirDisciplinas();
-//			System.out.println("Disciplinas inseridas");
-//			inserirCursos();
-//			System.out.println("Cursos inseridas");
-//			inserirEnfases();
-//			System.out.println("Enfases inseridas");
-//			inserirPes();
-//			System.out.println("PES inseridas");
-//			inserirDisciplasCursos();
-//			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
-//			inserirDisciplinaPes();
-//			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
+			inserirDisciplinas();
+			System.out.println("Disciplinas inseridas");
+			inserirCursos();
+			System.out.println("Cursos inseridas");
+			inserirEnfases();
+			System.out.println("Enfases inseridas");
+			inserirPes();
+			System.out.println("PES inseridas");
+			inserirDisciplasCursos();
+			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
+			inserirDisciplinaPes();
+			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
 
 			System.out.println("Tudo pronto!");
 		}
