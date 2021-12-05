@@ -77,8 +77,8 @@ public class DatabaseLoader implements ApplicationRunner {
 //			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
 //			inserirDisciplinaPes();
 //			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
-//
-//			System.out.println("Tudo pronto!");
+
+			System.out.println("Tudo pronto!");
 		}
 	}
 
