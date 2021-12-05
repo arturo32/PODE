@@ -30,13 +30,8 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 	}
 
 	@PutMapping
-	public ResponseEntity<Dto> saveUpdate(@Valid @RequestBody Dto dto) {
-		return ResponseEntity.ok(service().convertToDto(service().saveUpdate(service().validate(dto))));
-	}
-
-	@PatchMapping
 	public ResponseEntity<Dto> update(@Valid @RequestBody Dto dto) {
-		return ResponseEntity.ok(service().convertToDto(service().update(service().validate(dto))));
+		return ResponseEntity.ok(service().convertToDto(service().saveUpdate(service().validate(dto))));
 	}
 
 	@DeleteMapping("/{id}")
