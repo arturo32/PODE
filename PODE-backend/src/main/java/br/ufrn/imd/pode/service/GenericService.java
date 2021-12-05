@@ -70,11 +70,6 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T saveUpdate(Dto dto) {
-		return repository().save(convertToEntity(dto));
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
 	public T update(Dto dto) {
 		if (dto.getId() == null) {
 			throw new BusinessException("Entidade do tipo '" + this.getModelName()
