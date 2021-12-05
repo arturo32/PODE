@@ -47,33 +47,33 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 		}
 
 		//Busca curso
-		if(dto.getCurso() != null){
+		if(dto.getIdCurso() != null){
 			try {
-				vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
+				vinculo.setCurso(this.cursoService.findById(dto.getIdCurso()));
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("curso inconsistente");
 			}
 		}
 		//Busca enfase
-		if(dto.getEnfase() != null){
+		if(dto.getIdEnfase() != null){
 			try {
-				vinculo.setEnfase(this.enfaseService.findById(dto.getEnfase()));
+				vinculo.setEnfase(this.enfaseService.findById(dto.getIdEnfase()));
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("enfase inconsistente");
 			}
 		}
 		//Busca plano de curso
-		if(dto.getPlanoCurso() != null){
+		if(dto.getIdPlanoCurso() != null){
 			try {
-				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getPlanoCurso()));
+				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getIdPlanoCurso()));
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("planoCurso inconsistente");
 			}
 		}
 		//Busca estudante
-		if(dto.getEstudante() != null){
+		if(dto.getIdEstudante() != null){
 			try {
-				vinculo.setEstudante(this.estudanteService.findById(dto.getEstudante()));
+				vinculo.setEstudante(this.estudanteService.findById(dto.getIdEstudante()));
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("estudante inconsistente");
 			}

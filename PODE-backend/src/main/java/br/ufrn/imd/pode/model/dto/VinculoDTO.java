@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.Vinculo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VinculoDTO extends AbstractDTO {
 
@@ -10,13 +11,17 @@ public class VinculoDTO extends AbstractDTO {
 
 	private Integer periodoAtual;
 
-	private Long curso;
+	@JsonProperty("id-curso")
+	private Long idCurso;
 
-	private Long enfase;
+	@JsonProperty("id-enfase")
+	private Long idEnfase;
 
-	private Long planoCurso;
+	@JsonProperty("id-plano-curso")
+	private Long idPlanoCurso;
 
-	private Long estudante;
+	@JsonProperty("id-estudante")
+	private Long idEstudante;
 
 	public VinculoDTO() {
 	}
@@ -26,12 +31,12 @@ public class VinculoDTO extends AbstractDTO {
 		this.setMatricula(vinculo.getMatricula());
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
-		this.setCurso(vinculo.getCurso().getId());
+		this.setIdCurso(vinculo.getCurso().getId());
 		if(vinculo.getEnfase() != null){
-			this.setEnfase(vinculo.getEnfase().getId());
+			this.setIdEnfase(vinculo.getEnfase().getId());
 		}
-		this.setPlanoCurso(vinculo.getPlanoCurso().getId());
-		this.setEstudante(vinculo.getEstudante().getId());
+		this.setIdPlanoCurso(vinculo.getPlanoCurso().getId());
+		this.setIdEstudante(vinculo.getEstudante().getId());
 	}
 
 	public String getMatricula() {
@@ -58,35 +63,35 @@ public class VinculoDTO extends AbstractDTO {
 		this.periodoAtual = periodoAtual;
 	}
 
-	public Long getCurso() {
-		return curso;
+	public Long getIdCurso() {
+		return idCurso;
 	}
 
-	public void setCurso(Long curso) {
-		this.curso = curso;
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
 	}
 
-	public Long getEnfase() {
-		return enfase;
+	public Long getIdEnfase() {
+		return idEnfase;
 	}
 
-	public void setEnfase(Long enfase) {
-		this.enfase = enfase;
+	public void setIdEnfase(Long idEnfase) {
+		this.idEnfase = idEnfase;
 	}
 
-	public Long getPlanoCurso() {
-		return planoCurso;
+	public Long getIdPlanoCurso() {
+		return idPlanoCurso;
 	}
 
-	public void setPlanoCurso(Long planoCurso) {
-		this.planoCurso = planoCurso;
+	public void setIdPlanoCurso(Long idPlanoCurso) {
+		this.idPlanoCurso = idPlanoCurso;
 	}
 
-	public Long getEstudante() {
-		return estudante;
+	public Long getIdEstudante() {
+		return idEstudante;
 	}
 
-	public void setEstudante(Long estudante) {
-		this.estudante = estudante;
+	public void setIdEstudante(Long idEstudante) {
+		this.idEstudante = idEstudante;
 	}
 }

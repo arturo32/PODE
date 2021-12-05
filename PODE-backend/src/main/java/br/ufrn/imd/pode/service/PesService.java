@@ -49,31 +49,31 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 			pes.setCho(dto.getCho());
 		}
 
-		if (dto.getDisciplinasObrigatorias() != null) {
+		if (dto.getIdDisciplinasObrigatorias() != null) {
 			pes.setDisciplinasObrigatorias(new HashSet<>());
-			for (DisciplinaDTO disciplinaDTO : dto.getDisciplinasObrigatorias()) {
-				if (disciplinaDTO.getId() == null) {
+			for (Long disciplinaDTO : dto.getIdDisciplinasObrigatorias()) {
+				if (disciplinaDTO == null) {
 					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 				}
 
 				try {
 					pes.getDisciplinasObrigatorias()
-							.add(this.disciplinaService.findById(disciplinaDTO.getId()));
+							.add(this.disciplinaService.findById(disciplinaDTO));
 				} catch (EntityNotFoundException entityNotFoundException){
 					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 				}
 			}
 		}
 
-		if (dto.getDisciplinasOptativas() != null) {
+		if (dto.getIdDisciplinasOptativas() != null) {
 			pes.setDisciplinasOptativas(new HashSet<>());
-			for (DisciplinaDTO disciplinaDTO : dto.getDisciplinasOptativas()) {
-				if (disciplinaDTO.getId() == null) {
+			for (Long disciplinaDTO : dto.getIdDisciplinasOptativas()) {
+				if (disciplinaDTO == null) {
 					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 				}
 				try {
 					pes.getDisciplinasOptativas()
-							.add(this.disciplinaService.findById(disciplinaDTO.getId()));
+							.add(this.disciplinaService.findById(disciplinaDTO));
 				} catch (EntityNotFoundException entityNotFoundException) {
 					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 				}
@@ -139,30 +139,30 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 		}
 
 		//Verifica disciplinasObrigatorias
-		if (pes.getDisciplinasObrigatorias() != null) {
-			for (DisciplinaDTO disciplina : pes.getDisciplinasObrigatorias()) {
-				if (disciplina.getId() == null || disciplina.getId() < 0) {
+		if (pes.getIdDisciplinasObrigatorias() != null) {
+			for (Long disciplina : pes.getIdDisciplinasObrigatorias()) {
+				if (disciplina == null || disciplina < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(disciplina.getId());
+						this.disciplinaService.findById(disciplina);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplina.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplina + ") inexistente");
 					}
 				}
 			}
 		}
 
 		//Verifica disciplinasOptativas
-		if (pes.getDisciplinasOptativas() != null) {
-			for (DisciplinaDTO disciplina : pes.getDisciplinasOptativas()) {
-				if (disciplina.getId() == null || disciplina.getId() < 0) {
+		if (pes.getIdDisciplinasOptativas() != null) {
+			for (Long disciplina : pes.getIdDisciplinasOptativas()) {
+				if (disciplina == null || disciplina < 0) {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(disciplina.getId());
+						this.disciplinaService.findById(disciplina);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaOptativa(id=" + disciplina.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaOptativa(id=" + disciplina + ") inexistente");
 					}
 				}
 			}

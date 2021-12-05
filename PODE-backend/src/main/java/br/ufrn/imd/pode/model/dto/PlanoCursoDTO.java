@@ -3,17 +3,21 @@ package br.ufrn.imd.pode.model.dto;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.PlanoCurso;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlanoCursoDTO extends AbstractDTO {
 
-	private Set<DisciplinaPeriodoDTO> disciplinasCursadas = new HashSet<>();
+	@JsonProperty("id-disciplinas-cursadas")
+	private Set<Long> idDisciplinasCursadas = new HashSet<>();
 
-	private Set<DisciplinaPeriodoDTO> disciplinasPendentes = new HashSet<>();
+	@JsonProperty("id-disciplinas-pendentes")
+	private Set<Long> idDisciplinasPendentes = new HashSet<>();
 
-	private Set<PesDTO> pesInteresse = new HashSet<>();
+	@JsonProperty("id-pes-interesse")
+	private Set<Long> idPesInteresse = new HashSet<>();
 
 	public PlanoCursoDTO() {
 	}
@@ -21,37 +25,37 @@ public class PlanoCursoDTO extends AbstractDTO {
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
 		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
-			this.disciplinasCursadas.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
+			this.idDisciplinasCursadas.add(disciplinaPeriodo.getId());
 		}
 		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
-			this.disciplinasPendentes.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
+			this.idDisciplinasPendentes.add(disciplinaPeriodo.getId());
 		}
 		for (Pes pes : planoCurso.getPesInteresse()) {
-			this.pesInteresse.add(new PesDTO(pes));
+			this.idPesInteresse.add(pes.getId());
 		}
 	}
 
-	public Set<DisciplinaPeriodoDTO> getDisciplinasCursadas() {
-		return disciplinasCursadas;
+	public Set<Long> getIdDisciplinasCursadas() {
+		return idDisciplinasCursadas;
 	}
 
-	public void setDisciplinasCursadas(Set<DisciplinaPeriodoDTO> disciplinasCursadas) {
-		this.disciplinasCursadas = disciplinasCursadas;
+	public void setIdDisciplinasCursadas(Set<Long> idDisciplinasCursadas) {
+		this.idDisciplinasCursadas = idDisciplinasCursadas;
 	}
 
-	public Set<DisciplinaPeriodoDTO> getDisciplinasPendentes() {
-		return disciplinasPendentes;
+	public Set<Long> getIdDisciplinasPendentes() {
+		return idDisciplinasPendentes;
 	}
 
-	public void setDisciplinasPendentes(Set<DisciplinaPeriodoDTO> disciplinasPendentes) {
-		this.disciplinasPendentes = disciplinasPendentes;
+	public void setIdDisciplinasPendentes(Set<Long> idDisciplinasPendentes) {
+		this.idDisciplinasPendentes = idDisciplinasPendentes;
 	}
 
-	public Set<PesDTO> getPesInteresse() {
-		return pesInteresse;
+	public Set<Long> getIdPesInteresse() {
+		return idPesInteresse;
 	}
 
-	public void setPesInteresse(Set<PesDTO> pesInteresse) {
-		this.pesInteresse = pesInteresse;
+	public void setIdPesInteresse(Set<Long> idPesInteresse) {
+		this.idPesInteresse = idPesInteresse;
 	}
 }

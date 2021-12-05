@@ -56,10 +56,10 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 			estudante.setSenha(dto.getSenha());
 		}
 
-		if(dto.getVinculos() != null){
+		if(dto.getIdVinculos() != null){
 			estudante.setVinculos(new HashSet<>());
 
-			for (Long idVinculo: dto.getVinculos()) {
+			for (Long idVinculo: dto.getIdVinculos()) {
 				try {
 					estudante.getVinculos().add(this.vinculoService.findById(idVinculo));
 				} catch (EntityNotFoundException entityNotFoundException) {
