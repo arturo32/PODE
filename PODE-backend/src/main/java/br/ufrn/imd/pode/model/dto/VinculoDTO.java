@@ -1,10 +1,6 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class VinculoDTO extends AbstractDTO {
 
@@ -14,13 +10,13 @@ public class VinculoDTO extends AbstractDTO {
 
 	private Integer periodoAtual;
 
-	private CursoDTO curso;
+	private Long curso;
 
-	private List<EnfaseDTO> enfases = new ArrayList<>();
+	private Long enfase;
 
-	private PlanoCursoDTO planoCurso;
+	private Long planoCurso;
 
-	private EstudanteDTO estudante;
+	private Long estudante;
 
 	public VinculoDTO() {
 	}
@@ -30,12 +26,10 @@ public class VinculoDTO extends AbstractDTO {
 		this.setMatricula(vinculo.getMatricula());
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
-		this.setCurso(new CursoDTO(vinculo.getCurso()));
-		for (Enfase enfase : vinculo.getEnfases()) {
-			this.enfases.add(new EnfaseDTO(enfase));
-		}
-		this.setPlanoCurso(new PlanoCursoDTO(vinculo.getPlanoCurso()));
-		this.setEstudante(new EstudanteDTO(vinculo.getEstudante()));
+		this.setCurso(vinculo.getCurso().getId());
+		this.setEnfase(vinculo.getEnfase().getId());
+		this.setPlanoCurso(vinculo.getPlanoCurso().getId());
+		this.setEstudante(vinculo.getEstudante().getId());
 	}
 
 	public String getMatricula() {
@@ -62,35 +56,35 @@ public class VinculoDTO extends AbstractDTO {
 		this.periodoAtual = periodoAtual;
 	}
 
-	public CursoDTO getCurso() {
+	public Long getCurso() {
 		return curso;
 	}
 
-	public void setCurso(CursoDTO curso) {
+	public void setCurso(Long curso) {
 		this.curso = curso;
 	}
 
-	public List<EnfaseDTO> getEnfases() {
-		return enfases;
+	public Long getEnfase() {
+		return enfase;
 	}
 
-	public void setEnfases(List<EnfaseDTO> enfases) {
-		this.enfases = enfases;
+	public void setEnfase(Long enfase) {
+		this.enfase = enfase;
 	}
 
-	public PlanoCursoDTO getPlanoCurso() {
+	public Long getPlanoCurso() {
 		return planoCurso;
 	}
 
-	public void setPlanoCurso(PlanoCursoDTO planoCurso) {
+	public void setPlanoCurso(Long planoCurso) {
 		this.planoCurso = planoCurso;
 	}
 
-	public EstudanteDTO getEstudante() {
+	public Long getEstudante() {
 		return estudante;
 	}
 
-	public void setEstudante(EstudanteDTO estudante) {
+	public void setEstudante(Long estudante) {
 		this.estudante = estudante;
 	}
 }

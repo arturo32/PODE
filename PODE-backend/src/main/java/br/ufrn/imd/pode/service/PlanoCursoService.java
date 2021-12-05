@@ -4,6 +4,8 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.model.Curso;
+import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.PlanoCurso;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 
 @Service
 @Transactional
@@ -159,6 +162,18 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
+	}
+
+	public PlanoCurso criarPlanoDeCursoUsandoCurso(Curso curso) {
+		PlanoCurso planoCurso = new PlanoCurso();
+		planoCurso.setDisciplinasPendentes(new HashSet<>(curso.getDisciplinasObrigatorias()));
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso criarPlanoDeCursoUsandoEnfase(Enfase enfase) {
+		PlanoCurso planoCurso = new PlanoCurso();
+		planoCurso.setDisciplinasPendentes(new HashSet<>(enfase.getDisciplinasObrigatorias()));
+		return repository.save(planoCurso);
 	}
 
 }

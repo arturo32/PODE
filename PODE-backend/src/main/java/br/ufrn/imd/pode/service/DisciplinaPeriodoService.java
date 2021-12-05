@@ -29,12 +29,12 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 	public DisciplinaPeriodo convertToEntity(DisciplinaPeriodoDTO disciplinaPeriodoDTO) {
 		DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo();
 		disciplinaPeriodo.setId(disciplinaPeriodoDTO.getId());
-		if (disciplinaPeriodoDTO.getDisciplina().getId() == null) {
+		if (disciplinaPeriodoDTO.getDisciplina() == null) {
 			throw new InconsistentEntityException("disciplina inconsistente");
 		}
 		try {
 			disciplinaPeriodo
-					.setDisciplina(this.disciplinaService.findById(disciplinaPeriodoDTO.getDisciplina().getId()));
+					.setDisciplina(this.disciplinaService.findById(disciplinaPeriodoDTO.getDisciplina()));
 		} catch (EntityNotFoundException entityNotFoundException){
 			throw new InconsistentEntityException("disciplina inconsistente");
 		}
@@ -71,11 +71,11 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica disciplina
-		if (disciplinaPeriodo.getDisciplina().getId() == null || disciplinaPeriodo.getDisciplina().getId() < 0) {
+		if (disciplinaPeriodo.getDisciplina()== null || disciplinaPeriodo.getDisciplina() < 0) {
 			exceptionHelper.add("disciplina inconsistente");
 		} else {
 			try {
-				this.disciplinaService.findById(disciplinaPeriodo.getDisciplina().getId());
+				this.disciplinaService.findById(disciplinaPeriodo.getDisciplina());
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("disciplina inexistente");
 			}

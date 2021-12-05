@@ -4,7 +4,7 @@ import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 
 public class DisciplinaPeriodoDTO extends AbstractDTO {
 
-	private DisciplinaDTO disciplina;
+	private Long disciplina;
 
 	private Integer periodo;
 
@@ -13,15 +13,15 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	public DisciplinaPeriodoDTO(DisciplinaPeriodo disciplinaPeriodo) {
 		this.setId(disciplinaPeriodo.getId());
-		this.setDisciplina(new DisciplinaDTO(disciplinaPeriodo.getDisciplina()));
+		this.setDisciplina(disciplinaPeriodo.getDisciplina().getId());
 		this.setPeriodo(disciplinaPeriodo.getPeriodo());
 	}
 
-	public DisciplinaDTO getDisciplina() {
+	public Long getDisciplina() {
 		return disciplina;
 	}
 
-	public void setDisciplina(DisciplinaDTO disciplina) {
+	public void setDisciplina(Long disciplina) {
 		this.disciplina = disciplina;
 	}
 

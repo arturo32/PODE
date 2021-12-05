@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Estudante;
@@ -17,6 +18,16 @@ import javax.transaction.Transactional;
 public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteRepository repository;
+	private VinculoService vinculoService;
+
+	public VinculoService getVinculoService() {
+		return vinculoService;
+	}
+
+	@Autowired
+	public void setVinculoService(VinculoService vinculoService) {
+		this.vinculoService = vinculoService;
+	}
 
 	@Override
 	public EstudanteDTO convertToDto(Estudante estudante) {
@@ -26,9 +37,34 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 	@Override
 	public Estudante convertToEntity(EstudanteDTO dto) {
 		Estudante estudante = new Estudante();
-		estudante.setNome(dto.getNome());
-		estudante.setEmail(dto.getEmail());
-		estudante.setSenha(dto.getSenha());
+		if (dto.getId() != null) {
+			estudante = repository.getOne(dto.getId());
+			if (dto.getNome() != null) {
+				estudante.setNome(dto.getNome());
+			}
+			if (dto.getEmail() != null) {
+				estudante.setEmail(dto.getEmail());
+			}
+			if (dto.getSenha() != null) {
+				estudante.setSenha(dto.getSenha());
+			}
+			if (dto.getVinculos() != null) {
+				for (Long idVinculo: dto.getVinculos()) {
+					try {
+						estudante.getVinculos().add(this.vinculoService.findById(idVinculo));
+					} catch (Exception e) {
+						throw new InconsistentEntityException("vinculo inconsistente");
+					}
+				}
+			}
+
+		} else {
+			estudante.setId(dto.getId());
+			estudante.setNome(dto.getNome());
+			estudante.setEmail(dto.getEmail());
+			estudante.setSenha(dto.getSenha());
+		}
+
 		return estudante;
 	}
 

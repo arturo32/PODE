@@ -28,12 +28,6 @@ public class DisciplinaPeriodo extends AbstractModel<Long> {
 		this.periodo = periodo;
 	}
 
-	public DisciplinaPeriodo(DisciplinaPeriodoDTO disciplinaPeriodo) {
-		this.id = disciplinaPeriodo.getId();
-		this.disciplina = new Disciplina(disciplinaPeriodo.getDisciplina());
-		this.periodo = disciplinaPeriodo.getPeriodo();
-	}
-
 	@Override
 	public Long getId() {
 		return id;
