@@ -1,34 +1,37 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.enums.Prioridade;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecomendacaoDTO {
 
-	private DisciplinaPeriodoDTO disciplinaPeriodo;
-	private Prioridade prioridade;
+	private List<DisciplinaDTO> disciplinasObrigatorias;
+	private List<DisciplinaDTO> disciplinasOptativas;
 
 	public RecomendacaoDTO() {
+		this.disciplinasObrigatorias = new ArrayList<DisciplinaDTO>();
+		this.disciplinasOptativas = new ArrayList<DisciplinaDTO>();
 	}
 
-	public RecomendacaoDTO(DisciplinaPeriodoDTO disciplinaPeriodo, Prioridade prioridade) {
-		this.disciplinaPeriodo = disciplinaPeriodo;
-		this.prioridade = prioridade;
+	public RecomendacaoDTO(List<DisciplinaDTO> disciplinasObrigatorias, List<DisciplinaDTO> disciplinasOptativas) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
+		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	public DisciplinaPeriodoDTO getDisciplinaPeriodo() {
-		return disciplinaPeriodo;
+	public List<DisciplinaDTO> getDisciplinasObrigatorias() {
+		return disciplinasObrigatorias;
 	}
 
-	public void setDisciplinaPeriodo(DisciplinaPeriodoDTO disciplinaPeriodo) {
-		this.disciplinaPeriodo = disciplinaPeriodo;
+	public void setDisciplinasObrigatorias(List<DisciplinaDTO> disciplinasObrigatorias) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
-	public Prioridade getPrioridade() {
-		return prioridade;
+	public List<DisciplinaDTO> getDisciplinasOptativas() {
+		return disciplinasOptativas;
 	}
 
-	public void setPrioridade(Prioridade prioridade) {
-		this.prioridade = prioridade;
+	public void setDisciplinasOptativas(List<DisciplinaDTO> disciplinasOptativas) {
+		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
 }

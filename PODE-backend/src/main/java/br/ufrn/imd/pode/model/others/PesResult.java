@@ -1,14 +1,14 @@
-package br.ufrn.imd.pode.model.result;
+package br.ufrn.imd.pode.model.others;
 
-public class PesCumprido {
+public abstract class PesResult {
 
 	private Long id;
 	private String nome;
 	private Integer chm;
 	private Integer cho;
-	private Integer chCumprida;
+	private Integer chc;
 
-	public PesCumprido() {
+	public PesResult() {
 	}
 
 	public Long getId() {
@@ -43,12 +43,14 @@ public class PesCumprido {
 		this.cho = cho;
 	}
 
-	public Integer getChCumprida() {
-		return chCumprida;
+	public Integer getChc() {
+		return chc;
 	}
 
-	public void setChCumprida(Integer chCumprida) {
-		this.chCumprida = chCumprida;
+	public void setChc(Integer chc) {
+		this.chc = chc;
 	}
+	
+	public abstract Integer getChp();
 
 }

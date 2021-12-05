@@ -4,7 +4,6 @@ import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class VinculoDTO extends AbstractDTO {
