@@ -7,6 +7,9 @@ import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
+import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PlanoCursoRepository;
@@ -190,6 +193,10 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		PlanoCurso planoCurso = new PlanoCurso();
 		planoCurso.setDisciplinasPendentes(new HashSet<>(enfase.getDisciplinasObrigatorias()));
 		return repository.save(planoCurso);
+	}
+
+	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
+		return repository.findPlanoCursoByVinculoId(vinculoId);
 	}
 
 }

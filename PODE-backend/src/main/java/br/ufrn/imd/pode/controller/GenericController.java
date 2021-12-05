@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin
 public abstract class GenericController<T extends AbstractModel<PK>, Dto extends AbstractDTO, PK extends Serializable> {
