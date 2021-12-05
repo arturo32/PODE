@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.Pes;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,15 +11,17 @@ public class PesDTO extends AbstractDTO {
 
 	private String nome;
 
-	// carga horaria minima
+	//Carga horária mínima
 	private Integer chm;
 
-	// carga horaria obrigatoria
+	//Carga horaria obrigatória
 	private Integer cho;
 
-	private Set<DisciplinaDTO> disciplinasObrigatorias = new HashSet<>();
+	@JsonProperty("id-disciplinas-obrigatorias")
+	private Set<Long> idDisciplinasObrigatorias = new HashSet<>();
 
-	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
+	@JsonProperty("id-disciplinas-optativas")
+	private Set<Long> idDisciplinasOptativas = new HashSet<>();
 
 	public PesDTO() {
 	}
@@ -29,10 +32,10 @@ public class PesDTO extends AbstractDTO {
 		this.setChm(pes.getChm());
 		this.setCho(pes.getCho());
 		for (Disciplina disciplina : pes.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new DisciplinaDTO(disciplina));
+			this.idDisciplinasObrigatorias.add(disciplina.getId());
 		}
 		for (Disciplina disciplina : pes.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
+			this.idDisciplinasOptativas.add(disciplina.getId());
 		}
 	}
 
@@ -60,19 +63,19 @@ public class PesDTO extends AbstractDTO {
 		this.cho = cho;
 	}
 
-	public Set<DisciplinaDTO> getDisciplinasObrigatorias() {
-		return disciplinasObrigatorias;
+	public Set<Long> getIdDisciplinasObrigatorias() {
+		return idDisciplinasObrigatorias;
 	}
 
-	public void setDisciplinasObrigatorias(Set<DisciplinaDTO> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	public void setIdDisciplinasObrigatorias(Set<Long> idDisciplinasObrigatorias) {
+		this.idDisciplinasObrigatorias = idDisciplinasObrigatorias;
 	}
 
-	public Set<DisciplinaDTO> getDisciplinasOptativas() {
-		return disciplinasOptativas;
+	public Set<Long> getIdDisciplinasOptativas() {
+		return idDisciplinasOptativas;
 	}
 
-	public void setDisciplinasOptativas(Set<DisciplinaDTO> disciplinasOptativas) {
-		this.disciplinasOptativas = disciplinasOptativas;
+	public void setIdDisciplinasOptativas(Set<Long> idDisciplinasOptativas) {
+		this.idDisciplinasOptativas = idDisciplinasOptativas;
 	}
 }

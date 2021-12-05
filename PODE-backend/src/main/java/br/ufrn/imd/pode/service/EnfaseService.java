@@ -43,25 +43,25 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 			enfase.setNome(dto.getNome());
 		}
 
-		if (dto.getCurso().getId() == null) {
+		if (dto.getIdCurso() == null) {
 			throw new InconsistentEntityException("curso inconsistente");
 		}
 		try {
-			enfase.setCurso(this.cursoService.findById(dto.getCurso().getId()));
+			enfase.setCurso(this.cursoService.findById(dto.getIdCurso()));
 		} catch (EntityNotFoundException entityNotFoundException){
 			throw new InconsistentEntityException("curso inconsistente");
 		}
 
-		if (dto.getDisciplinasObrigatorias() != null) {
+		if (dto.getIdDisciplinasObrigatorias() != null) {
 			enfase.setDisciplinasObrigatorias(new HashSet<>());
-			for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : dto.getDisciplinasObrigatorias()) {
-				if (disciplinaPeriodoDTO.getId() == null) {
+			for (Long disciplinaPeriodoDTO : dto.getIdDisciplinasObrigatorias()) {
+				if (disciplinaPeriodoDTO== null) {
 					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
 				}
 
 				try {
 					enfase.getDisciplinasObrigatorias()
-							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
+							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO));
 				} catch (EntityNotFoundException entityNotFoundException){
 					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
 				}
@@ -113,26 +113,26 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		}
 
 		//Verifica curso
-		if (enfase.getCurso().getId() == null || enfase.getCurso().getId() < 0) {
+		if (enfase.getIdCurso() == null || enfase.getIdCurso() < 0) {
 			exceptionHelper.add("curso inconsistente");
 		} else {
 			try {
-				this.cursoService.findById(enfase.getCurso().getId());
+				this.cursoService.findById(enfase.getIdCurso());
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("curso inexistente");
 			}
 		}
 
 		//Verifica disciplinas obrigatórias
-		if (enfase.getDisciplinasObrigatorias() != null) {
-			for (DisciplinaPeriodoDTO disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
-				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
+		if (enfase.getIdDisciplinasObrigatorias() != null) {
+			for (Long disciplinaPeriodo : enfase.getIdDisciplinasObrigatorias()) {
+				if (disciplinaPeriodo == null || disciplinaPeriodo < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo.getId());
+						this.disciplinaPeriodoService.findById(disciplinaPeriodo);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo + ") inexistente");
 					}
 				}
 			}

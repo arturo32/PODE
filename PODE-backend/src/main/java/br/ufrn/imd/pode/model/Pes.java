@@ -62,20 +62,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	public Pes(PesDTO pesInteresse) {
-		this.id = pesInteresse.getId();
-		this.nome = pesInteresse.getNome();
-		this.chm = pesInteresse.getChm();
-		this.cho = pesInteresse.getCho();
-		for (DisciplinaDTO disciplinaObrigatoria : pesInteresse.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new Disciplina(disciplinaObrigatoria));
-		}
-		for (DisciplinaDTO disciplinaOptativa : pesInteresse.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
-		}
-
-	}
-
 	@Override
 	public Long getId() {
 		return this.id;

@@ -72,9 +72,9 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 			curso.setPrazoEsperado(dto.getPrazoEsperado());
 		}
 
-		if (dto.getDisciplinasObrigatorias() != null) {
+		if (dto.getIdDisciplinasObrigatorias() != null) {
 			curso.setDisciplinasObrigatorias(new HashSet<>());
-			for (Long idDisciplinaPeriodo : dto.getDisciplinasObrigatorias()) {
+			for (Long idDisciplinaPeriodo : dto.getIdDisciplinasObrigatorias()) {
 				if (idDisciplinaPeriodo == null) {
 					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 				}
@@ -88,9 +88,9 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 			}
 		}
 
-		if (dto.getDisciplinasOptativas() != null) {
+		if (dto.getIdDisciplinasOptativas() != null) {
 			curso.setDisciplinasOptativas(new HashSet<>());
-			for (Long idDisciplina : dto.getDisciplinasOptativas()) {
+			for (Long idDisciplina : dto.getIdDisciplinasOptativas()) {
 				if (idDisciplina == null) {
 					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 				}
@@ -273,8 +273,8 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		}
 
 		//Verifica disciplinasObrigatorias
-		if (curso.getDisciplinasObrigatorias() != null) {
-			for (Long idDisciplinaPeriodo : curso.getDisciplinasObrigatorias()) {
+		if (curso.getIdDisciplinasObrigatorias() != null) {
+			for (Long idDisciplinaPeriodo : curso.getIdDisciplinasObrigatorias()) {
 				if (idDisciplinaPeriodo == null || idDisciplinaPeriodo < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
@@ -288,8 +288,8 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		}
 
 		//Verifica disciplinasOptativas
-		if (curso.getDisciplinasOptativas() != null) {
-			for (Long idDisciplina : curso.getDisciplinasOptativas()) {
+		if (curso.getIdDisciplinasOptativas() != null) {
+			for (Long idDisciplina : curso.getIdDisciplinasOptativas()) {
 				if (idDisciplina == null || idDisciplina < 0) {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {

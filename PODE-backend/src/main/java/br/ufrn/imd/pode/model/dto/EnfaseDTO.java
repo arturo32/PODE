@@ -1,16 +1,21 @@
 package br.ufrn.imd.pode.model.dto;
 
+import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.Enfase;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class EnfaseDTO extends AbstractDTO {
 
 	private String nome;
 
-	private CursoDTO curso;
+	@JsonProperty("id-curso")
+	private Long idCurso;
 
-	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias;
+	@JsonProperty("id-disciplinas-obrigatorias")
+	private Set<Long> idDisciplinasObrigatorias = new HashSet<>();
 
 	public EnfaseDTO() {
 	}
@@ -18,7 +23,10 @@ public class EnfaseDTO extends AbstractDTO {
 	public EnfaseDTO(Enfase enfase) {
 		setId(enfase.getId());
 		setNome(enfase.getNome());
-		setCurso(new CursoDTO(enfase.getCurso()));
+		setIdCurso(enfase.getCurso().getId());
+		for(DisciplinaPeriodo disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
+			this.idDisciplinasObrigatorias.add(disciplinaPeriodo.getId());
+		}
 	}
 
 	public String getNome() {
@@ -29,19 +37,19 @@ public class EnfaseDTO extends AbstractDTO {
 		this.nome = nome;
 	}
 
-	public CursoDTO getCurso() {
-		return curso;
+	public Long getIdCurso() {
+		return idCurso;
 	}
 
-	public void setCurso(CursoDTO curso) {
-		this.curso = curso;
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
 	}
 
-	public Set<DisciplinaPeriodoDTO> getDisciplinasObrigatorias() {
-		return disciplinasObrigatorias;
+	public Set<Long> getIdDisciplinasObrigatorias() {
+		return idDisciplinasObrigatorias;
 	}
 
-	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodoDTO> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	public void setIdDisciplinasObrigatorias(Set<Long> idDisciplinasObrigatorias) {
+		this.idDisciplinasObrigatorias = idDisciplinasObrigatorias;
 	}
 }
