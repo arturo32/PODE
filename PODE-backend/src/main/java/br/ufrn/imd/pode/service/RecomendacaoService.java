@@ -26,12 +26,12 @@ public class RecomendacaoService {
 	}
 
 	public List<RecomendacaoDTO> recomendarDisciplinasPorProximidadeConclusaoPes(long id_vinculo) {
-		/** Etapa 1 */
+		/* Etapa 1 */
 		List<PesCumprido> chobCumpridaDosPes = this.pesService.getRepository().buscarChobCumpridaDosPes(id_vinculo);
 		for (PesCumprido pesCumprido : chobCumpridaDosPes) {
 			System.out.println(pesCumprido.getChCumprida());
 		}
-		/** Etapa 2 */
+		/* Etapa 2 */
 		List<PesCumprido> chopCumpridaDosPes = this.pesService.getRepository().buscarChopCumpridaDosPes(id_vinculo);
 		for (PesCumprido pesCumprido : chopCumpridaDosPes) {
 			System.out.println(pesCumprido.getChCumprida());
