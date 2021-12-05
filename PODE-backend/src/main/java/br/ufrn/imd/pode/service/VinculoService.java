@@ -2,15 +2,12 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
-import br.ufrn.imd.pode.model.PlanoCurso;
 import br.ufrn.imd.pode.model.Vinculo;
-import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.model.dto.VinculoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.VinculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 
@@ -35,65 +32,7 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			vinculo = repository.getOne(dto.getId());
-
-			//Busca curso
-			if(dto.getCurso() != null){
-				try {
-					vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
-				} catch (EntityNotFoundException entityNotFoundException) {
-					throw new InconsistentEntityException("curso inconsistente");
-				}
-			}
-			//Busca enfase
-			if(dto.getEnfase() != null){
-				try {
-					vinculo.setEnfase(this.enfaseService.findById(dto.getEnfase()));
-				} catch (EntityNotFoundException entityNotFoundException) {
-					throw new InconsistentEntityException("enfase inconsistente");
-				}
-			}
-			//Busca plano de curso
-			if(dto.getPlanoCurso() != null){
-				try {
-					vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getPlanoCurso()));
-				} catch (EntityNotFoundException entityNotFoundException) {
-					throw new InconsistentEntityException("planoCurso inconsistente");
-				}
-			}
-			//Busca estudante
-			if(dto.getEstudante() != null){
-				try {
-					vinculo.setEstudante(this.estudanteService.findById(dto.getEstudante()));
-				} catch (EntityNotFoundException entityNotFoundException) {
-					throw new InconsistentEntityException("estudante inconsistente");
-				}
-			}
-
-		}
-
-		//Se for um cadastro novo
-		else {
-
-			try {
-				vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
-			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("curso inconsistente");
-			}
-			vinculo.setPlanoCurso(this.planoCursoService.criarPlanoDeCursoUsandoCurso(vinculo.getCurso()));
-			if(dto.getEnfase() != null){
-				try {
-					vinculo.setEnfase(this.enfaseService.findById(dto.getEnfase()));
-				} catch (EntityNotFoundException entityNotFoundException) {
-					throw new InconsistentEntityException("enfase inconsistente");
-				}
-				vinculo.setPlanoCurso(this.planoCursoService.criarPlanoDeCursoUsandoEnfase(vinculo.getEnfase()));
-			}
-			try {
-				vinculo.setEstudante(this.estudanteService.findById(dto.getEstudante()));
-			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("estudante inconsistente");
-			}
+			vinculo = this.findById(dto.getId());
 		}
 
 		vinculo.setId(dto.getId());
@@ -107,7 +46,38 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 			vinculo.setPeriodoAtual(dto.getPeriodoAtual());
 		}
 
-
+		//Busca curso
+		if(dto.getCurso() != null){
+			try {
+				vinculo.setCurso(this.cursoService.findById(dto.getCurso()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("curso inconsistente");
+			}
+		}
+		//Busca enfase
+		if(dto.getEnfase() != null){
+			try {
+				vinculo.setEnfase(this.enfaseService.findById(dto.getEnfase()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("enfase inconsistente");
+			}
+		}
+		//Busca plano de curso
+		if(dto.getPlanoCurso() != null){
+			try {
+				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getPlanoCurso()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("planoCurso inconsistente");
+			}
+		}
+		//Busca estudante
+		if(dto.getEstudante() != null){
+			try {
+				vinculo.setEstudante(this.estudanteService.findById(dto.getEstudante()));
+			} catch (EntityNotFoundException entityNotFoundException) {
+				throw new InconsistentEntityException("estudante inconsistente");
+			}
+		}
 
 		return vinculo;
 	}

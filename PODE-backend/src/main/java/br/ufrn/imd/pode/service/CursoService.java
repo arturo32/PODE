@@ -6,8 +6,6 @@ import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.dto.CursoDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.repository.CursoRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.util.StringUtils;

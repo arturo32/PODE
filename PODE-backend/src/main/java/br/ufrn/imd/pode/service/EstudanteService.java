@@ -5,7 +5,6 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Estudante;
-import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repository.EstudanteRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
@@ -15,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @Transactional
