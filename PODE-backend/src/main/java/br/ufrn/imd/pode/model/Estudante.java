@@ -29,13 +29,6 @@ public class Estudante extends Usuario {
 		super(nome, email, senha);
 	}
 
-	public Estudante(EstudanteDTO estudante) {
-		this.id = estudante.getId();
-		for (VinculoDTO vinculo : estudante.getVinculos()) {
-			this.vinculos.add(new Vinculo(vinculo));
-		}
-
-	}
 
 	@Override
 	public Long getId() {
