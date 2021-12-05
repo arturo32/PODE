@@ -15,15 +15,18 @@ public class PlanoCursoDTO extends AbstractDTO {
 
 	private Set<PesDTO> pesInteresse = new HashSet<>();
 
+	public PlanoCursoDTO() {
+	}
+
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
-		for(DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasCursadas()){
+		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
 			this.disciplinasCursadas.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
 		}
-		for(DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasPendentes()){
+		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
 			this.disciplinasPendentes.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
 		}
-		for(Pes pes : planoCurso.getPesInteresse()){
+		for (Pes pes : planoCurso.getPesInteresse()) {
 			this.pesInteresse.add(new PesDTO(pes));
 		}
 	}

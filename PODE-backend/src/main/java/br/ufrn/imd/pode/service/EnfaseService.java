@@ -9,6 +9,7 @@ import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.repository.EnfaseRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,19 +33,29 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		Enfase enfase = new Enfase();
 		enfase.setId(enfaseDTO.getId());
 		enfase.setNome(enfaseDTO.getNome());
-		if (enfaseDTO.getCurso().getId() != null) {
-			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
-		} else {
+		if (enfaseDTO.getCurso().getId() == null) {
 			throw new InconsistentEntityException("curso inconsistente");
 		}
+
+		try{
+			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
+		} catch (EntityNotFoundException entityNotFoundException){
+			throw new InconsistentEntityException("curso inconsistente");
+		}
+
 		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : enfaseDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaPeriodoDTO.getId() != null) {
+			if (disciplinaPeriodoDTO.getId() == null) {
+				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+			}
+
+			try {
 				enfase.getDisciplinasObrigatorias()
 						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} else {
+			} catch (EntityNotFoundException entityNotFoundException){
 				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
 			}
 		}
+
 		return enfase;
 	}
 
@@ -83,11 +94,13 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 	@Override
 	public EnfaseDTO validate(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		/* verifica nome */
-		if (enfase.getNome() == null || enfase.getNome().isEmpty()) {
+
+		//Verifica nome
+		if (StringUtils.isEmpty(enfase.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-		/* verifica curso */
+
+		//Verifica curso
 		if (enfase.getCurso().getId() == null || enfase.getCurso().getId() < 0) {
 			exceptionHelper.add("curso inconsistente");
 		} else {
@@ -97,7 +110,8 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				exceptionHelper.add("curso inexistente");
 			}
 		}
-		/* verifica disciplinas obrigatorias */
+
+		//Verifica disciplinas obrigatórias
 		if (enfase.getDisciplinasObrigatorias() != null) {
 			for (DisciplinaPeriodoDTO disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
 				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
@@ -111,7 +125,8 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 				}
 			}
 		}
-		/* verifica se existe exceçao */
+
+		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return enfase;
 		} else {

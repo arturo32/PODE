@@ -63,7 +63,7 @@ public class Vinculo extends AbstractModel<Long> {
 		this.periodoInicial = vinculo.getPeriodoInicial();
 		this.periodoAtual = vinculo.getPeriodoAtual();
 		this.curso = new Curso(vinculo.getCurso());
-		for (EnfaseDTO enfase : vinculo.getEnfase()) {
+		for (EnfaseDTO enfase : vinculo.getEnfases()) {
 			this.enfases.add(new Enfase(enfase));
 		}
 		this.planoCurso = new PlanoCurso(vinculo.getPlanoCurso());

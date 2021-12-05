@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "plano_curso")
+@RequestMapping("/api/plano_curso")
 public class PlanoCursoController extends GenericController<PlanoCurso, PlanoCursoDTO, Long> {
 
 	private PlanoCursoService service;

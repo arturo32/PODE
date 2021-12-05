@@ -30,12 +30,10 @@ public interface GenericRepository<T extends AbstractModel<PK>, PK extends Seria
 
 	@Override
 	default void delete(T arg0) {
-		// TODO Auto-generated method stub
 		deleteById(arg0.getId());
 	}
 
 	default void trueDelete(T arg0) {
-		// TODO Auto-generated method stub
 		trueDeletebyId(arg0.getId());
 	}
 

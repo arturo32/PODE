@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/css/**", "/js/**", "/fonts/**", "/fragmentos/**", "/imagens/**").permitAll()
 
 				// Routes Security
-				// TODO
+				// TODO Segurança das rotas
 
 				// others
 				.anyRequest().permitAll().and().formLogin().and().httpBasic().disable();

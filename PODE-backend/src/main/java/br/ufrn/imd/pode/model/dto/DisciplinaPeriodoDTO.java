@@ -8,6 +8,9 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	private Integer periodo;
 
+	public DisciplinaPeriodoDTO() {
+	}
+
 	public DisciplinaPeriodoDTO(DisciplinaPeriodo disciplinaPeriodo) {
 		this.setId(disciplinaPeriodo.getId());
 		this.setDisciplina(new DisciplinaDTO(disciplinaPeriodo.getDisciplina()));

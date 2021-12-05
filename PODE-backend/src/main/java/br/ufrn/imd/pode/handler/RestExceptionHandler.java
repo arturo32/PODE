@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.handler;
 
 import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
+import org.springframework.util.StringUtils;
 import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.Ordered;
@@ -90,7 +91,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return String
 	 */
 	private String getSimpleMessage(Throwable exception) {
-		if ((exception.getMessage() == null) || (exception.getMessage().isEmpty())) return "Mensagem não informada";
+		if (StringUtils.isEmpty(exception.getMessage())){
+			return "Mensagem não informada";
+		}
 		return exception.getMessage();
 	}
 

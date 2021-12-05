@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "disciplina_periodo")
+@RequestMapping("/api/disciplina_periodo")
 public class DisciplinaPeriodoController extends GenericController<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
 
 	private DisciplinaPeriodoService service;

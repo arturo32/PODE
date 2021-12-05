@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "estudante")
+@RequestMapping("/api/estudante")
 public class EstudanteController extends GenericController<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteService service;
