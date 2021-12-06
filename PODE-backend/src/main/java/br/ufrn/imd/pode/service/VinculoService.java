@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -126,5 +127,14 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	@Autowired
 	public void setEstudanteService(EstudanteService estudanteService) {
 		this.estudanteService = estudanteService;
+	}
+
+	public Vinculo findByPlanoCursoId(Long id) {
+		Optional<Vinculo> entity = repository.findByAtivoIsTrueAndPlanoCurso_Id(id);
+		if (entity.isEmpty()) {
+			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
+					+ "' de id: '" + id + "' não encontrada");
+		}
+		return entity.get();
 	}
 }

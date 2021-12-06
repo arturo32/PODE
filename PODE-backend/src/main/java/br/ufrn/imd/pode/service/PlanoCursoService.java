@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.Comparator.comparingInt;
 
 @Service
 @Transactional
@@ -28,6 +31,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	private DisciplinaPeriodoService disciplinaPeriodoService;
 	private DisciplinaService disciplinaService;
 	private PesService pesService;
+	private VinculoService vinculoService;
 
 	@Override
 	public PlanoCursoDTO convertToDto(PlanoCurso planoCurso) {
@@ -137,6 +141,15 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.disciplinaService = disciplinaService;
 	}
 
+	public VinculoService getVinculoService() {
+		return vinculoService;
+	}
+
+	@Autowired
+	public void setVinculoService(VinculoService vinculoService) {
+		this.vinculoService = vinculoService;
+	}
+
 	@Override
 	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -231,6 +244,32 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
+		return repository.save(planoCurso);
+	}
+
+	public List<Integer> cargaHorariaPeriodos(PlanoCurso planoCurso) {
+		Vinculo vinculo = vinculoService.findByPlanoCursoId(planoCurso.getId());
+		List<Integer> result = new ArrayList<>(vinculo.getCurso().getPrazoMaximo());
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasCursadas()) {
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		return result.subList(vinculo.getPeriodoAtual()-1, vinculo.getCurso().getPrazoMaximo()-1);
+	}
+
+	public PlanoCurso adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<Integer> chs = cargaHorariaPeriodos(planoCurso);
+		List<Pes> pesList = pesService.findByIds(pesIds);
+//		for (Pes pes : pesList) {
+//			int minIdx = 0;
+//			for (int i = 1; i < chs.size(); ++i) {
+//				if (chs.get(i) < c)
+//			}
+//		}
+
 		return repository.save(planoCurso);
 	}
 
