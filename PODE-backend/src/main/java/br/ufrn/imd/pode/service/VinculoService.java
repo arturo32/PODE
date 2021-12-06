@@ -53,6 +53,9 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("curso inconsistente");
 			}
+			if (dto.getId() == null) {
+				vinculo.setPlanoCurso(planoCursoService.criarPlanoDeCursoUsandoCurso(vinculo.getCurso()));
+			}
 		}
 		//Busca enfase
 		if(dto.getIdEnfase() != null){
@@ -61,9 +64,12 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 			} catch (EntityNotFoundException entityNotFoundException) {
 				throw new InconsistentEntityException("enfase inconsistente");
 			}
+			if (dto.getId() == null) {
+				vinculo.setPlanoCurso(planoCursoService.criarPlanoDeCursoUsandoEnfase(vinculo.getEnfase()));
+			}
 		}
 		//Busca plano de curso
-		if(dto.getIdPlanoCurso() != null){
+		if(dto.getIdPlanoCurso() != null && dto.getId() != null){
 			try {
 				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getIdPlanoCurso()));
 			} catch (EntityNotFoundException entityNotFoundException) {
