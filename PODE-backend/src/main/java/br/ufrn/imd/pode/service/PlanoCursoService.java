@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -247,9 +244,8 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
-	public List<Integer> cargaHorariaPeriodos(PlanoCurso planoCurso) {
-		Vinculo vinculo = vinculoService.findByPlanoCursoId(planoCurso.getId());
-		List<Integer> result = new ArrayList<>(vinculo.getCurso().getPrazoMaximo());
+	public List<Integer> cargaHorariaPeriodos(PlanoCurso planoCurso, Vinculo vinculo) {
+		List<Integer> result = new ArrayList<>(Collections.nCopies(vinculo.getCurso().getPrazoMaximo(), 0));
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasCursadas()) {
 			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
 		}
@@ -261,15 +257,27 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<Integer> chs = cargaHorariaPeriodos(planoCurso);
+		Vinculo vinculo = vinculoService.findByPlanoCursoId(planoCurso.getId());
+		List<Integer> chs = this.cargaHorariaPeriodos(planoCurso, vinculo);
 		List<Pes> pesList = pesService.findByIds(pesIds);
-//		for (Pes pes : pesList) {
-//			int minIdx = 0;
-//			for (int i = 1; i < chs.size(); ++i) {
-//				if (chs.get(i) < c)
-//			}
-//		}
-
+		List<Disciplina> disciplinas = planoCurso.getDisciplinasPendentes().stream()
+				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
+		for (Pes pes : pesList) {
+			for (Disciplina d: pes.getDisciplinasObrigatorias()) {
+				int minIdx = vinculo.getPeriodoAtual();
+				for (int i = vinculo.getPeriodoAtual()+1; i < chs.size(); ++i) {
+					if (chs.get(i) < chs.get(minIdx)) {
+						minIdx = i;
+					}
+				}
+				if (!disciplinas.contains(d)) {
+					disciplinas.add(d);
+					planoCurso.getDisciplinasPendentes().add(new DisciplinaPeriodo(d, minIdx));
+					chs.set(minIdx, chs.get(minIdx)+d.getCh());
+				}
+			}
+		}
+		planoCurso.getPesInteresse().addAll(pesList);
 		return repository.save(planoCurso);
 	}
 
