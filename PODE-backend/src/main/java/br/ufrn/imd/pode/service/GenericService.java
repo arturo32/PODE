@@ -56,9 +56,21 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 		return entity.get();
 	}
 
+
+
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<T> findAll(Integer lim, Integer pg) {
 		return repository().findAllByAtivoIsTrueOrderByDataCriacaoDesc(PageRequest.of(pg, lim));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByIds(List<PK> ids) {
+		return repository().findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(ids);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByInterval(PK startId, PK endId) {
+		return repository().findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(startId, endId);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

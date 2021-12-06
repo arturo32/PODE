@@ -68,11 +68,11 @@ public class DatabaseLoader implements ApplicationRunner {
 			inserirDisciplinas();
 			System.out.println("Disciplinas inseridas");
 			inserirCursos();
-			System.out.println("Cursos inseridas");
+			System.out.println("Cursos inseridos");
 			inserirEnfases();
 			System.out.println("Enfases inseridas");
 			inserirPes();
-			System.out.println("PES inseridas");
+			System.out.println("PES inseridos");
 			inserirDisciplasCursos();
 			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
 			inserirDisciplinaPes();

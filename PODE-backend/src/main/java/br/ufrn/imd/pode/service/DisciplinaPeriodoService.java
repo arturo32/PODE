@@ -102,4 +102,6 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
 	}
+
+
 }

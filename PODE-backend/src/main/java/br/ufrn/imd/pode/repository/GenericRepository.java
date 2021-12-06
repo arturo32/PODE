@@ -20,6 +20,10 @@ public interface GenericRepository<T extends AbstractModel<PK>, PK extends Seria
 	@Query(value = "select * from #{#entityName} where ativo = true", nativeQuery = true)
 	List<T> findAll();
 
+	List<T> findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(List<PK> ids);
+
+	List<T> findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(PK start, PK end);
+
 	List<T> findAllByAtivoIsTrueOrderByDataCriacaoDesc(Pageable pageable);
 
 	@Override
