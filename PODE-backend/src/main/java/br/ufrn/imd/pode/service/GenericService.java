@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,9 +56,21 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 		return entity.get();
 	}
 
+
+
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<T> findAll(Integer lim, Integer pg) {
 		return repository().findAllByAtivoIsTrueOrderByDataCriacaoDesc(PageRequest.of(pg, lim));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByIds(List<PK> ids) {
+		return repository().findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(ids);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByInterval(PK startId, PK endId) {
+		return repository().findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(startId, endId);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

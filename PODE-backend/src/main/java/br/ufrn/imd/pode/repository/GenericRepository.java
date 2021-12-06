@@ -12,12 +12,17 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @NoRepositoryBean
 public interface GenericRepository<T extends AbstractModel<PK>, PK extends Serializable> extends JpaRepository<T, PK> {
 	@Override
 	@Query(value = "select * from #{#entityName} where ativo = true", nativeQuery = true)
 	List<T> findAll();
+
+	List<T> findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(List<PK> ids);
+
+	List<T> findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(PK start, PK end);
 
 	List<T> findAllByAtivoIsTrueOrderByDataCriacaoDesc(Pageable pageable);
 

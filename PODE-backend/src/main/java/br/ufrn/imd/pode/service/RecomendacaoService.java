@@ -1,49 +1,55 @@
 package br.ufrn.imd.pode.service;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
+import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.RecomendacaoDTO;
 import br.ufrn.imd.pode.model.others.PesChobCumpridaResult;
 import br.ufrn.imd.pode.model.others.PesChopCumpridaResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class RecomendacaoService {
 
-	private VinculoService vinculoService;
 	private PesService pesService;
+
 	private DisciplinaService disciplinaService;
 
-	public VinculoService getVinculoService() {
-		return vinculoService;
-	}
+	private PlanoCursoService planoCursoService;
+
+	private VinculoService vinculoService;
+
+	private DisciplinaPeriodoService disciplinaPeriodoService;
 
 	@Autowired
 	public void setVinculoService(VinculoService vinculoService) {
 		this.vinculoService = vinculoService;
 	}
 
-	public PesService getPesService() {
-		return pesService;
+	@Autowired
+	public void setDisciplinaPeriodoService(DisciplinaPeriodoService disciplinaPeriodoService) {
+		this.disciplinaPeriodoService = disciplinaPeriodoService;
+	}
+
+	@Autowired
+	public void setPlanoCursoService(PlanoCursoService planoCursoService) {
+		this.planoCursoService = planoCursoService;
 	}
 
 	@Autowired
 	public void setPesService(PesService pesService) {
 		this.pesService = pesService;
-	}
-
-	public DisciplinaService getDisciplinaService() {
-		return disciplinaService;
 	}
 
 	@Autowired
@@ -58,7 +64,7 @@ public class RecomendacaoService {
 			exceptionHelper.add("vinculo inconsistente");
 		} else {
 			try {
-				this.getVinculoService().findById(vinculoId);
+				this.vinculoService.findById(vinculoId);
 				// TODO verificar se o vinculo de fato percente ao usuário
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
@@ -73,19 +79,19 @@ public class RecomendacaoService {
 	}
 
 	public RecomendacaoDTO recomendarDisciplinasPorProximidadeConclusaoPes(long vinculoId) {
-		/** Etapa 1 - Buscar os pes com carga horária obrigatória cumprida */
-		List<PesChobCumpridaResult> pesComChobCumprida = this.getPesService().getRepository()
+		/* Etapa 1 - Buscar os pes com carga horária obrigatória cumprida */
+		List<PesChobCumpridaResult> pesComChobCumprida = this.pesService.getRepository()
 				.findPesComChobCumpridaByVinculo(vinculoId);
-		/** Etapa 2 - Buscar os pes com carga horária optativa cumprida */
-		List<PesChopCumpridaResult> pesComChopCumprida = this.getPesService().getRepository()
+		/* Etapa 2 - Buscar os pes com carga horária optativa cumprida */
+		List<PesChopCumpridaResult> pesComChopCumprida = this.pesService.getRepository()
 				.findPesComChopCumpridaByVinculo(vinculoId);
-		/** Etapa 3 - Escolher um pes */
-		Integer size = pesComChobCumprida.size();
+		/* Etapa 3 - Escolher um pes */
+		int size = pesComChobCumprida.size();
 		if (size > 0) {
 			Integer indexPesEscolhido = null;
 			Integer chp = null;
 			Integer chpCache = null;
-			Integer index = 0;
+			int index = 0;
 			for (; index < size; index++) {
 				chp = pesComChobCumprida.get(index).getChp() + pesComChopCumprida.get(index).getChp();
 				if (index == 0) {
@@ -98,23 +104,32 @@ public class RecomendacaoService {
 				}
 			}
 			PesChobCumpridaResult pesEscolhido = pesComChobCumprida.get(indexPesEscolhido);
-			/** Etapa 4 - Obter disciplinas obrigatórias não cursadas */
+			/* Etapa 4 - Obter disciplinas obrigatórias não cursadas */
 			RecomendacaoDTO recomendacoes = new RecomendacaoDTO();
 			Set<Disciplina> disciplinasObrigatoriasPendentes = this.disciplinaService.getRepository()
 					.findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesEscolhido.getId());
 			for (Disciplina disciplina : disciplinasObrigatoriasPendentes) {
-				recomendacoes.getDisciplinasObrigatorias().add(this.getDisciplinaService().convertToDto(disciplina));
+				recomendacoes.getDisciplinasObrigatorias().add(this.disciplinaService.convertToDto(disciplina));
 			}
-			/** Etapa 5 - Obter disciplinas optativas não cursadas */
+			/* Etapa 5 - Obter disciplinas optativas não cursadas */
 			Set<Disciplina> disciplinasOptativasPendentes = this.disciplinaService.getRepository()
 					.findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesEscolhido.getId());
 			for (Disciplina disciplina : disciplinasOptativasPendentes) {
-				recomendacoes.getDisciplinasOptativas().add(this.getDisciplinaService().convertToDto(disciplina));
+				recomendacoes.getDisciplinasOptativas().add(this.disciplinaService.convertToDto(disciplina));
 			}
 			return recomendacoes;
 		} else {
 			throw new EntityNotFoundException("nenhum pes encontrado");
 		}
+	}
+
+	public Set<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(long id_vinculo) {
+		Vinculo vinculo = vinculoService.findById(id_vinculo);
+		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(id_vinculo);
+		return planoCurso.getDisciplinasPendentes().stream().
+				filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual()).
+				collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto).
+				collect(Collectors.toSet());
 	}
 
 }
