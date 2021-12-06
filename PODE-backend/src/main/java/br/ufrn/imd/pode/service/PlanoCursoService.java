@@ -40,7 +40,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			planoCurso = this.findById(planoCurso.getId());
+			planoCurso = this.findById(dto.getId());
 		}
 
 		planoCurso.setId(dto.getId());

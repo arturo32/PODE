@@ -28,7 +28,6 @@ public class PlanoCursoController extends GenericController<PlanoCurso, PlanoCur
 		return this.service;
 	}
 
-
 	@PostMapping("{id}/adicionaDisciplinaCursada")
 	public ResponseEntity<PlanoCurso> adicionaDisciplinaCursada(@PathVariable Long id, @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		return ResponseEntity.ok(service.adicionaDisciplinaCursada(id, disciplinasPeriodoDTOS));
