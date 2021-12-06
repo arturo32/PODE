@@ -4,10 +4,7 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.Curso;
-import br.ufrn.imd.pode.model.Enfase;
-import br.ufrn.imd.pode.model.PlanoCurso;
-import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.*;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
@@ -17,7 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +26,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	private PlanoCursoRepository repository;
 	private DisciplinaPeriodoService disciplinaPeriodoService;
+	private DisciplinaService disciplinaService;
 	private PesService pesService;
 
 	@Override
@@ -126,6 +128,15 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.pesService = pesService;
 	}
 
+	public DisciplinaService getDisciplinaService() {
+		return disciplinaService;
+	}
+
+	@Autowired
+	public void setDisciplinaService(DisciplinaService disciplinaService) {
+		this.disciplinaService = disciplinaService;
+	}
+
 	@Override
 	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -195,8 +206,32 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
-	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
+	public PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
 		return repository.findPlanoCursoByVinculoId(vinculoId);
+	}
+
+	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
+
+		List<Disciplina> disciplinas = disciplinasPeriodo.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
+		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+			if (!disciplinas.contains(dp.getDisciplina())) {
+				pendentes.add(dp);
+			}
+		}
+		planoCurso.setDisciplinasPendentes(pendentes);
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		// TODO: validação de tempo maximo por semestre
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
+		return repository.save(planoCurso);
 	}
 
 }
