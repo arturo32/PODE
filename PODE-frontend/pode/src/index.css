@@ -1,4 +1,32 @@
 body {
+    width: 100wh;
+    height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+}
+
+@font-face {
+    font-family: "AlegreyaSans - Medium";
+    src: url("./assets/font/AlegreyaSans-Medium.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: "AlegreyaSans - Regular";
+    src: url("./assets/font/AlegreyaSans-Regular.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: "AlegreyaSans - Light";
+    src: url("./assets/font/AlegreyaSans-Light.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: "AlegreyaSans - Bold";
+    src: url("./assets/font/AlegreyaSans-Bold.ttf") format("opentype");
+}
+
+.home {
+    background: url("assets/img/entrepreneur-593371.jpg") no-repeat;
+    background-size: 100% 100%;
 }

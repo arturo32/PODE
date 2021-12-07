@@ -1,5 +1,5 @@
-export default class APISubjects {
+export default class APIStudent {
     static create() {
         return '...';
     }
-}
+};
