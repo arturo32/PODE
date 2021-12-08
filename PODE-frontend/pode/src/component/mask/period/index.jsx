@@ -14,14 +14,13 @@ const MaskPeriod = forwardRef(function TextMaskCustom(props, ref) {
         '#': /[1-9]/,
       }}
       inputRef={ref}
-      onAccept={(value) => onChange({ target: { name: props.name, value } })}
-      overwrite
+      onAccept={(value) => onChange({ target: { value } })}
+      overwrite={true}
     />
   );
 });
 
 MaskPeriod.propTypes = {
-  name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

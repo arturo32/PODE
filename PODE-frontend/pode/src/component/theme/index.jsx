@@ -7,3 +7,11 @@ export const form = createTheme({
         },
     },
 });
+
+export const generic = createTheme({
+    palette: {
+        primary: {
+            main: '#F25C05 ',
+        },
+    },
+});

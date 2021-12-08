@@ -19,6 +19,13 @@ export const validatePeriod = (period) => {
     return false;
 };
 
+export const validateSelect = (value) => {
+    if (value) {
+        return true;
+    }
+    return false;
+};
+
 export const validateGeneric = (period) => {
     if (period.length > 0) {
         return true;
