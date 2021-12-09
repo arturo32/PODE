@@ -231,6 +231,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		// TODO adicionar validação de que as disciplinas indicadas como cursadas tem todos os pre requisitos atendidos
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
@@ -300,6 +301,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso removeInteressePes(Long planoCursoId, List<Long> pesIds) {
+		// TODO: verificar se alguns dos PES restantes não teve nenhuma disciplina removida com a remoção dos outros PES
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		List<Pes> pesList = pesService.findByIds(pesIds);
 		List<DisciplinaPeriodo> to_remove = new ArrayList<>();
