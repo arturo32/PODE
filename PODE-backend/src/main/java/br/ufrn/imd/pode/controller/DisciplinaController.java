@@ -37,7 +37,7 @@ public class DisciplinaController extends GenericController<Disciplina, Discipli
 		return this.service;
 	}
 
-	@GetMapping("/{codigo}")
+	@GetMapping("/codigo/{codigo}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {
 		return ResponseEntity.ok(service.convertToDTOList(service.findDisciplinasByCodigo(codigo)));
 	}
