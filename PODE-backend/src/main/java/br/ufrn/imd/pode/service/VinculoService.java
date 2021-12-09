@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
+import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.VinculoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -126,5 +128,22 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	@Autowired
 	public void setEstudanteService(EstudanteService estudanteService) {
 		this.estudanteService = estudanteService;
+	}
+
+	public Vinculo findByPlanoCursoId(Long id) {
+		Optional<Vinculo> entity = repository.findByAtivoIsTrueAndPlanoCurso_Id(id);
+		if (entity.isEmpty()) {
+			throw new EntityNotFoundException("Entidade do tipo '" + this.getModelName()
+					+ "' de id: '" + id + "' não encontrada");
+		}
+		return entity.get();
+	}
+
+	public Vinculo mudaEnfase(Long vinculoId, Long enfaseId) {
+		//TODO checar se enfase é válida para o curso indicado no vinculo
+		Vinculo vinculo = this.findById(vinculoId);
+		Enfase enfase = this.enfaseService.findById(enfaseId);
+		vinculo.setEnfase(enfase);
+		return repository.save(vinculo);
 	}
 }

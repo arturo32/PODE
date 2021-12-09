@@ -4,10 +4,7 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.Curso;
-import br.ufrn.imd.pode.model.Enfase;
-import br.ufrn.imd.pode.model.PlanoCurso;
-import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.*;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
@@ -17,7 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.Comparator.comparingInt;
 
 @Service
 @Transactional
@@ -25,7 +26,10 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	private PlanoCursoRepository repository;
 	private DisciplinaPeriodoService disciplinaPeriodoService;
+	private DisciplinaService disciplinaService;
 	private PesService pesService;
+	private VinculoService vinculoService;
+	private EnfaseService enfaseService;
 
 	@Override
 	public PlanoCursoDTO convertToDto(PlanoCurso planoCurso) {
@@ -38,7 +42,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			planoCurso = this.findById(planoCurso.getId());
+			planoCurso = this.findById(dto.getId());
 		}
 
 		planoCurso.setId(dto.getId());
@@ -126,6 +130,33 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.pesService = pesService;
 	}
 
+	public DisciplinaService getDisciplinaService() {
+		return disciplinaService;
+	}
+
+	@Autowired
+	public void setDisciplinaService(DisciplinaService disciplinaService) {
+		this.disciplinaService = disciplinaService;
+	}
+
+	public VinculoService getVinculoService() {
+		return vinculoService;
+	}
+
+	@Autowired
+	public void setVinculoService(VinculoService vinculoService) {
+		this.vinculoService = vinculoService;
+	}
+
+	public EnfaseService getEnfaseService() {
+		return enfaseService;
+	}
+
+	@Autowired
+	public void setEnfaseService(EnfaseService enfaseService) {
+		this.enfaseService = enfaseService;
+	}
+
 	@Override
 	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -195,8 +226,95 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
-	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
+	public PlanoCurso findPlanoCursoByVinculoId(Long vinculoId) {
 		return repository.findPlanoCursoByVinculoId(vinculoId);
+	}
+
+	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
+
+		List<Disciplina> disciplinas = disciplinasPeriodo.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
+		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+			if (!disciplinas.contains(dp.getDisciplina())) {
+				pendentes.add(dp);
+			}
+		}
+		planoCurso.setDisciplinasPendentes(pendentes);
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		// TODO: validação de tempo maximo por semestre
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		// TODO: validação de tempo minimo por semestre
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		return repository.save(planoCurso);
+	}
+
+	public List<Integer> cargaHorariaPeriodos(PlanoCurso planoCurso, Vinculo vinculo) {
+		List<Integer> result = new ArrayList<>(Collections.nCopies(vinculo.getCurso().getPrazoMaximo(), 0));
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasCursadas()) {
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		return result.subList(vinculo.getPeriodoAtual()-1, vinculo.getCurso().getPrazoMaximo()-1);
+	}
+
+	public PlanoCurso adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		Vinculo vinculo = vinculoService.findByPlanoCursoId(planoCurso.getId());
+		List<Integer> chs = this.cargaHorariaPeriodos(planoCurso, vinculo);
+		List<Pes> pesList = pesService.findByIds(pesIds);
+		List<Disciplina> disciplinas = planoCurso.getDisciplinasPendentes().stream()
+				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
+		for (Pes pes : pesList) {
+			for (Disciplina d: pes.getDisciplinasObrigatorias()) {
+				int minIdx = vinculo.getPeriodoAtual();
+				for (int i = vinculo.getPeriodoAtual()+1; i < chs.size(); ++i) {
+					if (chs.get(i) < chs.get(minIdx)) {
+						minIdx = i;
+					}
+				}
+				if (!disciplinas.contains(d)) {
+					disciplinas.add(d);
+					planoCurso.getDisciplinasPendentes().add(new DisciplinaPeriodo(d, minIdx));
+					chs.set(minIdx, chs.get(minIdx)+d.getCh());
+				}
+			}
+		}
+		planoCurso.getPesInteresse().addAll(pesList);
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso removeInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<Pes> pesList = pesService.findByIds(pesIds);
+		List<DisciplinaPeriodo> to_remove = new ArrayList<>();
+		for (Pes pes : pesList) {
+			for (Disciplina d: pes.getDisciplinasObrigatorias()) {
+				for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+					if (dp.getDisciplina() == d) {
+						to_remove.add(dp);
+					}
+				}
+			}
+			to_remove.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		}
+		pesList.forEach(planoCurso.getPesInteresse()::remove);
+		return repository.save(planoCurso);
 	}
 
 }
