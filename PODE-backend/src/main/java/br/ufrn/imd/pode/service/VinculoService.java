@@ -93,6 +93,7 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	@Override
 	public VinculoDTO validate(VinculoDTO dto) {
 		// TODO validação
+		// TODO: verificar se enfase é válida para o curso indicado
 		return dto;
 	}
 
@@ -144,6 +145,13 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 		Vinculo vinculo = this.findById(vinculoId);
 		Enfase enfase = this.enfaseService.findById(enfaseId);
 		vinculo.setEnfase(enfase);
+		vinculo.setPlanoCurso(planoCursoService.alterarPlanoCursoEnfase(vinculo.getPlanoCurso(), enfase));
+		return repository.save(vinculo);
+	}
+
+	public Vinculo atualizaPeriodoAtual(Long vinculoId, Integer periodoNovo) {
+		Vinculo vinculo = this.findById(vinculoId);
+		vinculo.setPeriodoAtual(periodoNovo);
 		return repository.save(vinculo);
 	}
 }

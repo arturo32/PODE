@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -123,13 +124,14 @@ public class RecomendacaoService {
 		}
 	}
 
-	public Set<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(long id_vinculo) {
+	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(long id_vinculo) {
 		Vinculo vinculo = vinculoService.findById(id_vinculo);
 		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(id_vinculo);
 		return planoCurso.getDisciplinasPendentes().stream().
 				filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual()).
 				collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto).
-				collect(Collectors.toSet());
+				sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).
+				collect(Collectors.toList());
 	}
 
 }

@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
+import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.*;
@@ -232,9 +233,22 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
+
+		for (DisciplinaPeriodoDTO dp: disciplinasPeriodoDTOS) {
+			Disciplina d =disciplinaService.findById(dp.getIdDisciplina());
+			if (disciplinaService.checarPrerequisitos(planoCurso.getDisciplinasCursadas()
+					.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet()), d)) {
+				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
+			} else {
+				// TODO: capturar todas as disciplinas sem prerequisitos atendidos e lançar uma excessão no final
+				throw new PrerequisitosNaoAtendidosException("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
+			}
+
+		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
+		// TODO adicionar validação de que as disciplinas cursadas são equivalentes a alguma pendente do plano de curso
 		List<Disciplina> disciplinas = disciplinasPeriodo.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
 		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
@@ -249,7 +263,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
 		return repository.save(planoCurso);
 	}
@@ -257,7 +271,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
 		return repository.save(planoCurso);
 	}
@@ -300,6 +314,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso removeInteressePes(Long planoCursoId, List<Long> pesIds) {
+		// TODO: verificar se alguns dos PES restantes não teve nenhuma disciplina removida com a remoção dos outros PES
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		List<Pes> pesList = pesService.findByIds(pesIds);
 		List<DisciplinaPeriodo> to_remove = new ArrayList<>();
@@ -317,4 +332,11 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
+	public PlanoCurso alterarPlanoCursoEnfase(PlanoCurso planoCurso, Enfase enfase) {
+		Set<DisciplinaPeriodo> obrigatoriasEnfase = new HashSet<>(enfase.getDisciplinasObrigatorias());
+		obrigatoriasEnfase.removeAll(planoCurso.getDisciplinasCursadas());
+		// TODO remover as equivalentes também
+		planoCurso.setDisciplinasPendentes(obrigatoriasEnfase);
+		return repository.save(planoCurso);
+	}
 }

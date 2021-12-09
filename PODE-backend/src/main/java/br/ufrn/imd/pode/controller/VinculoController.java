@@ -28,9 +28,15 @@ public class VinculoController extends GenericController<Vinculo, VinculoDTO, Lo
 		return this.service;
 	}
 
-	@PostMapping("{id}/mudaEnfase/{enfase_id}")
+	@PostMapping("/{id}/mudaEnfase/{enfase_id}")
 	public ResponseEntity<VinculoDTO> mudaEnfase(@PathVariable Long id, @PathVariable Long enfase_id) {
 		return ResponseEntity.ok(service.convertToDto(service.mudaEnfase(id, enfase_id)));
 	}
+
+	@PostMapping("/{id}/atualizaPeriodo/{periodo}")
+	public ResponseEntity<VinculoDTO> mudaEnfase(@PathVariable Long id, @PathVariable Integer periodo) {
+		return ResponseEntity.ok(service.convertToDto(service.atualizaPeriodoAtual(id, periodo)));
+	}
+
 
 }

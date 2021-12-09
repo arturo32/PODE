@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,12 +18,12 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 	protected abstract GenericService<T, Dto, PK> service();
 
 	@GetMapping
-	public ResponseEntity<List<Dto>> findList(@RequestParam("limit") Optional<Integer> limite,
+	public ResponseEntity<Collection<Dto>> findList(@RequestParam("limit") Optional<Integer> limite,
 	                                          @RequestParam("page") Optional<Integer> pagina,
 	                                          @RequestParam("ids") Optional<List<PK>> ids,
 	                                          @RequestParam("start") Optional<PK> start,
 	                                          @RequestParam("end") Optional<PK> end) {
-		ResponseEntity<List<Dto>> result;
+		ResponseEntity<Collection<Dto>> result;
 		if (limite.isPresent() && pagina.isPresent()) {
 			result = ResponseEntity.ok(service().convertToDTOList(service().findAll(limite.get(), pagina.get())));
 		} else if (ids.isPresent()) {

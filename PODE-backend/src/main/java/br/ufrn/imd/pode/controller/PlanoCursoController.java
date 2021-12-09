@@ -28,27 +28,27 @@ public class PlanoCursoController extends GenericController<PlanoCurso, PlanoCur
 		return this.service;
 	}
 
-	@PostMapping("{id}/adicionaDisciplinaCursada")
+	@PostMapping("/{id}/adicionaDisciplinaCursada")
 	public ResponseEntity<PlanoCursoDTO> adicionaDisciplinaCursada(@PathVariable Long id, @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		return ResponseEntity.ok(service.convertToDto(service.adicionaDisciplinaCursada(id, disciplinasPeriodoDTOS)));
 	}
 
-	@PostMapping("{id}/adicionaDisciplinaPendente")
+	@PostMapping("/{id}/adicionaDisciplinaPendente")
 	public ResponseEntity<PlanoCursoDTO> adicionaDisciplinaPendente(@PathVariable Long id, @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		return ResponseEntity.ok(service.convertToDto(service.adicionaDisciplinaPendente(id, disciplinasPeriodoDTOS)));
 	}
 
-	@PostMapping("{id}/removeDisciplinaPendente")
+	@PostMapping("/{id}/removeDisciplinaPendente")
 	public ResponseEntity<PlanoCursoDTO> removeDisciplinaPendente(@PathVariable Long id, @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		return ResponseEntity.ok(service.convertToDto(service.removeDisciplinaPendente(id, disciplinasPeriodoDTOS)));
 	}
 
-	@PostMapping("{id}/adicionaPes")
+	@PostMapping("/{id}/adicionaPes")
 	public ResponseEntity<PlanoCursoDTO> adicionaInteressePes(@PathVariable Long id, @RequestBody List<Long> pesIds) {
 		return ResponseEntity.ok(service.convertToDto(service.adicionaInteressePes(id, pesIds)));
 	}
 
-	@PostMapping("{id}/removePes")
+	@PostMapping("/{id}/removePes")
 	public ResponseEntity<PlanoCursoDTO> removeInteressePes(@PathVariable Long id, @RequestBody List<Long> pesIds) {
 		return ResponseEntity.ok(service.convertToDto(service.removeInteressePes(id, pesIds)));
 	}
