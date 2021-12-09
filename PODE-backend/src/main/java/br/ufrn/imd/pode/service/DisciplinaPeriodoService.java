@@ -5,6 +5,7 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import br.ufrn.imd.pode.model.PlanoCurso;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.repository.DisciplinaPeriodoRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,6 +23,7 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 
 	private DisciplinaPeriodoRepository repository;
 	private DisciplinaService disciplinaService;
+	private PlanoCursoService planoCursoService;
 
 	@Override
 	public DisciplinaPeriodoDTO convertToDto(DisciplinaPeriodo disciplinaPeriodo) {
@@ -76,6 +81,15 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		this.disciplinaService = disciplinaService;
 	}
 
+	public PlanoCursoService getPlanoCursoService() {
+		return planoCursoService;
+	}
+
+	@Autowired
+	public void setPlanoCursoService(PlanoCursoService planoCursoService) {
+		this.planoCursoService = planoCursoService;
+	}
+
 	@Override
 	public DisciplinaPeriodoDTO validate(DisciplinaPeriodoDTO disciplinaPeriodo) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -103,5 +117,17 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		}
 	}
 
+	public List<DisciplinaPeriodo> disciplinaPendentesPlanoCurso(Long planoCursoId) {
+		PlanoCurso planoCurso = planoCursoService.findById(planoCursoId);
+		List<DisciplinaPeriodo> pendentes = new ArrayList<>(planoCurso.getDisciplinasPendentes());
+		pendentes.sort((d1, d2) -> -d2.getPeriodo().compareTo(d1.getPeriodo()));
+		return pendentes;
+	}
 
+	public List<DisciplinaPeriodo> disciplinaCursadasPlanoCurso(Long planoCursoId) {
+		PlanoCurso planoCurso = planoCursoService.findById(planoCursoId);
+		List<DisciplinaPeriodo> pendentes = new ArrayList<>(planoCurso.getDisciplinasCursadas());
+		pendentes.sort((d1, d2) -> -d2.getPeriodo().compareTo(d1.getPeriodo()));
+		return pendentes;
+	}
 }

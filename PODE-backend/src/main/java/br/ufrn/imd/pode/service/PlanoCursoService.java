@@ -236,6 +236,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
+		// TODO adicionar validação de que as disciplinas cursadas são equivalentes a alguma pendente do plano de curso
 		List<Disciplina> disciplinas = disciplinasPeriodo.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
 		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
@@ -319,4 +320,11 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
+	public PlanoCurso alterarPlanoCursoEnfase(PlanoCurso planoCurso, Enfase enfase) {
+		Set<DisciplinaPeriodo> obrigatoriasEnfase = new HashSet<>(enfase.getDisciplinasObrigatorias());
+		obrigatoriasEnfase.removeAll(planoCurso.getDisciplinasCursadas());
+		// TODO remover as equivalentes também
+		planoCurso.setDisciplinasPendentes(obrigatoriasEnfase);
+		return repository.save(planoCurso);
+	}
 }
