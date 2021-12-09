@@ -120,7 +120,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
 		if (StringUtils.isEmpty(expressao)) {
-			return false;
+			return true;
 		}
 		return checarPrerequisitos(codigos, expressao);
 	}

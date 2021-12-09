@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,5 +130,10 @@ public class DisciplinaPeriodoService extends GenericService<DisciplinaPeriodo, 
 		List<DisciplinaPeriodo> pendentes = new ArrayList<>(planoCurso.getDisciplinasCursadas());
 		pendentes.sort((d1, d2) -> -d2.getPeriodo().compareTo(d1.getPeriodo()));
 		return pendentes;
+	}
+
+	public DisciplinaPeriodo getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer periodo, Long disciplinaId) {
+		Optional<DisciplinaPeriodo> opt = repository.findByAtivoIsTrueAndPeriodoAndDisciplina_Id(periodo, disciplinaId);
+		return opt.orElseGet(() -> repository.save(new DisciplinaPeriodo(disciplinaService.findById(disciplinaId), periodo)));
 	}
 }

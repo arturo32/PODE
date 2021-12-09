@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
+import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.*;
@@ -231,9 +232,20 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
-		// TODO adicionar validação de que as disciplinas indicadas como cursadas tem todos os pre requisitos atendidos
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
+
+		for (DisciplinaPeriodoDTO dp: disciplinasPeriodoDTOS) {
+			Disciplina d =disciplinaService.findById(dp.getIdDisciplina());
+			if (disciplinaService.checarPrerequisitos(planoCurso.getDisciplinasCursadas()
+					.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet()), d)) {
+				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
+			} else {
+				// TODO: capturar todas as disciplinas sem prerequisitos atendidos e lançar uma excessão no final
+				throw new PrerequisitosNaoAtendidosException("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
+			}
+
+		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
 		// TODO adicionar validação de que as disciplinas cursadas são equivalentes a alguma pendente do plano de curso
