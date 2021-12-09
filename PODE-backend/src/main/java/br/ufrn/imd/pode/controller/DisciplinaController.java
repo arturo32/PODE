@@ -8,6 +8,7 @@ import br.ufrn.imd.pode.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class DisciplinaController extends GenericController<Disciplina, Discipli
 	}
 
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(String codigo) {
+	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {
 		return ResponseEntity.ok(service.convertToDTOList(service.findDisciplinasByCodigo(codigo)));
 	}
 
