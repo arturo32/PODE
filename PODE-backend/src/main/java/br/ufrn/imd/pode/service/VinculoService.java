@@ -140,13 +140,18 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 		return entity.get();
 	}
 
-
 	public Vinculo mudaEnfase(Long vinculoId, Long enfaseId) {
 		//TODO checar se enfase é válida para o curso indicado no vinculo
 		Vinculo vinculo = this.findById(vinculoId);
 		Enfase enfase = this.enfaseService.findById(enfaseId);
 		vinculo.setEnfase(enfase);
 		vinculo.setPlanoCurso(planoCursoService.alterarPlanoCursoEnfase(vinculo.getPlanoCurso(), enfase));
+		return repository.save(vinculo);
+	}
+
+	public Vinculo atualizaPeriodoAtual(Long vinculoId, Integer periodoNovo) {
+		Vinculo vinculo = this.findById(vinculoId);
+		vinculo.setPeriodoAtual(periodoNovo);
 		return repository.save(vinculo);
 	}
 }

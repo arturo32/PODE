@@ -36,7 +36,7 @@ public class RecomendacaoController {
 	}
 
 	@GetMapping("/disciplinas-por-plano-de-curso/{id_vinculo}")
-	public Set<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(
+	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(
 			@PathVariable(value = "id_vinculo") long id_vinculo) {
 		return this.service.recomendarDisciplinasPorPlanoDeCurso(id_vinculo);
 	}
