@@ -6,8 +6,15 @@ import br.ufrn.imd.pode.service.DisciplinaService;
 import br.ufrn.imd.pode.service.GenericService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/disciplina")
@@ -29,5 +36,9 @@ public class DisciplinaController extends GenericController<Disciplina, Discipli
 		return this.service;
 	}
 
+	@GetMapping("/{codigo}")
+	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(String codigo) {
+		return ResponseEntity.ok(service.convertToDTOList(service.findDisciplinasByCodigo(codigo)));
+	}
 
 }

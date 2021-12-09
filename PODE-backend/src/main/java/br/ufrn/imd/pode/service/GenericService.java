@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,11 +37,11 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public abstract Dto validate(Dto dto);
 
-	public List<Dto> convertToDTOList(List<T> entities) {
+	public Collection<Dto> convertToDTOList(Collection<T> entities) {
 		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
-	public List<T> convertToEntityList(List<Dto> dtos) {
+	public Collection<T> convertToEntityList(Collection<Dto> dtos) {
 		return dtos.stream().map(this::convertToEntity).collect(Collectors.toList());
 	}
 

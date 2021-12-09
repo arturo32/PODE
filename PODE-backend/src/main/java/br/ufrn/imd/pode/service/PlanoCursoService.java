@@ -233,7 +233,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO adicionar validação de que as disciplinas indicadas como cursadas tem todos os pre requisitos atendidos
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
 		// TODO adicionar validação de que as disciplinas cursadas são equivalentes a alguma pendente do plano de curso
@@ -251,7 +251,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
 		return repository.save(planoCurso);
 	}
@@ -259,7 +259,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
 		return repository.save(planoCurso);
 	}

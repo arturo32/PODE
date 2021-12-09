@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -31,12 +32,12 @@ public class DisciplinaPeriodoController extends GenericController<DisciplinaPer
 	}
 
 	@GetMapping("/planocurso/{planoCursoId}/pendentes")
-	public ResponseEntity<List<DisciplinaPeriodoDTO>> disciplinaPendentesPlanoCurso(Long planoCursoId) {
+	public ResponseEntity<Collection<DisciplinaPeriodoDTO>> disciplinaPendentesPlanoCurso(Long planoCursoId) {
 		return ResponseEntity.ok(service.convertToDTOList(service.disciplinaPendentesPlanoCurso(planoCursoId)));
 	}
 
 	@GetMapping("/planocurso/{planoCursoId}/cursadas")
-	public ResponseEntity<List<DisciplinaPeriodoDTO>> disciplinaCursadasPlanoCurso(Long planoCursoId) {
+	public ResponseEntity<Collection<DisciplinaPeriodoDTO>> disciplinaCursadasPlanoCurso(Long planoCursoId) {
 		return ResponseEntity.ok(service.convertToDTOList(service.disciplinaCursadasPlanoCurso(planoCursoId)));
 	}
 }
