@@ -29,6 +29,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	private DisciplinaService disciplinaService;
 	private PesService pesService;
 	private VinculoService vinculoService;
+	private EnfaseService enfaseService;
 
 	@Override
 	public PlanoCursoDTO convertToDto(PlanoCurso planoCurso) {
@@ -147,6 +148,15 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		this.vinculoService = vinculoService;
 	}
 
+	public EnfaseService getEnfaseService() {
+		return enfaseService;
+	}
+
+	@Autowired
+	public void setEnfaseService(EnfaseService enfaseService) {
+		this.enfaseService = enfaseService;
+	}
+
 	@Override
 	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -244,6 +254,14 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
+	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		// TODO: validação de tempo minimo por semestre
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		return repository.save(planoCurso);
+	}
+
 	public List<Integer> cargaHorariaPeriodos(PlanoCurso planoCurso, Vinculo vinculo) {
 		List<Integer> result = new ArrayList<>(Collections.nCopies(vinculo.getCurso().getPrazoMaximo(), 0));
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasCursadas()) {
@@ -278,6 +296,24 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 			}
 		}
 		planoCurso.getPesInteresse().addAll(pesList);
+		return repository.save(planoCurso);
+	}
+
+	public PlanoCurso removeInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		List<Pes> pesList = pesService.findByIds(pesIds);
+		List<DisciplinaPeriodo> to_remove = new ArrayList<>();
+		for (Pes pes : pesList) {
+			for (Disciplina d: pes.getDisciplinasObrigatorias()) {
+				for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
+					if (dp.getDisciplina() == d) {
+						to_remove.add(dp);
+					}
+				}
+			}
+			to_remove.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		}
+		pesList.forEach(planoCurso.getPesInteresse()::remove);
 		return repository.save(planoCurso);
 	}
 
