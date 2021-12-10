@@ -263,13 +263,15 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
+		// TODO: Verificar se a disciplina já não está planejada para algum semestre
+		// TODO: Verificar se a disciplina já não está planejada para algum semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
 		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 
 		Collection<DisciplinaPeriodo> disciplinasPeriodoValidas = new HashSet<>();
-		for (DisciplinaPeriodo dp: disciplinasPeriodo) {
-			Collection<Disciplina> disciplinasFuturamenteCursadas = planoCurso.getDisciplinasCursadas().stream().
+		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
+			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
+			Collection<Disciplina> disciplinasFuturamenteCursadas = planoCurso.getDisciplinasPendentes().stream().
 					filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() < dp.getPeriodo()).
 					map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 			disciplinasFuturamenteCursadas.addAll(disciplinasCursadas);
@@ -288,7 +290,11 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
+		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
+			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
+			disciplinasPeriodo.add(dp);
+		}
 		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
 		return repository.save(planoCurso);
 	}
