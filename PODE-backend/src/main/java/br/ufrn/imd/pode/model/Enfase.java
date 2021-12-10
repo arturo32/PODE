@@ -1,9 +1,5 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.model.interfaces.IGradeCurricularPrimaria;
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.pode.model.dto.EnfaseDTO;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "enfase")
-public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrimaria {
+public class Enfase extends AbstractModel<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ENFASE")
 	@SequenceGenerator(name = "SEQ_ENFASE", sequenceName = "id_seq_enfase", allocationSize = 1)
@@ -84,64 +80,52 @@ public class Enfase extends AbstractModel<Long> implements IGradeCurricularPrima
 		return cho_especifica;
 	}
 
-	@Override
 	public Integer getChm() {
 		return this.curso.getChm();
 	}
 
-	@Override
 	public Integer getCho() {
 		return this.curso.getCho() + this.getChEspecifica();
 	}
 
-	@Override
 	public Integer getChom() {
 		return this.curso.getChom() - this.getChEspecifica();
 	}
 
-	@Override
 	public Integer getChcm() {
 		return this.curso.getChcm();
 	}
 
-	@Override
 	public Integer getChem() {
 		return this.curso.getChem();
 	}
 
-	@Override
 	public Integer getChmaxp() {
 		return this.curso.getChmaxp();
 	}
 
-	@Override
 	public Integer getChminp() {
 		return this.curso.getChminp();
 	}
 
-	@Override
 	public Integer getPrazoMinimo() {
 		return this.curso.getPrazoMinimo();
 	}
 
-	@Override
 	public Integer getPrazoMaximo() {
 		return this.curso.getPrazoMaximo();
 	}
 
-	@Override
 	public Integer getPrazoEsperado() {
 		return this.curso.getPrazoEsperado();
 	}
 
-	@Override
 	public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
 		Set<DisciplinaPeriodo> resultado = this.curso.getDisciplinasObrigatorias();
 		resultado.addAll(this.disciplinasObrigatorias);
 		return resultado;
 	}
 
-	@Override
 	public Set<Disciplina> getDisciplinasOptativas() {
 		Set<Disciplina> resultado = this.curso.getDisciplinasOptativas();
 		Set<Disciplina> obrigatorias = new ArrayList<>(this.disciplinasObrigatorias).

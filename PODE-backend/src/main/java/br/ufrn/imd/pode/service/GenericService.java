@@ -25,6 +25,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public GenericService() {
 		this.modelName = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
+		this.modelName = this.modelName.substring(this.modelName.lastIndexOf(".")+1);
 	}
 
 	public String getModelName() {

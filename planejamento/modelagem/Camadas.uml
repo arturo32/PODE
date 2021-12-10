@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>br.ufrn.imd.pode.controller</OriginalElement>
+  <nodes>
+    <node x="2089.363686131386" y="813.3518248175184">br.ufrn.imd.pode.repository.CursoRepository</node>
+    <node x="979.5344890510944" y="625.0598540145985">br.ufrn.imd.pode.service.EstudanteService</node>
+    <node x="1254.7417883211674" y="813.3518248175184">br.ufrn.imd.pode.repository.PlanoCursoRepository</node>
+    <node x="1639.4439781021892" y="676.2379562043795">br.ufrn.imd.pode.service.DisciplinaService</node>
+    <node x="1629.9439781021892" y="167.44525547445278">br.ufrn.imd.pode.service.GenericService</node>
+    <node x="764.3271897810215" y="813.3518248175184">br.ufrn.imd.pode.repository.VinculoRepository</node>
+    <node x="1629.9439781021892" y="-215.14014598540143">br.ufrn.imd.pode.controller.GenericController</node>
+    <node x="476.7271897810215" y="53.81459854014605">br.ufrn.imd.pode.controller.AdministradorController</node>
+    <node x="2364.5885036496343" y="53.81459854014605">br.ufrn.imd.pode.controller.EnfaseController</node>
+    <node x="1433.3461678832107" y="542.578102189781">br.ufrn.imd.pode.service.DisciplinaPeriodoService</node>
+    <node x="2207.9461678832113" y="542.578102189781">br.ufrn.imd.pode.service.EnfaseService</node>
+    <node x="1450.3556569343061" y="909.1124087591243">br.ufrn.imd.pode.repository.GenericRepository</node>
+    <node x="997.5344890510944" y="813.3518248175184">br.ufrn.imd.pode.repository.EstudanteRepository</node>
+    <node x="481.5826642335763" y="813.3518248175184">br.ufrn.imd.pode.repository.AdministradorRepository</node>
+    <node x="1837.5375912408747" y="53.81459854014605">br.ufrn.imd.pode.controller.DisciplinaController</node>
+    <node x="978.5848540145977" y="53.81459854014605">br.ufrn.imd.pode.controller.EstudanteController</node>
+    <node x="1180.2417883211674" y="295.0116788321169">br.ufrn.imd.pode.service.PlanoCursoService</node>
+    <node x="2299.863686131386" y="813.3518248175184">br.ufrn.imd.pode.repository.EnfaseRepository</node>
+    <node x="466.0826642335763" y="674.5970802919708">br.ufrn.imd.pode.service.AdministradorService</node>
+    <node x="2100.5866788321155" y="53.81459854014605">br.ufrn.imd.pode.controller.CursoController</node>
+    <node x="1229.5812043795609" y="53.81459854014605">br.ufrn.imd.pode.controller.PlanoCursoController</node>
+    <node x="2528.613686131386" y="813.3518248175184">br.ufrn.imd.pode.repository.PesRepository</node>
+    <node x="101.70656934306595" y="390.9445255474453">br.ufrn.imd.pode.service.RecomendacaoService</node>
+    <node x="1797.5071167883207" y="542.578102189781">br.ufrn.imd.pode.service.CursoService</node>
+    <node x="714.3271897810215" y="390.9445255474453">br.ufrn.imd.pode.service.VinculoService</node>
+    <node x="1508.488503649634" y="53.81459854014605">br.ufrn.imd.pode.controller.DisciplinaPeriodoController</node>
+    <node x="2625.963321167882" y="625.163503649635">br.ufrn.imd.pode.service.PesService</node>
+    <node x="1520.9490875912402" y="813.3518248175184">br.ufrn.imd.pode.repository.DisciplinaPeriodoRepository</node>
+    <node x="1838.1563868613132" y="813.3518248175184">br.ufrn.imd.pode.repository.DisciplinaRepository</node>
+    <node x="2680.463321167882" y="53.81459854014602">br.ufrn.imd.pode.controller.PesController</node>
+    <node x="162.20656934306595" y="53.81459854014605">br.ufrn.imd.pode.controller.RecomendacaoController</node>
+    <node x="751.5885036496345" y="53.81459854014605">br.ufrn.imd.pode.controller.VinculoController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="br.ufrn.imd.pode.service.PesService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.0" />
+      <point x="2766.963321167882" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.DisciplinaRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="1951.1563868613132" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.PesController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="2766.963321167882" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.EstudanteService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.0" />
+      <point x="1113.5344890510944" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.AdministradorService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="614.5826642335762" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.DisciplinaService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.EstudanteController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="1092.0848540145976" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.DisciplinaPeriodoRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="1666.9490875912402" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.CursoController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="2195.0866788321155" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.EnfaseController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="2462.5885036496343" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.CursoService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="1992.5071167883207" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.CursoRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="2185.863686131386" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.DisciplinaController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="1948.0375912408747" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.VinculoService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-78.0" />
+      <point x="868.3271897810215" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.EstudanteRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="1113.5344890510944" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.PlanoCursoController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="1347.5812043795609" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.DisciplinaPeriodoService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="1592.3461678832107" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.PlanoCursoRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="1375.2417883211674" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.EnfaseService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="2402.9461678832113" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.service.PlanoCursoService" target="br.ufrn.imd.pode.service.GenericService" relationship="GENERALIZATION">
+      <point x="0.0" y="-90.0" />
+      <point x="1375.2417883211674" y="259.98686131386864" />
+      <point x="1771.4439781021892" y="259.98686131386864" />
+      <point x="0.0" y="30.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.VinculoRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="868.3271897810215" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.AdministradorController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="607.2271897810215" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.PesRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="2615.113686131386" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.VinculoController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="853.0885036496345" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.EnfaseRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="2400.363686131386" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.repository.AdministradorRepository" target="br.ufrn.imd.pode.repository.GenericRepository" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-16.5" />
+      <point x="614.5826642335762" y="870.9722627737227" />
+      <point x="1587.3556569343061" y="870.9722627737227" />
+      <point x="0.0" y="16.5" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.controller.DisciplinaPeriodoController" target="br.ufrn.imd.pode.controller.GenericController" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="1651.988503649634" y="-135.77080291970796" />
+      <point x="1784.9439781021892" y="-135.77080291970796" />
+      <point x="0.0" y="16.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6656948493683188" showDependencies="false" x="1533.5" y="341.9503649635036" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

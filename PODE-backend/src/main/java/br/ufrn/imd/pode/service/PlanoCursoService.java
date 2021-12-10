@@ -235,10 +235,12 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
 
+		Set<Disciplina> cursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+
 		for (DisciplinaPeriodoDTO dp: disciplinasPeriodoDTOS) {
 			Disciplina d =disciplinaService.findById(dp.getIdDisciplina());
-			if (disciplinaService.checarPrerequisitos(planoCurso.getDisciplinasCursadas()
-					.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet()), d)) {
+			if (disciplinaService.checarPrerequisitos(cursadas, d)) {
+				cursadas.add(d);
 				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
 			} else {
 				// TODO: capturar todas as disciplinas sem prerequisitos atendidos e lançar uma excessão no final
@@ -248,11 +250,10 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
-		// TODO adicionar validação de que as disciplinas cursadas são equivalentes a alguma pendente do plano de curso
-		List<Disciplina> disciplinas = disciplinasPeriodo.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
+		Set<Disciplina> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
-			if (!disciplinas.contains(dp.getDisciplina())) {
+			if (!disciplinas.contains(dp.getDisciplina()) && !disciplinaService.checarEquivalencia(disciplinas, dp.getDisciplina())) {
 				pendentes.add(dp);
 			}
 		}
@@ -262,16 +263,38 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
+		// TODO: Verificar se a disciplina já não está planejada para algum semestre
+		// TODO: Verificar se a disciplina já não está planejada para algum semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
-		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
+		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+
+		Collection<DisciplinaPeriodo> disciplinasPeriodoValidas = new HashSet<>();
+		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
+			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
+			Collection<Disciplina> disciplinasFuturamenteCursadas = planoCurso.getDisciplinasPendentes().stream().
+					filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() < dp.getPeriodo()).
+					map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+			disciplinasFuturamenteCursadas.addAll(disciplinasCursadas);
+			if (disciplinaService.checarPrerequisitos(disciplinasFuturamenteCursadas, dp.getDisciplina())) {
+				disciplinasPeriodoValidas.add(dp);
+			} else {
+				// TODO: Agrupar as exceções antes de enviá-las
+				throw new PrerequisitosNaoAtendidosException("Os pre-requisitos necessários para a disciplina '" +
+						dp.getDisciplina().getCodigo() + "' não serão atendidos. Expressão: " + dp.getDisciplina().getPrerequisitos());
+			}
+		}
+		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodoValidas);
 		return repository.save(planoCurso);
 	}
 
 	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
-		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
+		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
+			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
+			disciplinasPeriodo.add(dp);
+		}
 		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
 		return repository.save(planoCurso);
 	}
@@ -334,9 +357,14 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso alterarPlanoCursoEnfase(PlanoCurso planoCurso, Enfase enfase) {
 		Set<DisciplinaPeriodo> obrigatoriasEnfase = new HashSet<>(enfase.getDisciplinasObrigatorias());
-		obrigatoriasEnfase.removeAll(planoCurso.getDisciplinasCursadas());
-		// TODO remover as equivalentes também
-		planoCurso.setDisciplinasPendentes(obrigatoriasEnfase);
+		Set<Disciplina> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
+		for (DisciplinaPeriodo dp: obrigatoriasEnfase) {
+			if (!disciplinas.contains(dp.getDisciplina()) && !disciplinaService.checarEquivalencia(disciplinas, dp.getDisciplina())) {
+				pendentes.add(dp);
+			}
+		}
+		planoCurso.setDisciplinasPendentes(pendentes);
 		return repository.save(planoCurso);
 	}
 }
