@@ -265,7 +265,23 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		// TODO: validação de tempo maximo por semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = disciplinaPeriodoService.convertToEntityList(disciplinasPeriodoDTOS);
-		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodo);
+		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+
+		Collection<DisciplinaPeriodo> disciplinasPeriodoValidas = new HashSet<>();
+		for (DisciplinaPeriodo dp: disciplinasPeriodo) {
+			Collection<Disciplina> disciplinasFuturamenteCursadas = planoCurso.getDisciplinasCursadas().stream().
+					filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() < dp.getPeriodo()).
+					map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+			disciplinasFuturamenteCursadas.addAll(disciplinasCursadas);
+			if (disciplinaService.checarPrerequisitos(disciplinasFuturamenteCursadas, dp.getDisciplina())) {
+				disciplinasPeriodoValidas.add(dp);
+			} else {
+				// TODO: Agrupar as exceções antes de enviá-las
+				throw new PrerequisitosNaoAtendidosException("Os pre-requisitos necessários para a disciplina '" +
+						dp.getDisciplina().getCodigo() + "' não serão atendidos. Expressão: " + dp.getDisciplina().getPrerequisitos());
+			}
+		}
+		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodoValidas);
 		return repository.save(planoCurso);
 	}
 
@@ -335,9 +351,14 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso alterarPlanoCursoEnfase(PlanoCurso planoCurso, Enfase enfase) {
 		Set<DisciplinaPeriodo> obrigatoriasEnfase = new HashSet<>(enfase.getDisciplinasObrigatorias());
-		obrigatoriasEnfase.removeAll(planoCurso.getDisciplinasCursadas());
-		// TODO remover as equivalentes também
-		planoCurso.setDisciplinasPendentes(obrigatoriasEnfase);
+		Set<Disciplina> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
+		for (DisciplinaPeriodo dp: obrigatoriasEnfase) {
+			if (!disciplinas.contains(dp.getDisciplina()) && !disciplinaService.checarEquivalencia(disciplinas, dp.getDisciplina())) {
+				pendentes.add(dp);
+			}
+		}
+		planoCurso.setDisciplinasPendentes(pendentes);
 		return repository.save(planoCurso);
 	}
 }
