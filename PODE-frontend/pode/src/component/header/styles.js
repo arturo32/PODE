@@ -5,6 +5,24 @@ export const css = {
     title: {
         flexGrow: 1,
         fontFamily: '"AlegreyaSans - Medium", sans-serif',
+        ['@media (max-width:600px)']: {
+            textAlign: 'center',
+        },
+    },
+    toolbar: {
+        ['@media (max-width:600px)']: {
+            flexDirection: 'column',
+            padding: '10px',
+        },
+    },
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+        ['@media (max-width:600px)']: {
+            width: '100%',
+            justifyContent: 'space-evenly',
+            marginTop: '10px',
+        },
     },
     login: {
         marginLeft: '1em',

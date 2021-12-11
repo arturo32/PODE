@@ -19,12 +19,14 @@ const Header = () => {
         <Box sx={css.bar}>
             <ThemeProvider theme={generic}>
                 <AppBar position="static" color="primary">
-                    <Toolbar>
+                    <Toolbar sx={css.toolbar}>
                         <Typography variant="h6" component="div" sx={css.title}>
                             Plataforma de Organização de Disciplinas do Estudante
                         </Typography>
-                        <Button component={Link} to="/entrar" color="inherit" sx={css.login}>ENTRAR</Button>
-                        <Button component={Link} to="/cadastrar" color="inherit" sx={css.register}>CADASTRAR</Button>
+                        <Box sx={css.buttons}>
+                            <Button component={Link} to="/entrar" color="inherit" sx={css.login}>ENTRAR</Button>
+                            <Button component={Link} to="/cadastrar" color="inherit" sx={css.register}>CADASTRAR</Button>
+                        </Box>
                     </Toolbar>
                 </AppBar>
             </ThemeProvider>
