@@ -15,7 +15,7 @@ import MaskPeriod from '../../component/mask/period';
 
 import { validateEmail, validatePassword, validatePeriod, validateGeneric } from '../../util/validation';
 
-import { create } from './service';
+import { create, createVinculo } from './service';
 
 import { css } from './styles';
 
@@ -30,8 +30,15 @@ const Register = () => {
     const [periodoAtual, setPeriodoAtual] = useState('');
 
     const submit = () => {
-        create({email, senha, nome, matricula, curso, periodoInicial, periodoAtual})
+        create({email, senha, nome})
             .then(response => {
+                if(response.status === 200){
+                    createVinculo({'id-estudante': response.data.id, 'id-curso': 1, matricula, periodoInicial, periodoAtual})
+                        .then(response => {
+                            console.log(response);
+                        }
+                    );
+                }
                 console.log(response);
             })
             .catch(error => {
