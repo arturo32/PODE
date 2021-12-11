@@ -20,7 +20,7 @@ const Header = () => {
             <ThemeProvider theme={generic}>
                 <AppBar position="static" color="primary">
                     <Toolbar sx={css.toolbar}>
-                        <Typography variant="h6" component="div" sx={css.title}>
+                        <Typography component={Link} to={"/"} variant="h6" sx={css.title} >
                             Plataforma de Organização de Disciplinas do Estudante
                         </Typography>
                         <Box sx={css.buttons}>

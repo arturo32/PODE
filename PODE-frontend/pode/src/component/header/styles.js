@@ -5,6 +5,8 @@ export const css = {
     title: {
         flexGrow: 1,
         fontFamily: '"AlegreyaSans - Medium", sans-serif',
+        textDecoration: 'none',
+        color: 'white',
         ['@media (max-width:600px)']: {
             textAlign: 'center',
         },

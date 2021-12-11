@@ -1,7 +1,13 @@
 export const css = {
+    grid: {
+        fontFamily: '"SourceSansPro - Regular", Helvetica, Arial, sans-serif',
+        marginTop: '20%',
+    },
+    title: {
+        fontSize: '9em',
+        color: '#F25C05',
+    },
     paragraph: {
-        marginTop: '4em',
-        textIndent: '2em',
-        fontFamily: '"AlegreyaSans - Regular", sans-serif',
+        fontSize: '1.1em'
     },
 };

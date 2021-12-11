@@ -16,9 +16,15 @@ const Home = () => {
     return (
         <Page
             component={
-                <Grid container={true} spacing={3}>
-                    <Grid item={true} xs={12} sm={12} md={12} lg={6} xl={6}>
-                        <Typography paragraph={true} sx={css.paragraph}>
+                <Grid container={true} spacing={3} sx={css.grid} justifyContent="center"
+                      alignItems="center">
+                    <Grid item={true} xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Typography component={'div'} sx={css.title} >
+                            PODE
+                        </Typography>
+                    </Grid>
+                    <Grid item={true}  xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Typography paragraph={true} sx={css.paragraph}  >
                             Bem vindo(a) à Plataforma de Organização de Disciplinas do Estudante - PODE. Essa tem como objetivo auxiliar o aluno de Tecnologia da Informação da Universidade Federal do Rio Grande do Norte - UFRN na construção de um planejamento de disciplinas a serem cursadas, seja considerando a grade curricular padrão, ênfase (Desenvolvimento de Software ou Ciencia da Computação) e Programa de Estudos Secundários do Instituto Metrópole Digital (PES/IMD).
                         </Typography>
                     </Grid>
