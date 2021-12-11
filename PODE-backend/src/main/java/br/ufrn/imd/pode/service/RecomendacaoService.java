@@ -3,17 +3,18 @@ package br.ufrn.imd.pode.service;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.Disciplina;
-import br.ufrn.imd.pode.model.PlanoCurso;
-import br.ufrn.imd.pode.model.Vinculo;
+import br.ufrn.imd.pode.model.*;
+import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.RecomendacaoDTO;
 import br.ufrn.imd.pode.model.others.PesChobCumpridaResult;
 import br.ufrn.imd.pode.model.others.PesChopCumpridaResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -79,7 +80,7 @@ public class RecomendacaoService {
 		}
 	}
 
-	public RecomendacaoDTO recomendarDisciplinasPorProximidadeConclusaoPes(long vinculoId) {
+	public RecomendacaoDTO recomendarDisciplinasPorProximidadeConclusaoPesOld(long vinculoId) {
 		/* Etapa 1 - Buscar os pes com carga horária obrigatória cumprida */
 		List<PesChobCumpridaResult> pesComChobCumprida = this.pesService.getRepository()
 				.findPesComChobCumpridaByVinculo(vinculoId);
@@ -124,14 +125,51 @@ public class RecomendacaoService {
 		}
 	}
 
-	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(long id_vinculo) {
-		Vinculo vinculo = vinculoService.findById(id_vinculo);
-		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(id_vinculo);
+	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(Long idVinculo) {
+		Vinculo vinculo = vinculoService.findById(idVinculo);
+		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(idVinculo);
 		return planoCurso.getDisciplinasPendentes().stream().
 				filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtualPeriodo()).
 				collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto).
 				sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).
 				collect(Collectors.toList());
+	}
+
+	public List<DisciplinaDTO> recomendarDisciplinasPorProximidadeConclusaoPes(Long idVinculo) {
+		List<Disciplina> recomendadas = new ArrayList<>();
+		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(idVinculo);
+		Set<Disciplina> cursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+		List<Pes> pesList = pesService.findAll(10,0);
+		int bestCompletion = 0;
+		for (Pes pes: pesList) {
+			int pesConclusion = 0;
+			List<Disciplina> disciplinasRestantes = new ArrayList<>();
+			Set<Disciplina> obrigatorias = pes.getDisciplinasObrigatorias();
+			for (Disciplina d: obrigatorias) {
+				if (cursadas.contains(d) || disciplinaService.checarEquivalencia(cursadas, d)){
+					pesConclusion += 1;
+				} else {
+					disciplinasRestantes.add(d);
+				}
+			}
+			Set<Disciplina> optativas = pes.getDisciplinasOptativas();
+			for (Disciplina d: optativas) {
+				if (cursadas.contains(d) || disciplinaService.checarEquivalencia(cursadas, d)){
+					pesConclusion += 1;
+				} else {
+					disciplinasRestantes.add(d);
+				}
+			}
+			if (pesConclusion <= pes.getChm() && pesConclusion >= pes.getChm() / 2) {
+				if (pesConclusion > bestCompletion) {
+					bestCompletion = pesConclusion;
+					recomendadas.clear();
+					recomendadas.addAll(disciplinasRestantes);
+				}
+			}
+		}
+
+		return new ArrayList<>(disciplinaService.convertToDTOList(recomendadas));
 	}
 
 }

@@ -260,7 +260,6 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
 		// TODO: Verificar se a disciplina já não está planejada para algum semestre
-		// TODO: Verificar se a disciplina já não está planejada para algum semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 
