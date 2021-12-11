@@ -26,14 +26,17 @@ const Register = () => {
     const [nome, setNome] = useState('');
     const [matricula, setMatricula] = useState('');
     const [curso, setCurso] = useState('BTI');
-    const [periodoInicial, setPeriodoInicial] = useState('');
-    const [periodoAtual, setPeriodoAtual] = useState('');
+    const [periodoInicialAno, setPeriodoInicialAno] = useState('');
+    const [periodoInicialPeriodo, setPeriodoInicialPeriodo] = useState('');
+    const [periodoAtualAno, setPeriodoAtualAno] = useState('');
+    const [periodoAtualPeriodo, setPeriodoAtualPeriodo] = useState('');
 
     const submit = () => {
         create({email, senha, nome})
             .then(response => {
                 if(response.status === 200){
-                    createVinculo({'id-estudante': response.data.id, 'id-curso': 1, matricula, periodoInicial, periodoAtual})
+                    createVinculo({'idEstudante': response.data.id, 'idCurso': 1, matricula,
+                        periodoInicialAno, periodoInicialPeriodo, periodoAtualAno, periodoAtualPeriodo})
                         .then(response => {
                             console.log(response);
                         }
@@ -127,34 +130,70 @@ const Register = () => {
                                     </TextField>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <TextField
-                                        type="text"
-                                        value={periodoInicial}
-                                        onChange={event => setPeriodoInicial(event.target.value)}
-                                        label="Semestre de entrada"
-                                        variant="outlined"
-                                        InputProps={{
-                                            inputComponent: MaskPeriod,
-                                        }}
-                                        InputLabelProps={{ shrink: true }}
-                                        required={true}
-                                        fullWidth={true}
-                                    />
+                                    <Grid container={true} spacing={1}>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                type="text"
+                                                value={periodoInicialAno}
+                                                onChange={event => setPeriodoInicialAno(event.target.value)}
+                                                label="Período de entrada (ano)"
+                                                placeholder={'0000'}
+                                                variant="outlined"
+                                                InputProps={{
+                                                    inputComponent: MaskPeriod,
+                                                }}
+                                                InputLabelProps={{ shrink: true }}
+                                                required={true}
+                                                fullWidth={true}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                    type="text"
+                                                    value={periodoInicialPeriodo}
+                                                    onChange={event => setPeriodoInicialPeriodo(event.target.value)}
+                                                    label="Período de entrada (semestre)"
+                                                    placeholder={'0'}
+                                                    variant="outlined"
+                                                    InputLabelProps={{ shrink: true }}
+                                                    required={true}
+                                                    fullWidth={true}
+                                            />
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <TextField
-                                        type="text"
-                                        value={periodoAtual}
-                                        onChange={event => setPeriodoAtual(event.target.value)}
-                                        label="Período atual"
-                                        variant="outlined"
-                                        InputProps={{
-                                            inputComponent: MaskPeriod,
-                                        }}
-                                        InputLabelProps={{ shrink: true }}
-                                        required={true}
-                                        fullWidth={true}
-                                    />
+                                    <Grid container={true} spacing={1}>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                    type="text"
+                                                    value={periodoAtualAno}
+                                                    onChange={event => setPeriodoAtualAno(event.target.value)}
+                                                    label="Período atual (ano)"
+                                                    placeholder={'0000'}
+                                                    variant="outlined"
+                                                    InputProps={{
+                                                        inputComponent: MaskPeriod,
+                                                    }}
+                                                    InputLabelProps={{ shrink: true }}
+                                                    required={true}
+                                                    fullWidth={true}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextField
+                                                    type="text"
+                                                    value={periodoAtualPeriodo}
+                                                    onChange={event => setPeriodoAtualPeriodo(event.target.value)}
+                                                    label="Período atual (semestre)"
+                                                    placeholder={'0'}
+                                                    variant="outlined"
+                                                    InputLabelProps={{ shrink: true }}
+                                                    required={true}
+                                                    fullWidth={true}
+                                            />
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <Button
@@ -165,8 +204,8 @@ const Register = () => {
                                             !validatePassword(senha) ||
                                             !validateGeneric(nome) ||
                                             !validateGeneric(matricula) ||
-                                            !validatePeriod(periodoInicial) ||
-                                            !validatePeriod(periodoAtual)
+                                            !validatePeriod(periodoInicialAno) ||
+                                            !validatePeriod(periodoAtualAno)
                                         }
                                         onClick={() => submit()}
                                         sx={css.button}

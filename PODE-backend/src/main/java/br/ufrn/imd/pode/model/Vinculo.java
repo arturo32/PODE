@@ -1,13 +1,8 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.model.dto.EnfaseDTO;
-import br.ufrn.imd.pode.model.dto.VinculoDTO;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "vinculo")
@@ -23,10 +18,16 @@ public class Vinculo extends AbstractModel<Long> {
 	private String matricula;
 
 	@NotNull
-	private Integer periodoInicial;
+	private Integer periodoInicialAno;
 
 	@NotNull
-	private Integer periodoAtual;
+	private Integer periodoInicialPeriodo;
+
+	@NotNull
+	private Integer periodoAtualAno;
+
+	@NotNull
+	private Integer periodoAtualPeriodo;
 
 	@NotNull
 	@ManyToOne
@@ -46,10 +47,10 @@ public class Vinculo extends AbstractModel<Long> {
 
 	public Vinculo() {	}
 
-	public Vinculo(String matricula, Integer periodoInicial, Integer periodoAtual, Curso curso) {
+	public Vinculo(String matricula, Integer periodoInicialAno, Integer periodoAtualAno, Curso curso) {
 		this.matricula = matricula;
-		this.periodoInicial = periodoInicial;
-		this.periodoAtual = periodoAtual;
+		this.periodoInicialAno = periodoInicialAno;
+		this.periodoAtualAno = periodoAtualAno;
 		this.curso = curso;
 	}
 
@@ -71,28 +72,44 @@ public class Vinculo extends AbstractModel<Long> {
 		this.matricula = matricula;
 	}
 
-	public Integer getPeriodoInicial() {
-		return periodoInicial;
+	public Integer getPeriodoInicialAno() {
+		return periodoInicialAno;
 	}
 
-	public void setPeriodoInicial(Integer periodoInicial) {
-		this.periodoInicial = periodoInicial;
+	public void setPeriodoInicialAno(Integer periodoInicialAno) {
+		this.periodoInicialAno = periodoInicialAno;
 	}
 
-	public Integer getPeriodoAtual() {
-		return periodoAtual;
+	public Integer getPeriodoInicialPeriodo() {
+		return periodoInicialPeriodo;
 	}
 
-	public void setPeriodoAtual(Integer periodoAtual) {
-		this.periodoAtual = periodoAtual;
+	public void setPeriodoInicialPeriodo(Integer periodoInicialPeriodo) {
+		this.periodoInicialPeriodo = periodoInicialPeriodo;
+	}
+
+	public Integer getPeriodoAtualAno() {
+		return periodoAtualAno;
+	}
+
+	public void setPeriodoAtualAno(Integer periodoAtualAno) {
+		this.periodoAtualAno = periodoAtualAno;
+	}
+
+	public Integer getPeriodoAtualPeriodo() {
+		return periodoAtualPeriodo;
+	}
+
+	public void setPeriodoAtualPeriodo(Integer periodoAtualPeriodo) {
+		this.periodoAtualPeriodo = periodoAtualPeriodo;
 	}
 
 	public Curso getCurso() {
 		return curso;
 	}
 
-	public void setCurso(Curso gradePrimaria) {
-		this.curso = gradePrimaria;
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 	public Enfase getEnfase() {

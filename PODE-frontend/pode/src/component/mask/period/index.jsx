@@ -9,7 +9,7 @@ const MaskPeriod = forwardRef(function TextMaskCustom(props, ref) {
   return (
     <IMaskInput
       {...other}
-      mask="0000.0"
+      mask="0000"
       definitions={{
         '#': /[1-9]/,
       }}

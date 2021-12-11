@@ -7,7 +7,6 @@ import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.*;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PlanoCursoRepository;
@@ -17,9 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static java.util.Comparator.comparingInt;
 
 @Service
 @Transactional
@@ -307,7 +303,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {
 			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
 		}
-		return result.subList(vinculo.getPeriodoAtual()-1, vinculo.getCurso().getPrazoMaximo()-1);
+		return result.subList(vinculo.getPeriodoAtualPeriodo()-1, vinculo.getCurso().getPrazoMaximo()-1);
 	}
 
 	public PlanoCurso adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
@@ -319,8 +315,8 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
 		for (Pes pes : pesList) {
 			for (Disciplina d: pes.getDisciplinasObrigatorias()) {
-				int minIdx = vinculo.getPeriodoAtual();
-				for (int i = vinculo.getPeriodoAtual()+1; i < chs.size(); ++i) {
+				int minIdx = vinculo.getPeriodoAtualPeriodo();
+				for (int i = vinculo.getPeriodoAtualPeriodo()+1; i < chs.size(); ++i) {
 					if (chs.get(i) < chs.get(minIdx)) {
 						minIdx = i;
 					}

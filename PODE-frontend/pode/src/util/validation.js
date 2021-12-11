@@ -13,7 +13,7 @@ export const validatePassword = (password) => {
 };
 
 export const validatePeriod = (period) => {
-    if (period.length === 6) {
+    if (period.length === 4) {
         return true;
     }
     return false;

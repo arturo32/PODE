@@ -7,20 +7,20 @@ public class VinculoDTO extends AbstractDTO {
 
 	private String matricula;
 
-	private Integer periodoInicial;
+	private Integer periodoInicialAno;
 
-	private Integer periodoAtual;
+	private Integer periodoInicialPeriodo;
 
-	@JsonProperty("id-curso")
+	private Integer periodoAtualAno;
+
+	private Integer periodoAtualPeriodo;
+
 	private Long idCurso;
 
-	@JsonProperty("id-enfase")
 	private Long idEnfase;
 
-	@JsonProperty("id-plano-curso")
 	private Long idPlanoCurso;
-
-	@JsonProperty("id-estudante")
+	
 	private Long idEstudante;
 
 	public VinculoDTO() {
@@ -29,8 +29,10 @@ public class VinculoDTO extends AbstractDTO {
 	public VinculoDTO(Vinculo vinculo) {
 		this.setId(vinculo.getId());
 		this.setMatricula(vinculo.getMatricula());
-		this.setPeriodoInicial(vinculo.getPeriodoInicial());
-		this.setPeriodoAtual(vinculo.getPeriodoAtual());
+		this.setPeriodoInicialAno(vinculo.getPeriodoInicialAno());
+		this.setPeriodoInicialPeriodo(vinculo.getPeriodoInicialPeriodo());
+		this.setPeriodoAtualAno(vinculo.getPeriodoAtualAno());
+		this.setPeriodoAtualPeriodo(vinculo.getPeriodoAtualPeriodo());
 		this.setIdCurso(vinculo.getCurso().getId());
 		if(vinculo.getEnfase() != null){
 			this.setIdEnfase(vinculo.getEnfase().getId());
@@ -47,20 +49,36 @@ public class VinculoDTO extends AbstractDTO {
 		this.matricula = matricula;
 	}
 
-	public Integer getPeriodoInicial() {
-		return periodoInicial;
+	public Integer getPeriodoInicialAno() {
+		return periodoInicialAno;
 	}
 
-	public void setPeriodoInicial(Integer periodoInicial) {
-		this.periodoInicial = periodoInicial;
+	public void setPeriodoInicialAno(Integer periodoInicialAno) {
+		this.periodoInicialAno = periodoInicialAno;
 	}
 
-	public Integer getPeriodoAtual() {
-		return periodoAtual;
+	public Integer getPeriodoInicialPeriodo() {
+		return periodoInicialPeriodo;
 	}
 
-	public void setPeriodoAtual(Integer periodoAtual) {
-		this.periodoAtual = periodoAtual;
+	public void setPeriodoInicialPeriodo(Integer periodoInicialPeriodo) {
+		this.periodoInicialPeriodo = periodoInicialPeriodo;
+	}
+
+	public Integer getPeriodoAtualAno() {
+		return periodoAtualAno;
+	}
+
+	public void setPeriodoAtualAno(Integer periodoAtualAno) {
+		this.periodoAtualAno = periodoAtualAno;
+	}
+
+	public Integer getPeriodoAtualPeriodo() {
+		return periodoAtualPeriodo;
+	}
+
+	public void setPeriodoAtualPeriodo(Integer periodoAtualPeriodo) {
+		this.periodoAtualPeriodo = periodoAtualPeriodo;
 	}
 
 	public Long getIdCurso() {
