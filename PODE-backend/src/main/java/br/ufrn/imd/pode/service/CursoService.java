@@ -6,8 +6,6 @@ import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.dto.CursoDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.repository.CursoRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.util.StringUtils;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 
 @Service
 @Transactional
@@ -30,44 +29,78 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 	}
 
 	@Override
-	public Curso convertToEntity(CursoDTO cursoDTO) {
+	public Curso convertToEntity(CursoDTO dto) {
 		Curso curso = new Curso();
-		curso.setId(cursoDTO.getId());
-		curso.setNome(cursoDTO.getNome());
-		curso.setChm(cursoDTO.getChm());
-		curso.setCho(cursoDTO.getCho());
-		curso.setChom(cursoDTO.getChom());
-		curso.setChcm(cursoDTO.getChcm());
-		curso.setChem(cursoDTO.getChem());
-		curso.setChminp(cursoDTO.getChminp());
-		curso.setChmaxp(cursoDTO.getChmaxp());
-		curso.setPrazoMinimo(cursoDTO.getPrazoMinimo());
-		curso.setPrazoMaximo(cursoDTO.getPrazoMaximo());
-		curso.setPrazoEsperado(cursoDTO.getPrazoEsperado());
 
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : cursoDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaPeriodoDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
-			}
+		//Se for uma edição
+		if (dto.getId() != null){
+			curso = this.findById(dto.getId());
+		}
 
-			try{
-				curso.getDisciplinasObrigatorias()
-						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException) {
-				throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
+		curso.setId(dto.getId());
+		if (dto.getNome() != null){
+			curso.setNome(dto.getNome());
+		}
+		if (dto.getChm() != null){
+			curso.setChm(dto.getChm());
+		}
+		if (dto.getCho() != null){
+			curso.setCho(dto.getCho());
+		}
+		if (dto.getChom() != null){
+			curso.setChom(dto.getChom());
+		}
+		if (dto.getChcm() != null){
+			curso.setChcm(dto.getChcm());
+		}
+		if (dto.getChem() != null){
+			curso.setChem(dto.getChem());
+		}
+		if (dto.getChminp() != null){
+			curso.setChminp(dto.getChminp());
+		}
+		if (dto.getChmaxp() != null){
+			curso.setChmaxp(dto.getChmaxp());
+		}
+		if (dto.getPrazoMinimo() != null){
+			curso.setPrazoMinimo(dto.getPrazoMinimo());
+		}
+		if (dto.getPrazoMaximo() != null){
+			curso.setPrazoMaximo(dto.getPrazoMaximo());
+		}
+		if (dto.getPrazoEsperado() != null){
+			curso.setPrazoEsperado(dto.getPrazoEsperado());
+		}
+
+		if (dto.getIdDisciplinasObrigatorias() != null) {
+			curso.setDisciplinasObrigatorias(new HashSet<>());
+			for (Long idDisciplinaPeriodo : dto.getIdDisciplinasObrigatorias()) {
+				if (idDisciplinaPeriodo == null) {
+					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
+				}
+
+				try{
+					curso.getDisciplinasObrigatorias()
+							.add(this.disciplinaPeriodoService.findById(idDisciplinaPeriodo));
+				} catch (EntityNotFoundException entityNotFoundException) {
+					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
+				}
 			}
 		}
 
-		for (DisciplinaDTO disciplinaDTO : cursoDTO.getDisciplinasOptativas()) {
-			if (disciplinaDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaOptativa inconsistente");
-			}
+		if (dto.getIdDisciplinasOptativas() != null) {
+			curso.setDisciplinasOptativas(new HashSet<>());
+			for (Long idDisciplina : dto.getIdDisciplinasOptativas()) {
+				if (idDisciplina == null) {
+					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
+				}
 
-			try {
-				curso.getDisciplinasOptativas()
-						.add(this.disciplinaService.findById(disciplinaDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException){
-				throw new InconsistentEntityException("disciplinaOptativa inconsistente");
+				try {
+					curso.getDisciplinasOptativas()
+							.add(this.disciplinaService.findById(idDisciplina));
+				} catch (EntityNotFoundException entityNotFoundException){
+					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
+				}
 			}
 		}
 
@@ -240,30 +273,30 @@ public class CursoService extends GenericService<Curso, CursoDTO, Long> {
 		}
 
 		//Verifica disciplinasObrigatorias
-		if (curso.getDisciplinasObrigatorias() != null) {
-			for (DisciplinaPeriodoDTO disciplinaPeriodo : curso.getDisciplinasObrigatorias()) {
-				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
+		if (curso.getIdDisciplinasObrigatorias() != null) {
+			for (Long idDisciplinaPeriodo : curso.getIdDisciplinasObrigatorias()) {
+				if (idDisciplinaPeriodo == null || idDisciplinaPeriodo < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo.getId());
+						this.disciplinaPeriodoService.findById(idDisciplinaPeriodo);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaObrigatoria(id=" + idDisciplinaPeriodo + ") inexistente");
 					}
 				}
 			}
 		}
 
 		//Verifica disciplinasOptativas
-		if (curso.getDisciplinasOptativas() != null) {
-			for (DisciplinaDTO disciplina : curso.getDisciplinasOptativas()) {
-				if (disciplina.getId() == null || disciplina.getId() < 0) {
+		if (curso.getIdDisciplinasOptativas() != null) {
+			for (Long idDisciplina : curso.getIdDisciplinasOptativas()) {
+				if (idDisciplina == null || idDisciplina < 0) {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(disciplina.getId());
+						this.disciplinaService.findById(idDisciplina);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaOptativa(id=" + disciplina.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaOptativa(id=" + idDisciplina + ") inexistente");
 					}
 				}
 			}

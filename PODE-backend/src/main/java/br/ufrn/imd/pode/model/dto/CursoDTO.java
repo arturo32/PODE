@@ -3,9 +3,11 @@ package br.ufrn.imd.pode.model.dto;
 import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CursoDTO extends AbstractDTO {
 
@@ -38,9 +40,11 @@ public class CursoDTO extends AbstractDTO {
 
 	private Integer prazoEsperado;
 
-	private Set<DisciplinaPeriodoDTO> disciplinasObrigatorias = new HashSet<>();
+	@JsonProperty("id-disciplinas-obrigatorias")
+	private Set<Long> idDisciplinasObrigatorias = new HashSet<>();
 
-	private Set<DisciplinaDTO> disciplinasOptativas = new HashSet<>();
+	@JsonProperty("id-disciplinas-optativas")
+	private Set<Long> idDisciplinasOptativas = new HashSet<>();
 
 	public CursoDTO() {
 	}
@@ -58,12 +62,8 @@ public class CursoDTO extends AbstractDTO {
 		this.setPrazoMinimo(curso.getPrazoMinimo());
 		this.setPrazoMaximo(curso.getPrazoMaximo());
 		this.setPrazoEsperado(curso.getPrazoEsperado());
-		for (DisciplinaPeriodo disciplinaPeriodo : curso.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new DisciplinaPeriodoDTO(disciplinaPeriodo));
-		}
-		for (Disciplina disciplina : curso.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new DisciplinaDTO(disciplina));
-		}
+		this.setIdDisciplinasObrigatorias(curso.getDisciplinasObrigatorias().stream().map(DisciplinaPeriodo::getId).collect(Collectors.toSet()));
+		this.setIdDisciplinasOptativas(curso.getDisciplinasOptativas().stream().map(Disciplina::getId).collect(Collectors.toSet()));
 	}
 
 	public String getNome() {
@@ -154,19 +154,19 @@ public class CursoDTO extends AbstractDTO {
 		this.prazoEsperado = prazoEsperado;
 	}
 
-	public Set<DisciplinaPeriodoDTO> getDisciplinasObrigatorias() {
-		return disciplinasObrigatorias;
+	public Set<Long> getIdDisciplinasObrigatorias() {
+		return idDisciplinasObrigatorias;
 	}
 
-	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodoDTO> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	public void setIdDisciplinasObrigatorias(Set<Long> idDisciplinasObrigatorias) {
+		this.idDisciplinasObrigatorias = idDisciplinasObrigatorias;
 	}
 
-	public Set<DisciplinaDTO> getDisciplinasOptativas() {
-		return disciplinasOptativas;
+	public Set<Long> getIdDisciplinasOptativas() {
+		return idDisciplinasOptativas;
 	}
 
-	public void setDisciplinasOptativas(Set<DisciplinaDTO> disciplinasOptativas) {
-		this.disciplinasOptativas = disciplinasOptativas;
+	public void setIdDisciplinasOptativas(Set<Long> idDisciplinasOptativas) {
+		this.idDisciplinasOptativas = idDisciplinasOptativas;
 	}
 }

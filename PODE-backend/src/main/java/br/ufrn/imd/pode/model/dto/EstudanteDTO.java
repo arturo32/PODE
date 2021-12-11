@@ -2,13 +2,16 @@ package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.Vinculo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EstudanteDTO extends UsuarioDTO {
 
-	private Set<VinculoDTO> vinculos = new HashSet<>();
+	@JsonProperty("id-vinculos")
+	private Set<Long> idVinculos = new HashSet<>();
 
 	public EstudanteDTO() {
 	}
@@ -17,16 +20,15 @@ public class EstudanteDTO extends UsuarioDTO {
 		this.setId(estudante.getId());
 		this.setNome(estudante.getNome());
 		this.setEmail(estudante.getEmail());
-		for (Vinculo vinculo : estudante.getVinculos()) {
-			this.vinculos.add(new VinculoDTO(vinculo));
-		}
+		this.setSenha(estudante.getSenha());
+		this.setIdVinculos(estudante.getVinculos().stream().map(Vinculo::getId).collect(Collectors.toSet()));
 	}
 
-	public Set<VinculoDTO> getVinculos() {
-		return vinculos;
+	public Set<Long> getIdVinculos() {
+		return idVinculos;
 	}
 
-	public void setVinculos(Set<VinculoDTO> vinculos) {
-		this.vinculos = vinculos;
+	public void setIdVinculos(Set<Long> idVinculos) {
+		this.idVinculos = idVinculos;
 	}
 }

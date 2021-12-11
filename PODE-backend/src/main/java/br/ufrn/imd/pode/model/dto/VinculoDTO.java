@@ -1,10 +1,7 @@
 package br.ufrn.imd.pode.model.dto;
 
-import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VinculoDTO extends AbstractDTO {
 
@@ -14,13 +11,17 @@ public class VinculoDTO extends AbstractDTO {
 
 	private Integer periodoAtual;
 
-	private CursoDTO curso;
+	@JsonProperty("id-curso")
+	private Long idCurso;
 
-	private List<EnfaseDTO> enfases = new ArrayList<>();
+	@JsonProperty("id-enfase")
+	private Long idEnfase;
 
-	private PlanoCursoDTO planoCurso;
+	@JsonProperty("id-plano-curso")
+	private Long idPlanoCurso;
 
-	private EstudanteDTO estudante;
+	@JsonProperty("id-estudante")
+	private Long idEstudante;
 
 	public VinculoDTO() {
 	}
@@ -30,12 +31,12 @@ public class VinculoDTO extends AbstractDTO {
 		this.setMatricula(vinculo.getMatricula());
 		this.setPeriodoInicial(vinculo.getPeriodoInicial());
 		this.setPeriodoAtual(vinculo.getPeriodoAtual());
-		this.setCurso(new CursoDTO(vinculo.getCurso()));
-		for (Enfase enfase : vinculo.getEnfases()) {
-			this.enfases.add(new EnfaseDTO(enfase));
+		this.setIdCurso(vinculo.getCurso().getId());
+		if(vinculo.getEnfase() != null){
+			this.setIdEnfase(vinculo.getEnfase().getId());
 		}
-		this.setPlanoCurso(new PlanoCursoDTO(vinculo.getPlanoCurso()));
-		this.setEstudante(new EstudanteDTO(vinculo.getEstudante()));
+		this.setIdPlanoCurso(vinculo.getPlanoCurso().getId());
+		this.setIdEstudante(vinculo.getEstudante().getId());
 	}
 
 	public String getMatricula() {
@@ -62,35 +63,35 @@ public class VinculoDTO extends AbstractDTO {
 		this.periodoAtual = periodoAtual;
 	}
 
-	public CursoDTO getCurso() {
-		return curso;
+	public Long getIdCurso() {
+		return idCurso;
 	}
 
-	public void setCurso(CursoDTO curso) {
-		this.curso = curso;
+	public void setIdCurso(Long idCurso) {
+		this.idCurso = idCurso;
 	}
 
-	public List<EnfaseDTO> getEnfases() {
-		return enfases;
+	public Long getIdEnfase() {
+		return idEnfase;
 	}
 
-	public void setEnfases(List<EnfaseDTO> enfases) {
-		this.enfases = enfases;
+	public void setIdEnfase(Long idEnfase) {
+		this.idEnfase = idEnfase;
 	}
 
-	public PlanoCursoDTO getPlanoCurso() {
-		return planoCurso;
+	public Long getIdPlanoCurso() {
+		return idPlanoCurso;
 	}
 
-	public void setPlanoCurso(PlanoCursoDTO planoCurso) {
-		this.planoCurso = planoCurso;
+	public void setIdPlanoCurso(Long idPlanoCurso) {
+		this.idPlanoCurso = idPlanoCurso;
 	}
 
-	public EstudanteDTO getEstudante() {
-		return estudante;
+	public Long getIdEstudante() {
+		return idEstudante;
 	}
 
-	public void setEstudante(EstudanteDTO estudante) {
-		this.estudante = estudante;
+	public void setIdEstudante(Long idEstudante) {
+		this.idEstudante = idEstudante;
 	}
 }

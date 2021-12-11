@@ -1,9 +1,5 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.model.interfaces.IGradeCurricularSecundaria;
-import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.model.dto.PesDTO;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "pes")
-public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundaria {
+public class Pes extends AbstractModel<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PES")
@@ -62,20 +58,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
-	public Pes(PesDTO pesInteresse) {
-		this.id = pesInteresse.getId();
-		this.nome = pesInteresse.getNome();
-		this.chm = pesInteresse.getChm();
-		this.cho = pesInteresse.getCho();
-		for (DisciplinaDTO disciplinaObrigatoria : pesInteresse.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new Disciplina(disciplinaObrigatoria));
-		}
-		for (DisciplinaDTO disciplinaOptativa : pesInteresse.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
-		}
-
-	}
-
 	@Override
 	public Long getId() {
 		return this.id;
@@ -94,7 +76,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.nome = nome;
 	}
 
-	@Override
 	public Integer getChm() {
 		return this.chm;
 	}
@@ -103,7 +84,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.chm = chm;
 	}
 
-	@Override
 	public Integer getCho() {
 		return this.cho;
 	}
@@ -112,7 +92,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.cho = cho;
 	}
 
-	@Override
 	public Set<Disciplina> getDisciplinasObrigatorias() {
 		return this.disciplinasObrigatorias;
 	}
@@ -121,7 +100,6 @@ public class Pes extends AbstractModel<Long> implements IGradeCurricularSecundar
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
-	@Override
 	public Set<Disciplina> getDisciplinasOptativas() {
 		return this.disciplinasOptativas;
 	}

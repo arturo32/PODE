@@ -1,10 +1,5 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.model.interfaces.IGradeCurricularPrimaria;
-import br.ufrn.imd.pode.model.dto.CursoDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "curso")
-public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimaria {
+public class Curso extends AbstractModel<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CURSO")
 	@SequenceGenerator(name = "SEQ_CURSO", sequenceName = "id_seq_curso", allocationSize = 1)
@@ -89,19 +84,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.prazoEsperado = prazoEsperado;
 	}
 
-	public Curso(CursoDTO curso) {
-		this.disciplinasObrigatorias = new HashSet<>();
-		this.disciplinasOptativas = new HashSet<>();
-		this.id = curso.getId();
-		this.nome = curso.getNome();
-		for (DisciplinaDTO disciplinaOptativa : curso.getDisciplinasOptativas()) {
-			this.disciplinasOptativas.add(new Disciplina(disciplinaOptativa));
-		}
-		for (DisciplinaPeriodoDTO disciplinaObrigatoria : curso.getDisciplinasObrigatorias()) {
-			this.disciplinasObrigatorias.add(new DisciplinaPeriodo(disciplinaObrigatoria));
-		}
-	}
-
 	@Override
 	public Long getId() {
 		return id;
@@ -120,7 +102,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.nome = nome;
 	}
 
-	@Override
 	public Integer getChm() {
 		return chm;
 	}
@@ -129,7 +110,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chm = chm;
 	}
 
-	@Override
 	public Integer getCho() {
 		return cho;
 	}
@@ -138,7 +118,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.cho = cho;
 	}
 
-	@Override
 	public Integer getChom() {
 		return chom;
 	}
@@ -147,7 +126,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chom = chom;
 	}
 
-	@Override
 	public Integer getChcm() {
 		return chcm;
 	}
@@ -156,7 +134,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chcm = chcm;
 	}
 
-	@Override
 	public Integer getChem() {
 		return chem;
 	}
@@ -165,7 +142,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chem = chem;
 	}
 
-	@Override
 	public Integer getChminp() {
 		return chminp;
 	}
@@ -174,7 +150,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chminp = chminp;
 	}
 
-	@Override
 	public Integer getChmaxp() {
 		return chmaxp;
 	}
@@ -183,7 +158,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.chmaxp = chmaxp;
 	}
 
-	@Override
 	public Integer getPrazoMinimo() {
 		return prazoMinimo;
 	}
@@ -192,7 +166,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.prazoMinimo = prazoMinimo;
 	}
 
-	@Override
 	public Integer getPrazoMaximo() {
 		return prazoMaximo;
 	}
@@ -201,7 +174,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.prazoMaximo = prazoMaximo;
 	}
 
-	@Override
 	public Integer getPrazoEsperado() {
 		return prazoEsperado;
 	}
@@ -210,7 +182,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.prazoEsperado = prazoEsperado;
 	}
 
-	@Override
 	public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
 		return disciplinasObrigatorias;
 	}
@@ -219,7 +190,6 @@ public class Curso extends AbstractModel<Long> implements IGradeCurricularPrimar
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
-	@Override
 	public Set<Disciplina> getDisciplinasOptativas() {
 		return disciplinasOptativas;
 	}

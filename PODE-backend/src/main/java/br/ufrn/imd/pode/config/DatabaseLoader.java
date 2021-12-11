@@ -3,6 +3,7 @@ package br.ufrn.imd.pode.config;
 
 import br.ufrn.imd.pode.model.*;
 import br.ufrn.imd.pode.repository.*;
+import br.ufrn.imd.pode.service.DisciplinaPeriodoService;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -36,6 +37,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	private PesRepository pesRepository;
 
 	private DisciplinaPeriodoRepository disciplinaPeriodoRepository;
+	private DisciplinaPeriodoService disciplinaPeriodoService;
 
 	@Autowired
 	public void setDisciplinaRepository(DisciplinaRepository disciplinaRepository) {
@@ -62,21 +64,26 @@ public class DatabaseLoader implements ApplicationRunner {
 		this.disciplinaPeriodoRepository = disciplinaPeriodoRepository;
 	}
 
+	@Autowired
+	public void setDisciplinaPeriodoService(DisciplinaPeriodoService disciplinaPeriodoService) {
+		this.disciplinaPeriodoService = disciplinaPeriodoService;
+	}
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if (dbmode.equals("create")) {
-//			inserirDisciplinas();
-//			System.out.println("Disciplinas inseridas");
-//			inserirCursos();
-//			System.out.println("Cursos inseridas");
-//			inserirEnfases();
-//			System.out.println("Enfases inseridas");
-//			inserirPes();
-//			System.out.println("PES inseridas");
-//			inserirDisciplasCursos();
-//			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
-//			inserirDisciplinaPes();
-//			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
+			inserirDisciplinas();
+			System.out.println("Disciplinas inseridas");
+			inserirCursos();
+			System.out.println("Cursos inseridos");
+			inserirEnfases();
+			System.out.println("Enfases inseridas");
+			inserirPes();
+			System.out.println("PES inseridos");
+			inserirDisciplasCursos();
+			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
+			inserirDisciplinaPes();
+			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
 
 			System.out.println("Tudo pronto!");
 		}
@@ -197,8 +204,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			while ((values = csvReader.readNext()) != null) {
 				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
 				for (Disciplina d:disciplinas) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
-					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
+					DisciplinaPeriodo disciplinaPeriodo = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer.parseInt(values[0]), d.getId());
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
 				}
@@ -249,8 +255,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			while ((values = csvReader.readNext()) != null) {
 				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
 				for (Disciplina d:disciplinas) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
-					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
+					DisciplinaPeriodo disciplinaPeriodo = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer.parseInt(values[0]), d.getId());
 					curso.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.cursoRepository.save(curso);
 				}
@@ -301,8 +306,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			while ((values = csvReader.readNext()) != null) {
 				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
 				for (Disciplina d:disciplinas) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
-					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
+					DisciplinaPeriodo disciplinaPeriodo = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer.parseInt(values[0]), d.getId());
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
 				}
@@ -328,8 +332,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			while ((values = csvReader.readNext()) != null) {
 				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[1]);
 				for (Disciplina d:disciplinas) {
-					DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo(d, Integer.parseInt(values[0]));
-					disciplinaPeriodo = this.disciplinaPeriodoRepository.save(disciplinaPeriodo);
+					DisciplinaPeriodo disciplinaPeriodo = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer.parseInt(values[0]), d.getId());
 					enfase.adicionarDisciplinaObrigatoria(disciplinaPeriodo);
 					this.enfaseRepository.save(enfase);
 				}

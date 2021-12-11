@@ -47,19 +47,6 @@ public class PlanoCurso extends AbstractModel<Long> {
 		this.pesInteresse = pesInteresse;
 	}
 
-	public PlanoCurso(PlanoCursoDTO planoCurso) {
-		this.id = planoCurso.getId();
-		for (DisciplinaPeriodoDTO disciplinaCursada : planoCurso.getDisciplinasCursadas()) {
-			this.disciplinasCursadas.add(new DisciplinaPeriodo(disciplinaCursada));
-		}
-		for (DisciplinaPeriodoDTO disciplinaPendente : planoCurso.getDisciplinasPendentes()) {
-			this.disciplinasCursadas.add(new DisciplinaPeriodo(disciplinaPendente));
-		}
-		for (PesDTO pesInteresse : planoCurso.getPesInteresse()) {
-			this.pesInteresse.add(new Pes(pesInteresse));
-		}
-	}
-
 	@Override
 	public Long getId() {
 		return id;

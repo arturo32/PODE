@@ -1,5 +1,10 @@
 package br.ufrn.imd.pode.controller;
 
+import java.util.List;
+import java.util.Set;
+
+import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +33,12 @@ public class RecomendacaoController {
 	public RecomendacaoDTO obterDisciplinasPorProximidadeConclusaoPes(
 			@PathVariable(value = "id_vinculo") long vinculoId) {
 		return this.getService().recomendarDisciplinasPorProximidadeConclusaoPes(this.getService().validate(vinculoId));
+	}
+
+	@GetMapping("/disciplinas-por-plano-de-curso/{id_vinculo}")
+	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(
+			@PathVariable(value = "id_vinculo") long id_vinculo) {
+		return this.service.recomendarDisciplinasPorPlanoDeCurso(id_vinculo);
 	}
 
 }

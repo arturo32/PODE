@@ -32,11 +32,8 @@ public class Vinculo extends AbstractModel<Long> {
 	@ManyToOne
 	private Curso curso;
 
-	@ManyToMany
-	@JoinTable(name = "vinculo_enfase",
-			joinColumns = {@JoinColumn(name = "vinculo_id")},
-			inverseJoinColumns = {@JoinColumn(name = "enfase_id")})
-	private List<Enfase> enfases;
+	@ManyToOne
+	private Enfase enfase;
 
 	@NotNull
 	@ManyToOne
@@ -47,26 +44,13 @@ public class Vinculo extends AbstractModel<Long> {
 	private Estudante estudante;
 
 
-	public Vinculo() {
-		this.enfases = new ArrayList<>();
-	}
+	public Vinculo() {	}
 
 	public Vinculo(String matricula, Integer periodoInicial, Integer periodoAtual, Curso curso) {
 		this.matricula = matricula;
 		this.periodoInicial = periodoInicial;
 		this.periodoAtual = periodoAtual;
 		this.curso = curso;
-	}
-
-	public Vinculo(VinculoDTO vinculo) {
-		this.matricula = vinculo.getMatricula();
-		this.periodoInicial = vinculo.getPeriodoInicial();
-		this.periodoAtual = vinculo.getPeriodoAtual();
-		this.curso = new Curso(vinculo.getCurso());
-		for (EnfaseDTO enfase : vinculo.getEnfases()) {
-			this.enfases.add(new Enfase(enfase));
-		}
-		this.planoCurso = new PlanoCurso(vinculo.getPlanoCurso());
 	}
 
 	@Override
@@ -111,12 +95,12 @@ public class Vinculo extends AbstractModel<Long> {
 		this.curso = gradePrimaria;
 	}
 
-	public List<Enfase> getEnfases() {
-		return enfases;
+	public Enfase getEnfase() {
+		return enfase;
 	}
 
-	public void setEnfases(List<Enfase> enfases) {
-		this.enfases = enfases;
+	public void setEnfase(Enfase enfase) {
+		this.enfase = enfase;
 	}
 
 	public PlanoCurso getPlanoCurso() {

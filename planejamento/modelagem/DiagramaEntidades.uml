@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>br.ufrn.imd.pode.model.AbstractModel</OriginalElement>
+  <nodes>
+    <node x="290.25" y="302.0">br.ufrn.imd.pode.model.Enfase</node>
+    <node x="2050.25" y="182.0">br.ufrn.imd.pode.model.Curso</node>
+    <node x="681.25" y="254.0">br.ufrn.imd.pode.model.Vinculo</node>
+    <node x="135.25" y="314.0">br.ufrn.imd.pode.model.Usuario</node>
+    <node x="1015.25" y="0.0">br.ufrn.imd.pode.model.AbstractModel</node>
+    <node x="1713.25" y="278.0">br.ufrn.imd.pode.model.Pes</node>
+    <node x="0.0" y="604.0">br.ufrn.imd.pode.model.Estudante</node>
+    <node x="219.0" y="616.0">br.ufrn.imd.pode.model.Administrador</node>
+    <node x="1493.25" y="314.0">br.ufrn.imd.pode.model.DisciplinaPeriodo</node>
+    <node x="911.25" y="266.0">br.ufrn.imd.pode.model.Disciplina</node>
+    <node x="1117.25" y="302.0">br.ufrn.imd.pode.model.PlanoCurso</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="br.ufrn.imd.pode.model.Vinculo" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-114.0" />
+      <point x="786.25" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Curso" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-186.0" />
+      <point x="2235.75" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.PlanoCurso" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-66.0" />
+      <point x="1295.25" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Enfase" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-66.0" />
+      <point x="475.75" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Usuario" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="202.75" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Estudante" target="br.ufrn.imd.pode.model.Usuario" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.0" />
+      <point x="99.5" y="579.0" />
+      <point x="202.75" y="579.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Administrador" target="br.ufrn.imd.pode.model.Usuario" relationship="GENERALIZATION">
+      <point x="0.0" y="-30.0" />
+      <point x="306.0" y="579.0" />
+      <point x="202.75" y="579.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Pes" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-90.0" />
+      <point x="1871.75" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.Disciplina" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-102.0" />
+      <point x="1004.25" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+    <edge source="br.ufrn.imd.pode.model.DisciplinaPeriodo" target="br.ufrn.imd.pode.model.AbstractModel" relationship="GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="1593.25" y="157.0" />
+      <point x="1149.75" y="157.0" />
+      <point x="0.0" y="66.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8460271716755866" showDependencies="false" x="1204.5" y="344.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 
 @Service
 @Transactional
@@ -29,30 +30,41 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 	}
 
 	@Override
-	public Enfase convertToEntity(EnfaseDTO enfaseDTO) {
+	public Enfase convertToEntity(EnfaseDTO dto) {
 		Enfase enfase = new Enfase();
-		enfase.setId(enfaseDTO.getId());
-		enfase.setNome(enfaseDTO.getNome());
-		if (enfaseDTO.getCurso().getId() == null) {
-			throw new InconsistentEntityException("curso inconsistente");
+
+		//Se for uma edição
+		if (dto.getId() != null) {
+			enfase = this.findById(dto.getId());
 		}
 
-		try{
-			enfase.setCurso(this.cursoService.findById(enfaseDTO.getCurso().getId()));
+		enfase.setId(dto.getId());
+		if(dto.getNome() != null){
+			enfase.setNome(dto.getNome());
+		}
+
+		if (dto.getIdCurso() == null) {
+			throw new InconsistentEntityException("curso inconsistente");
+		}
+		try {
+			enfase.setCurso(this.cursoService.findById(dto.getIdCurso()));
 		} catch (EntityNotFoundException entityNotFoundException){
 			throw new InconsistentEntityException("curso inconsistente");
 		}
 
-		for (DisciplinaPeriodoDTO disciplinaPeriodoDTO : enfaseDTO.getDisciplinasObrigatorias()) {
-			if (disciplinaPeriodoDTO.getId() == null) {
-				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
-			}
+		if (dto.getIdDisciplinasObrigatorias() != null) {
+			enfase.setDisciplinasObrigatorias(new HashSet<>());
+			for (Long disciplinaPeriodoDTO : dto.getIdDisciplinasObrigatorias()) {
+				if (disciplinaPeriodoDTO== null) {
+					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				}
 
-			try {
-				enfase.getDisciplinasObrigatorias()
-						.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO.getId()));
-			} catch (EntityNotFoundException entityNotFoundException){
-				throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				try {
+					enfase.getDisciplinasObrigatorias()
+							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO));
+				} catch (EntityNotFoundException entityNotFoundException){
+					throw new InconsistentEntityException("disciplinaPeriodo inconsistente");
+				}
 			}
 		}
 
@@ -101,26 +113,26 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		}
 
 		//Verifica curso
-		if (enfase.getCurso().getId() == null || enfase.getCurso().getId() < 0) {
+		if (enfase.getIdCurso() == null || enfase.getIdCurso() < 0) {
 			exceptionHelper.add("curso inconsistente");
 		} else {
 			try {
-				this.cursoService.findById(enfase.getCurso().getId());
+				this.cursoService.findById(enfase.getIdCurso());
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("curso inexistente");
 			}
 		}
 
 		//Verifica disciplinas obrigatórias
-		if (enfase.getDisciplinasObrigatorias() != null) {
-			for (DisciplinaPeriodoDTO disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
-				if (disciplinaPeriodo.getId() == null || disciplinaPeriodo.getId() < 0) {
+		if (enfase.getIdDisciplinasObrigatorias() != null) {
+			for (Long disciplinaPeriodo : enfase.getIdDisciplinasObrigatorias()) {
+				if (disciplinaPeriodo == null || disciplinaPeriodo < 0) {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo.getId());
+						this.disciplinaPeriodoService.findById(disciplinaPeriodo);
 					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo.getId() + ") inexistente");
+						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo + ") inexistente");
 					}
 				}
 			}

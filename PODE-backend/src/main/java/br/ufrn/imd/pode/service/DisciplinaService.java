@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,15 +31,34 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	}
 
 	@Override
-	public Disciplina convertToEntity(DisciplinaDTO disciplinaDTO) {
+	public Disciplina convertToEntity(DisciplinaDTO dto) {
 		Disciplina disciplina = new Disciplina();
-		disciplina.setId(disciplinaDTO.getId());
-		disciplina.setCodigo(disciplinaDTO.getCodigo());
-		disciplina.setNome(disciplinaDTO.getNome());
-		disciplina.setCh(disciplinaDTO.getCh());
-		disciplina.setPrerequisitos(disciplinaDTO.getPrerequisitos());
-		disciplina.setCorequisitos(disciplinaDTO.getCorequisitos());
-		disciplina.setEquivalentes(disciplinaDTO.getEquivalentes());
+
+		//Se for uma edição
+		if (dto.getId() != null) {
+			disciplina = this.findById(dto.getId());
+		}
+
+		disciplina.setId(dto.getId());
+		if (dto.getCodigo() != null){
+			disciplina.setCodigo(dto.getCodigo());
+		}
+		if (dto.getNome() != null){
+			disciplina.setNome(dto.getNome());
+		}
+		if (dto.getCh() != null){
+			disciplina.setCh(dto.getCh());
+		}
+		if (dto.getPrerequisitos() != null){
+			disciplina.setPrerequisitos(dto.getPrerequisitos());
+		}
+		if (dto.getCorequisitos() != null){
+			disciplina.setCorequisitos(dto.getCorequisitos());
+		}
+		if (dto.getEquivalentes() != null){
+			disciplina.setEquivalentes(dto.getEquivalentes());
+		}
+
 		return disciplina;
 	}
 
@@ -59,7 +80,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
-	public boolean checarEquivalencia(Set<String> codigos, String expressao) {
+	public boolean checarEquivalencia(Collection<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
 		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
@@ -73,7 +94,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	}
 
 	//Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se atendem a expressão de equivalencia)
-	public boolean checarEquivalencia(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
+	public boolean checarEquivalencia(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getEquivalentes();
 		if (StringUtils.isEmpty(expressao)) {
@@ -82,7 +103,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return checarEquivalencia(codigos, expressao);
 	}
 
-	public boolean checarPrerequisitos(Set<String> codigos, String expressao) {
+	public boolean checarPrerequisitos(Collection<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
 		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
@@ -96,11 +117,11 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	}
 
 	//Checa se um conjunto de disciplinas atende os prerequisitos da disciplina alvo (se atendem a expressão de prerequisito)
-	public boolean checarPrerequisitos(Set<Disciplina> disciplinas, Disciplina disciplina_alvo) {
+	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
 		if (StringUtils.isEmpty(expressao)) {
-			return false;
+			return true;
 		}
 		return checarPrerequisitos(codigos, expressao);
 	}

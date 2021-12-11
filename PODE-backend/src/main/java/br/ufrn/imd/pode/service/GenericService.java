@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,7 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public GenericService() {
 		this.modelName = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
+		this.modelName = this.modelName.substring(this.modelName.lastIndexOf(".")+1);
 	}
 
 	public String getModelName() {
@@ -35,11 +38,11 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 
 	public abstract Dto validate(Dto dto);
 
-	public List<Dto> convertToDTOList(List<T> entities) {
+	public Collection<Dto> convertToDTOList(Collection<T> entities) {
 		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
-	public List<T> convertToEntityList(List<Dto> dtos) {
+	public Collection<T> convertToEntityList(Collection<Dto> dtos) {
 		return dtos.stream().map(this::convertToEntity).collect(Collectors.toList());
 	}
 
@@ -55,9 +58,21 @@ public abstract class GenericService<T extends AbstractModel<PK>, Dto extends Ab
 		return entity.get();
 	}
 
+
+
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<T> findAll(Integer lim, Integer pg) {
 		return repository().findAllByAtivoIsTrueOrderByDataCriacaoDesc(PageRequest.of(pg, lim));
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByIds(List<PK> ids) {
+		return repository().findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(ids);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> findByInterval(PK startId, PK endId) {
+		return repository().findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(startId, endId);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
