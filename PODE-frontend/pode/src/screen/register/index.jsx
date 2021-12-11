@@ -22,15 +22,15 @@ import { css } from './styles';
 const Register = () => {
 
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [registration, setRegistration] = useState('');
-    const [course, setCourse] = useState('BTI');
-    const [firstPeriod, setFirstPeriod] = useState('');
-    const [currentPeriod, setCurrentPeriod] = useState('');
+    const [senha, setSenha] = useState('');
+    const [nome, setNome] = useState('');
+    const [matricula, setMatricula] = useState('');
+    const [curso, setCurso] = useState('BTI');
+    const [periodoInicial, setPeriodoInicial] = useState('');
+    const [periodoAtual, setPeriodoAtual] = useState('');
 
     const submit = () => {
-        create()
+        create({email, senha, nome, matricula, curso, periodoInicial, periodoAtual})
             .then(response => {
                 console.log(response);
             })
@@ -52,7 +52,7 @@ const Register = () => {
                             <Grid container={true} spacing={3}>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <Typography variant="h4" component="div" align="center" gutterBottom={true} sx={css.title}>
-                                        Cadastrar aluno
+                                        Cadastrar estudante
                                     </Typography>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -70,8 +70,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         type="text"
-                                        value={password}
-                                        onChange={event => setPassword(event.target.value)}
+                                        value={senha}
+                                        onChange={event => setSenha(event.target.value)}
                                         label="Senha"
                                         variant="outlined"
                                         InputLabelProps={{ shrink: true }}
@@ -82,8 +82,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         type="text"
-                                        value={name}
-                                        onChange={event => setName(event.target.value)}
+                                        value={nome}
+                                        onChange={event => setNome(event.target.value)}
                                         label="Nome"
                                         variant="outlined"
                                         InputLabelProps={{ shrink: true }}
@@ -94,8 +94,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         type="text"
-                                        value={registration}
-                                        onChange={event => setRegistration(event.target.value)}
+                                        value={matricula}
+                                        onChange={event => setMatricula(event.target.value)}
                                         label="Matrícula"
                                         variant="outlined"
                                         InputLabelProps={{ shrink: true }}
@@ -106,8 +106,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         select={true}
-                                        value={course}
-                                        onChange={event => setCourse(event.target.value)}
+                                        value={curso}
+                                        onChange={event => setCurso(event.target.value)}
                                         label="Curso"
                                         variant="outlined"
                                         InputLabelProps={{ shrink: true }}
@@ -122,8 +122,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         type="text"
-                                        value={firstPeriod}
-                                        onChange={event => setFirstPeriod(event.target.value)}
+                                        value={periodoInicial}
+                                        onChange={event => setPeriodoInicial(event.target.value)}
                                         label="Semestre de entrada"
                                         variant="outlined"
                                         InputProps={{
@@ -137,8 +137,8 @@ const Register = () => {
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <TextField
                                         type="text"
-                                        value={currentPeriod}
-                                        onChange={event => setCurrentPeriod(event.target.value)}
+                                        value={periodoAtual}
+                                        onChange={event => setPeriodoAtual(event.target.value)}
                                         label="Período atual"
                                         variant="outlined"
                                         InputProps={{
@@ -155,11 +155,11 @@ const Register = () => {
                                         size="medium"
                                         disabled={
                                             !validateEmail(email) ||
-                                            !validatePassword(password) ||
-                                            !validateGeneric(name) ||
-                                            !validateGeneric(registration) ||
-                                            !validatePeriod(firstPeriod) ||
-                                            !validatePeriod(currentPeriod)
+                                            !validatePassword(senha) ||
+                                            !validateGeneric(nome) ||
+                                            !validateGeneric(matricula) ||
+                                            !validatePeriod(periodoInicial) ||
+                                            !validatePeriod(periodoAtual)
                                         }
                                         onClick={() => submit()}
                                         sx={css.button}

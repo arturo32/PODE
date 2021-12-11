@@ -15,7 +15,8 @@ const config = {
     devServer: {
         open: true,
         host: 'localhost',
-        historyApiFallback: true
+        historyApiFallback: true,
+        port: 8080,
     },
     module: {
         rules: [
