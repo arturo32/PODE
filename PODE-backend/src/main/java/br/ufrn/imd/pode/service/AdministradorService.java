@@ -1,6 +1,8 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.Administrador;
+import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.dto.AdministradorDTO;
 import br.ufrn.imd.pode.repository.AdministradorRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -63,4 +66,22 @@ public class AdministradorService extends GenericService<Administrador, Administ
 		this.repository = administradorRepository;
 	}
 
+
+	public Administrador findByEmail(String email) {
+		Optional<Administrador> adm = repository.findByAtivoIsTrueAndEmail(email);
+		if (adm.isPresent()){
+			return adm.get();
+		} else {
+			throw new EntityNotFoundException("Administrador de email: '" + email + "' não encontrado");
+		}
+	}
+
+	public Administrador findByNome(String nome) {
+		Optional<Administrador> adm = repository.findByAtivoIsTrueAndNome(nome);
+		if (adm.isPresent()){
+			return adm.get();
+		} else {
+			throw new EntityNotFoundException("Administrador de nome: '" + nome + "' não encontrado");
+		}
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +30,21 @@ public class RecomendacaoController {
 		this.service = service;
 	}
 
+//	@GetMapping("/disciplinas-por-proximadade-conclusao-pes/{id_vinculo}")
+//	public RecomendacaoDTO obterDisciplinasPorProximidadeConclusaoPes(
+//			@PathVariable(value = "id_vinculo") long vinculoId) {
+//		return this.getService().recomendarDisciplinasPorProximidadeConclusaoPes(this.getService().validate(vinculoId));
+//	}
+
 	@GetMapping("/disciplinas-por-proximadade-conclusao-pes/{id_vinculo}")
-	public RecomendacaoDTO obterDisciplinasPorProximidadeConclusaoPes(
+	public List<DisciplinaDTO> obterDisciplinasPorProximidadeConclusaoPes(
 			@PathVariable(value = "id_vinculo") long vinculoId) {
-		return this.getService().recomendarDisciplinasPorProximidadeConclusaoPes(this.getService().validate(vinculoId));
+		return this.service.recomendarDisciplinasPorProximidadeConclusaoPes(vinculoId);
 	}
 
 	@GetMapping("/disciplinas-por-plano-de-curso/{id_vinculo}")
 	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(
-			@PathVariable(value = "id_vinculo") long id_vinculo) {
+			@PathVariable(value = "id_vinculo") Long id_vinculo) {
 		return this.service.recomendarDisciplinasPorPlanoDeCurso(id_vinculo);
 	}
 
