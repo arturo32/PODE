@@ -22,6 +22,7 @@ import AssistantIcon from '@mui/icons-material/Assistant';
 import { generic } from '../../component/theme';
 
 import { Main, AppBar, DrawerHeader, css } from './styles';
+import {Link, ListItemButton} from "@mui/material";
 
 const PersistentDrawerLeft = (props) => {
 
@@ -73,13 +74,14 @@ const PersistentDrawerLeft = (props) => {
                 </DrawerHeader>
                 <Divider sx={css.dividir} />
                 <List>
-                    {[{ name: 'Plano de curso', icon: <SettingsIcon sx={css.icon} /> }, { name: 'Recomendações', icon: <AssistantIcon sx={css.icon} /> }].map((item, index) => (
-                        <ListItem button key={index}>
+                    {[{ name: 'Plano de curso', icon: <SettingsIcon sx={css.icon} />, link: '/plataforma/plano-de-curso' },
+                        { name: 'Recomendações', icon: <AssistantIcon sx={css.icon} />, link: '/plataforma/recomendacoes' }].map((item, index) => (
+                        <ListItemButton key={index} component={'a'} href={item.link}>
                             <ListItemIcon>
                                 {item.icon}
                             </ListItemIcon>
-                            <ListItemText primary={item.name} />
-                        </ListItem>
+                            <ListItemText primary={item.name}   />
+                        </ListItemButton>
                     ))}
                 </List>
             </Drawer>

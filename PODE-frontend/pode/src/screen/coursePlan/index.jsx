@@ -12,6 +12,7 @@ import { form } from '../../component/theme';
 import TransferList from '../../component/transferList';
 
 import { css } from './styles';
+import {listEnfase, listPes} from "./service";
 
 const CoursePlan = () => {
 
@@ -27,12 +28,24 @@ const CoursePlan = () => {
     };
 
     useEffect(() => {
-        setEmphasisList([
-            { label: 'Desenvolvimento de Software', value: 'Desenvolvimento de Software' },
-        ]);
-        setPesList([
-            { label: 'Ciência de Dados', value: 'Ciência de Dados' },
-        ]);
+        listEnfase({params: {page: 0, limit: 1000}})
+                .then(response => {
+                    if(response.status === 200){
+                        setEmphasisList(response.data)
+                    }
+                });
+    }, []);
+
+    useEffect(() => {
+        listPes({params: {page: 0, limit: 1000}})
+                .then(response => {
+                    if(response.status === 200){
+                        setPesList(response.data)
+                    }
+                });
+    }, []);
+
+    useEffect(() => {
         setSubjects(['IMD0028 - Fundamentos da Matemática Computacional I']);
         setSubjectsAttended([]);
     }, []);
@@ -47,9 +60,9 @@ const CoursePlan = () => {
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={4} xl={3}>
                     <Autocomplete
-                        options={emphasisList}
+                        options={emphasisList.map(e => { return {label: e.nome, value: e.nome}})}
                         renderInput={(params) =>
-                            <TextField {...params} label="Enfâse" placeholder="Escolha não obrigatória" InputLabelProps={{ shrink: true }} />
+                            <TextField {...params} label="Ênfase" placeholder="Escolha não obrigatória" InputLabelProps={{ shrink: true }} />
                         }
                         value={emphasis}
                         onChange={(_, object) => setEmphasis(object)}
@@ -58,7 +71,7 @@ const CoursePlan = () => {
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={8} xl={9}>
                     <Autocomplete
-                        options={pesList}
+                        options={pesList.map(e => { return {label: e.nome, value: e.nome}})}
                         renderInput={(params) =>
                             <TextField {...params} label="Pes de interesse" placeholder="Escolha(s) não obrigatória(s)" InputLabelProps={{ shrink: true }} />
                         }
