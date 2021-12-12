@@ -257,6 +257,17 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 		return repository.save(planoCurso);
 	}
 
+	public PlanoCurso removeDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		PlanoCurso planoCurso = this.findById(planoCursoId);
+		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
+		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
+			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
+			disciplinasPeriodo.add(dp);
+		}
+		disciplinasPeriodo.forEach(planoCurso.getDisciplinasCursadas()::remove);
+		return repository.save(planoCurso);
+	}
+
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo maximo por semestre
 		// TODO: Verificar se a disciplina já não está planejada para algum semestre
