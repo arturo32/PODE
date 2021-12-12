@@ -21,7 +21,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    
     const submit = () => {
         login({ email, senha: password })
             .then(response => {
@@ -45,7 +45,7 @@ const Login = () => {
                             <Grid container={true} spacing={3}>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                                     <Typography variant="h4" component="div" align="center" gutterBottom={true} sx={css.title}>
-                                        Autenticação
+                                        Login
                                     </Typography>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -81,7 +81,7 @@ const Login = () => {
                                         sx={css.button}
                                     >
                                         Entrar
-                                </Button>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Box>

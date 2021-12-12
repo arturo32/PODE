@@ -15,5 +15,8 @@ export const css = {
         float: 'right',
         color: '#FFFFFF',
         fontFamily: '"AlegreyaSans - Bold", sans-serif',
+    },
+    dialogButton : {
+        justifyContent: 'center',
     }
 };

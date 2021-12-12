@@ -18,6 +18,8 @@ import { validateEmail, validatePassword, validatePeriod, validateGeneric } from
 import { create, createVinculo } from './service';
 
 import { css } from './styles';
+import {Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Link} from "react-router-dom";
 
 const Register = () => {
 
@@ -30,6 +32,7 @@ const Register = () => {
     const [periodoInicialPeriodo, setPeriodoInicialPeriodo] = useState('');
     const [periodoAtualAno, setPeriodoAtualAno] = useState('');
     const [periodoAtualPeriodo, setPeriodoAtualPeriodo] = useState('');
+    const [openConfirmacao, setOpenConfirmacao] = useState(false);
 
     const submit = () => {
         create({email, senha, nome})
@@ -39,8 +42,13 @@ const Register = () => {
                         periodoInicialAno, periodoInicialPeriodo, periodoAtualAno, periodoAtualPeriodo})
                         .then(response => {
                             console.log(response);
-                        }
-                    );
+                            if(response.status === 200){
+                                setOpenConfirmacao(true);
+                            }
+                        })
+						.catch(error => {
+							console.log(error);
+						});
                 }
                 console.log(response);
             })
@@ -216,6 +224,20 @@ const Register = () => {
                             </Grid>
                         </Box>
                     </Grid>
+                    <Dialog open={openConfirmacao}>
+                        <DialogTitle>Cadastro realizado com sucesso!</DialogTitle>
+                        <DialogActions sx={css.dialogButton}>
+                            <Button
+                                    variant="contained"
+                                    size="medium"
+                                    component={Link}
+                                    to={'/entrar'}
+                                    sx={css.button}
+                            >
+                                Ok!
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </ThemeProvider>
             }
         />
