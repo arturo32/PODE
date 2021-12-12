@@ -21,10 +21,14 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+
+
     const submit = () => {
-        login({ email, senha: password })
+        login('username=' + email +  '&password=' + password)
             .then(response => {
+                if(response.status === 200){
+                    window.location = '/plataforma/plano-de-curso';
+                }
                 console.log(response);
             })
             .catch(error => {
