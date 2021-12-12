@@ -128,7 +128,7 @@ public class RecomendacaoService {
 		Vinculo vinculo = vinculoService.findById(id_vinculo);
 		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(id_vinculo);
 		return planoCurso.getDisciplinasPendentes().stream().
-				filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual()).
+				filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtualPeriodo()).
 				collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto).
 				sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).
 				collect(Collectors.toList());

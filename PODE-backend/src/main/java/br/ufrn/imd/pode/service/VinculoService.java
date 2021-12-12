@@ -41,11 +41,17 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 		if (dto.getMatricula() != null) {
 			vinculo.setMatricula(dto.getMatricula());
 		}
-		if (dto.getPeriodoInicial() != null) {
-			vinculo.setPeriodoInicial(dto.getPeriodoInicial());
+		if (dto.getPeriodoInicialAno() != null) {
+			vinculo.setPeriodoInicialAno(dto.getPeriodoInicialAno());
 		}
-		if (dto.getPeriodoAtual() != null) {
-			vinculo.setPeriodoAtual(dto.getPeriodoAtual());
+		if (dto.getPeriodoInicialPeriodo() != null) {
+			vinculo.setPeriodoInicialPeriodo(dto.getPeriodoInicialPeriodo());
+		}
+		if (dto.getPeriodoAtualAno() != null) {
+			vinculo.setPeriodoAtualAno(dto.getPeriodoAtualAno());
+		}
+		if (dto.getPeriodoAtualPeriodo() != null) {
+			vinculo.setPeriodoAtualPeriodo(dto.getPeriodoAtualPeriodo());
 		}
 
 		//Busca curso
@@ -156,7 +162,7 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 
 	public Vinculo atualizaPeriodoAtual(Long vinculoId, Integer periodoNovo) {
 		Vinculo vinculo = this.findById(vinculoId);
-		vinculo.setPeriodoAtual(periodoNovo);
+		vinculo.setPeriodoAtualAno(periodoNovo);
 		return repository.save(vinculo);
 	}
 }
