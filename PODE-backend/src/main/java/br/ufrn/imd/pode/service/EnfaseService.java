@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Transactional
@@ -144,6 +145,10 @@ public class EnfaseService extends GenericService<Enfase, EnfaseDTO, Long> {
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
+	}
+
+	public List<Enfase> findEnfasePorCurso(Long cursoId) {
+		return repository.findByAtivoIsTrueAndCurso_Id(cursoId);
 	}
 
 }

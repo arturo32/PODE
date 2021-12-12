@@ -17,8 +17,6 @@ public class EstudanteController extends GenericController<Estudante, EstudanteD
 
 	private EstudanteService service;
 
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
 	@Autowired
 	public void setService(EstudanteService service) {
 		this.service = service;
@@ -29,9 +27,4 @@ public class EstudanteController extends GenericController<Estudante, EstudanteD
 		return this.service;
 	}
 
-	@Override
-	public ResponseEntity<EstudanteDTO> save(@RequestBody EstudanteDTO dto) {
-		dto.setSenha(encoder.encode(dto.getSenha()));
-		return super.save(dto);
-	}
 }

@@ -18,8 +18,6 @@ public class AdministradorController extends GenericController<Administrador, Ad
 
 	private AdministradorService service;
 
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
 	@Autowired
 	public void setService(AdministradorService administradorService) {
 		this.service = administradorService;
@@ -28,11 +26,5 @@ public class AdministradorController extends GenericController<Administrador, Ad
 	@Override
 	protected GenericService<Administrador, AdministradorDTO, Long> service() {
 		return this.service;
-	}
-
-	@Override
-	public ResponseEntity<AdministradorDTO> save(@RequestBody AdministradorDTO dto) {
-		dto.setSenha(encoder.encode(dto.getSenha()));
-		return super.save(dto);
 	}
 }
