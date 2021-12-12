@@ -41,7 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.mvcMatchers(HttpMethod.GET,"/api/disciplina").authenticated()
 
 				// others
-				.anyRequest().permitAll().and().formLogin().and().httpBasic().disable();
+				.anyRequest().permitAll()
+				.and().formLogin().loginProcessingUrl("/api/login")
+				.and().httpBasic().disable();
 
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
