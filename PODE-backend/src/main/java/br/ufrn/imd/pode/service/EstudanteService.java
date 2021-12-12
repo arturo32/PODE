@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -108,5 +109,23 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 	@Autowired
 	public void setRepository(EstudanteRepository repository) {
 		this.repository = repository;
+	}
+
+	public Estudante findByEmail(String email) {
+		Optional<Estudante> estudante = repository.findByAtivoIsTrueAndEmail(email);
+		if (estudante.isPresent()){
+			return estudante.get();
+		} else {
+			throw new EntityNotFoundException("Estudante de email: '" + email + "' não encontrado");
+		}
+	}
+
+	public Estudante findByNome(String nome) {
+		Optional<Estudante> estudante = repository.findByAtivoIsTrueAndNome(nome);
+		if (estudante.isPresent()){
+			return estudante.get();
+		} else {
+			throw new EntityNotFoundException("Estudante de nome: '" + nome + "' não encontrado");
+		}
 	}
 }
