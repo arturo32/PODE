@@ -1,5 +1,5 @@
 export default class APIAuthentication {
     static login() {
-        return '/estudante';
+        return '/login';
     }
 };
