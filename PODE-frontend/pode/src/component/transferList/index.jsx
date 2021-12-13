@@ -26,7 +26,8 @@ const TransferList = (props) => {
 
     const { labels, left, right, handleChangeLeft, handleChangeRight } = props;
 
-    const [checked, setChecked] = useState([]);
+    const [checkedCursoObrigatorias, setCheckedCursoObrigatorias] = useState([]);
+    const [checkedCursoOptativas, setCheckedCursoOptativas] = useState([]);
 
     const [openNaoCursadasCurso, setOpenNaoCursadasCurso] = useState(true);
     const [openNaoCursadasCursoObrigatorias, setOpenNaoCursadasCursoObrigatorias] = useState(true);
@@ -39,9 +40,9 @@ const TransferList = (props) => {
     const [openNaoCursadasPes, setOpenNaoCursadasPes] = useState(true);
 
 
-    const leftCheckedCursoObrigatorias = intersection(checked, left.cursoObrigatorias);
-    const leftCheckedCursoOptativas = intersection(checked, left.cursoOptativas);
-    const rightChecked = intersection(checked, right);
+    const leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
+    const leftCheckedCursoOptativas = intersection(checkedCursoObrigatorias, left.cursoOptativas);
+    const rightChecked = intersection(checkedCursoObrigatorias, right);
 
 
     const handleClickNaoCursadasCurso = () => {
@@ -71,14 +72,14 @@ const TransferList = (props) => {
 
 
     const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+        const currentIndex = checkedCursoObrigatorias.indexOf(value);
+        const newChecked = [...checkedCursoObrigatorias];
         if (currentIndex === -1) {
             newChecked.push(value);
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        setChecked(newChecked);
+        setCheckedCursoObrigatorias(newChecked);
     };
 
     const handleAllRight = () => {
@@ -89,13 +90,13 @@ const TransferList = (props) => {
     const handleCheckedRight = () => {
         handleChangeRight(right.concat(leftCheckedCursoObrigatorias));
         handleChangeLeft(not(left.cursoObrigatorias, leftCheckedCursoObrigatorias));
-        setChecked(not(checked, leftCheckedCursoObrigatorias));
+        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, leftCheckedCursoObrigatorias));
     };
 
     const handleCheckedLeft = () => {
         handleChangeLeft(left.cursoObrigatorias.concat(rightChecked));
         handleChangeRight(not(right, rightChecked));
-        setChecked(not(checked, rightChecked));
+        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightChecked));
     };
 
     const handleAllLeft = () => {
@@ -108,25 +109,25 @@ const TransferList = (props) => {
             {disciplinas.map((value) => {
                 const labelId = `transfer-list-item-${value}-label`;
                 return (
-                        <ListItem
-                                key={value}
-                                role="listitem"
-                                button={true}
-                                onClick={handleToggle(value)}
-                                sx={{ pl: 8 }}
-                        >
-                            <ListItemIcon>
-                                <Checkbox
-                                        checked={checked.indexOf(value) !== -1}
-                                        tabIndex={-1}
-                                        disableRipple
-                                        inputProps={{
-                                            'aria-labelledby': labelId,
-                                        }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={value} />
-                        </ListItem>
+                    <ListItem
+                            key={value}
+                            role="listitem"
+                            button={true}
+                            onClick={handleToggle(value)}
+                            sx={{ pl: 8 }}
+                    >
+                        <ListItemIcon>
+                            <Checkbox
+                                    checkedCursoObrigatorias={checkedCursoObrigatorias.indexOf(value) !== -1}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    inputProps={{
+                                        'aria-labelledby': labelId,
+                                    }}
+                            />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={value} />
+                    </ListItem>
                 );
             })}
         </List>
