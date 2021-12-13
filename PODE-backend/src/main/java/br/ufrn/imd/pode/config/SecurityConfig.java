@@ -48,12 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// Routes Security
 				// TODO Segurança das rotas
-				.mvcMatchers(HttpMethod.POST,"/api/estudante").permitAll()
+//				.mvcMatchers(HttpMethod.POST,"/api/estudante").permitAll()
 
 //				.mvcMatchers(HttpMethod.GET,"/api/disciplina").authenticated()
 
 				// others
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 				.and().formLogin().loginProcessingUrl("/api/login")
 				.successHandler(this::onAuthenticationSuccess) // success authentication
 				.failureHandler((req, resp, ex) -> resp.setStatus(HttpServletResponse.SC_FORBIDDEN)).and() // bad credentials
