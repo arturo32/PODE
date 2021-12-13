@@ -12,8 +12,15 @@ export const validatePassword = (password) => {
     return false;
 };
 
+export const validateYear = (year) => {
+    if (year.length === 4) {
+        return true;
+    }
+    return false;
+};
+
 export const validatePeriod = (period) => {
-    if (period.length === 4) {
+    if (period.length === 1) {
         return true;
     }
     return false;

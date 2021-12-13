@@ -10,6 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import Page from '../../component/page';
 import { form } from '../../component/theme';
+import Alert from '../../component/snackbar';
 
 import { validateEmail, validatePassword } from '../../util/validation';
 
@@ -21,18 +22,24 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [error, setError] = useState({ active: false, message: '' });
 
     const submit = () => {
-        login('username=' + email +  '&password=' + password)
+        login('username=' + email + '&password=' + password)
             .then(response => {
-                if(response.status === 200){
+                if (response.status === 200) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data));
                     window.location = '/plataforma/plano-de-curso';
+                } else {
+                    throw null;
                 }
-                console.log(response);
             })
             .catch(error => {
-                console.log(error);
+                if (JSON.stringify(error).includes('403')) {
+                    setError({ active: true, message: 'Autenticação falhou. Por favor verifique a corretude de email e senha' });
+                } else {
+                    setError({ active: true, message: 'Ocorreu uma falha interna. Entre em contato com o administrador' });
+                }
             });
     };
 
@@ -90,6 +97,12 @@ const Login = () => {
                             </Grid>
                         </Box>
                     </Grid>
+                    <Alert
+                        open={error.active}
+                        type="error"
+                        message={error.message}
+                        close={() => setError({ active: false, message: '' })}
+                    />
                 </ThemeProvider>
             }
         />

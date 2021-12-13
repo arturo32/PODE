@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { Link } from "react-router-dom";
+
 import { ThemeProvider } from '@mui/material/styles';
 
 import Box from '@mui/material/Box';
@@ -8,18 +10,20 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import Page from '../../component/page';
 import { form } from '../../component/theme';
+import MaskYear from '../../component/mask/year';
 import MaskPeriod from '../../component/mask/period';
 
-import { validateEmail, validatePassword, validatePeriod, validateGeneric } from '../../util/validation';
+import { validateEmail, validatePassword, validateYear, validatePeriod, validateGeneric } from '../../util/validation';
 
-import { create, createVinculo } from './service';
+import { createStudent, createVinculo } from './service';
 
 import { css } from './styles';
-import {Dialog, DialogActions, DialogTitle} from "@mui/material";
-import {Link} from "react-router-dom";
 
 const Register = () => {
 
@@ -35,20 +39,22 @@ const Register = () => {
     const [openConfirmacao, setOpenConfirmacao] = useState(false);
 
     const submit = () => {
-        create({email, senha, nome})
+        createStudent({ email, senha, nome })
             .then(response => {
-                if(response.status === 200){
-                    createVinculo({'idEstudante': response.data.id, 'idCurso': 1, matricula,
-                        periodoInicialAno, periodoInicialPeriodo, periodoAtualAno, periodoAtualPeriodo})
+                if (response.status === 200) {
+                    createVinculo({
+                        'idEstudante': response.data.id, 'idCurso': 1, matricula,
+                        periodoInicialAno, periodoInicialPeriodo, periodoAtualAno, periodoAtualPeriodo
+                    })
                         .then(response => {
                             console.log(response);
-                            if(response.status === 200){
+                            if (response.status === 200) {
                                 setOpenConfirmacao(true);
                             }
                         })
-						.catch(error => {
-							console.log(error);
-						});
+                        .catch(error => {
+                            console.log(error);
+                        });
                 }
                 console.log(response);
             })
@@ -148,7 +154,7 @@ const Register = () => {
                                                 placeholder={'0000'}
                                                 variant="outlined"
                                                 InputProps={{
-                                                    inputComponent: MaskPeriod,
+                                                    inputComponent: MaskYear,
                                                 }}
                                                 InputLabelProps={{ shrink: true }}
                                                 required={true}
@@ -157,15 +163,18 @@ const Register = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <TextField
-                                                    type="text"
-                                                    value={periodoInicialPeriodo}
-                                                    onChange={event => setPeriodoInicialPeriodo(event.target.value)}
-                                                    label="Período de entrada (semestre)"
-                                                    placeholder={'0'}
-                                                    variant="outlined"
-                                                    InputLabelProps={{ shrink: true }}
-                                                    required={true}
-                                                    fullWidth={true}
+                                                type="text"
+                                                value={periodoInicialPeriodo}
+                                                onChange={event => setPeriodoInicialPeriodo(event.target.value)}
+                                                label="Período de entrada (semestre)"
+                                                placeholder={'0'}
+                                                variant="outlined"
+                                                InputProps={{
+                                                    inputComponent: MaskPeriod,
+                                                }}
+                                                InputLabelProps={{ shrink: true }}
+                                                required={true}
+                                                fullWidth={true}
                                             />
                                         </Grid>
                                     </Grid>
@@ -174,31 +183,34 @@ const Register = () => {
                                     <Grid container={true} spacing={1}>
                                         <Grid item xs={6}>
                                             <TextField
-                                                    type="text"
-                                                    value={periodoAtualAno}
-                                                    onChange={event => setPeriodoAtualAno(event.target.value)}
-                                                    label="Período atual (ano)"
-                                                    placeholder={'0000'}
-                                                    variant="outlined"
-                                                    InputProps={{
-                                                        inputComponent: MaskPeriod,
-                                                    }}
-                                                    InputLabelProps={{ shrink: true }}
-                                                    required={true}
-                                                    fullWidth={true}
+                                                type="text"
+                                                value={periodoAtualAno}
+                                                onChange={event => setPeriodoAtualAno(event.target.value)}
+                                                label="Período atual (ano)"
+                                                placeholder={'0000'}
+                                                variant="outlined"
+                                                InputProps={{
+                                                    inputComponent: MaskYear,
+                                                }}
+                                                InputLabelProps={{ shrink: true }}
+                                                required={true}
+                                                fullWidth={true}
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <TextField
-                                                    type="text"
-                                                    value={periodoAtualPeriodo}
-                                                    onChange={event => setPeriodoAtualPeriodo(event.target.value)}
-                                                    label="Período atual (semestre)"
-                                                    placeholder={'0'}
-                                                    variant="outlined"
-                                                    InputLabelProps={{ shrink: true }}
-                                                    required={true}
-                                                    fullWidth={true}
+                                                type="text"
+                                                value={periodoAtualPeriodo}
+                                                onChange={event => setPeriodoAtualPeriodo(event.target.value)}
+                                                label="Período atual (semestre)"
+                                                placeholder={'0'}
+                                                variant="outlined"
+                                                InputProps={{
+                                                    inputComponent: MaskPeriod,
+                                                }}
+                                                InputLabelProps={{ shrink: true }}
+                                                required={true}
+                                                fullWidth={true}
                                             />
                                         </Grid>
                                     </Grid>
@@ -212,8 +224,10 @@ const Register = () => {
                                             !validatePassword(senha) ||
                                             !validateGeneric(nome) ||
                                             !validateGeneric(matricula) ||
-                                            !validatePeriod(periodoInicialAno) ||
-                                            !validatePeriod(periodoAtualAno)
+                                            !validateYear(periodoInicialAno) ||
+                                            !validatePeriod(periodoInicialPeriodo) ||
+                                            !validateYear(periodoAtualAno) ||
+                                            !validatePeriod(periodoAtualPeriodo)
                                         }
                                         onClick={() => submit()}
                                         sx={css.button}
@@ -228,11 +242,11 @@ const Register = () => {
                         <DialogTitle>Cadastro realizado com sucesso!</DialogTitle>
                         <DialogActions sx={css.dialogButton}>
                             <Button
-                                    variant="contained"
-                                    size="medium"
-                                    component={Link}
-                                    to={'/entrar'}
-                                    sx={css.button}
+                                variant="contained"
+                                size="medium"
+                                component={Link}
+                                to={'/entrar'}
+                                sx={css.button}
                             >
                                 Ok!
                             </Button>

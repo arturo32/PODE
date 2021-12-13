@@ -2,7 +2,7 @@ import API from '../../service/api';
 import APIStudent from '../../service/api.student';
 import APIVinculo from '../../service/api.vinculo';
 
-export const create = async (data) => {
+export const createStudent = async (data) => {
     return await API.post(APIStudent.create(), data);
 };
 
