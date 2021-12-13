@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 
 import { css } from './styles';
+import {Collapse, ListItemButton, ListSubheader} from "@mui/material";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
 const not = (a, b) => {
     return a.filter((value) => b.indexOf(value) === -1);
@@ -26,8 +28,47 @@ const TransferList = (props) => {
 
     const [checked, setChecked] = useState([]);
 
-    const leftChecked = intersection(checked, left);
+    const [openNaoCursadasCurso, setOpenNaoCursadasCurso] = useState(true);
+    const [openNaoCursadasCursoObrigatorias, setOpenNaoCursadasCursoObrigatorias] = useState(true);
+    const [openNaoCursadasCursoOptativas, setOpenNaoCursadasCursoOptativas] = useState(true);
+
+    const [openNaoCursadasEnfase, setOpenNaoCursadasEnfase] = useState(true);
+    const [openNaoCursadasEnfaseObrigatorias, setOpenNaoCursadasEnfaseObrigatorias] = useState(true);
+    const [openNaoCursadasEnfaseOptativas, setOpenNaoCursadasEnfaseOptativas] = useState(true);
+
+    const [openNaoCursadasPes, setOpenNaoCursadasPes] = useState(true);
+
+
+    const leftCheckedCursoObrigatorias = intersection(checked, left.cursoObrigatorias);
+    const leftCheckedCursoOptativas = intersection(checked, left.cursoOptativas);
     const rightChecked = intersection(checked, right);
+
+
+    const handleClickNaoCursadasCurso = () => {
+        setOpenNaoCursadasCurso(!openNaoCursadasCurso);
+    };
+    const handleClickNaoCursadasCursoObrigatorias = () => {
+        setOpenNaoCursadasCursoObrigatorias(!openNaoCursadasCursoObrigatorias);
+    };
+    const handleClickNaoCursadasCursoOptativas = () => {
+        setOpenNaoCursadasCursoOptativas(!openNaoCursadasCursoOptativas);
+    };
+
+    const handleClickNaoCursadasEnfase = () => {
+        setOpenNaoCursadasEnfase(!openNaoCursadasEnfase);
+    };
+    const handleClickNaoCursadasEnfaseObrigatorias = () => {
+        setOpenNaoCursadasEnfaseObrigatorias(!openNaoCursadasEnfaseObrigatorias);
+    };
+    const handleClickNaoCursadasEnfaseOptativas = () => {
+        setOpenNaoCursadasEnfaseOptativas(!openNaoCursadasEnfaseOptativas);
+    };
+
+    const handleClickNaoCursadasPes = () => {
+        setOpenNaoCursadasPes(!openNaoCursadasPes);
+    };
+
+
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -41,26 +82,67 @@ const TransferList = (props) => {
     };
 
     const handleAllRight = () => {
-        handleChangeRight(right.concat(left));
+        handleChangeRight(right.concat(left.cursoObrigatorias));
         handleChangeLeft([]);
     };
 
     const handleCheckedRight = () => {
-        handleChangeRight(right.concat(leftChecked));
-        handleChangeLeft(not(left, leftChecked));
-        setChecked(not(checked, leftChecked));
+        handleChangeRight(right.concat(leftCheckedCursoObrigatorias));
+        handleChangeLeft(not(left.cursoObrigatorias, leftCheckedCursoObrigatorias));
+        setChecked(not(checked, leftCheckedCursoObrigatorias));
     };
 
     const handleCheckedLeft = () => {
-        handleChangeLeft(left.concat(rightChecked));
+        handleChangeLeft(left.cursoObrigatorias.concat(rightChecked));
         handleChangeRight(not(right, rightChecked));
         setChecked(not(checked, rightChecked));
     };
 
     const handleAllLeft = () => {
-        handleChangeLeft(left.concat(right));
+        handleChangeLeft(left.cursoObrigatorias.concat(right));
         handleChangeRight([]);
     };
+
+    const listDisciplinas = (disciplinas) => (
+        <List component="div" disablePadding >
+            {disciplinas.map((value) => {
+                const labelId = `transfer-list-item-${value}-label`;
+                return (
+                        <ListItem
+                                key={value}
+                                role="listitem"
+                                button={true}
+                                onClick={handleToggle(value)}
+                                sx={{ pl: 8 }}
+                        >
+                            <ListItemIcon>
+                                <Checkbox
+                                        checked={checked.indexOf(value) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{
+                                            'aria-labelledby': labelId,
+                                        }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={value} />
+                        </ListItem>
+                );
+            })}
+        </List>
+    )
+
+    const customSubList = (items, label, handleFunction, openState) => (
+        <div>
+            <ListItemButton onClick={handleFunction} sx={{ pl: 4 }}>
+                <ListItemText  primary={label} />
+                {openState ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openState} timeout="auto" unmountOnExit>
+                {listDisciplinas(items)}
+            </Collapse>
+        </div>
+    );
 
     const customList = (items, label) => (
         <Paper sx={css.paper}>
@@ -68,37 +150,38 @@ const TransferList = (props) => {
                 {label}
             </Typography>
             <List dense component="div" role="list">
-                {items.map((value) => {
-                    const labelId = `transfer-list-item-${value}-label`;
-                    return (
-                        <ListItem
-                            key={value}
-                            role="listitem"
-                            button={true}
-                            onClick={handleToggle(value)}
-                        >
-                            <ListItemIcon>
-                                <Checkbox
-                                    checked={checked.indexOf(value) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{
-                                        'aria-labelledby': labelId,
-                                    }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={value} />
-                        </ListItem>
-                    );
-                })}
-                <ListItem />
+                <ListItemButton onClick={handleClickNaoCursadasCurso}>
+                    <ListItemText  primary={'Curso'} />
+                    {openNaoCursadasCurso ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openNaoCursadasCurso} timeout="auto" unmountOnExit>
+                    {customSubList(items, 'Obrigatórias', handleClickNaoCursadasCursoObrigatorias, openNaoCursadasCursoObrigatorias)}
+                    {customSubList([], 'Optativas', handleClickNaoCursadasCursoOptativas, openNaoCursadasCursoOptativas)}
+                </Collapse>
+
+                <ListItemButton onClick={handleClickNaoCursadasEnfase}>
+                    <ListItemText  primary={'Ênfase'} />
+                    {openNaoCursadasEnfase ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openNaoCursadasEnfase} timeout="auto" unmountOnExit>
+                    {customSubList([], 'Obrigatórias', handleClickNaoCursadasEnfaseObrigatorias, openNaoCursadasEnfaseObrigatorias)}
+                    {customSubList([], 'Optativas', handleClickNaoCursadasEnfaseOptativas, openNaoCursadasEnfaseOptativas)}
+                </Collapse>
+
+                <ListItemButton onClick={handleClickNaoCursadasPes}>
+                    <ListItemText  primary={'Pes'} />
+                    {openNaoCursadasPes ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openNaoCursadasPes} timeout="auto" unmountOnExit>
+                    {listDisciplinas([])}
+                </Collapse>
             </List>
         </Paper>
     );
 
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center" sx={css.root}>
-            <Grid item>{customList(left, labels[0])}</Grid>
+            <Grid item>{customList(left.cursoObrigatorias, labels[0])}</Grid>
             <Grid item>
                 <Grid container direction="column" alignItems="center">
                     <Button
@@ -106,7 +189,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleAllRight}
-                        disabled={left.length === 0}
+                        disabled={left.cursoObrigatorias.length === 0}
                         aria-label="adicionar todas"
                     >
                         Adicionar todas (≫)
@@ -116,7 +199,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedRight}
-                        disabled={leftChecked.length === 0}
+                        disabled={leftCheckedCursoObrigatorias.length === 0}
                         aria-label="adicionar selecionadas"
                     >
                         Adicionar selecionadas (&gt;)
