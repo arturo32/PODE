@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// Routes Security
 				// TODO Segurança das rotas
-//				.mvcMatchers(HttpMethod.GET,"/api/estudante").hasAnyRole("ADMIN")
+				.mvcMatchers(HttpMethod.POST,"/api/estudante").permitAll()
 
 //				.mvcMatchers(HttpMethod.GET,"/api/disciplina").authenticated()
 
