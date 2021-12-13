@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.repository;
 
 import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.view.DisciplinaPendente;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -47,7 +48,7 @@ public interface DisciplinaRepository extends GenericRepository<Disciplina, Long
 			"		WHERE vinculo.id = ?1\n" + 
 			"	)\n" + 
 			"ORDER BY disciplina.ch DESC;", nativeQuery = true)
-	public Set<Disciplina> findDisciplinasObrigatoriasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
+	public Set<DisciplinaPendente> findDisciplinasObrigatoriasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 
 	@Query(value = "SELECT\n" + 
 			"	disciplina.id,\n" + 
@@ -79,6 +80,6 @@ public interface DisciplinaRepository extends GenericRepository<Disciplina, Long
 			"		WHERE vinculo.id = ?1\n" + 
 			"	)\n" + 
 			"ORDER BY disciplina.ch DESC;", nativeQuery = true)
-	public Set<Disciplina> findDisciplinasOptativasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
+	public Set<DisciplinaPendente> findDisciplinasOptativasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 	
 }

@@ -5,8 +5,9 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Pes;
-import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.model.dto.PesDTO;
+import br.ufrn.imd.pode.model.view.PesChObrigatoriaCumprida;
+import br.ufrn.imd.pode.model.view.PesChOptativaCumprida;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PesRepository;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -32,7 +34,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 	public Pes convertToEntity(PesDTO dto) {
 		Pes pes = new Pes();
 
-		//Se for uma edição
+		// Se for uma edição
 		if (dto.getId() != null) {
 			pes = this.findById(dto.getId());
 		}
@@ -57,9 +59,8 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 				}
 
 				try {
-					pes.getDisciplinasObrigatorias()
-							.add(this.disciplinaService.findById(disciplinaDTO));
-				} catch (EntityNotFoundException entityNotFoundException){
+					pes.getDisciplinasObrigatorias().add(this.disciplinaService.findById(disciplinaDTO));
+				} catch (EntityNotFoundException entityNotFoundException) {
 					throw new InconsistentEntityException("disciplinaObrigatoria inconsistente");
 				}
 			}
@@ -72,8 +73,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 				}
 				try {
-					pes.getDisciplinasOptativas()
-							.add(this.disciplinaService.findById(disciplinaDTO));
+					pes.getDisciplinasOptativas().add(this.disciplinaService.findById(disciplinaDTO));
 				} catch (EntityNotFoundException entityNotFoundException) {
 					throw new InconsistentEntityException("disciplinaOptativa inconsistente");
 				}
@@ -110,12 +110,12 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 	public PesDTO validate(PesDTO pes) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
-		//Verifica nome
+		// Verifica nome
 		if (StringUtils.isEmpty(pes.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
 
-		//Verifica chm
+		// Verifica chm
 		boolean statusChm = false;
 		if (pes.getChm() == null || pes.getChm() <= 0) {
 			exceptionHelper.add("chm inválido");
@@ -123,7 +123,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 			statusChm = true;
 		}
 
-		//Verifica cho
+		// Verifica cho
 		boolean statusCho = false;
 		if (pes.getCho() == null || pes.getCho() <= 0) {
 			exceptionHelper.add("cho inválido");
@@ -131,14 +131,14 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 			statusCho = true;
 		}
 
-		//Verifica cho em relação a chm
+		// Verifica cho em relação a chm
 		if (statusCho && statusChm) {
 			if (pes.getCho() > pes.getChm()) {
 				exceptionHelper.add("impossível cho ser maior do que chm");
 			}
 		}
 
-		//Verifica disciplinasObrigatorias
+		// Verifica disciplinasObrigatorias
 		if (pes.getIdDisciplinasObrigatorias() != null) {
 			for (Long disciplina : pes.getIdDisciplinasObrigatorias()) {
 				if (disciplina == null || disciplina < 0) {
@@ -153,7 +153,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 			}
 		}
 
-		//Verifica disciplinasOptativas
+		// Verifica disciplinasOptativas
 		if (pes.getIdDisciplinasOptativas() != null) {
 			for (Long disciplina : pes.getIdDisciplinasOptativas()) {
 				if (disciplina == null || disciplina < 0) {
@@ -168,7 +168,7 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 			}
 		}
 
-		//Verifica se existe exceção
+		// Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return pes;
 		} else {
@@ -176,6 +176,12 @@ public class PesService extends GenericService<Pes, PesDTO, Long> {
 		}
 	}
 
+	public Set<PesChObrigatoriaCumprida> obterPesComChObrigatoriaCumprida(long vinculoId) {
+		return this.getRepository().findPesComChObrigatoriaCumprida(vinculoId);
+	}
 
+	public Set<PesChOptativaCumprida> obterPesComChOptativaCumprida(long vinculoId) {
+		return this.getRepository().findPesComChOptativaCumprida(vinculoId);
+	}
 
 }

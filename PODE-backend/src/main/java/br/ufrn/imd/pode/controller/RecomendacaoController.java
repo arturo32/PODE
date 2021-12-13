@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufrn.imd.pode.model.dto.RecomendacaoDTO;
+import br.ufrn.imd.pode.model.dto.RecomendacaoPesDTO;
 import br.ufrn.imd.pode.service.RecomendacaoService;
 
 @RestController
@@ -37,7 +37,7 @@ public class RecomendacaoController {
 //	}
 
 	@GetMapping("/disciplinas-por-proximadade-conclusao-pes/{id_vinculo}")
-	public List<DisciplinaDTO> obterDisciplinasPorProximidadeConclusaoPes(
+	public RecomendacaoPesDTO obterDisciplinasPorProximidadeConclusaoPes(
 			@PathVariable(value = "id_vinculo") long vinculoId) {
 		return this.service.recomendarDisciplinasPorProximidadeConclusaoPes(vinculoId);
 	}

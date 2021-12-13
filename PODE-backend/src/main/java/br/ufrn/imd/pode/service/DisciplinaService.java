@@ -4,6 +4,7 @@ import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Disciplina;
 import br.ufrn.imd.pode.model.dto.DisciplinaDTO;
+import br.ufrn.imd.pode.model.view.DisciplinaPendente;
 import br.ufrn.imd.pode.repository.DisciplinaRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import org.springframework.util.StringUtils;
@@ -12,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,28 +35,28 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public Disciplina convertToEntity(DisciplinaDTO dto) {
 		Disciplina disciplina = new Disciplina();
 
-		//Se for uma edição
+		// Se for uma edição
 		if (dto.getId() != null) {
 			disciplina = this.findById(dto.getId());
 		}
 
 		disciplina.setId(dto.getId());
-		if (dto.getCodigo() != null){
+		if (dto.getCodigo() != null) {
 			disciplina.setCodigo(dto.getCodigo());
 		}
-		if (dto.getNome() != null){
+		if (dto.getNome() != null) {
 			disciplina.setNome(dto.getNome());
 		}
-		if (dto.getCh() != null){
+		if (dto.getCh() != null) {
 			disciplina.setCh(dto.getCh());
 		}
-		if (dto.getPrerequisitos() != null){
+		if (dto.getPrerequisitos() != null) {
 			disciplina.setPrerequisitos(dto.getPrerequisitos());
 		}
-		if (dto.getCorequisitos() != null){
+		if (dto.getCorequisitos() != null) {
 			disciplina.setCorequisitos(dto.getCorequisitos());
 		}
-		if (dto.getEquivalentes() != null){
+		if (dto.getEquivalentes() != null) {
 			disciplina.setEquivalentes(dto.getEquivalentes());
 		}
 
@@ -93,7 +94,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return (boolean) MVEL.eval(expressao);
 	}
 
-	//Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se atendem a expressão de equivalencia)
+	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se
+	// atendem a expressão de equivalencia)
 	public boolean checarEquivalencia(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getEquivalentes();
@@ -116,7 +118,8 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		return (boolean) MVEL.eval(expressao);
 	}
 
-	//Checa se um conjunto de disciplinas atende os prerequisitos da disciplina alvo (se atendem a expressão de prerequisito)
+	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina
+	// alvo (se atendem a expressão de prerequisito)
 	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
@@ -130,7 +133,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public DisciplinaDTO validate(DisciplinaDTO disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
-		//Verifica código
+		// Verifica código
 		if (StringUtils.isEmpty(disciplina.getCodigo())) {
 			exceptionHelper.add("codigo inválido");
 		} else {
@@ -140,22 +143,30 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 			}
 		}
 
-		//Verifica nome
+		// Verifica nome
 		if (StringUtils.isEmpty(disciplina.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-		//Verifica carga horária
+		// Verifica carga horária
 		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
 			exceptionHelper.add("ch inválido");
 		}
 
 		// TODO verificar expressões de prequisitos, equivalencias e corequisitos
-		//Verifica se existe exceção
+		// Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			return disciplina;
 		} else {
 			throw new ValidationException(exceptionHelper.getMessage());
 		}
+	}
+
+	public Set<DisciplinaPendente> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
+		return this.getRepository().findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesId);
+	}
+
+	public Set<DisciplinaPendente> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
+		return this.getRepository().findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesId);
 	}
 
 }
