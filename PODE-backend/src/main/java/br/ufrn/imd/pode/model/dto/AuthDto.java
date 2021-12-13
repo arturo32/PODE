@@ -7,18 +7,21 @@ import java.util.Collection;
 
 public class AuthDto extends User {
 
-	private String nome;
+	private final String nome;
 
-	public AuthDto(String nome, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+	private final Long id;
+
+	public AuthDto(String nome, Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 		this.nome = nome;
-	}
-
-	public AuthDto(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-		super(username, password, authorities);
+		this.id = id;
 	}
 
 	public String getNome() {
 		return nome;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

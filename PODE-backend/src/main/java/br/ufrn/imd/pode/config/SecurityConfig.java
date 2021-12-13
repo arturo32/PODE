@@ -1,15 +1,21 @@
 package br.ufrn.imd.pode.config;
 
+import br.ufrn.imd.pode.model.dto.AuthDto;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Classe de configuração de segurança da aplicação
@@ -49,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// others
 				.anyRequest().permitAll()
 				.and().formLogin().loginProcessingUrl("/api/login")
-				.successHandler((req, resp, auth) -> resp.setStatus(HttpServletResponse.SC_OK)) // success authentication
+				.successHandler(this::onAuthenticationSuccess) // success authentication
 				.failureHandler((req, resp, ex) -> resp.setStatus(HttpServletResponse.SC_FORBIDDEN)).and() // bad credentials
 				.sessionManagement()
 				.invalidSessionStrategy((req, resp) -> resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED)).and() // if user provided expired session id
@@ -65,5 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
 		builder.userDetailsService(userDetailsService)
 				.passwordEncoder(new BCryptPasswordEncoder());
+	}
+
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.flushBuffer();
+		AuthDto dto = (AuthDto) auth.getPrincipal();
+		ObjectMapper mapper = new ObjectMapper();
+		response.getOutputStream().print(mapper.writeValueAsString(dto));
 	}
 }
