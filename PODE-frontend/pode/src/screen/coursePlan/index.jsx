@@ -12,7 +12,9 @@ import { form } from '../../component/theme';
 import TransferList from '../../component/transferList';
 
 import { css } from './styles';
+
 import {listDisciplinasObrigatoriasCurso, listEnfase, listPes} from "./service";
+
 
 const CoursePlan = () => {
 
@@ -29,6 +31,7 @@ const CoursePlan = () => {
 
     useEffect(() => {
         listEnfase({params: {page: 0, limit: 1000}}, 2)
+
                 .then(response => {
                     if(response.status === 200){
                         setEmphasisList(response.data)
