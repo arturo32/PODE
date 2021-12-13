@@ -54,7 +54,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 				throw new UsernameNotFoundException("Usuário não encontrado!");
 			}
 		}
-		return new AuthDto(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), authorities(usuario));
+		return new AuthDto(usuario.getNome(), usuario.getId(), usuario.getEmail(), usuario.getSenha(), authorities(usuario));
 	}
 
 	public Collection<? extends GrantedAuthority> authorities(Usuario usuario) {
