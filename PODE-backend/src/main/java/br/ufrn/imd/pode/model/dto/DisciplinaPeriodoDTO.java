@@ -12,6 +12,8 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	private String nome;
 
+	private Integer ch;
+
 	private Integer periodo;
 
 	public DisciplinaPeriodoDTO() {
@@ -22,6 +24,7 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 		this.setIdDisciplina(disciplinaPeriodo.getDisciplina().getId());
 		this.setCodigo(disciplinaPeriodo.getDisciplina().getCodigo());
 		this.setNome(disciplinaPeriodo.getDisciplina().getNome());
+		this.setCh(disciplinaPeriodo.getDisciplina().getCh());
 		this.setPeriodo(disciplinaPeriodo.getPeriodo());
 	}
 
@@ -47,6 +50,14 @@ public class DisciplinaPeriodoDTO extends AbstractDTO {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Integer getCh() {
+		return ch;
+	}
+
+	public void setCh(Integer ch) {
+		this.ch = ch;
 	}
 
 	public Integer getPeriodo() {
