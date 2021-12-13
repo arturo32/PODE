@@ -1,5 +1,7 @@
 package br.ufrn.imd.pode.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -134,5 +136,20 @@ public class Vinculo extends AbstractModel<Long> {
 
 	public void setEstudante(Estudante estudante) {
 		this.estudante = estudante;
+	}
+
+
+	@JsonIgnore
+	public Integer getPeriodoAtual() {
+		int ano_diff = getPeriodoAtualAno() - getPeriodoInicialAno();
+		int periodos = ano_diff * 2;
+		if (getPeriodoAtualPeriodo().equals(getPeriodoInicialPeriodo())){
+			periodos += 1;
+		} else {
+			if (getPeriodoAtualPeriodo() > getPeriodoInicialPeriodo()){
+				periodos += 2;
+			}
+		}
+		return periodos;
 	}
 }

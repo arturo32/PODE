@@ -85,7 +85,7 @@ public class EstudanteService extends GenericService<Estudante, EstudanteDTO, Lo
 			exceptionHelper.add("nome inválido");
 		}
 		//Verifica senha
-		if (StringUtils.isEmpty(dto.getSenha()) || dto.getSenha().length() < 7) {
+		if (StringUtils.isEmpty(dto.getSenha()) || dto.getSenha().length() < 8) {
 			exceptionHelper.add("senha inválida");
 		}
 		//Verifica email
