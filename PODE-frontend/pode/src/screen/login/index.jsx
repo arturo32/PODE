@@ -5,11 +5,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { ThemeProvider } from '@mui/material/styles';
 
 import Page from '../../component/page';
 import { form } from '../../component/theme';
+import Alert from '../../component/snackbar';
 
 import { validateEmail, validatePassword } from '../../util/validation';
 
@@ -21,18 +23,29 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [error, setError] = useState({ active: false, message: '' });
+    const [loading, setLoading] = useState(false);
 
     const submit = () => {
-        login('username=' + email +  '&password=' + password)
+        setLoading(true);
+        login('username=' + email + '&password=' + password)
             .then(response => {
-                if(response.status === 200){
+                if (response.status === 200) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data));
                     window.location = '/plataforma/plano-de-curso';
+                } else {
+                    throw null;
                 }
-                console.log(response);
             })
             .catch(error => {
-                console.log(error);
+                if (error.response.status === 403) {
+                    setError({ active: true, message: 'Autenticação falhou. Por favor verifique a corretude de email e senha' });
+                } else {
+                    setError({ active: true, message: error.response.data.userMessage });
+                }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -77,19 +90,38 @@ const Login = () => {
                                     />
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        disabled={!validateEmail(email) || !validatePassword(password)}
-                                        onClick={() => submit()}
-                                        sx={css.button}
-                                    >
-                                        Entrar
-                                    </Button>
+                                    {loading ?
+                                        <Grid
+                                            container={true}
+                                            direction="row"
+                                            justifyContent="flex-end"
+                                            alignItems="center"
+                                        >
+                                            <CircularProgress />
+                                        </Grid> :
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            disabled={
+                                                !validateEmail(email) ||
+                                                !validatePassword(password)
+                                            }
+                                            onClick={() => submit()}
+                                            sx={css.button}
+                                        >
+                                            Entrar
+                                        </Button>
+                                    }
                                 </Grid>
                             </Grid>
                         </Box>
                     </Grid>
+                    <Alert
+                        open={error.active}
+                        type="error"
+                        message={error.message}
+                        close={() => setError({ active: false, message: '' })}
+                    />
                 </ThemeProvider>
             }
         />

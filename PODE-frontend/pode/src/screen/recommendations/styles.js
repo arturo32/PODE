@@ -6,4 +6,8 @@ export const css = {
         margin: 0,
         fontFamily: '"AlegreyaSans - Regular", sans-serif',
     },
+    container: {
+        marginTop: '20px',
+        marginBottom: '20px',
+    }
 };

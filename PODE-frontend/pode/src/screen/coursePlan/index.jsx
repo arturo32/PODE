@@ -12,8 +12,7 @@ import { form } from '../../component/theme';
 import TransferList from '../../component/transferList';
 
 import { css } from './styles';
-
-import {listDisciplinasObrigatoriasCurso, listEnfase, listPes} from "./service";
+import {listDisciplinasObrigatoriasCurso, listDisciplinasOptivativasCurso, listEnfase, listPes} from "./service";
 
 
 const CoursePlan = () => {
@@ -22,7 +21,8 @@ const CoursePlan = () => {
     const [emphasisList, setEmphasisList] = useState([]);
     const [pes, setPes] = useState([]);
     const [pesList, setPesList] = useState([]);
-    const [subjects, setSubjects] = useState([]);
+    const [cursoObrigatorias, setCursoObrigatorias] = useState([]);
+    const [cursoOptativas, setCursoOptativas] = useState([]);
     const [subjectsAttended, setSubjectsAttended] = useState([]);
 
     const submit = () => {
@@ -53,7 +53,17 @@ const CoursePlan = () => {
                 .then(response => {
                     if(response.status === 200){
                         console.log(response)
-                        setSubjects(response.data.map(e => e.nome));
+                        setCursoObrigatorias(response.data.map(e => e.nome));
+                    }
+                });
+    }, []);
+
+    useEffect(() => {
+        listDisciplinasOptivativasCurso({params: {page: 0, limit: 1000}}, 2)
+                .then(response => {
+                    if(response.status === 200){
+                        console.log(response)
+                        setCursoOptativas(response.data.map(e => e.nome));
                     }
                 });
     }, []);
@@ -98,9 +108,9 @@ const CoursePlan = () => {
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TransferList
                         labels={['Disciplinas existentes e não cursadas', 'Disciplinas cursadas']}
-                        left={subjects}
+                        left={{cursoObrigatorias, cursoOptativas}}
                         right={subjectsAttended}
-                        handleChangeLeft={event => setSubjects(event)}
+                        handleChangeLeft={event => setCursoObrigatorias(event)}
                         handleChangeRight={event => setSubjectsAttended(event)}
                     />
                 </Grid>

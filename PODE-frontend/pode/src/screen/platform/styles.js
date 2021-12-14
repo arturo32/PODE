@@ -68,4 +68,11 @@ export const css = {
     icon: {
         color: '#F27405',
     },
+    logoutContext: {
+        right: '15px',
+        position: 'absolute',
+    },
+    logout: {
+        fontSize: '30px',
+    },
 };

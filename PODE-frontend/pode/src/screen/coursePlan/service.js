@@ -1,10 +1,10 @@
 import API from '../../service/api';
-import APIEnfase from "../../service/api.enfase";
+import APIEmphasis from "../../service/api.emphasis";
 import APIPes from "../../service/api.pes";
-import APICurso from "../../service/api.curso";
+import APICourse from "../../service/api.course";
 
 export const listEnfase = async (data, idCurso) => {
-	return await API.get(APIEnfase.listPorCurso(idCurso), data);
+	return await API.get(APIEmphasis.listPorCurso(idCurso), data);
 };
 
 export const listPes = async (data) => {
@@ -12,9 +12,9 @@ export const listPes = async (data) => {
 };
 
 export const listDisciplinasObrigatoriasCurso = async (data, idCurso) => {
-	return await API.get(APICurso.listDisciplinasObrigatoriasPorCurso(idCurso), data);
+	return await API.get(APICourse.listDisciplinasObrigatoriasPorCurso(idCurso), data);
 };
 
 export const listDisciplinasOptivativasCurso = async (data, idCurso) => {
-	return await API.get(APICurso.listDisciplinasOptativasPorCurso(idCurso), data);
+	return await API.get(APICourse.listDisciplinasOptativasPorCurso(idCurso), data);
 };
