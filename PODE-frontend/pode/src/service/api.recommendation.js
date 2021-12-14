@@ -1,4 +1,4 @@
-const BASE = '/recomendacao';
+const BASE = '/recomendacoes';
 
 export default class APIRecommendation {
     static getPesByProximityCompletion(studentBondId) {
