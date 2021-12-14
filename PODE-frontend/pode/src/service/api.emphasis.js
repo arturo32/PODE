@@ -1,4 +1,4 @@
-const BASE = '/enfase';
+const BASE = '/enfases';
 
 export default class APIEmphasis {
 	static create() {
@@ -6,6 +6,6 @@ export default class APIEmphasis {
 	}
 
 	static listPorCurso(idCurso) {
-		return `${BASE}/curso/${idCurso}`;
+		return `${BASE}/cursos/${idCurso}`;
 	}
 };

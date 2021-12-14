@@ -1,4 +1,4 @@
-const BASE = '/vinculo';
+const BASE = '/vinculos';
 
 export default class APIBond {
 	static create() {

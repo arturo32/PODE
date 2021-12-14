@@ -1,4 +1,4 @@
-const BASE = '/estudante';
+const BASE = '/estudantes';
 
 export default class APIStudent {
     static getInfo(id) {
