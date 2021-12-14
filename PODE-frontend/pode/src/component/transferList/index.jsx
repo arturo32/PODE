@@ -14,17 +14,19 @@ import { css } from './styles';
 import {Collapse, ListItemButton, ListSubheader} from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
+/*Retorna todos elementos do primeiro array que não estão no segundo*/
 const not = (a, b) => {
     return a.filter((value) => b.indexOf(value) === -1);
 };
 
+/*Retorna a interseção dos dois arrays passados*/
 const intersection = (a, b) => {
     return a.filter((value) => b.indexOf(value) !== -1);
 };
 
 const TransferList = (props) => {
 
-    const { labels, left, right, handleChangeLeft, handleChangeRight } = props;
+    const { labels, left, right, handleChangeLeftCursoObrigatorias, handleChangeRightCursoObrigatorias, handleChangeLeftCursoOptativas, handleChangeRightCursoOptativas } = props;
 
     const [checkedCursoObrigatorias, setCheckedCursoObrigatorias] = useState([]);
     const [checkedCursoOptativas, setCheckedCursoOptativas] = useState([]);
@@ -41,8 +43,8 @@ const TransferList = (props) => {
 
 
     const leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
-    const leftCheckedCursoOptativas = intersection(checkedCursoObrigatorias, left.cursoOptativas);
-    const rightChecked = intersection(checkedCursoObrigatorias, right);
+    const leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
+    const rightChecked = intersection(checkedCursoObrigatorias, right.cursoObrigatorias);
 
 
     const handleClickNaoCursadasCurso = () => {
@@ -71,38 +73,89 @@ const TransferList = (props) => {
 
 
 
+
     const handleToggle = (value) => () => {
-        const currentIndex = checkedCursoObrigatorias.indexOf(value);
-        const newChecked = [...checkedCursoObrigatorias];
+        if(value.tipo === 'CURSO_OBRIGATORIA') {
+            handleToggleEspecifica(value, checkedCursoObrigatorias, setCheckedCursoObrigatorias);
+        } else if(value.tipo === 'CURSO_OPTATIVA'){
+            handleToggleEspecifica(value, checkedCursoOptativas, setCheckedCursoOptativas);
+        }
+    };
+
+    const checkboxChecked = (value) => {
+        if(value.tipo === 'CURSO_OBRIGATORIA'){
+            return checkedCursoObrigatorias.indexOf(value) !== -1;
+        } else if(value.tipo === 'CURSO_OPTATIVA'){
+            return checkedCursoOptativas.indexOf(value) !== -1;
+        }
+    };
+
+    /*Se o nome da disciplina passado não está presente no array checkedCursoObrigatorias, ele é adicionado.
+    * Se estiver presente, é removido.*/
+    const handleToggleEspecifica = (value, checkedArray, setCheckedArray) => {
+        const currentIndex = checkedArray.indexOf(value);
+        const newChecked = [...checkedArray];
         if (currentIndex === -1) {
             newChecked.push(value);
         } else {
             newChecked.splice(currentIndex, 1);
         }
-        setCheckedCursoObrigatorias(newChecked);
-    };
+        setCheckedArray(newChecked);
+    }
 
     const handleAllRight = () => {
-        handleChangeRight(right.concat(left.cursoObrigatorias));
-        handleChangeLeft([]);
+        handleChangeRightCursoObrigatorias(right.concat(left.cursoObrigatorias));
+        handleChangeLeftCursoObrigatorias([]);
     };
 
     const handleCheckedRight = () => {
-        handleChangeRight(right.concat(leftCheckedCursoObrigatorias));
-        handleChangeLeft(not(left.cursoObrigatorias, leftCheckedCursoObrigatorias));
-        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, leftCheckedCursoObrigatorias));
+        if(leftCheckedCursoObrigatorias.length !== 0){
+            handleCheckedRightEspecifica(right.cursoObrigatorias, left.cursoObrigatorias, leftCheckedCursoObrigatorias,
+                    checkedCursoObrigatorias, setCheckedCursoObrigatorias, handleChangeRightCursoObrigatorias, handleChangeLeftCursoObrigatorias);
+        }
+        if(leftCheckedCursoOptativas.length !== 0){
+            handleCheckedRightEspecifica(right.cursoOptativas, left.cursoOptativas, leftCheckedCursoOptativas,
+                    checkedCursoOptativas, setCheckedCursoOptativas, handleChangeRightCursoOptativas, handleChangeLeftCursoOptativas);
+        }
     };
 
+    /*Passa as disciplinas selecionadas da coluna esquerda para a direita*/
+    const handleCheckedRightEspecifica = (rightArray, leftArray, leftChecked, checked, setChecked, handleChangeRight, handleChangeLeft) => {
+        /*Chama a função passada pelo elemento pai para lidar com a união das disciplinas checadas
+        * com as que já estão do lado direito (acaba mudando right)*/
+        handleChangeRight(rightArray.concat(leftChecked));
+
+        /*Chama a função passada pelo elemento pai para lidar com as disciplinas NÃO selecionadas da
+        * coluna da esquerda (acaba mudando left)*/
+        handleChangeLeft(not(leftArray, leftChecked));
+
+        /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
+        * adicionadas a coluna da direita*/
+        setChecked(not(checked, leftChecked));
+    }
+
+    /*Passa as disciplinas selecionadas da coluna direita para a esquerda*/
     const handleCheckedLeft = () => {
-        handleChangeLeft(left.cursoObrigatorias.concat(rightChecked));
-        handleChangeRight(not(right, rightChecked));
+
+        /*Chama a função passada pelo elemento pai para lidar com a união das disciplinas checadas
+        * da direita com as que já estão do lado esquerdo (acaba mudando left)*/
+        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(rightChecked));
+
+        /*Chama a função passado pelo elemento pai para lidar com as disciplinas da coluna direita
+        * que NÃO foram selecionadas (acaba mudando right)*/
+        handleChangeRightCursoObrigatorias(not(right.cursoObrigatorias, rightChecked));
+
+        /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
+        * adicionas a coluna da esquerda*/
         setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightChecked));
     };
 
     const handleAllLeft = () => {
-        handleChangeLeft(left.cursoObrigatorias.concat(right));
-        handleChangeRight([]);
+        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(right));
+        handleChangeRightCursoObrigatorias([]);
     };
+
+
 
     const listDisciplinas = (disciplinas) => (
         <List component="div" disablePadding >
@@ -110,7 +163,7 @@ const TransferList = (props) => {
                 const labelId = `transfer-list-item-${value}-label`;
                 return (
                     <ListItem
-                            key={value}
+                            key={value.id}
                             role="listitem"
                             button={true}
                             onClick={handleToggle(value)}
@@ -118,7 +171,7 @@ const TransferList = (props) => {
                     >
                         <ListItemIcon>
                             <Checkbox
-                                    checkedCursoObrigatorias={checkedCursoObrigatorias.indexOf(value) !== -1}
+                                    checked={checkboxChecked(value)}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{
@@ -126,7 +179,7 @@ const TransferList = (props) => {
                                     }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={value} />
+                        <ListItemText id={labelId} primary={value.nome} />
                     </ListItem>
                 );
             })}
@@ -139,7 +192,7 @@ const TransferList = (props) => {
                 <ListItemText  primary={label} />
                 {openState ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={openState} timeout="auto" unmountOnExit>
+            <Collapse in={openState} timeout={400} unmountOnExit>
                 {listDisciplinas(items)}
             </Collapse>
         </div>
@@ -156,8 +209,8 @@ const TransferList = (props) => {
                     {openNaoCursadasCurso ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 <Collapse in={openNaoCursadasCurso} timeout="auto" unmountOnExit>
-                    {customSubList(items, 'Obrigatórias', handleClickNaoCursadasCursoObrigatorias, openNaoCursadasCursoObrigatorias)}
-                    {customSubList([], 'Optativas', handleClickNaoCursadasCursoOptativas, openNaoCursadasCursoOptativas)}
+                    {customSubList(items.cursoObrigatorias, 'Obrigatórias', handleClickNaoCursadasCursoObrigatorias, openNaoCursadasCursoObrigatorias)}
+                    {customSubList(items.cursoOptativas, 'Optativas', handleClickNaoCursadasCursoOptativas, openNaoCursadasCursoOptativas)}
                 </Collapse>
 
                 <ListItemButton onClick={handleClickNaoCursadasEnfase}>
@@ -182,7 +235,7 @@ const TransferList = (props) => {
 
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center" sx={css.root}>
-            <Grid item>{customList(left.cursoObrigatorias, labels[0])}</Grid>
+            <Grid item>{customList(left, labels[0])}</Grid>
             <Grid item>
                 <Grid container direction="column" alignItems="center">
                     <Button
@@ -200,7 +253,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedRight}
-                        disabled={leftCheckedCursoObrigatorias.length === 0}
+                        disabled={leftCheckedCursoObrigatorias.length === 0 && leftCheckedCursoOptativas.length === 0}
                         aria-label="adicionar selecionadas"
                     >
                         Adicionar selecionadas (&gt;)

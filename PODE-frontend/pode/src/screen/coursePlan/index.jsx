@@ -23,7 +23,8 @@ const CoursePlan = () => {
     const [pesList, setPesList] = useState([]);
     const [cursoObrigatorias, setCursoObrigatorias] = useState([]);
     const [cursoOptativas, setCursoOptativas] = useState([]);
-    const [subjectsAttended, setSubjectsAttended] = useState([]);
+    const [cursoObrigatoriasPagas, setCursoObrigatoriasPagas] = useState([]);
+    const [cursoOptativasPagas, setCursoOptativasPagas] = useState([]);
 
     const submit = () => {
         console.log('Submit');
@@ -52,8 +53,10 @@ const CoursePlan = () => {
         listDisciplinasObrigatoriasCurso({params: {page: 0, limit: 1000}}, 2)
                 .then(response => {
                     if(response.status === 200){
-                        console.log(response)
-                        setCursoObrigatorias(response.data.map(e => e.nome));
+                        console.log('Obrigatórias: ', response)
+                        setCursoObrigatorias(response.data.map(e => {
+                            return {...e, tipo: 'CURSO_OBRIGATORIA'}
+                        }));
                     }
                 });
     }, []);
@@ -62,17 +65,20 @@ const CoursePlan = () => {
         listDisciplinasOptivativasCurso({params: {page: 0, limit: 1000}}, 2)
                 .then(response => {
                     if(response.status === 200){
-                        console.log(response)
-                        setCursoOptativas(response.data.map(e => e.nome));
+                        console.log('Optativas: ', response)
+                        setCursoOptativas(response.data.map(e =>{
+                            return {...e, tipo: 'CURSO_OPTATIVA'}
+                        }));
                     }
                 });
     }, []);
 
 
-
     useEffect(() => {
-        setSubjectsAttended([]);
+        setCursoObrigatoriasPagas([]);
     }, []);
+
+
 
     return (
         <ThemeProvider theme={form}>
@@ -109,9 +115,11 @@ const CoursePlan = () => {
                     <TransferList
                         labels={['Disciplinas existentes e não cursadas', 'Disciplinas cursadas']}
                         left={{cursoObrigatorias, cursoOptativas}}
-                        right={subjectsAttended}
-                        handleChangeLeft={event => setCursoObrigatorias(event)}
-                        handleChangeRight={event => setSubjectsAttended(event)}
+                        right={{'cursoObrigatorias': cursoObrigatoriasPagas, 'cursoOptativas': cursoOptativasPagas}}
+                        handleChangeLeftCursoObrigatorias={event => setCursoObrigatorias(event)}
+                        handleChangeRightCursoObrigatorias={event => setCursoObrigatoriasPagas(event)}
+                        handleChangeLeftCursoOptativas={event => setCursoOptativas(event)}
+                        handleChangeRightCursoOptativas={event => setCursoOptativasPagas(event)}
                     />
                 </Grid>
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
