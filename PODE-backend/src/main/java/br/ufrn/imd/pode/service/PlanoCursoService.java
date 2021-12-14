@@ -235,6 +235,8 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
 
@@ -246,10 +248,12 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				cursadas.add(d);
 				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
 			} else {
-				// TODO: capturar todas as disciplinas sem prerequisitos atendidos e lançar uma excessão no final
-				throw new UnmetPrerequisitesException("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
+				exceptionHelper.add("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
 
+		}
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new UnmetPrerequisitesException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
 
@@ -276,8 +280,8 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 	}
 
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		// TODO: validação de tempo maximo por semestre
-		// TODO: Verificar se a disciplina já não está planejada para algum semestre
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 
@@ -291,10 +295,12 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 			if (disciplinaService.checarPrerequisitos(disciplinasFuturamenteCursadas, dp.getDisciplina())) {
 				disciplinasPeriodoValidas.add(dp);
 			} else {
-				// TODO: Agrupar as exceções antes de enviá-las
-				throw new UnmetPrerequisitesException("Os pre-requisitos necessários para a disciplina '" +
+				exceptionHelper.add("Os pre-requisitos necessários para a disciplina '" +
 						dp.getDisciplina().getCodigo() + "' não serão atendidos. Expressão: " + dp.getDisciplina().getPrerequisitos());
 			}
+		}
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new UnmetPrerequisitesException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasPendentes().addAll(disciplinasPeriodoValidas);
 		return repository.save(planoCurso);
