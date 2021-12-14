@@ -1,10 +1,16 @@
 package br.ufrn.imd.pode.model;
 
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.pode.model.dto.PesDTO;
-import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,22 +23,21 @@ public class PlanoCurso extends AbstractModel<Long> {
 	@SequenceGenerator(name = "SEQ_PLANO_CURSO", sequenceName = "id_seq_plano_curso", allocationSize = 1)
 	private Long id;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "plano_curso_disciplina_cursada",
-			joinColumns = {@JoinColumn(name = "plano_curso_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "plano_curso_disciplina_cursada", joinColumns = {
+			@JoinColumn(name = "plano_curso_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "disciplina_periodo_id") })
 	private Set<DisciplinaPeriodo> disciplinasCursadas;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "plano_curso_disciplina_pendente",
-			joinColumns = {@JoinColumn(name = "plano_curso_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "plano_curso_disciplina_pendente", joinColumns = {
+			@JoinColumn(name = "plano_curso_id") }, inverseJoinColumns = {
+					@JoinColumn(name = "disciplina_periodo_id") })
 	private Set<DisciplinaPeriodo> disciplinasPendentes;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "plano_curso_pes_interesse",
-			joinColumns = {@JoinColumn(name = "plano_curso_id")},
-			inverseJoinColumns = {@JoinColumn(name = "pes_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "plano_curso_pes_interesse", joinColumns = {
+			@JoinColumn(name = "plano_curso_id") }, inverseJoinColumns = { @JoinColumn(name = "pes_id") })
 	private Set<Pes> pesInteresse;
 
 	public PlanoCurso() {
@@ -41,7 +46,8 @@ public class PlanoCurso extends AbstractModel<Long> {
 		this.pesInteresse = new HashSet<>();
 	}
 
-	public PlanoCurso(Set<DisciplinaPeriodo> disciplinasCursadas, Set<DisciplinaPeriodo> disciplinasPendentes, Set<Pes> pesInteresse) {
+	public PlanoCurso(Set<DisciplinaPeriodo> disciplinasCursadas, Set<DisciplinaPeriodo> disciplinasPendentes,
+			Set<Pes> pesInteresse) {
 		this.disciplinasCursadas = disciplinasCursadas;
 		this.disciplinasPendentes = disciplinasPendentes;
 		this.pesInteresse = pesInteresse;

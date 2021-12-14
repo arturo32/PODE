@@ -7,6 +7,8 @@ import java.util.Collection;
 
 public class AuthDto extends User {
 
+	private static final long serialVersionUID = 7523446953160941833L;
+
 	private final String nome;
 
 	private final Long id;

@@ -1,8 +1,21 @@
 package br.ufrn.imd.pode.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,10 +38,9 @@ public class Enfase extends AbstractModel<Long> {
 	@OneToOne
 	private Curso curso;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "enfase_disciplina_obrigatoria",
-			joinColumns = {@JoinColumn(name = "enfase_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "enfase_disciplina_obrigatoria", joinColumns = {
+			@JoinColumn(name = "enfase_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_periodo_id") })
 	private Set<DisciplinaPeriodo> disciplinasObrigatorias = new HashSet<>();
 
 	public Enfase() {
@@ -128,8 +140,8 @@ public class Enfase extends AbstractModel<Long> {
 
 	public Set<Disciplina> getDisciplinasOptativas() {
 		Set<Disciplina> resultado = this.curso.getDisciplinasOptativas();
-		Set<Disciplina> obrigatorias = new ArrayList<>(this.disciplinasObrigatorias).
-				stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
+		Set<Disciplina> obrigatorias = new ArrayList<>(this.disciplinasObrigatorias).stream()
+				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 		resultado.removeAll(obrigatorias);
 		return resultado;
 	}

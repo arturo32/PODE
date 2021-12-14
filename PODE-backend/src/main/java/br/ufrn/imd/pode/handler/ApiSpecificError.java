@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe padrão de formatação de informações mais específicas das exceções lançadas
- * a fim de uma análise mais profunda pelo programador.
+ * Classe padrão de formatação de informações mais específicas das exceções
+ * lançadas a fim de uma análise mais profunda pelo programador.
  */
 public class ApiSpecificError {
 	// Tipo da exceção lançada

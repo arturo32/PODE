@@ -5,10 +5,10 @@ import br.ufrn.imd.pode.exception.InconsistentEntityException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Enfase;
-import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.EnfaseDTO;
 import br.ufrn.imd.pode.repository.EnfaseRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

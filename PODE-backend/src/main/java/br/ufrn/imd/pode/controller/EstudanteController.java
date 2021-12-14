@@ -4,15 +4,13 @@ import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.dto.EstudanteDTO;
 import br.ufrn.imd.pode.service.EstudanteService;
 import br.ufrn.imd.pode.service.GenericService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/estudante")
+@RequestMapping("/estudantes")
 public class EstudanteController extends GenericController<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteService service;

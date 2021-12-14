@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.Vinculo;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;

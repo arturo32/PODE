@@ -7,6 +7,7 @@ import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.VinculoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.VinculoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

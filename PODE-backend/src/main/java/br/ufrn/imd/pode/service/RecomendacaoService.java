@@ -104,7 +104,7 @@ public class RecomendacaoService {
 			Long pesEscolhido = null;
 			Integer menorChp = 0;
 			for (Map.Entry<Long, Integer> item : possibilidadesPes.entrySet()) {
-				if (menorChp == 0 || item.getValue() < menorChp) {
+				if (menorChp == 0 || (item.getValue() > 0 && item.getValue() < menorChp)) {
 					menorChp = item.getValue();
 					pesEscolhido = item.getKey();
 				}

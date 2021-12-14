@@ -8,6 +8,7 @@ import br.ufrn.imd.pode.model.Curso;
 import br.ufrn.imd.pode.model.dto.CursoDTO;
 import br.ufrn.imd.pode.repository.CursoRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,19 @@
 package br.ufrn.imd.pode.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,23 +31,21 @@ public class Pes extends AbstractModel<Long> {
 	private String nome;
 
 	@NotNull
-	//Carga horária mínima
+	// Carga horária mínima
 	private Integer chm;
 
 	@NotNull
-	//Carga horária obrigatória
+	// Carga horária obrigatória
 	private Integer cho;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "pes_disciplina_obrigatoria",
-			joinColumns = {@JoinColumn(name = "pes_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "pes_disciplina_obrigatoria", joinColumns = {
+			@JoinColumn(name = "pes_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_id") })
 	private Set<Disciplina> disciplinasObrigatorias = new HashSet<>();
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "pes_disciplina_optativa",
-			joinColumns = {@JoinColumn(name = "pes_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "pes_disciplina_optativa", joinColumns = { @JoinColumn(name = "pes_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "disciplina_id") })
 	private Set<Disciplina> disciplinasOptativas = new HashSet<>();
 
 	public Pes() {
@@ -50,7 +59,8 @@ public class Pes extends AbstractModel<Long> {
 		this.cho = cho;
 	}
 
-	public Pes(String nome, Integer chm, Integer cho, Set<Disciplina> disciplinasObrigatorias, Set<Disciplina> disciplinasOptativas) {
+	public Pes(String nome, Integer chm, Integer cho, Set<Disciplina> disciplinasObrigatorias,
+			Set<Disciplina> disciplinasOptativas) {
 		this.nome = nome;
 		this.chm = chm;
 		this.cho = cho;

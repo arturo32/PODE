@@ -5,6 +5,7 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.model.AbstractModel;
 import br.ufrn.imd.pode.model.dto.AbstractDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,7 +16,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

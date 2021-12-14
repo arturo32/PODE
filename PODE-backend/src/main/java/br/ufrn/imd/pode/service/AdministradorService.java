@@ -4,10 +4,10 @@ import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Administrador;
-import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.dto.AdministradorDTO;
 import br.ufrn.imd.pode.repository.AdministradorRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -2,6 +2,7 @@ package br.ufrn.imd.pode.handler;
 
 import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
+
 import org.springframework.util.StringUtils;
 import org.hibernate.JDBCException;
 import org.jetbrains.annotations.NotNull;
@@ -17,21 +18,22 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * Classe de manipulação dos erros lançados e construção de uma resposta mais legível para o cliente.
+ * Classe de manipulação dos erros lançados e construção de uma resposta mais
+ * legível para o cliente.
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@NotNull
 	@Override
-	protected ResponseEntity<Object> handleHttpMessageNotReadable(@NotNull HttpMessageNotReadableException ex, @NotNull HttpHeaders headers,
-																  @NotNull HttpStatus status, @NotNull WebRequest request) {
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(@NotNull HttpMessageNotReadableException ex,
+			@NotNull HttpHeaders headers, @NotNull HttpStatus status, @NotNull WebRequest request) {
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Problemas de formação do JSON"));
 	}
 
 	/**
-	 * Este método manipula os erros lançados como EntityNotFound e constrói o retorno tratado
-	 * com o status lançado como 404 e a mensagem obtida do erro.
+	 * Este método manipula os erros lançados como EntityNotFound e constrói o
+	 * retorno tratado com o status lançado como 404 e a mensagem obtida do erro.
 	 *
 	 * @param entityNotFoundException EntityNotFoundException: erro capturado
 	 * @return ResponseEntity<Object>
@@ -44,8 +46,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Este método manipula os erros lançados como BusinessException e constrói o retorno tratado
-	 * com o status lançado como 400 e a mensagem obtida do erro.
+	 * Este método manipula os erros lançados como BusinessException e constrói o
+	 * retorno tratado com o status lançado como 400 e a mensagem obtida do erro.
 	 *
 	 * @param businessException BusinessException: erro capturado
 	 * @return ResponseEntity<Object>
@@ -58,8 +60,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Este método manipula os erros lançados como erros de banco JDBCException e constrói o retorno tratado
-	 * com o status lançado como 500 e a mensagem obtida do erro.
+	 * Este método manipula os erros lançados como erros de banco JDBCException e
+	 * constrói o retorno tratado com o status lançado como 500 e a mensagem obtida
+	 * do erro.
 	 *
 	 * @param jdbcException JDBCException: erro capturado
 	 * @return ResponseEntity<Object>
@@ -73,7 +76,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Este método constrói o retorno do tratamento da exceção a partir do objeto ApiError informado.
+	 * Este método constrói o retorno do tratamento da exceção a partir do objeto
+	 * ApiError informado.
 	 *
 	 * @param apiError ApiError: objeto formado a partir dos erros capturados.
 	 * @return ResponseEntity<Object>
@@ -83,22 +87,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Método simples que forma a mensagem que o usuário lerá.
-	 * Esse método deve ser chamado quando as exceções são construídas pelo programador e sua mensagem é
+	 * Método simples que forma a mensagem que o usuário lerá. Esse método deve ser
+	 * chamado quando as exceções são construídas pelo programador e sua mensagem é
 	 * personalizada por ele.
 	 *
 	 * @param exception Throwable: exceção lançada que contém a mensagem.
 	 * @return String
 	 */
 	private String getSimpleMessage(Throwable exception) {
-		if (StringUtils.isEmpty(exception.getMessage())){
+		if (StringUtils.isEmpty(exception.getMessage())) {
 			return "Mensagem não informada";
 		}
 		return exception.getMessage();
 	}
 
 	/**
-	 * Método que forma a mensagem que o usuário lerá a partir de exceções lançadas do tipo JDBCException
+	 * Método que forma a mensagem que o usuário lerá a partir de exceções lançadas
+	 * do tipo JDBCException
 	 *
 	 * @param jdbcException JDBCException: exceção lançada
 	 * @return String
@@ -114,7 +119,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	/**
-	 * Constrói um objeto ApiSpecificError a partir das informações lançadas na exceção JDBCException
+	 * Constrói um objeto ApiSpecificError a partir das informações lançadas na
+	 * exceção JDBCException
 	 *
 	 * @param jdbcException JDBCException: exceção lançada
 	 * @return ApiSpecificError

@@ -1,7 +1,6 @@
 package br.ufrn.imd.pode.model.dto;
 
 import br.ufrn.imd.pode.model.Vinculo;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VinculoDTO extends AbstractDTO {
 
@@ -20,7 +19,7 @@ public class VinculoDTO extends AbstractDTO {
 	private Long idEnfase;
 
 	private Long idPlanoCurso;
-	
+
 	private Long idEstudante;
 
 	public VinculoDTO() {
@@ -34,7 +33,7 @@ public class VinculoDTO extends AbstractDTO {
 		this.setPeriodoAtualAno(vinculo.getPeriodoAtualAno());
 		this.setPeriodoAtualPeriodo(vinculo.getPeriodoAtualPeriodo());
 		this.setIdCurso(vinculo.getCurso().getId());
-		if(vinculo.getEnfase() != null){
+		if (vinculo.getEnfase() != null) {
 			this.setIdEnfase(vinculo.getEnfase().getId());
 		}
 		this.setIdPlanoCurso(vinculo.getPlanoCurso().getId());
