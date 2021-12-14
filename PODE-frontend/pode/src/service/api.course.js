@@ -1,11 +1,11 @@
-const BASE = '/curso';
+const BASE = '/cursos';
 
 export default class APICourse {
 	static listDisciplinasObrigatoriasPorCurso(idCurso) {
-		return `${BASE}/${idCurso}/disciplinas_obrigatorias`;
+		return `${BASE}/${idCurso}/disciplinas-obrigatorias`;
 	}
 
 	static listDisciplinasOptativasPorCurso(idCurso) {
-		return `${BASE}/${idCurso}/disciplinas_optativas`;
+		return `${BASE}/${idCurso}/disciplinas-optativas`;
 	}
 };
