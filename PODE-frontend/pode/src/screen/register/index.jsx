@@ -13,11 +13,13 @@ import Button from '@mui/material/Button';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Page from '../../component/page';
 import { form } from '../../component/theme';
 import MaskYear from '../../component/mask/year';
 import MaskPeriod from '../../component/mask/period';
+import Alert from '../../component/snackbar';
 
 import { validateEmail, validatePassword, validateYear, validatePeriod, validateGeneric } from '../../util/validation';
 
@@ -37,8 +39,11 @@ const Register = () => {
     const [periodoAtualAno, setPeriodoAtualAno] = useState('');
     const [periodoAtualPeriodo, setPeriodoAtualPeriodo] = useState('');
     const [openConfirmacao, setOpenConfirmacao] = useState(false);
+    const [error, setError] = useState({ active: false, message: '' });
+    const [loading, setLoading] = useState(false);
 
     const submit = () => {
+        setLoading(true);
         createStudent({ email, senha, nome })
             .then(response => {
                 if (response.status === 200) {
@@ -47,19 +52,21 @@ const Register = () => {
                         periodoInicialAno, periodoInicialPeriodo, periodoAtualAno, periodoAtualPeriodo
                     })
                         .then(response => {
-                            console.log(response);
                             if (response.status === 200) {
                                 setOpenConfirmacao(true);
                             }
                         })
                         .catch(error => {
-                            console.log(error);
+                            setError({ active: true, message: error.response.data.userMessage });
+                        })
+                        .finally(() => {
+                            setLoading(false);
                         });
                 }
-                console.log(response);
             })
             .catch(error => {
-                console.log(error);
+                setLoading(false);
+                setError({ active: true, message: error.response.data.userMessage });
             });
     };
 
@@ -216,28 +223,45 @@ const Register = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        disabled={
-                                            !validateEmail(email) ||
-                                            !validatePassword(senha) ||
-                                            !validateGeneric(nome) ||
-                                            !validateGeneric(matricula) ||
-                                            !validateYear(periodoInicialAno) ||
-                                            !validatePeriod(periodoInicialPeriodo) ||
-                                            !validateYear(periodoAtualAno) ||
-                                            !validatePeriod(periodoAtualPeriodo)
-                                        }
-                                        onClick={() => submit()}
-                                        sx={css.button}
-                                    >
-                                        Concluir
-                                    </Button>
+                                    {loading ?
+                                        <Grid
+                                            container={true}
+                                            direction="row"
+                                            justifyContent="flex-end"
+                                            alignItems="center"
+                                        >
+                                            <CircularProgress />
+                                        </Grid> :
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            disabled={
+                                                !validateEmail(email) ||
+                                                !validatePassword(senha) ||
+                                                !validateGeneric(nome) ||
+                                                !validateGeneric(matricula) ||
+                                                !validateYear(periodoInicialAno) ||
+                                                !validatePeriod(periodoInicialPeriodo) ||
+                                                !validateYear(periodoAtualAno) ||
+                                                !validatePeriod(periodoAtualPeriodo) ||
+                                                periodoInicialAno > periodoAtualAno
+                                            }
+                                            onClick={() => submit()}
+                                            sx={css.button}
+                                        >
+                                            Concluir
+                                        </Button>
+                                    }
                                 </Grid>
                             </Grid>
                         </Box>
                     </Grid>
+                    <Alert
+                        open={error.active}
+                        type="error"
+                        message={error.message}
+                        close={() => setError({ active: false, message: '' })}
+                    />
                     <Dialog open={openConfirmacao}>
                         <DialogTitle>Cadastro realizado com sucesso!</DialogTitle>
                         <DialogActions sx={css.dialogButton}>

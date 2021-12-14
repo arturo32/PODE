@@ -26,7 +26,7 @@ const RecommendationPlan = () => {
     useEffect(() => {
         getInfoStudent(get('user').id)
             .then(response => {
-                getSubjectsCoursePlan(1)
+                getSubjectsCoursePlan(response.data['id-vinculos'][0])
                     .then(response => {
                         let array = [];
                         response.data.forEach(item => {

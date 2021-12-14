@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -23,8 +24,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState({ active: false, message: '' });
+    const [loading, setLoading] = useState(false);
 
     const submit = () => {
+        setLoading(true);
         login('username=' + email + '&password=' + password)
             .then(response => {
                 if (response.status === 200) {
@@ -35,11 +38,14 @@ const Login = () => {
                 }
             })
             .catch(error => {
-                if (JSON.stringify(error).includes('403')) {
+                if (error.response.status === 403) {
                     setError({ active: true, message: 'Autenticação falhou. Por favor verifique a corretude de email e senha' });
                 } else {
-                    setError({ active: true, message: 'Ocorreu uma falha interna. Entre em contato com o administrador' });
+                    setError({ active: true, message: error.response.data.userMessage });
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -84,15 +90,28 @@ const Login = () => {
                                     />
                                 </Grid>
                                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        disabled={!validateEmail(email) || !validatePassword(password)}
-                                        onClick={() => submit()}
-                                        sx={css.button}
-                                    >
-                                        Entrar
-                                    </Button>
+                                    {loading ?
+                                        <Grid
+                                            container={true}
+                                            direction="row"
+                                            justifyContent="flex-end"
+                                            alignItems="center"
+                                        >
+                                            <CircularProgress />
+                                        </Grid> :
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            disabled={
+                                                !validateEmail(email) ||
+                                                !validatePassword(password)
+                                            }
+                                            onClick={() => submit()}
+                                            sx={css.button}
+                                        >
+                                            Entrar
+                                        </Button>
+                                    }
                                 </Grid>
                             </Grid>
                         </Box>
