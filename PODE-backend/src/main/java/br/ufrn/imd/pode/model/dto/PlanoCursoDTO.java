@@ -3,6 +3,7 @@ package br.ufrn.imd.pode.model.dto;
 import br.ufrn.imd.pode.model.DisciplinaPeriodo;
 import br.ufrn.imd.pode.model.Pes;
 import br.ufrn.imd.pode.model.PlanoCurso;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;

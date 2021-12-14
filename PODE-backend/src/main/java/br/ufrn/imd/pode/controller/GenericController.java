@@ -4,8 +4,16 @@ import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.model.AbstractModel;
 import br.ufrn.imd.pode.model.dto.AbstractDTO;
 import br.ufrn.imd.pode.service.GenericService;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -19,10 +27,8 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 
 	@GetMapping
 	public ResponseEntity<Collection<Dto>> findList(@RequestParam("limit") Optional<Integer> limite,
-	                                          @RequestParam("page") Optional<Integer> pagina,
-	                                          @RequestParam("ids") Optional<List<PK>> ids,
-	                                          @RequestParam("start") Optional<PK> start,
-	                                          @RequestParam("end") Optional<PK> end) {
+			@RequestParam("page") Optional<Integer> pagina, @RequestParam("ids") Optional<List<PK>> ids,
+			@RequestParam("start") Optional<PK> start, @RequestParam("end") Optional<PK> end) {
 		ResponseEntity<Collection<Dto>> result;
 		if (limite.isPresent() && pagina.isPresent()) {
 			result = ResponseEntity.ok(service().convertToDTOList(service().findAll(limite.get(), pagina.get())));
@@ -31,7 +37,8 @@ public abstract class GenericController<T extends AbstractModel<PK>, Dto extends
 		} else if (start.isPresent() && end.isPresent()) {
 			result = ResponseEntity.ok(service().convertToDTOList(service().findByInterval(start.get(), end.get())));
 		} else {
-			throw new BusinessException("Informe o limite e a pagina ou os ids a serem buscados ou o intervalo de ids a ser buscado");
+			throw new BusinessException(
+					"Informe o limite e a pagina ou os ids a serem buscados ou o intervalo de ids a ser buscado");
 		}
 		return result;
 	}

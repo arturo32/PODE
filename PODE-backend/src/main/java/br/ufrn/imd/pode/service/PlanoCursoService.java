@@ -2,14 +2,21 @@ package br.ufrn.imd.pode.service;
 
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
-import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
+import br.ufrn.imd.pode.exception.UnmetPrerequisitesException;
 import br.ufrn.imd.pode.exception.ValidationException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.model.*;
+import br.ufrn.imd.pode.model.Curso;
+import br.ufrn.imd.pode.model.Disciplina;
+import br.ufrn.imd.pode.model.DisciplinaPeriodo;
+import br.ufrn.imd.pode.model.Enfase;
+import br.ufrn.imd.pode.model.Pes;
+import br.ufrn.imd.pode.model.PlanoCurso;
+import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.model.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PlanoCursoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -240,7 +247,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
 			} else {
 				// TODO: capturar todas as disciplinas sem prerequisitos atendidos e lançar uma excessão no final
-				throw new PrerequisitosNaoAtendidosException("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
+				throw new UnmetPrerequisitesException("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
 
 		}
@@ -285,7 +292,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				disciplinasPeriodoValidas.add(dp);
 			} else {
 				// TODO: Agrupar as exceções antes de enviá-las
-				throw new PrerequisitosNaoAtendidosException("Os pre-requisitos necessários para a disciplina '" +
+				throw new UnmetPrerequisitesException("Os pre-requisitos necessários para a disciplina '" +
 						dp.getDisciplina().getCodigo() + "' não serão atendidos. Expressão: " + dp.getDisciplina().getPrerequisitos());
 			}
 		}

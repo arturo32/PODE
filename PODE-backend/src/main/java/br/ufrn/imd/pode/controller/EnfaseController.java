@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/enfase")
+@RequestMapping("/enfases")
 public class EnfaseController extends GenericController<Enfase, EnfaseDTO, Long> {
 
 	private EnfaseService service;
@@ -31,7 +30,7 @@ public class EnfaseController extends GenericController<Enfase, EnfaseDTO, Long>
 		return this.service;
 	}
 
-	@GetMapping("/curso/{cursoId}")
+	@GetMapping("/cursos/{cursoId}")
 	public ResponseEntity<Collection<EnfaseDTO>> enfasesPorCurso(@PathVariable Long cursoId) {
 		return ResponseEntity.ok(service.convertToDTOList(service.findEnfasePorCurso(cursoId)));
 	}

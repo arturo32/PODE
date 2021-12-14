@@ -10,6 +10,7 @@ import br.ufrn.imd.pode.model.view.PesChObrigatoriaCumprida;
 import br.ufrn.imd.pode.model.view.PesChOptativaCumprida;
 import br.ufrn.imd.pode.repository.GenericRepository;
 import br.ufrn.imd.pode.repository.PesRepository;
+
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

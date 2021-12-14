@@ -1,9 +1,9 @@
 package br.ufrn.imd.pode.model.dto;
 
+import br.ufrn.imd.pode.model.view.DisciplinaPendente;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import br.ufrn.imd.pode.model.view.DisciplinaPendente;
 
 public class RecomendacaoPesDTO {
 

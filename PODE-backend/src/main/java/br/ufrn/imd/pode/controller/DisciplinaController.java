@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/disciplina")
+@RequestMapping("/disciplinas")
 public class DisciplinaController extends GenericController<Disciplina, DisciplinaDTO, Long> {
 
 	private DisciplinaService service;
@@ -37,7 +34,7 @@ public class DisciplinaController extends GenericController<Disciplina, Discipli
 		return this.service;
 	}
 
-	@GetMapping("/codigo/{codigo}")
+	@GetMapping("/codigos/{codigo}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {
 		return ResponseEntity.ok(service.convertToDTOList(service.findDisciplinasByCodigo(codigo)));
 	}

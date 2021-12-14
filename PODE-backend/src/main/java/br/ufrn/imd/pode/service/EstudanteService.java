@@ -8,6 +8,7 @@ import br.ufrn.imd.pode.model.Estudante;
 import br.ufrn.imd.pode.model.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repository.EstudanteRepository;
 import br.ufrn.imd.pode.repository.GenericRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

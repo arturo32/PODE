@@ -5,13 +5,12 @@ import br.ufrn.imd.pode.model.dto.PesDTO;
 import br.ufrn.imd.pode.service.GenericService;
 import br.ufrn.imd.pode.service.PesService;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/pes")
+@RequestMapping("/pes")
 public class PesController extends GenericController<Pes, PesDTO, Long> {
 
 	private PesService service;

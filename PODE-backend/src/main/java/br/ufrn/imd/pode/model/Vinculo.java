@@ -2,7 +2,16 @@ package br.ufrn.imd.pode.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -46,8 +55,8 @@ public class Vinculo extends AbstractModel<Long> {
 	@JoinColumn(name = "estudante_id")
 	private Estudante estudante;
 
-
-	public Vinculo() {	}
+	public Vinculo() {
+	}
 
 	public Vinculo(String matricula, Integer periodoInicialAno, Integer periodoAtualAno, Curso curso) {
 		this.matricula = matricula;
@@ -138,15 +147,14 @@ public class Vinculo extends AbstractModel<Long> {
 		this.estudante = estudante;
 	}
 
-
 	@JsonIgnore
 	public Integer getPeriodoAtual() {
 		int ano_diff = getPeriodoAtualAno() - getPeriodoInicialAno();
 		int periodos = ano_diff * 2;
-		if (getPeriodoAtualPeriodo().equals(getPeriodoInicialPeriodo())){
+		if (getPeriodoAtualPeriodo().equals(getPeriodoInicialPeriodo())) {
 			periodos += 1;
 		} else {
-			if (getPeriodoAtualPeriodo() > getPeriodoInicialPeriodo()){
+			if (getPeriodoAtualPeriodo() > getPeriodoInicialPeriodo()) {
 				periodos += 2;
 			}
 		}

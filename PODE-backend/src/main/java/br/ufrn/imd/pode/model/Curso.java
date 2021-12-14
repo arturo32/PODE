@@ -1,8 +1,20 @@
 package br.ufrn.imd.pode.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,31 +31,31 @@ public class Curso extends AbstractModel<Long> {
 	private String nome;
 
 	@NotNull
-	//Carga horária mínima
+	// Carga horária mínima
 	private Integer chm;
 
 	@NotNull
-	//Carga horária obrigatória
+	// Carga horária obrigatória
 	private Integer cho;
 
 	@NotNull
-	//Carga horária optativa minima
+	// Carga horária optativa minima
 	private Integer chom;
 
 	@NotNull
-	//Carga horária complementar mínima
+	// Carga horária complementar mínima
 	private Integer chcm;
 
 	@NotNull
-	//Carga horária eletiva máxima
+	// Carga horária eletiva máxima
 	private Integer chem;
 
 	@NotNull
-	//Carga horária mínima por período
+	// Carga horária mínima por período
 	private Integer chminp;
 
 	@NotNull
-	//Carga horária máxima por período
+	// Carga horária máxima por período
 	private Integer chmaxp;
 
 	@NotNull
@@ -55,22 +67,21 @@ public class Curso extends AbstractModel<Long> {
 	@NotNull
 	private Integer prazoEsperado;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "curso_disciplina_obrigatoria",
-			joinColumns = {@JoinColumn(name = "curso_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_periodo_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "curso_disciplina_obrigatoria", joinColumns = {
+			@JoinColumn(name = "curso_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_periodo_id") })
 	private Set<DisciplinaPeriodo> disciplinasObrigatorias = new HashSet<>();
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "curso_disciplina_optativa",
-			joinColumns = {@JoinColumn(name = "curso_id")},
-			inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "curso_disciplina_optativa", joinColumns = {
+			@JoinColumn(name = "curso_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_id") })
 	private Set<Disciplina> disciplinasOptativas = new HashSet<>();
 
 	public Curso() {
 	}
 
-	public Curso(String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chminp, Integer chmaxp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado) {
+	public Curso(String nome, Integer chm, Integer cho, Integer chom, Integer chcm, Integer chem, Integer chminp,
+			Integer chmaxp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado) {
 		this.nome = nome;
 		this.chm = chm;
 		this.cho = cho;
