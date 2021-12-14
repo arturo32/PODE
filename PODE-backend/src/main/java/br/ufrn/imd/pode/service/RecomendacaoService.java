@@ -68,7 +68,6 @@ public class RecomendacaoService {
 		} else {
 			try {
 				this.vinculoService.findById(vinculoId);
-				// TODO verificar se o vinculo de fato percente ao usuário
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
 			}

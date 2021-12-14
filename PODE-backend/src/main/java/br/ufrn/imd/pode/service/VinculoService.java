@@ -1,7 +1,9 @@
 package br.ufrn.imd.pode.service;
 
+import br.ufrn.imd.pode.exception.BusinessException;
 import br.ufrn.imd.pode.exception.EntityNotFoundException;
 import br.ufrn.imd.pode.exception.InconsistentEntityException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.model.Enfase;
 import br.ufrn.imd.pode.model.Vinculo;
 import br.ufrn.imd.pode.model.dto.VinculoDTO;
@@ -10,6 +12,7 @@ import br.ufrn.imd.pode.repository.VinculoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -104,8 +107,68 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 
 	@Override
 	public VinculoDTO validate(VinculoDTO dto) {
-		// TODO validação
-		// TODO: verificar se enfase é válida para o curso indicado
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
+		if (dto.getIdEstudante() != null) {
+			try {
+				estudanteService.findById(dto.getIdEstudante());
+			} catch (EntityNotFoundException e) {
+				exceptionHelper.add("estudante de id: "+dto.getIdEstudante()+" não encontrado");
+			}
+		} else {
+			exceptionHelper.add("estudante não foi informado");
+		}
+
+		// Verifica matricula
+		if (StringUtils.isEmpty(dto.getMatricula())) {
+			exceptionHelper.add("matricula não foi informada");
+		}
+
+		if (dto.getIdCurso() != null) {
+			try {
+				cursoService.findById(dto.getIdCurso());
+			} catch (EntityNotFoundException e) {
+				exceptionHelper.add("curso de id: "+dto.getIdCurso()+" não encontrado");
+			}
+		} else {
+			exceptionHelper.add("curso não foi informado");
+		}
+
+		if (dto.getIdEnfase() != null) {
+			try {
+				Enfase enfase = enfaseService.findById(dto.getIdEnfase());
+				if (!enfase.getCurso().getId().equals(dto.getIdCurso())) {
+					exceptionHelper.add("enfase de id: "+dto.getIdEnfase()+" não pertence ao curso de id: " + dto.getIdCurso());
+				}
+			} catch (EntityNotFoundException e) {
+				exceptionHelper.add("enfase de id: "+dto.getIdEnfase()+" não encontrado");
+			}
+		}
+
+		if (dto.getPeriodoInicialAno() == null) {
+			exceptionHelper.add("ano inicial não foi informado");
+		}
+
+		if (dto.getPeriodoAtualAno() == null) {
+			exceptionHelper.add("ano atual não foi informado");
+		}
+
+		if (dto.getPeriodoInicialPeriodo() != null) {
+			if(dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
+				exceptionHelper.add("periodo inicial invalido, deve ser 1 ou 2");
+			}
+		} else {
+			exceptionHelper.add("periodo inicial não foi informado");
+		}
+
+		if (dto.getPeriodoAtualPeriodo() != null) {
+			if(dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
+				exceptionHelper.add("periodo atual invalido, deve ser 1 ou 2");
+			}
+		} else {
+			exceptionHelper.add("periodo atual não foi informado");
+		}
+
 		return dto;
 	}
 
@@ -153,12 +216,15 @@ public class VinculoService extends GenericService<Vinculo, VinculoDTO, Long> {
 	}
 
 	public Vinculo mudaEnfase(Long vinculoId, Long enfaseId) {
-		//TODO checar se enfase é válida para o curso indicado no vinculo
 		Vinculo vinculo = this.findById(vinculoId);
 		Enfase enfase = this.enfaseService.findById(enfaseId);
-		vinculo.setEnfase(enfase);
-		vinculo.setPlanoCurso(planoCursoService.alterarPlanoCursoEnfase(vinculo.getPlanoCurso(), enfase));
-		return repository.save(vinculo);
+		if(vinculo.getCurso().getId().equals(enfase.getCurso().getId())) {
+			vinculo.setEnfase(enfase);
+			vinculo.setPlanoCurso(planoCursoService.alterarPlanoCursoEnfase(vinculo.getPlanoCurso(), enfase));
+			return repository.save(vinculo);
+		} else {
+			throw new BusinessException("Ênfase indicada não pertence ao curso que o vínculo está associado");
+		}
 	}
 
 	public Vinculo atualizaPeriodoAtual(Long vinculoId, Integer periodoNovo) {
