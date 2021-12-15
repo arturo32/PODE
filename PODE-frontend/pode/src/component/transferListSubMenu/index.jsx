@@ -20,7 +20,7 @@ const TransferListSubMenu = (props) => {
 					<ListItemText  primary={nome} />
 					{openNaoCursadas ? <ExpandLess /> : <ExpandMore />}
 				</ListItemButton>
-				<Collapse in={openNaoCursadas} timeout="auto" unmountOnExit>
+				<Collapse in={openNaoCursadas} timeout={400} unmountOnExit>
 					<TransferListSubList disciplinas={disciplinas.obrigatorias.disciplinas} nome={'Obrigatórias'}
 										 checkedArray={disciplinas.obrigatorias.checked} setCheckedArray={disciplinas.obrigatorias.setChecked}
 					/>

@@ -34,11 +34,11 @@ const TransferListSubList = (props) => {
 
 	const listDisciplinas = () => (
 		<List component="div" disablePadding >
-			{disciplinas.map((value) => {
+			{disciplinas.map((value, index) => {
 				const labelId = `transfer-list-item-${value}-label`;
 				return (
 					<ListItem
-							key={value.id}
+							key={index}
 							role="listitem"
 							button={true}
 							onClick={handleToggle(value)}

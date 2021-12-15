@@ -133,6 +133,13 @@ const TransferList = (props) => {
 
 
     const isNenhumaDisciplinaEsquerdaAdicionada = () => {
+        //Calcula interseção entre as selecionaodas, no geral, e as que estão no lado esquerdo
+        leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
+        leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
+        leftCheckedEnfaseObrigatorias = intersection(checkedEnfaseObrigatorias, left.enfaseObrigatorias);
+        leftCheckedEnfaseOptativas = intersection(checkedEnfaseOptativas, left.enfaseOptativas);
+        leftCheckedPesObrigatorias = intersection(checkedPesObrigatorias, left.pesObrigatorias);
+        leftCheckedPesOptativas = intersection(checkedPesOptativas, left.pesOptativas);
         return leftCheckedCursoObrigatorias.length === 0 &&
                 leftCheckedCursoOptativas.length === 0 &&
                 leftCheckedEnfaseObrigatorias.length === 0 &&
