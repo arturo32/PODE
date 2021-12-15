@@ -18,13 +18,21 @@ import {listDisciplinasObrigatoriasCurso, listDisciplinasOptivativasCurso, listE
 const CoursePlan = () => {
 
     const [emphasis, setEmphasis] = useState(null);
-    const [emphasisList, setEmphasisList] = useState([]);
+    
     const [pes, setPes] = useState([]);
-    const [pesList, setPesList] = useState([]);
+    
     const [cursoObrigatorias, setCursoObrigatorias] = useState([]);
     const [cursoOptativas, setCursoOptativas] = useState([]);
     const [cursoObrigatoriasPagas, setCursoObrigatoriasPagas] = useState([]);
     const [cursoOptativasPagas, setCursoOptativasPagas] = useState([]);
+
+    const [enfaseObrigatorias, setEnfaseObrigatorias] = useState([]);
+    const [enfaseObrigatoriasPagas, setEnfaseObrigatoriasPagas] = useState([]);
+    const [enfaseOptativas, setEnfaseOptativas] = useState([]);
+    const [enfaseOptativasPagas, setEnfaseOptativasPagas] = useState([]);
+
+    const [pesObrigatorias, setPesObrigatorias] = useState([]);
+    const [pesObrigatoriasPagas, setPesObrigatoriasPagas] = useState([]);
 
     const submit = () => {
         console.log('Submit');
@@ -32,10 +40,10 @@ const CoursePlan = () => {
 
     useEffect(() => {
         listEnfase({params: {page: 0, limit: 1000}}, 2)
-
                 .then(response => {
                     if(response.status === 200){
-                        setEmphasisList(response.data)
+                        setEnfaseObrigatorias(response.data);
+                        setEnfaseOptativas([]);
                     }
                 });
     }, []);
@@ -44,7 +52,7 @@ const CoursePlan = () => {
         listPes({params: {page: 0, limit: 1000}})
                 .then(response => {
                     if(response.status === 200){
-                        setPesList(response.data)
+                        setPesObrigatorias(response.data);
                     }
                 });
     }, []);
@@ -90,7 +98,7 @@ const CoursePlan = () => {
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={4} xl={3}>
                     <Autocomplete
-                        options={emphasisList.map(e => { return {label: e.nome, value: e.nome}})}
+                        options={enfaseObrigatorias.map(e => { return {label: e.nome, value: e.nome}})}
                         renderInput={(params) =>
                             <TextField {...params} label="Ênfase" placeholder="Escolha não obrigatória" InputLabelProps={{ shrink: true }} />
                         }
@@ -101,7 +109,7 @@ const CoursePlan = () => {
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={8} xl={9}>
                     <Autocomplete
-                        options={pesList.map(e => { return {label: e.nome, value: e.nome}})}
+                        options={pesObrigatorias.map(e => { return {label: e.nome, value: e.nome}})}
                         renderInput={(params) =>
                             <TextField {...params} label="Pes de interesse" placeholder="Escolha(s) não obrigatória(s)" InputLabelProps={{ shrink: true }} />
                         }
@@ -114,12 +122,22 @@ const CoursePlan = () => {
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TransferList
                         labels={['Disciplinas existentes e não cursadas', 'Disciplinas cursadas']}
-                        left={{cursoObrigatorias, cursoOptativas}}
-                        right={{'cursoObrigatorias': cursoObrigatoriasPagas, 'cursoOptativas': cursoOptativasPagas}}
+                        left={{cursoObrigatorias, cursoOptativas, enfaseObrigatorias, enfaseOptativas, pesObrigatorias}}
+                        right={{cursoObrigatorias: cursoObrigatoriasPagas, cursoOptativas: cursoOptativasPagas,
+                            enfaseObrigatorias: enfaseObrigatoriasPagas, enfaseOptativas: enfaseOptativasPagas,
+                            pesObrigatorias: pesObrigatoriasPagas}}
                         handleChangeLeftCursoObrigatorias={event => setCursoObrigatorias(event)}
                         handleChangeRightCursoObrigatorias={event => setCursoObrigatoriasPagas(event)}
                         handleChangeLeftCursoOptativas={event => setCursoOptativas(event)}
                         handleChangeRightCursoOptativas={event => setCursoOptativasPagas(event)}
+
+                        handleChangeLeftEnfaseObrigatorias={event => setEnfaseObrigatorias(event)}
+                        handleChangeRightEnfaseObrigatorias={event => setEnfaseObrigatoriasPagas(event)}
+                        handleChangeLeftEnfaseOptativas={event => setEnfaseOptativas(event)}
+                        handleChangeRightEnfaseOptativas={event => setEnfaseOptativasPagas(event)}
+
+                        handleChangeLeftPesObrigatorias={event => setPesObrigatorias(event)}
+                        handleChangeRightPesObrigatorias={event => setPesObrigatoriasPagas(event)}
                     />
                 </Grid>
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
