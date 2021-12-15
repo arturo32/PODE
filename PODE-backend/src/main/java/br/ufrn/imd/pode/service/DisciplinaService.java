@@ -97,6 +97,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se
 	// atendem a expressão de equivalencia)
+
 	public boolean checarEquivalencia(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getEquivalentes();
@@ -121,6 +122,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina
 	// alvo (se atendem a expressão de prerequisito)
+
 	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
