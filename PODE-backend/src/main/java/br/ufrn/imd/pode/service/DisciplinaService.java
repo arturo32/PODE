@@ -85,7 +85,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarEquivalencia(Collection<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
+		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
 		while (matcher.find()) {
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String eval = String.valueOf(codigos.contains(matcher.group(i)));
@@ -97,6 +97,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se
 	// atendem a expressão de equivalencia)
+
 	public boolean checarEquivalencia(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getEquivalentes();
@@ -109,7 +110,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 	public boolean checarPrerequisitos(Collection<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4})").matcher(expressao);
+		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
 		while (matcher.find()) {
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String eval = String.valueOf(checarEquivalencia(codigos, matcher.group(i)));
@@ -121,6 +122,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 
 	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina
 	// alvo (se atendem a expressão de prerequisito)
+
 	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
@@ -138,7 +140,7 @@ public class DisciplinaService extends GenericService<Disciplina, DisciplinaDTO,
 		if (StringUtils.isEmpty(disciplina.getCodigo())) {
 			exceptionHelper.add("codigo inválido");
 		} else {
-			Matcher matcher = Pattern.compile("[A-Z]{3}[0-9]{4}").matcher(disciplina.getCodigo());
+			Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(disciplina.getCodigo());
 			if (!matcher.find()) {
 				exceptionHelper.add("formato de código inválido (exemplo: ABC1234)");
 			}

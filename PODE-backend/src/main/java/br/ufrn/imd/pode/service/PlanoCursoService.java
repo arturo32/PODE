@@ -236,12 +236,9 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
 		PlanoCurso planoCurso = this.findById(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
-
 		Set<Disciplina> cursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
-
 		for (DisciplinaPeriodoDTO dp: disciplinasPeriodoDTOS) {
 			Disciplina d =disciplinaService.findById(dp.getIdDisciplina());
 			if (disciplinaService.checarPrerequisitos(cursadas, d)) {
@@ -250,13 +247,11 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 			} else {
 				exceptionHelper.add("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
-
 		}
 		if (exceptionHelper.getMessage().isEmpty()) {
 			throw new UnmetPrerequisitesException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
-
 		Set<Disciplina> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 		Set<DisciplinaPeriodo> pendentes = new HashSet<>();
 		for (DisciplinaPeriodo dp: planoCurso.getDisciplinasPendentes()) {

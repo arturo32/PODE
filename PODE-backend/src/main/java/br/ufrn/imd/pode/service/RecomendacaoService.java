@@ -68,7 +68,6 @@ public class RecomendacaoService {
 		} else {
 			try {
 				this.vinculoService.findById(vinculoId);
-				// TODO verificar se o vinculo de fato percente ao usuário
 			} catch (EntityNotFoundException entityNotFoundException) {
 				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
 			}
@@ -153,8 +152,7 @@ public class RecomendacaoService {
 
 	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(Long idVinculo) {
 		Vinculo vinculo = vinculoService.findById(idVinculo);
-		PlanoCurso planoCurso = planoCursoService.findPlanoCursoByVinculoId(idVinculo);
-		return planoCurso.getDisciplinasPendentes().stream()
+		return vinculo.getPlanoCurso().getDisciplinasPendentes().stream()
 				.filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual())
 				.collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto)
 				.sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).collect(Collectors.toList());
