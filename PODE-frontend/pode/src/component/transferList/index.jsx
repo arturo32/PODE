@@ -103,7 +103,7 @@ const TransferList = (props) => {
 
         /*Chama a função passada pelo elemento pai para lidar com as disciplinas NÃO selecionadas da
         * coluna da esquerda (acaba mudando left)*/
-        handleChangeLeft(not(leftArray, leftChecked));
+        handleChangeLeft(not(leftArray, leftChecked).filter(e => (leftChecked.find(e2 => e2.id === e.id) === undefined)));
 
         /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
         * adicionadas à coluna da direita*/

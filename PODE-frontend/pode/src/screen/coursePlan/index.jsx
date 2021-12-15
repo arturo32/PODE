@@ -102,7 +102,7 @@ const CoursePlan = () => {
                 });
         }
     }, [enfaseSelecionada]);
-
+    
 
     //Disciplinas das PES
     useEffect(() => {
@@ -111,12 +111,6 @@ const CoursePlan = () => {
             listDisciplinasObrigatoriasPes(params, pesSelecionado.id)
                 .then(response => {
                     if(response.status === 200){
-                        for(let i = 0; i < response.data.length; ++i){
-                            if(pesObrigatorias.find(e => e.id === response.data[i].id) !== undefined){
-                                console.log(response.data[i].id)
-                                response.data.splice(i, 1);
-                            }
-                        }
                         setPesObrigatorias(pesObrigatorias.concat(response.data));
                     }
                 });
@@ -128,12 +122,6 @@ const CoursePlan = () => {
             listDisciplinasOptativasPes(params, pesSelecionado.id)
                 .then(response => {
                     if(response.status === 200){
-                        for(let i = 0; i < response.data.length; ++i){
-                            if(pesOptativas.find(e => e.id === response.data[i].id) !== undefined){
-                                console.log(response.data[i].id)
-                                response.data.splice(i, 1);
-                            }
-                        }
                         setPesOptativas(pesOptativas.concat(response.data));
                     }
                 });
