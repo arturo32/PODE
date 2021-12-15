@@ -12,15 +12,26 @@ import { form } from '../../component/theme';
 import TransferList from '../../component/transferList';
 
 import { css } from './styles';
-import {listDisciplinasObrigatoriasCurso, listDisciplinasOptivativasCurso, listEnfase, listPes} from "./service";
+import {
+    listDisciplinasObrigatoriasCurso,
+    listDisciplinasObrigatoriasEnfase,
+    listDisciplinasObrigatoriasPes,
+    listDisciplinasOptativasEnfase,
+    listDisciplinasOptativasPes,
+    listDisciplinasOptivativasCurso,
+    listEnfase,
+    listPes
+} from "./service";
 
 
 const CoursePlan = () => {
 
-    const [emphasis, setEmphasis] = useState(null);
-    
+    const [enfases, setEnfases] = useState([]);
     const [pes, setPes] = useState([]);
-    
+
+    const [enfaseSelecionada, setEnfaseSelecionada] = useState(null);
+    const [pesSelecionados, setPesSelecionados] = useState([]);
+
     const [cursoObrigatorias, setCursoObrigatorias] = useState([]);
     const [cursoOptativas, setCursoOptativas] = useState([]);
     const [cursoObrigatoriasPagas, setCursoObrigatoriasPagas] = useState([]);
@@ -32,60 +43,116 @@ const CoursePlan = () => {
     const [enfaseOptativasPagas, setEnfaseOptativasPagas] = useState([]);
 
     const [pesObrigatorias, setPesObrigatorias] = useState([]);
+    const [pesOptativas, setPesOptativas] = useState([]);
     const [pesObrigatoriasPagas, setPesObrigatoriasPagas] = useState([]);
+    const [pesOptativasPagas, setPesOptativasPagas] = useState([]);
 
     const submit = () => {
         console.log('Submit');
     };
 
+    const params = {
+        params: {
+            page: 0,
+            limit: 1000
+        }
+    };
+
+
+
+
+    //Ênfases por curso do estudante
     useEffect(() => {
-        listEnfase({params: {page: 0, limit: 1000}}, 2)
+        listEnfase(params, 2)
+            .then(response => {
+                if(response.status === 200){
+                    setEnfases(response.data);
+                }
+            });
+    }, []);
+
+    //PES
+    useEffect(() => {
+        listPes(params, 2)
+            .then(response => {
+                if(response.status === 200){
+                    setPes(response.data);
+                }
+            });
+    }, []);
+
+    //Disciplinas das ênfases
+    useEffect(() => {
+        if(enfaseSelecionada !== null){
+            listDisciplinasObrigatoriasEnfase(params, enfaseSelecionada.id)
                 .then(response => {
                     if(response.status === 200){
                         setEnfaseObrigatorias(response.data);
-                        setEnfaseOptativas([]);
                     }
                 });
-    }, []);
-
+        }
+    }, [enfaseSelecionada]);
     useEffect(() => {
-        listPes({params: {page: 0, limit: 1000}})
+        if(enfaseSelecionada !== null){
+            listDisciplinasOptativasEnfase(params, enfaseSelecionada.id)
                 .then(response => {
                     if(response.status === 200){
-                        setPesObrigatorias(response.data);
+                        setEnfaseOptativas(response.data);
                     }
                 });
-    }, []);
+        }
+    }, [enfaseSelecionada]);
 
+
+    //Disciplinas das PES
+    useEffect(() => {
+        setPesObrigatorias([]);
+        for(let pesSelecionado of pesSelecionados){
+            listDisciplinasObrigatoriasPes(params, pesSelecionado.id)
+                .then(response => {
+                    if(response.status === 200){
+                        for(let elemento of response.data){
+                            pesObrigatorias
+                        }
+                        setPesObrigatorias([...new Set(pesObrigatorias.concat(response.data))]);
+                    }
+                });
+        }
+    }, [pesSelecionados]);
+    useEffect(() => {
+        setPesOptativas([]);
+        for(let pesSelecionado of pesSelecionados){
+            listDisciplinasOptativasPes(params, pesSelecionado.id)
+                .then(response => {
+                    if(response.status === 200){
+                        setPesOptativas([...new Set(pesOptativas.concat(response.data))]);
+                    }
+                });
+        }
+    }, [pesSelecionados]);
+
+
+    //Disciplinas do curso
     useEffect(() => {
         listDisciplinasObrigatoriasCurso({params: {page: 0, limit: 1000}}, 2)
-                .then(response => {
-                    if(response.status === 200){
-                        console.log('Obrigatórias: ', response)
-                        setCursoObrigatorias(response.data.map(e => {
-                            return {...e, tipo: 'CURSO_OBRIGATORIA'}
-                        }));
-                    }
-                });
+            .then(response => {
+                if(response.status === 200){
+                    setCursoObrigatorias(response.data.map(e => {
+                        return {...e, tipo: 'CURSO_OBRIGATORIA'}
+                    }));
+                }
+            });
     }, []);
-
     useEffect(() => {
         listDisciplinasOptivativasCurso({params: {page: 0, limit: 1000}}, 2)
-                .then(response => {
-                    if(response.status === 200){
-                        console.log('Optativas: ', response)
-                        setCursoOptativas(response.data.map(e =>{
-                            return {...e, tipo: 'CURSO_OPTATIVA'}
-                        }));
-                    }
-                });
+            .then(response => {
+                if(response.status === 200){
+                    setCursoOptativas(response.data.map(e =>{
+                        return {...e, tipo: 'CURSO_OPTATIVA'}
+                    }));
+                }
+            });
     }, []);
-
-
-    useEffect(() => {
-        setCursoObrigatoriasPagas([]);
-    }, []);
-
 
 
     return (
@@ -98,23 +165,26 @@ const CoursePlan = () => {
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={4} xl={3}>
                     <Autocomplete
-                        options={enfaseObrigatorias.map(e => { return {label: e.nome, value: e.nome}})}
+                        options={enfases}
+                        getOptionLabel={option => option.nome}
                         renderInput={(params) =>
                             <TextField {...params} label="Ênfase" placeholder="Escolha não obrigatória" InputLabelProps={{ shrink: true }} />
                         }
-                        value={emphasis}
-                        onChange={(_, object) => setEmphasis(object)}
+                        value={enfaseSelecionada}
+                        onChange={(_, object) => setEnfaseSelecionada(object)}
                         disablePortal={true}
                     />
                 </Grid>
                 <Grid item={true} xs={12} sm={6} md={6} lg={8} xl={9}>
                     <Autocomplete
-                        options={pesObrigatorias.map(e => { return {label: e.nome, value: e.nome}})}
+                        options={pes}
+                        getOptionLabel={option => option.nome}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
                         renderInput={(params) =>
                             <TextField {...params} label="Pes de interesse" placeholder="Escolha(s) não obrigatória(s)" InputLabelProps={{ shrink: true }} />
                         }
-                        value={pes}
-                        onChange={(_, object) => setPes(object)}
+                        value={pesSelecionados}
+                        onChange={(_, object) => setPesSelecionados(object)}
                         multiple={true}
                         disablePortal={true}
                     />
@@ -122,10 +192,10 @@ const CoursePlan = () => {
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TransferList
                         labels={['Disciplinas existentes e não cursadas', 'Disciplinas cursadas']}
-                        left={{cursoObrigatorias, cursoOptativas, enfaseObrigatorias, enfaseOptativas, pesObrigatorias}}
+                        left={{cursoObrigatorias, cursoOptativas, enfaseObrigatorias, enfaseOptativas, pesObrigatorias, pesOptativas}}
                         right={{cursoObrigatorias: cursoObrigatoriasPagas, cursoOptativas: cursoOptativasPagas,
                             enfaseObrigatorias: enfaseObrigatoriasPagas, enfaseOptativas: enfaseOptativasPagas,
-                            pesObrigatorias: pesObrigatoriasPagas}}
+                            pesObrigatorias: pesObrigatoriasPagas, pesOptativas: pesOptativasPagas}}
                         handleChangeLeftCursoObrigatorias={event => setCursoObrigatorias(event)}
                         handleChangeRightCursoObrigatorias={event => setCursoObrigatoriasPagas(event)}
                         handleChangeLeftCursoOptativas={event => setCursoOptativas(event)}
@@ -138,6 +208,8 @@ const CoursePlan = () => {
 
                         handleChangeLeftPesObrigatorias={event => setPesObrigatorias(event)}
                         handleChangeRightPesObrigatorias={event => setPesObrigatoriasPagas(event)}
+                        handleChangeLeftPesOptativas={event => setPesOptativas(event)}
+                        handleChangeRightPesOptativas={event => setPesOptativasPagas(event)}
                     />
                 </Grid>
                 <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12}>

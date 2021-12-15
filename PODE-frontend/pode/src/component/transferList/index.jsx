@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -9,21 +9,24 @@ import Paper from '@mui/material/Paper';
 import { css } from './styles';
 import TransferListSubMenu from "../transferListSubMenu";
 
-/*Retorna todos elementos do primeiro array que não estão no segundo*/
-const not = (a, b) => {
-    return a.filter((value) => b.indexOf(value) === -1);
-};
 
-/*Retorna a interseção dos dois arrays passados*/
-const intersection = (a, b) => {
-    return a.filter((value) => b.indexOf(value) !== -1);
-};
 
 const TransferList = (props) => {
 
     const { labels, left, right, handleChangeLeftCursoObrigatorias, handleChangeRightCursoObrigatorias,
         handleChangeLeftCursoOptativas, handleChangeRightCursoOptativas, handleChangeLeftEnfaseObrigatorias, handleChangeRightEnfaseObrigatorias,
-        handleChangeLeftEnfaseOptativas, handleChangeRightEnfaseOptativas, handleChangeLeftPesObrigatorias, handleChangeRightPesObrigatorias} = props;
+        handleChangeLeftEnfaseOptativas, handleChangeRightEnfaseOptativas, handleChangeLeftPesObrigatorias, handleChangeRightPesObrigatorias,
+        handleChangeLeftPesOptativas, handleChangeRightPesOptativas} = props;
+
+    /*Retorna todos elementos do primeiro array que não estão no segundo*/
+    const not = (a, b) => {
+        return a.filter((value) => b.indexOf(value) === -1);
+    };
+
+    /*Retorna a interseção dos dois arrays passados*/
+    const intersection = (a, b) => {
+        return a.filter((value) => b.indexOf(value) !== -1);
+    };
 
     const [checkedCursoObrigatorias, setCheckedCursoObrigatorias] = useState([]);
     const [checkedCursoOptativas, setCheckedCursoOptativas] = useState([]);
@@ -31,19 +34,8 @@ const TransferList = (props) => {
     const [checkedEnfaseObrigatorias, setCheckedEnfaseObrigatorias] = useState([]);
     const [checkedEnfaseOptativas, setCheckedEnfaseOptativas] = useState([]);
 
-    const [checkedPes, setCheckedPes] = useState([]);
-
-
-    const leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
-    const leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
-
-    const leftCheckedEnfaseObrigatorias = intersection(checkedEnfaseObrigatorias, left.enfaseObrigatorias);
-    const leftCheckedEnfaseOptativas = intersection(checkedEnfaseOptativas, left.enfaseOptativas);
-
-    const leftCheckedPes = intersection(checkedPes, left.pesObrigatorias);
-
-    const rightChecked = intersection(checkedCursoObrigatorias, right.cursoObrigatorias);
-
+    const [checkedPesObrigatorias, setCheckedPesObrigatorias] = useState([]);
+    const [checkedPesOptativas, setCheckedPesOptativas] = useState([]);
 
 
     const handleAllRight = () => {
@@ -51,7 +43,31 @@ const TransferList = (props) => {
         handleChangeLeftCursoObrigatorias([]);
     };
 
+    let leftCheckedCursoObrigatorias = [];
+    let leftCheckedCursoOptativas = [];
+    let leftCheckedEnfaseObrigatorias = [];
+    let leftCheckedEnfaseOptativas = [];
+    let leftCheckedPesObrigatorias = [];
+    let leftCheckedPesOptativas = [];
+
+    let rightCheckedCursoObrigatorias = [];
+    let rightCheckedCursoOptativas = [];
+    let rightCheckedEnfaseObrigatorias = [];
+    let rightCheckedEnfaseOptativas = [];
+    let rightCheckedPesObrigatorias = [];
+    let rightCheckedPesOptativas = [];
+
+
+
     const handleCheckedRight = () => {
+        //Calcula interseção entre as selecionaodas, no geral, e as que estão no lado esquerdo
+        leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
+        leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
+        leftCheckedEnfaseObrigatorias = intersection(checkedEnfaseObrigatorias, left.enfaseObrigatorias);
+        leftCheckedEnfaseOptativas = intersection(checkedEnfaseOptativas, left.enfaseOptativas);
+        leftCheckedPesObrigatorias = intersection(checkedPesObrigatorias, left.pesObrigatorias);
+        leftCheckedPesOptativas = intersection(checkedPesOptativas, left.pesOptativas);
+
         if(leftCheckedCursoObrigatorias.length !== 0){
             handleCheckedRightEspecifica(right.cursoObrigatorias, left.cursoObrigatorias, leftCheckedCursoObrigatorias,
                     checkedCursoObrigatorias, setCheckedCursoObrigatorias, handleChangeRightCursoObrigatorias, handleChangeLeftCursoObrigatorias);
@@ -68,9 +84,13 @@ const TransferList = (props) => {
             handleCheckedRightEspecifica(right.enfaseOptativas, left.enfaseOptativas, leftCheckedEnfaseOptativas,
                     checkedEnfaseOptativas, setCheckedEnfaseOptativas, handleChangeRightEnfaseOptativas, handleChangeLeftEnfaseOptativas);
         }
-        if(leftCheckedPes.length !== 0){
-            handleCheckedRightEspecifica(right.pesObrigatorias, left.pesObrigatorias, leftCheckedPes,
-                    checkedPes, setCheckedPes, handleChangeRightPesObrigatorias, handleChangeLeftPesObrigatorias);
+        if(leftCheckedPesObrigatorias.length !== 0){
+            handleCheckedRightEspecifica(right.pesObrigatorias, left.pesObrigatorias, leftCheckedPesObrigatorias,
+                    checkedPesObrigatorias, setCheckedPesObrigatorias, handleChangeRightPesObrigatorias, handleChangeLeftPesObrigatorias);
+        }
+        if(leftCheckedPesOptativas.length !== 0){
+            handleCheckedRightEspecifica(right.pesOptativas, left.pesOptativas, leftCheckedPesOptativas,
+                    checkedPesOptativas, setCheckedPesOptativas, handleChangeRightPesOptativas, handleChangeLeftPesOptativas);
         }
 
     };
@@ -86,7 +106,7 @@ const TransferList = (props) => {
         handleChangeLeft(not(leftArray, leftChecked));
 
         /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
-        * adicionadas a coluna da direita*/
+        * adicionadas à coluna da direita*/
         setChecked(not(checked, leftChecked));
     }
 
@@ -95,21 +115,58 @@ const TransferList = (props) => {
 
         /*Chama a função passada pelo elemento pai para lidar com a união das disciplinas checadas
         * da direita com as que já estão do lado esquerdo (acaba mudando left)*/
-        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(rightChecked));
+        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(rightCheckedCursoObrigatorias));
 
         /*Chama a função passado pelo elemento pai para lidar com as disciplinas da coluna direita
         * que NÃO foram selecionadas (acaba mudando right)*/
-        handleChangeRightCursoObrigatorias(not(right.cursoObrigatorias, rightChecked));
+        handleChangeRightCursoObrigatorias(not(right.cursoObrigatorias, rightCheckedCursoObrigatorias));
 
         /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
         * adicionas a coluna da esquerda*/
-        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightChecked));
+        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightCheckedCursoObrigatorias));
     };
 
     const handleAllLeft = () => {
         handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(right));
         handleChangeRightCursoObrigatorias([]);
     };
+
+
+    const isNenhumaDisciplinaEsquerdaAdicionada = () => {
+        return leftCheckedCursoObrigatorias.length === 0 &&
+                leftCheckedCursoOptativas.length === 0 &&
+                leftCheckedEnfaseObrigatorias.length === 0 &&
+                leftCheckedEnfaseOptativas.length === 0 &&
+                leftCheckedPesObrigatorias.length === 0 &&
+                leftCheckedPesOptativas.length === 0;
+    }
+
+    const isNenhumaDisciplinaDireitaAdicionada = () => {
+        return rightCheckedCursoObrigatorias.length === 0 &&
+                rightCheckedCursoOptativas.length === 0 &&
+                rightCheckedEnfaseObrigatorias.length === 0 &&
+                rightCheckedEnfaseOptativas.length === 0 &&
+                rightCheckedPesObrigatorias.length === 0 &&
+                rightCheckedPesOptativas.length === 0;
+    }
+
+    const isLadoEsquerdoVazio = () => {
+        for(let key in left){
+            if(left[key].length !== 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const isLadoDireitoVazio = () => {
+        for(let key in right){
+            if(right[key].length !== 0){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 
@@ -138,8 +195,10 @@ const TransferList = (props) => {
                 <TransferListSubMenu  disciplinas={
                     {
                         obrigatorias: {disciplinas: items.pesObrigatorias,
-                            checked: checkedPes, setChecked: setCheckedPes}
-                    }} nome={'PES'} ehPes
+                            checked: checkedPesObrigatorias, setChecked: setCheckedPesObrigatorias},
+                        optativas: {disciplinas: items.pesOptativas,
+                            checked: checkedPesOptativas, setChecked: setCheckedPesOptativas}
+                    }} nome={'PES'}
                 />
             </List>
         </Paper>
@@ -155,7 +214,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleAllRight}
-                        disabled={left.cursoObrigatorias.length === 0}
+                        disabled={isLadoEsquerdoVazio()}
                         aria-label="adicionar todas"
                     >
                         Adicionar todas (≫)
@@ -165,7 +224,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedRight}
-                        disabled={leftCheckedCursoObrigatorias.length === 0 && leftCheckedCursoOptativas.length === 0}
+                        disabled={isNenhumaDisciplinaEsquerdaAdicionada()}
                         aria-label="adicionar selecionadas"
                     >
                         Adicionar selecionadas (&gt;)
@@ -175,7 +234,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedLeft}
-                        disabled={rightChecked.length === 0}
+                        disabled={isNenhumaDisciplinaDireitaAdicionada()}
                         aria-label="remover selecionadas"
                     >
                         Remover selecionadas (&lt;)
@@ -185,7 +244,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleAllLeft}
-                        disabled={right.length === 0}
+                        disabled={isLadoDireitoVazio()}
                         aria-label="remover todas"
                     >
                         Remover todas (≪)

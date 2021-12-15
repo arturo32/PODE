@@ -6,7 +6,7 @@ import TransferListSubList from "../transferListSubList";
 
 
 const TransferListSubMenu = (props) => {
-	const { disciplinas , nome, ehPes } = props;
+	const { disciplinas , nome } = props;
 
 	const [openNaoCursadas, setOpenNaoCursadas] = useState(true);
 	const handleClickNaoCursadas = () => {
@@ -24,9 +24,9 @@ const TransferListSubMenu = (props) => {
 					<TransferListSubList disciplinas={disciplinas.obrigatorias.disciplinas} nome={'Obrigatórias'}
 										 checkedArray={disciplinas.obrigatorias.checked} setCheckedArray={disciplinas.obrigatorias.setChecked}
 					/>
-					{!ehPes? <TransferListSubList disciplinas={disciplinas.optativas.disciplinas} nome={'Optativas'}
+					<TransferListSubList disciplinas={disciplinas.optativas.disciplinas} nome={'Optativas'}
 										 checkedArray={disciplinas.optativas.checked} setCheckedArray={disciplinas.optativas.setChecked}
-					/> : null}
+					/>
 				</Collapse>
 			</div>
 	)
