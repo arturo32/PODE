@@ -5,5 +5,8 @@ export const css = {
     button: {
         color: '#FFFFFF',
         fontFamily: '"AlegreyaSans - Bold", sans-serif',
+    },
+    dialogButton : {
+        justifyContent: 'center',
     }
 };

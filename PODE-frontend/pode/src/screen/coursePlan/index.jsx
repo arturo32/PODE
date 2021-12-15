@@ -13,6 +13,8 @@ import TransferList from '../../component/transferList';
 
 import { css } from './styles';
 import {
+    adicionaDisciplinasCursadas, adicionaDisciplinasPendentes,
+    getInfoVinculos,
     listDisciplinasObrigatoriasCurso,
     listDisciplinasObrigatoriasEnfase,
     listDisciplinasObrigatoriasPes,
@@ -22,6 +24,13 @@ import {
     listEnfase,
     listPes
 } from "./service";
+import {getInfoStudent} from "../recommendations/service";
+import {get} from "../../util/session";
+import {getPesByProximityCompletion} from "../recommendations/pes/service";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import {Link} from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
 
 
 const CoursePlan = () => {
@@ -47,8 +56,57 @@ const CoursePlan = () => {
     const [pesObrigatoriasPagas, setPesObrigatoriasPagas] = useState([]);
     const [pesOptativasPagas, setPesOptativasPagas] = useState([]);
 
+    const [idCurso, setIdCurso] = useState(null);
+
+    const [estudanteInfo, setEstudanteInfo] = useState(null);
+
+    const [openConfirmacao, setOpenConfirmacao] = useState(false);
+
     const submit = () => {
-        console.log('Submit');
+        let disciplinasCursada = [
+            ...cursoObrigatoriasPagas,
+            ...cursoOptativasPagas,
+            ...enfaseObrigatoriasPagas,
+            ...enfaseOptativasPagas,
+            ...pesObrigatoriasPagas,
+            ...pesOptativasPagas
+        ];
+
+        let disciplinasPendentes = [
+            ...cursoObrigatorias,
+            ...cursoOptativas,
+            ...enfaseObrigatorias,
+            ...enfaseOptativas,
+            ...pesObrigatorias,
+            ...pesOptativas
+        ];
+
+
+        disciplinasCursada = disciplinasCursada.map(e => {
+            return {'id-disciplina': e.id, 'periodo': (e.periodo === undefined? estudanteInfo.periodoAtualPeriodo : e.periodo)}
+        });
+        disciplinasPendentes = disciplinasPendentes.map(e => {
+            return {'id-disciplina': e.id, 'periodo': (e.periodo === undefined? estudanteInfo.periodoAtualPeriodo : e.periodo)}
+        });
+        adicionaDisciplinasCursadas(disciplinasCursada, estudanteInfo.idPlanoCurso)
+            .then(response => {
+                console.log(response)
+                adicionaDisciplinasPendentes(disciplinasPendentes, estudanteInfo.idPlanoCurso)
+                        .then(response => {
+                            console.log(response)
+                        })
+                        .catch(erro => {
+                            console.warn(erro)
+                        })
+                        .finally(() => {
+                            setOpenConfirmacao(true);
+                        });
+            })
+            .catch(erro =>{
+                console.warn(erro)
+            });
+
+
     };
 
     const params = {
@@ -58,28 +116,49 @@ const CoursePlan = () => {
         }
     };
 
+    useEffect(() => {
+        getInfoStudent(get('user').id)
+            .then(response => {
+                getInfoVinculos(params, response.data['id-vinculos'][0])
+                    .then(responseVinculo => {
+                        if(responseVinculo.status === 200){
+                            console.log(responseVinculo.data)
+                            setEstudanteInfo(responseVinculo.data);
+                            setIdCurso(responseVinculo.data.idCurso);
+                        }
+                    });
+            })
+            .catch(error => {
+                console.warn(error);
+            });
+    }, []);
+
 
 
 
     //Ênfases por curso do estudante
     useEffect(() => {
-        listEnfase(params, 2)
-            .then(response => {
-                if(response.status === 200){
-                    setEnfases(response.data);
-                }
-            });
-    }, []);
+        if(idCurso !== null){
+            listEnfase(params, idCurso)
+                .then(response => {
+                    if(response.status === 200){
+                        setEnfases(response.data);
+                    }
+                });
+        }
+    }, [idCurso]);
 
     //PES
     useEffect(() => {
-        listPes(params, 2)
-            .then(response => {
-                if(response.status === 200){
-                    setPes(response.data);
-                }
-            });
-    }, []);
+        if(idCurso !== null) {
+            listPes(params, idCurso)
+                .then(response => {
+                    if (response.status === 200) {
+                        setPes(response.data);
+                    }
+                });
+        }
+    }, [idCurso]);
 
     //Disciplinas das ênfases
     useEffect(() => {
@@ -102,7 +181,7 @@ const CoursePlan = () => {
                 });
         }
     }, [enfaseSelecionada]);
-    
+
 
     //Disciplinas das PES
     useEffect(() => {
@@ -131,25 +210,29 @@ const CoursePlan = () => {
 
     //Disciplinas do curso
     useEffect(() => {
-        listDisciplinasObrigatoriasCurso({params: {page: 0, limit: 1000}}, 2)
-            .then(response => {
-                if(response.status === 200){
-                    setCursoObrigatorias(response.data.map(e => {
-                        return {...e, tipo: 'CURSO_OBRIGATORIA'}
-                    }));
-                }
-            });
-    }, []);
+        if(idCurso !== null) {
+            listDisciplinasObrigatoriasCurso({params: {page: 0, limit: 1000}}, idCurso)
+                .then(response => {
+                    if (response.status === 200) {
+                        setCursoObrigatorias(response.data.map(e => {
+                            return {...e, tipo: 'CURSO_OBRIGATORIA'}
+                        }));
+                    }
+                });
+        }
+    }, [idCurso]);
     useEffect(() => {
-        listDisciplinasOptivativasCurso({params: {page: 0, limit: 1000}}, 2)
-            .then(response => {
-                if(response.status === 200){
-                    setCursoOptativas(response.data.map(e =>{
-                        return {...e, tipo: 'CURSO_OPTATIVA'}
-                    }));
-                }
-            });
-    }, []);
+        if(idCurso !== null) {
+            listDisciplinasOptivativasCurso({params: {page: 0, limit: 1000}}, idCurso)
+                .then(response => {
+                    if (response.status === 200) {
+                        setCursoOptativas(response.data.map(e => {
+                            return {...e, tipo: 'CURSO_OPTATIVA'}
+                        }));
+                    }
+                });
+        }
+    }, [idCurso]);
 
 
     return (
@@ -220,6 +303,18 @@ const CoursePlan = () => {
                     </Button>
                 </Grid>
             </Grid>
+            <Dialog open={openConfirmacao}>
+                <DialogTitle>Plano de curso atualizado com sucesso!</DialogTitle>
+                <DialogActions sx={css.dialogButton}>
+                    <Button
+                            variant="contained"
+                            size="medium"
+                            sx={css.button}
+                    >
+                        Ok!
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </ThemeProvider>
     );
 

@@ -2,6 +2,8 @@ import API from '../../service/api';
 import APIEmphasis from "../../service/api.emphasis";
 import APIPes from "../../service/api.pes";
 import APICourse from "../../service/api.course";
+import APIVinculo from "../../service/api.vinculo";
+import APIPlanoCurso from "../../service/api.plano-curso";
 
 export const listEnfase = async (data, idCurso) => {
 	return await API.get(APIEmphasis.listPorCurso(idCurso), data);
@@ -33,4 +35,19 @@ export const listDisciplinasObrigatoriasPes = async (data, idPes) => {
 
 export const listDisciplinasOptativasPes = async (data, idPes) => {
 	return await API.get(APIPes.listDisciplinasOptativasPorPes(idPes), data);
+}
+
+export const getInfoVinculos = async (data, idVinculo) => {
+	return await API.get(APIVinculo.getInfo(idVinculo), data);
 };
+
+export const adicionaDisciplinasCursadas = async (data, idPlanoCurso) => {
+	return await API.post(APIPlanoCurso.adicionaDisciplinasCursadas(idPlanoCurso), data);
+};
+
+export const adicionaDisciplinasPendentes = async (data, idPlanoCurso) => {
+	return await API.post(APIPlanoCurso.adicionaDisciplinasPendentes(idPlanoCurso), data);
+};
+
+
+
