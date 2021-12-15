@@ -30,13 +30,13 @@ public class RecomendacaoController {
 	@GetMapping("/disciplinas-por-proximadade-conclusao-pes/{id_vinculo}")
 	public RecomendacaoPesDTO obterDisciplinasPorProximidadeConclusaoPes(
 			@PathVariable(value = "id_vinculo") long vinculoId) {
-		return this.service.recomendarDisciplinasPorProximidadeConclusaoPes(vinculoId);
+		return this.service.recomendarDisciplinasPorProximidadeConclusaoPes(this.service.validate(vinculoId));
 	}
 
 	@GetMapping("/disciplinas-por-plano-de-curso/{id_vinculo}")
 	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(
 			@PathVariable(value = "id_vinculo") Long id_vinculo) {
-		return this.service.recomendarDisciplinasPorPlanoDeCurso(id_vinculo);
+		return this.service.recomendarDisciplinasPorPlanoDeCurso(this.service.validate(id_vinculo));
 	}
 
 }
