@@ -72,26 +72,23 @@ const CoursePlan = () => {
             ...pesOptativasPagas
         ];
 
-        let disciplinasPendentes = [
+        /*let disciplinasPendentes = [
             ...cursoObrigatorias,
-            ...cursoOptativas,
             ...enfaseObrigatorias,
-            ...enfaseOptativas,
             ...pesObrigatorias,
-            ...pesOptativas
-        ];
+        ];*/
 
 
         disciplinasCursada = disciplinasCursada.map(e => {
             return {'id-disciplina': e.id, 'periodo': (e.periodo === undefined? estudanteInfo.periodoAtualPeriodo : e.periodo)}
         });
-        disciplinasPendentes = disciplinasPendentes.map(e => {
+        /*disciplinasPendentes = disciplinasPendentes.map(e => {
             return {'id-disciplina': e.id, 'periodo': (e.periodo === undefined? estudanteInfo.periodoAtualPeriodo : e.periodo)}
-        });
+        });*/
         adicionaDisciplinasCursadas(disciplinasCursada, estudanteInfo.idPlanoCurso)
             .then(response => {
                 console.log(response)
-                adicionaDisciplinasPendentes(disciplinasPendentes, estudanteInfo.idPlanoCurso)
+                /*adicionaDisciplinasPendentes(disciplinasPendentes, estudanteInfo.idPlanoCurso)
                         .then(response => {
                             console.log(response)
                         })
@@ -100,10 +97,13 @@ const CoursePlan = () => {
                         })
                         .finally(() => {
                             setOpenConfirmacao(true);
-                        });
+                        });*/
             })
             .catch(erro =>{
                 console.warn(erro)
+            })
+            .finally(() => {
+                setOpenConfirmacao(true);
             });
 
 
