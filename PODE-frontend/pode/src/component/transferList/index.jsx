@@ -1,149 +1,181 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 
 import { css } from './styles';
-import {Collapse, ListItemButton, ListSubheader} from "@mui/material";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import TransferListSubMenu from "../transferListSubMenu";
 
-const not = (a, b) => {
-    return a.filter((value) => b.indexOf(value) === -1);
-};
 
-const intersection = (a, b) => {
-    return a.filter((value) => b.indexOf(value) !== -1);
-};
 
 const TransferList = (props) => {
 
-    const { labels, left, right, handleChangeLeft, handleChangeRight } = props;
+    const { labels, left, right, handleChangeLeftCursoObrigatorias, handleChangeRightCursoObrigatorias,
+        handleChangeLeftCursoOptativas, handleChangeRightCursoOptativas, handleChangeLeftEnfaseObrigatorias, handleChangeRightEnfaseObrigatorias,
+        handleChangeLeftEnfaseOptativas, handleChangeRightEnfaseOptativas, handleChangeLeftPesObrigatorias, handleChangeRightPesObrigatorias,
+        handleChangeLeftPesOptativas, handleChangeRightPesOptativas} = props;
+
+    /*Retorna todos elementos do primeiro array que não estão no segundo*/
+    const not = (a, b) => {
+        return a.filter((value) => b.indexOf(value) === -1);
+    };
+
+    /*Retorna a interseção dos dois arrays passados*/
+    const intersection = (a, b) => {
+        return a.filter((value) => b.indexOf(value) !== -1);
+    };
 
     const [checkedCursoObrigatorias, setCheckedCursoObrigatorias] = useState([]);
     const [checkedCursoOptativas, setCheckedCursoOptativas] = useState([]);
 
-    const [openNaoCursadasCurso, setOpenNaoCursadasCurso] = useState(true);
-    const [openNaoCursadasCursoObrigatorias, setOpenNaoCursadasCursoObrigatorias] = useState(true);
-    const [openNaoCursadasCursoOptativas, setOpenNaoCursadasCursoOptativas] = useState(true);
+    const [checkedEnfaseObrigatorias, setCheckedEnfaseObrigatorias] = useState([]);
+    const [checkedEnfaseOptativas, setCheckedEnfaseOptativas] = useState([]);
 
-    const [openNaoCursadasEnfase, setOpenNaoCursadasEnfase] = useState(true);
-    const [openNaoCursadasEnfaseObrigatorias, setOpenNaoCursadasEnfaseObrigatorias] = useState(true);
-    const [openNaoCursadasEnfaseOptativas, setOpenNaoCursadasEnfaseOptativas] = useState(true);
+    const [checkedPesObrigatorias, setCheckedPesObrigatorias] = useState([]);
+    const [checkedPesOptativas, setCheckedPesOptativas] = useState([]);
 
-    const [openNaoCursadasPes, setOpenNaoCursadasPes] = useState(true);
-
-
-    const leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
-    const leftCheckedCursoOptativas = intersection(checkedCursoObrigatorias, left.cursoOptativas);
-    const rightChecked = intersection(checkedCursoObrigatorias, right);
-
-
-    const handleClickNaoCursadasCurso = () => {
-        setOpenNaoCursadasCurso(!openNaoCursadasCurso);
-    };
-    const handleClickNaoCursadasCursoObrigatorias = () => {
-        setOpenNaoCursadasCursoObrigatorias(!openNaoCursadasCursoObrigatorias);
-    };
-    const handleClickNaoCursadasCursoOptativas = () => {
-        setOpenNaoCursadasCursoOptativas(!openNaoCursadasCursoOptativas);
-    };
-
-    const handleClickNaoCursadasEnfase = () => {
-        setOpenNaoCursadasEnfase(!openNaoCursadasEnfase);
-    };
-    const handleClickNaoCursadasEnfaseObrigatorias = () => {
-        setOpenNaoCursadasEnfaseObrigatorias(!openNaoCursadasEnfaseObrigatorias);
-    };
-    const handleClickNaoCursadasEnfaseOptativas = () => {
-        setOpenNaoCursadasEnfaseOptativas(!openNaoCursadasEnfaseOptativas);
-    };
-
-    const handleClickNaoCursadasPes = () => {
-        setOpenNaoCursadasPes(!openNaoCursadasPes);
-    };
-
-
-
-    const handleToggle = (value) => () => {
-        const currentIndex = checkedCursoObrigatorias.indexOf(value);
-        const newChecked = [...checkedCursoObrigatorias];
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-        setCheckedCursoObrigatorias(newChecked);
-    };
 
     const handleAllRight = () => {
-        handleChangeRight(right.concat(left.cursoObrigatorias));
-        handleChangeLeft([]);
+        handleChangeRightCursoObrigatorias(right.concat(left.cursoObrigatorias));
+        handleChangeLeftCursoObrigatorias([]);
     };
+
+    let leftCheckedCursoObrigatorias = [];
+    let leftCheckedCursoOptativas = [];
+    let leftCheckedEnfaseObrigatorias = [];
+    let leftCheckedEnfaseOptativas = [];
+    let leftCheckedPesObrigatorias = [];
+    let leftCheckedPesOptativas = [];
+
+    let rightCheckedCursoObrigatorias = [];
+    let rightCheckedCursoOptativas = [];
+    let rightCheckedEnfaseObrigatorias = [];
+    let rightCheckedEnfaseOptativas = [];
+    let rightCheckedPesObrigatorias = [];
+    let rightCheckedPesOptativas = [];
+
+
 
     const handleCheckedRight = () => {
-        handleChangeRight(right.concat(leftCheckedCursoObrigatorias));
-        handleChangeLeft(not(left.cursoObrigatorias, leftCheckedCursoObrigatorias));
-        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, leftCheckedCursoObrigatorias));
+        //Calcula interseção entre as selecionaodas, no geral, e as que estão no lado esquerdo
+        leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
+        leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
+        leftCheckedEnfaseObrigatorias = intersection(checkedEnfaseObrigatorias, left.enfaseObrigatorias);
+        leftCheckedEnfaseOptativas = intersection(checkedEnfaseOptativas, left.enfaseOptativas);
+        leftCheckedPesObrigatorias = intersection(checkedPesObrigatorias, left.pesObrigatorias);
+        leftCheckedPesOptativas = intersection(checkedPesOptativas, left.pesOptativas);
+
+        if(leftCheckedCursoObrigatorias.length !== 0){
+            handleCheckedRightEspecifica(right.cursoObrigatorias, left.cursoObrigatorias, leftCheckedCursoObrigatorias,
+                    checkedCursoObrigatorias, setCheckedCursoObrigatorias, handleChangeRightCursoObrigatorias, handleChangeLeftCursoObrigatorias);
+        }
+        if(leftCheckedCursoOptativas.length !== 0){
+            handleCheckedRightEspecifica(right.cursoOptativas, left.cursoOptativas, leftCheckedCursoOptativas,
+                    checkedCursoOptativas, setCheckedCursoOptativas, handleChangeRightCursoOptativas, handleChangeLeftCursoOptativas);
+        }
+        if(leftCheckedEnfaseObrigatorias.length !== 0){
+            handleCheckedRightEspecifica(right.enfaseObrigatorias, left.enfaseObrigatorias, leftCheckedEnfaseObrigatorias,
+                    checkedEnfaseObrigatorias, setCheckedEnfaseObrigatorias, handleChangeRightEnfaseObrigatorias, handleChangeLeftEnfaseObrigatorias);
+        }
+        if(leftCheckedEnfaseOptativas.length !== 0){
+            handleCheckedRightEspecifica(right.enfaseOptativas, left.enfaseOptativas, leftCheckedEnfaseOptativas,
+                    checkedEnfaseOptativas, setCheckedEnfaseOptativas, handleChangeRightEnfaseOptativas, handleChangeLeftEnfaseOptativas);
+        }
+        if(leftCheckedPesObrigatorias.length !== 0){
+            handleCheckedRightEspecifica(right.pesObrigatorias, left.pesObrigatorias, leftCheckedPesObrigatorias,
+                    checkedPesObrigatorias, setCheckedPesObrigatorias, handleChangeRightPesObrigatorias, handleChangeLeftPesObrigatorias);
+        }
+        if(leftCheckedPesOptativas.length !== 0){
+            handleCheckedRightEspecifica(right.pesOptativas, left.pesOptativas, leftCheckedPesOptativas,
+                    checkedPesOptativas, setCheckedPesOptativas, handleChangeRightPesOptativas, handleChangeLeftPesOptativas);
+        }
+
     };
 
+    /*Passa as disciplinas selecionadas da coluna esquerda para a direita*/
+    const handleCheckedRightEspecifica = (rightArray, leftArray, leftChecked, checked, setChecked, handleChangeRight, handleChangeLeft) => {
+        /*Chama a função passada pelo elemento pai para lidar com a união das disciplinas checadas
+        * com as que já estão do lado direito (acaba mudando right)*/
+        handleChangeRight(rightArray.concat(leftChecked));
+
+        /*Chama a função passada pelo elemento pai para lidar com as disciplinas NÃO selecionadas da
+        * coluna da esquerda (acaba mudando left)*/
+        handleChangeLeft(not(leftArray, leftChecked).filter(e => (leftChecked.find(e2 => e2.id === e.id) === undefined)));
+
+        /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
+        * adicionadas à coluna da direita*/
+        setChecked(not(checked, leftChecked));
+    }
+
+    /*Passa as disciplinas selecionadas da coluna direita para a esquerda*/
     const handleCheckedLeft = () => {
-        handleChangeLeft(left.cursoObrigatorias.concat(rightChecked));
-        handleChangeRight(not(right, rightChecked));
-        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightChecked));
+
+        /*Chama a função passada pelo elemento pai para lidar com a união das disciplinas checadas
+        * da direita com as que já estão do lado esquerdo (acaba mudando left)*/
+        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(rightCheckedCursoObrigatorias));
+
+        /*Chama a função passado pelo elemento pai para lidar com as disciplinas da coluna direita
+        * que NÃO foram selecionadas (acaba mudando right)*/
+        handleChangeRightCursoObrigatorias(not(right.cursoObrigatorias, rightCheckedCursoObrigatorias));
+
+        /*Atualiza checkedCursoObrigatorias, removendo as disciplinas que acabaram de serem
+        * adicionas a coluna da esquerda*/
+        setCheckedCursoObrigatorias(not(checkedCursoObrigatorias, rightCheckedCursoObrigatorias));
     };
 
     const handleAllLeft = () => {
-        handleChangeLeft(left.cursoObrigatorias.concat(right));
-        handleChangeRight([]);
+        handleChangeLeftCursoObrigatorias(left.cursoObrigatorias.concat(right));
+        handleChangeRightCursoObrigatorias([]);
     };
 
-    const listDisciplinas = (disciplinas) => (
-        <List component="div" disablePadding >
-            {disciplinas.map((value) => {
-                const labelId = `transfer-list-item-${value}-label`;
-                return (
-                    <ListItem
-                            key={value}
-                            role="listitem"
-                            button={true}
-                            onClick={handleToggle(value)}
-                            sx={{ pl: 8 }}
-                    >
-                        <ListItemIcon>
-                            <Checkbox
-                                    checkedCursoObrigatorias={checkedCursoObrigatorias.indexOf(value) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{
-                                        'aria-labelledby': labelId,
-                                    }}
-                            />
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={value} />
-                    </ListItem>
-                );
-            })}
-        </List>
-    )
 
-    const customSubList = (items, label, handleFunction, openState) => (
-        <div>
-            <ListItemButton onClick={handleFunction} sx={{ pl: 4 }}>
-                <ListItemText  primary={label} />
-                {openState ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Collapse in={openState} timeout="auto" unmountOnExit>
-                {listDisciplinas(items)}
-            </Collapse>
-        </div>
-    );
+    const isNenhumaDisciplinaEsquerdaAdicionada = () => {
+        //Calcula interseção entre as selecionaodas, no geral, e as que estão no lado esquerdo
+        leftCheckedCursoObrigatorias = intersection(checkedCursoObrigatorias, left.cursoObrigatorias);
+        leftCheckedCursoOptativas = intersection(checkedCursoOptativas, left.cursoOptativas);
+        leftCheckedEnfaseObrigatorias = intersection(checkedEnfaseObrigatorias, left.enfaseObrigatorias);
+        leftCheckedEnfaseOptativas = intersection(checkedEnfaseOptativas, left.enfaseOptativas);
+        leftCheckedPesObrigatorias = intersection(checkedPesObrigatorias, left.pesObrigatorias);
+        leftCheckedPesOptativas = intersection(checkedPesOptativas, left.pesOptativas);
+        return leftCheckedCursoObrigatorias.length === 0 &&
+                leftCheckedCursoOptativas.length === 0 &&
+                leftCheckedEnfaseObrigatorias.length === 0 &&
+                leftCheckedEnfaseOptativas.length === 0 &&
+                leftCheckedPesObrigatorias.length === 0 &&
+                leftCheckedPesOptativas.length === 0;
+    }
+
+    const isNenhumaDisciplinaDireitaAdicionada = () => {
+        return rightCheckedCursoObrigatorias.length === 0 &&
+                rightCheckedCursoOptativas.length === 0 &&
+                rightCheckedEnfaseObrigatorias.length === 0 &&
+                rightCheckedEnfaseOptativas.length === 0 &&
+                rightCheckedPesObrigatorias.length === 0 &&
+                rightCheckedPesOptativas.length === 0;
+    }
+
+    const isLadoEsquerdoVazio = () => {
+        for(let key in left){
+            if(left[key].length !== 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const isLadoDireitoVazio = () => {
+        for(let key in right){
+            if(right[key].length !== 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     const customList = (items, label) => (
         <Paper sx={css.paper}>
@@ -151,38 +183,37 @@ const TransferList = (props) => {
                 {label}
             </Typography>
             <List dense component="div" role="list">
-                <ListItemButton onClick={handleClickNaoCursadasCurso}>
-                    <ListItemText  primary={'Curso'} />
-                    {openNaoCursadasCurso ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openNaoCursadasCurso} timeout="auto" unmountOnExit>
-                    {customSubList(items, 'Obrigatórias', handleClickNaoCursadasCursoObrigatorias, openNaoCursadasCursoObrigatorias)}
-                    {customSubList([], 'Optativas', handleClickNaoCursadasCursoOptativas, openNaoCursadasCursoOptativas)}
-                </Collapse>
-
-                <ListItemButton onClick={handleClickNaoCursadasEnfase}>
-                    <ListItemText  primary={'Ênfase'} />
-                    {openNaoCursadasEnfase ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openNaoCursadasEnfase} timeout="auto" unmountOnExit>
-                    {customSubList([], 'Obrigatórias', handleClickNaoCursadasEnfaseObrigatorias, openNaoCursadasEnfaseObrigatorias)}
-                    {customSubList([], 'Optativas', handleClickNaoCursadasEnfaseOptativas, openNaoCursadasEnfaseOptativas)}
-                </Collapse>
-
-                <ListItemButton onClick={handleClickNaoCursadasPes}>
-                    <ListItemText  primary={'Pes'} />
-                    {openNaoCursadasPes ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openNaoCursadasPes} timeout="auto" unmountOnExit>
-                    {listDisciplinas([])}
-                </Collapse>
+                <TransferListSubMenu  disciplinas={
+                    {
+                        obrigatorias: {disciplinas: items.cursoObrigatorias,
+                            checked: checkedCursoObrigatorias, setChecked: setCheckedCursoObrigatorias},
+                        optativas: {disciplinas: items.cursoOptativas,
+                            checked: checkedCursoOptativas, setChecked: setCheckedCursoOptativas}
+                    }} nome={'Curso'}
+                />
+                <TransferListSubMenu  disciplinas={
+                    {
+                        obrigatorias: {disciplinas: items.enfaseObrigatorias,
+                            checked: checkedEnfaseObrigatorias, setChecked: setCheckedEnfaseObrigatorias},
+                        optativas: {disciplinas: items.enfaseOptativas,
+                            checked: checkedEnfaseOptativas, setChecked: setCheckedEnfaseOptativas}
+                    }} nome={'Ênfase'}
+                />
+                <TransferListSubMenu  disciplinas={
+                    {
+                        obrigatorias: {disciplinas: items.pesObrigatorias,
+                            checked: checkedPesObrigatorias, setChecked: setCheckedPesObrigatorias},
+                        optativas: {disciplinas: items.pesOptativas,
+                            checked: checkedPesOptativas, setChecked: setCheckedPesOptativas}
+                    }} nome={'PES'}
+                />
             </List>
         </Paper>
     );
 
     return (
         <Grid container spacing={2} justifyContent="center" alignItems="center" sx={css.root}>
-            <Grid item>{customList(left.cursoObrigatorias, labels[0])}</Grid>
+            <Grid item>{customList(left, labels[0])}</Grid>
             <Grid item>
                 <Grid container direction="column" alignItems="center">
                     <Button
@@ -190,7 +221,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleAllRight}
-                        disabled={left.cursoObrigatorias.length === 0}
+                        disabled={isLadoEsquerdoVazio()}
                         aria-label="adicionar todas"
                     >
                         Adicionar todas (≫)
@@ -200,7 +231,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedRight}
-                        disabled={leftCheckedCursoObrigatorias.length === 0}
+                        disabled={isNenhumaDisciplinaEsquerdaAdicionada()}
                         aria-label="adicionar selecionadas"
                     >
                         Adicionar selecionadas (&gt;)
@@ -210,7 +241,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleCheckedLeft}
-                        disabled={rightChecked.length === 0}
+                        disabled={isNenhumaDisciplinaDireitaAdicionada()}
                         aria-label="remover selecionadas"
                     >
                         Remover selecionadas (&lt;)
@@ -220,7 +251,7 @@ const TransferList = (props) => {
                         variant="outlined"
                         size="small"
                         onClick={handleAllLeft}
-                        disabled={right.length === 0}
+                        disabled={isLadoDireitoVazio()}
                         aria-label="remover todas"
                     >
                         Remover todas (≪)
