@@ -19,6 +19,7 @@ import br.ufrn.imd.pode.repository.PlanoCursoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -248,7 +249,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				exceptionHelper.add("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
 		}
-		if (exceptionHelper.getMessage().isEmpty()) {
+		if (StringUtils.isEmpty(exceptionHelper.getMessage())) {
 			throw new UnmetPrerequisitesException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
