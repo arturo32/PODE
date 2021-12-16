@@ -249,7 +249,7 @@ public class PlanoCursoService extends GenericService<PlanoCurso, PlanoCursoDTO,
 				exceptionHelper.add("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
 		}
-		if (StringUtils.isEmpty(exceptionHelper.getMessage())) {
+		if (!StringUtils.isEmpty(exceptionHelper.getMessage())) {
 			throw new UnmetPrerequisitesException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinasPeriodo);
