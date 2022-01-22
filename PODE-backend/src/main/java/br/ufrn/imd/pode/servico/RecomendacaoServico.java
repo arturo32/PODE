@@ -24,49 +24,42 @@ import java.util.stream.Collectors;
 @Transactional
 public class RecomendacaoServico {
 
-	private PesServico pesService;
+	private PesServico pesServico;
 
-	private DisciplinaServico disciplinaService;
+	private DisciplinaServico disciplinaServico;
 
-	private PlanoCursoServico planoCursoService;
+	private VinculoServico vinculoServico;
 
-	private VinculoServico vinculoService;
-
-	private DisciplinaPeriodoServico disciplinaPeriodoService;
+	private DisciplinaPeriodoServico disciplinaPeriodoServico;
 
 	@Autowired
-	public void setVinculoService(VinculoServico vinculoService) {
-		this.vinculoService = vinculoService;
+	public void setVinculoServico(VinculoServico vinculoServico) {
+		this.vinculoServico = vinculoServico;
 	}
 
 	@Autowired
-	public void setDisciplinaPeriodoService(DisciplinaPeriodoServico disciplinaPeriodoService) {
-		this.disciplinaPeriodoService = disciplinaPeriodoService;
+	public void setDisciplinaPeriodoServico(DisciplinaPeriodoServico disciplinaPeriodoServico) {
+		this.disciplinaPeriodoServico = disciplinaPeriodoServico;
 	}
 
 	@Autowired
-	public void setPlanoCursoService(PlanoCursoServico planoCursoService) {
-		this.planoCursoService = planoCursoService;
+	public void setPesServico(PesServico pesServico) {
+		this.pesServico = pesServico;
 	}
 
 	@Autowired
-	public void setPesService(PesServico pesService) {
-		this.pesService = pesService;
+	public void setDisciplinaServico(DisciplinaServico disciplinaServico) {
+		this.disciplinaServico = disciplinaServico;
 	}
 
-	@Autowired
-	public void setDisciplinaService(DisciplinaServico disciplinaService) {
-		this.disciplinaService = disciplinaService;
-	}
-
-	public long validate(long vinculoId) {
+	public long validar(long vinculoId) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		/* verifica vinculoId */
 		if (vinculoId < 0) {
 			exceptionHelper.add("vinculo inconsistente");
 		} else {
 			try {
-				this.vinculoService.buscarPorId(vinculoId);
+				this.vinculoServico.buscarPorId(vinculoId);
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
 			}
@@ -81,10 +74,10 @@ public class RecomendacaoServico {
 
 	public RecomendacaoPesDTO recomendarDisciplinasPorProximidadeConclusaoPes(long vinculoId) {
 		/* Etapa 1 - buscar os pes com carga horária obrigatória cumprida */
-		Set<PesChObrigatoriaCumprida> pesComChObrigatoriaCumprida = this.pesService
+		Set<PesChObrigatoriaCumprida> pesComChObrigatoriaCumprida = this.pesServico
 				.obterPesComChObrigatoriaCumprida(vinculoId);
 		/* Etapa 2 - buscar os pes com carga horária optativa cumprida */
-		Set<PesChOptativaCumprida> pesComChOptativaCumprida = this.pesService.obterPesComChOptativaCumprida(vinculoId);
+		Set<PesChOptativaCumprida> pesComChOptativaCumprida = this.pesServico.obterPesComChOptativaCumprida(vinculoId);
 		/** Etapa 3 - montar lista de possibilidades */
 		HashMap<Long, Integer> possibilidadesPes = new HashMap<Long, Integer>();
 		for (PesChObrigatoriaCumprida item : pesComChObrigatoriaCumprida) {
@@ -129,9 +122,9 @@ public class RecomendacaoServico {
 				}
 			}
 			recomendacoes.setDisciplinasObrigatorias(
-					this.disciplinaService.obterDisciplinasObrigatoriasPendentesPes(vinculoId, pesEscolhido));
+					this.disciplinaServico.obterDisciplinasObrigatoriasPendentesPes(vinculoId, pesEscolhido));
 			recomendacoes.setDisciplinasOptativas(
-					this.disciplinaService.obterDisciplinasOptativasPendentesPes(vinculoId, pesEscolhido));
+					this.disciplinaServico.obterDisciplinasOptativasPendentesPes(vinculoId, pesEscolhido));
 			/** Cuida do caso de ter cursado nenhuma disciplina obrigatoria */
 			if (recomendacoes.getCargaHorariaObrigatoria() == 0) {
 				recomendacoes.setCargaHorariaObrigatoria(pesChOptativaCumprida.getCho());
@@ -150,10 +143,10 @@ public class RecomendacaoServico {
 	}
 
 	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(Long idVinculo) {
-		Vinculo vinculo = vinculoService.buscarPorId(idVinculo);
+		Vinculo vinculo = vinculoServico.buscarPorId(idVinculo);
 		return vinculo.getPlanoCurso().getDisciplinasPendentes().stream()
 				.filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual())
-				.collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::converterParaDTO)
+				.collect(Collectors.toSet()).stream().map(disciplinaPeriodoServico::converterParaDTO)
 				.sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).collect(Collectors.toList());
 	}
 

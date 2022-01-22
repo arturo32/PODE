@@ -31,13 +31,13 @@ public class RecomendacaoControlador {
 	@GetMapping("/disciplinas-por-proximadade-conclusao-pes/{id_vinculo}")
 	public ResponseEntity<RecomendacaoPesDTO> obterDisciplinasPorProximidadeConclusaoPes(
 			@PathVariable(value = "id_vinculo") long vinculoId) {
-		return ResponseEntity.ok(this.service.recomendarDisciplinasPorProximidadeConclusaoPes(this.service.validate(vinculoId)));
+		return ResponseEntity.ok(this.service.recomendarDisciplinasPorProximidadeConclusaoPes(this.service.validar(vinculoId)));
 	}
 
 	@GetMapping("/disciplinas-por-plano-de-curso/{id_vinculo}")
 	public ResponseEntity<List<DisciplinaPeriodoDTO>> recomendarDisciplinasPorPlanoDeCurso(
 			@PathVariable(value = "id_vinculo") Long id_vinculo) {
-		return ResponseEntity.ok(this.service.recomendarDisciplinasPorPlanoDeCurso(this.service.validate(id_vinculo)));
+		return ResponseEntity.ok(this.service.recomendarDisciplinasPorPlanoDeCurso(this.service.validar(id_vinculo)));
 	}
 
 }
