@@ -1,7 +1,7 @@
 package br.ufrn.imd.pode.handler;
 
-import br.ufrn.imd.pode.exception.BusinessException;
-import br.ufrn.imd.pode.exception.EntityNotFoundException;
+import br.ufrn.imd.pode.exception.NegocioException;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 
 import org.springframework.util.StringUtils;
 import org.hibernate.JDBCException;
@@ -35,12 +35,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 * Este método manipula os erros lançados como EntityNotFound e constrói o
 	 * retorno tratado com o status lançado como 404 e a mensagem obtida do erro.
 	 *
-	 * @param entityNotFoundException EntityNotFoundException: erro capturado
+	 * @param entidadeNaoEncontradaException EntityNotFoundException: erro capturado
 	 * @return ResponseEntity<Object>
 	 */
-	@ExceptionHandler(EntityNotFoundException.class)
-	protected ResponseEntity<Object> handlerExceptionEntityNotFound(EntityNotFoundException entityNotFoundException) {
-		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, this.getSimpleMessage(entityNotFoundException));
+	@ExceptionHandler(EntidadeNaoEncontradaException.class)
+	protected ResponseEntity<Object> handlerExceptionEntityNotFound(EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, this.getSimpleMessage(entidadeNaoEncontradaException));
 
 		return buildResponseEntity(apiError);
 	}
@@ -49,12 +49,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 * Este método manipula os erros lançados como BusinessException e constrói o
 	 * retorno tratado com o status lançado como 400 e a mensagem obtida do erro.
 	 *
-	 * @param businessException BusinessException: erro capturado
+	 * @param negocioException BusinessException: erro capturado
 	 * @return ResponseEntity<Object>
 	 */
-	@ExceptionHandler(BusinessException.class)
-	protected ResponseEntity<Object> handlerExceptionBusiness(BusinessException businessException) {
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, this.getSimpleMessage(businessException));
+	@ExceptionHandler(NegocioException.class)
+	protected ResponseEntity<Object> handlerExceptionBusiness(NegocioException negocioException) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, this.getSimpleMessage(negocioException));
 
 		return buildResponseEntity(apiError);
 	}

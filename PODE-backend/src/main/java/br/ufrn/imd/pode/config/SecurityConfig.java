@@ -1,6 +1,6 @@
 package br.ufrn.imd.pode.config;
 
-import br.ufrn.imd.pode.model.dto.AuthDto;
+import br.ufrn.imd.pode.modelo.dto.AuthDto;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ import java.io.IOException;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private CustomUserDetailsService userDetailsService;
+	private DetalhesUsuarioServico userDetailsService;
 
-	public CustomUserDetailsService getUserDetailsService() {
+	public DetalhesUsuarioServico getUserDetailsService() {
 		return userDetailsService;
 	}
 
 	@Autowired
-	public void setUserDetailsService(CustomUserDetailsService userDetailsService) {
+	public void setUserDetailsService(DetalhesUsuarioServico userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
 

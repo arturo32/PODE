@@ -1,8 +1,8 @@
 package br.ufrn.imd.pode.config;
 
-import br.ufrn.imd.pode.model.*;
-import br.ufrn.imd.pode.repository.*;
-import br.ufrn.imd.pode.service.DisciplinaPeriodoService;
+import br.ufrn.imd.pode.modelo.*;
+import br.ufrn.imd.pode.repositorio.*;
+import br.ufrn.imd.pode.servico.DisciplinaPeriodoServico;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -27,45 +27,45 @@ public class DatabaseLoader implements ApplicationRunner {
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String dbmode;
 
-	private DisciplinaRepository disciplinaRepository;
+	private DisciplinaRepositorio disciplinaRepository;
 
-	private CursoRepository cursoRepository;
+	private CursoRepositorio cursoRepository;
 
-	private EnfaseRepository enfaseRepository;
+	private EnfaseRepositorio enfaseRepository;
 
-	private PesRepository pesRepository;
+	private PesRepositorio pesRepository;
 
 	@SuppressWarnings("unused")
-	private DisciplinaPeriodoRepository disciplinaPeriodoRepository;
-	private DisciplinaPeriodoService disciplinaPeriodoService;
+	private DisciplinaPeriodoRepositorio disciplinaPeriodoRepository;
+	private DisciplinaPeriodoServico disciplinaPeriodoService;
 
 	@Autowired
-	public void setDisciplinaRepository(DisciplinaRepository disciplinaRepository) {
+	public void setDisciplinaRepository(DisciplinaRepositorio disciplinaRepository) {
 		this.disciplinaRepository = disciplinaRepository;
 	}
 
 	@Autowired
-	public void setCursoRepository(CursoRepository cursoRepository) {
+	public void setCursoRepository(CursoRepositorio cursoRepository) {
 		this.cursoRepository = cursoRepository;
 	}
 
 	@Autowired
-	public void setEnfaseRepository(EnfaseRepository enfaseRepository) {
+	public void setEnfaseRepository(EnfaseRepositorio enfaseRepository) {
 		this.enfaseRepository = enfaseRepository;
 	}
 
 	@Autowired
-	public void setPesRepository(PesRepository pesRepository) {
+	public void setPesRepository(PesRepositorio pesRepository) {
 		this.pesRepository = pesRepository;
 	}
 
 	@Autowired
-	public void setDisciplinaPeriodoRepository(DisciplinaPeriodoRepository disciplinaPeriodoRepository) {
+	public void setDisciplinaPeriodoRepository(DisciplinaPeriodoRepositorio disciplinaPeriodoRepository) {
 		this.disciplinaPeriodoRepository = disciplinaPeriodoRepository;
 	}
 
 	@Autowired
-	public void setDisciplinaPeriodoService(DisciplinaPeriodoService disciplinaPeriodoService) {
+	public void setDisciplinaPeriodoService(DisciplinaPeriodoServico disciplinaPeriodoService) {
 		this.disciplinaPeriodoService = disciplinaPeriodoService;
 	}
 

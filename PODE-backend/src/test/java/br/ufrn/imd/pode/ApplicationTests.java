@@ -1,7 +1,7 @@
 package br.ufrn.imd.pode;
 
-import br.ufrn.imd.pode.model.Disciplina;
-import br.ufrn.imd.pode.service.DisciplinaService;
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.servico.DisciplinaServico;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +16,10 @@ import java.util.Set;
 @SpringBootTest
 public class ApplicationTests {
 
-    DisciplinaService disciplinaService;
+    DisciplinaServico disciplinaService;
 
     @Autowired
-    public void setDisciplinaService(DisciplinaService disciplinaService) {
+    public void setDisciplinaService(DisciplinaServico disciplinaService) {
         this.disciplinaService = disciplinaService;
     }
 
