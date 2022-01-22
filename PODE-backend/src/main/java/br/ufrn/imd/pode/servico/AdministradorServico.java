@@ -26,17 +26,17 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Override
-	public AdministradorDTO convertToDto(Administrador administrador) {
+	public AdministradorDTO converterParaDTO(Administrador administrador) {
 		return new AdministradorDTO(administrador);
 	}
 
 	@Override
-	public Administrador convertToEntity(AdministradorDTO dto) {
+	public Administrador converterParaEntidade(AdministradorDTO dto) {
 		Administrador administrador = new Administrador();
 
 		//Se for uma edição
 		if (dto.getId() != null){
-			administrador = this.findById(administrador.getId());
+			administrador = this.buscarPorId(administrador.getId());
 		}
 
 		administrador.setId(dto.getId());
@@ -54,7 +54,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 	}
 
 	@Override
-	public AdministradorDTO validate(AdministradorDTO dto) {
+	public AdministradorDTO validar(AdministradorDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -80,7 +80,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 	}
 
 	@Override
-	protected GenericoRepositorio<Administrador, Long> repository() {
+	protected GenericoRepositorio<Administrador, Long> repositorio() {
 		return this.repository;
 	}
 

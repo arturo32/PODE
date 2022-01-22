@@ -27,17 +27,17 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 	private PlanoCursoServico planoCursoService;
 
 	@Override
-	public DisciplinaPeriodoDTO convertToDto(DisciplinaPeriodo disciplinaPeriodo) {
+	public DisciplinaPeriodoDTO converterParaDTO(DisciplinaPeriodo disciplinaPeriodo) {
 		return new DisciplinaPeriodoDTO(disciplinaPeriodo);
 	}
 
 	@Override
-	public DisciplinaPeriodo convertToEntity(DisciplinaPeriodoDTO dto) {
+	public DisciplinaPeriodo converterParaEntidade(DisciplinaPeriodoDTO dto) {
 		DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo();
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			disciplinaPeriodo = this.findById(dto.getId());
+			disciplinaPeriodo = this.buscarPorId(dto.getId());
 		}
 
 		disciplinaPeriodo.setId(dto.getId());
@@ -47,7 +47,7 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 		}
 		try {
 			disciplinaPeriodo
-					.setDisciplina(this.disciplinaService.findById(dto.getIdDisciplina()));
+					.setDisciplina(this.disciplinaService.buscarPorId(dto.getIdDisciplina()));
 		} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException){
 			throw new EntidadeInconsistenteException("disciplina inconsistente");
 		}
@@ -60,7 +60,7 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 	}
 
 	@Override
-	protected GenericoRepositorio<DisciplinaPeriodo, Long> repository() {
+	protected GenericoRepositorio<DisciplinaPeriodo, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -92,7 +92,7 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 	}
 
 	@Override
-	public DisciplinaPeriodoDTO validate(DisciplinaPeriodoDTO disciplinaPeriodo) {
+	public DisciplinaPeriodoDTO validar(DisciplinaPeriodoDTO disciplinaPeriodo) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica disciplina
@@ -100,7 +100,7 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 			exceptionHelper.add("disciplina inconsistente");
 		} else {
 			try {
-				this.disciplinaService.findById(disciplinaPeriodo.getIdDisciplina());
+				this.disciplinaService.buscarPorId(disciplinaPeriodo.getIdDisciplina());
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				exceptionHelper.add("disciplina inexistente");
 			}
@@ -119,14 +119,14 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 	}
 
 	public List<DisciplinaPeriodo> disciplinaPendentesPlanoCurso(Long planoCursoId) {
-		PlanoCurso planoCurso = planoCursoService.findById(planoCursoId);
+		PlanoCurso planoCurso = planoCursoService.buscarPorId(planoCursoId);
 		List<DisciplinaPeriodo> pendentes = new ArrayList<>(planoCurso.getDisciplinasPendentes());
 		pendentes.sort((d1, d2) -> -d2.getPeriodo().compareTo(d1.getPeriodo()));
 		return pendentes;
 	}
 
 	public List<DisciplinaPeriodo> disciplinaCursadasPlanoCurso(Long planoCursoId) {
-		PlanoCurso planoCurso = planoCursoService.findById(planoCursoId);
+		PlanoCurso planoCurso = planoCursoService.buscarPorId(planoCursoId);
 		List<DisciplinaPeriodo> pendentes = new ArrayList<>(planoCurso.getDisciplinasCursadas());
 		pendentes.sort((d1, d2) -> -d2.getPeriodo().compareTo(d1.getPeriodo()));
 		return pendentes;
@@ -134,6 +134,6 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 
 	public DisciplinaPeriodo getDisciplinaPeriodoPorPeriodoDisciplinaId(Integer periodo, Long disciplinaId) {
 		Optional<DisciplinaPeriodo> opt = repository.findByAtivoIsTrueAndPeriodoAndDisciplina_Id(periodo, disciplinaId);
-		return opt.orElseGet(() -> repository.save(new DisciplinaPeriodo(disciplinaService.findById(disciplinaId), periodo)));
+		return opt.orElseGet(() -> repository.save(new DisciplinaPeriodo(disciplinaService.buscarPorId(disciplinaId), periodo)));
 	}
 }

@@ -27,17 +27,17 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 	private DisciplinaServico disciplinaService;
 
 	@Override
-	public PesDTO convertToDto(Pes pes) {
+	public PesDTO converterParaDTO(Pes pes) {
 		return new PesDTO(pes);
 	}
 
 	@Override
-	public Pes convertToEntity(PesDTO dto) {
+	public Pes converterParaEntidade(PesDTO dto) {
 		Pes pes = new Pes();
 
 		// Se for uma edição
 		if (dto.getId() != null) {
-			pes = this.findById(dto.getId());
+			pes = this.buscarPorId(dto.getId());
 		}
 
 		pes.setId(dto.getId());
@@ -60,7 +60,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 				}
 
 				try {
-					pes.getDisciplinasObrigatorias().add(this.disciplinaService.findById(disciplinaDTO));
+					pes.getDisciplinasObrigatorias().add(this.disciplinaService.buscarPorId(disciplinaDTO));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("disciplinaObrigatoria inconsistente");
 				}
@@ -74,7 +74,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 					throw new EntidadeInconsistenteException("disciplinaOptativa inconsistente");
 				}
 				try {
-					pes.getDisciplinasOptativas().add(this.disciplinaService.findById(disciplinaDTO));
+					pes.getDisciplinasOptativas().add(this.disciplinaService.buscarPorId(disciplinaDTO));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("disciplinaOptativa inconsistente");
 				}
@@ -85,7 +85,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 	}
 
 	@Override
-	protected GenericoRepositorio<Pes, Long> repository() {
+	protected GenericoRepositorio<Pes, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -108,7 +108,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 	}
 
 	@Override
-	public PesDTO validate(PesDTO pes) {
+	public PesDTO validar(PesDTO pes) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		// Verifica nome
@@ -146,7 +146,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(disciplina);
+						this.disciplinaService.buscarPorId(disciplina);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplina + ") inexistente");
 					}
@@ -161,7 +161,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(disciplina);
+						this.disciplinaService.buscarPorId(disciplina);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaOptativa(id=" + disciplina + ") inexistente");
 					}

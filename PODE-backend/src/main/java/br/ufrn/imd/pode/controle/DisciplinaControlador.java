@@ -16,7 +16,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/disciplinas")
-public class DisciplinaControlador extends GenericControlador<Disciplina, DisciplinaDTO, Long> {
+public class DisciplinaControlador extends GenericoControlador<Disciplina, DisciplinaDTO, Long> {
 
 	private DisciplinaServico service;
 
@@ -30,13 +30,13 @@ public class DisciplinaControlador extends GenericControlador<Disciplina, Discip
 	}
 
 	@Override
-	protected GenericoServico<Disciplina, DisciplinaDTO, Long> service() {
+	protected GenericoServico<Disciplina, DisciplinaDTO, Long> servico() {
 		return this.service;
 	}
 
 	@GetMapping("/codigos/{codigo}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {
-		return ResponseEntity.ok(service.convertToDTOList(service.findDisciplinasByCodigo(codigo)));
+		return ResponseEntity.ok(service.converterParaListaDTO(service.findDisciplinasByCodigo(codigo)));
 	}
 
 }

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/enfases")
-public class EnfaseControlador extends GenericControlador<Enfase, EnfaseDTO, Long> {
+public class EnfaseControlador extends GenericoControlador<Enfase, EnfaseDTO, Long> {
 
 	private EnfaseServico service;
 
@@ -32,25 +32,25 @@ public class EnfaseControlador extends GenericControlador<Enfase, EnfaseDTO, Lon
 	}
 
 	@Override
-	protected GenericoServico<Enfase, EnfaseDTO, Long> service() {
+	protected GenericoServico<Enfase, EnfaseDTO, Long> servico() {
 		return this.service;
 	}
 
 	@GetMapping("/cursos/{cursoId}")
 	public ResponseEntity<Collection<EnfaseDTO>> enfasesPorCurso(@PathVariable Long cursoId) {
-		return ResponseEntity.ok(service.convertToDTOList(service.findEnfasePorCurso(cursoId)));
+		return ResponseEntity.ok(service.converterParaListaDTO(service.findEnfasePorCurso(cursoId)));
 	}
 
 	@GetMapping("/{id}/disciplinas-obrigatorias")
 	public ResponseEntity<Collection<DisciplinaPeriodoDTO>> buscarDisciplinasObrigatoriasEnfase(@PathVariable Long id) {
-		Set<DisciplinaPeriodo> disciplinasObrigatorias = service.findById(id).getDisciplinasObrigatorias();
+		Set<DisciplinaPeriodo> disciplinasObrigatorias = service.buscarPorId(id).getDisciplinasObrigatorias();
 		return ResponseEntity
 				.ok(disciplinasObrigatorias.stream().map(DisciplinaPeriodoDTO::new).collect(Collectors.toList()));
 	}
 
 	@GetMapping("/{id}/disciplinas-optativas")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasOptativasEnfase(@PathVariable Long id) {
-		Set<Disciplina> disciplinasOptativas = service.findById(id).getDisciplinasOptativas();
+		Set<Disciplina> disciplinasOptativas = service.buscarPorId(id).getDisciplinasOptativas();
 		return ResponseEntity
 				.ok(disciplinasOptativas.stream().map(DisciplinaDTO::new).collect(Collectors.toList()));
 	}

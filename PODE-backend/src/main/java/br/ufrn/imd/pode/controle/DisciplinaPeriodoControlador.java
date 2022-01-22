@@ -15,7 +15,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/disciplinas-periodo")
-public class DisciplinaPeriodoControlador extends GenericControlador<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
+public class DisciplinaPeriodoControlador extends GenericoControlador<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
 
 	private DisciplinaPeriodoServico service;
 
@@ -25,17 +25,17 @@ public class DisciplinaPeriodoControlador extends GenericControlador<DisciplinaP
 	}
 
 	@Override
-	protected GenericoServico<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> service() {
+	protected GenericoServico<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> servico() {
 		return this.service;
 	}
 
 	@GetMapping("/planos-de-curso/{planoCursoId}/pendentes")
 	public ResponseEntity<Collection<DisciplinaPeriodoDTO>> disciplinaPendentesPlanoCurso(Long planoCursoId) {
-		return ResponseEntity.ok(service.convertToDTOList(service.disciplinaPendentesPlanoCurso(planoCursoId)));
+		return ResponseEntity.ok(service.converterParaListaDTO(service.disciplinaPendentesPlanoCurso(planoCursoId)));
 	}
 
 	@GetMapping("/planos-de-curso/{planoCursoId}/cursadas")
 	public ResponseEntity<Collection<DisciplinaPeriodoDTO>> disciplinaCursadasPlanoCurso(Long planoCursoId) {
-		return ResponseEntity.ok(service.convertToDTOList(service.disciplinaCursadasPlanoCurso(planoCursoId)));
+		return ResponseEntity.ok(service.converterParaListaDTO(service.disciplinaCursadasPlanoCurso(planoCursoId)));
 	}
 }

@@ -26,17 +26,17 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 	private DisciplinaPeriodoServico disciplinaPeriodoService;
 
 	@Override
-	public EnfaseDTO convertToDto(Enfase enfase) {
+	public EnfaseDTO converterParaDTO(Enfase enfase) {
 		return new EnfaseDTO(enfase);
 	}
 
 	@Override
-	public Enfase convertToEntity(EnfaseDTO dto) {
+	public Enfase converterParaEntidade(EnfaseDTO dto) {
 		Enfase enfase = new Enfase();
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			enfase = this.findById(dto.getId());
+			enfase = this.buscarPorId(dto.getId());
 		}
 
 		enfase.setId(dto.getId());
@@ -48,7 +48,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 			throw new EntidadeInconsistenteException("curso inconsistente");
 		}
 		try {
-			enfase.setCurso(this.cursoService.findById(dto.getIdCurso()));
+			enfase.setCurso(this.cursoService.buscarPorId(dto.getIdCurso()));
 		} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException){
 			throw new EntidadeInconsistenteException("curso inconsistente");
 		}
@@ -62,7 +62,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 
 				try {
 					enfase.getDisciplinasObrigatorias()
-							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO));
+							.add(this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodoDTO));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException){
 					throw new EntidadeInconsistenteException("disciplinaPeriodo inconsistente");
 				}
@@ -73,7 +73,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 	}
 
 	@Override
-	protected GenericoRepositorio<Enfase, Long> repository() {
+	protected GenericoRepositorio<Enfase, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -105,7 +105,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 	}
 
 	@Override
-	public EnfaseDTO validate(EnfaseDTO enfase) {
+	public EnfaseDTO validar(EnfaseDTO enfase) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -118,7 +118,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 			exceptionHelper.add("curso inconsistente");
 		} else {
 			try {
-				this.cursoService.findById(enfase.getIdCurso());
+				this.cursoService.buscarPorId(enfase.getIdCurso());
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				exceptionHelper.add("curso inexistente");
 			}
@@ -131,7 +131,7 @@ public class EnfaseServico extends GenericoServico<Enfase, EnfaseDTO, Long> {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo);
+						this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodo);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplinaPeriodo + ") inexistente");
 					}

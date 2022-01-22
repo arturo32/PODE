@@ -21,91 +21,80 @@ import java.util.stream.Collectors;
 @Service
 public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends AbstratoDTO, PK extends Serializable> {
 
-	protected String modelName;
+	protected String nomeModelo;
 
 	public GenericoServico() {
-		this.modelName = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-		this.modelName = this.modelName.substring(this.modelName.lastIndexOf(".")+1);
+		this.nomeModelo = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
+		this.nomeModelo = this.nomeModelo.substring(this.nomeModelo.lastIndexOf(".")+1);
 	}
 
-	public String getModelName() {
-		return this.modelName;
+	public String obterNomeModelo() {
+		return this.nomeModelo;
 	}
 
-	public abstract Dto convertToDto(T entity);
+	public abstract Dto converterParaDTO(T entity);
 
-	public abstract T convertToEntity(Dto dto);
+	public abstract T converterParaEntidade(Dto dto);
 
-	public abstract Dto validate(Dto dto);
+	public abstract Dto validar(Dto dto);
 
-	public Collection<Dto> convertToDTOList(Collection<T> entities) {
-		return entities.stream().map(this::convertToDto).collect(Collectors.toList());
+	public Collection<Dto> converterParaListaDTO(Collection<T> entidades) {
+		return entidades.stream().map(this::converterParaDTO).collect(Collectors.toList());
 	}
 
-	public Collection<T> convertToEntityList(Collection<Dto> dtos) {
-		return dtos.stream().map(this::convertToEntity).collect(Collectors.toList());
-	}
-
-	protected abstract GenericoRepositorio<T, PK> repository();
+	protected abstract GenericoRepositorio<T, PK> repositorio();
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public T findById(PK id) {
-		Optional<T> entity = repository().findById(id);
-		if (entity.isEmpty()) {
-			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.getModelName()
+	public T buscarPorId(PK id) {
+		Optional<T> entidade = repositorio().findById(id);
+		if (entidade.isEmpty()) {
+			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' de id: '" + id + "' não encontrada");
 		}
-		return entity.get();
-	}
-
-
-
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<T> findAll(Integer lim, Integer pg) {
-		return repository().findAllByAtivoIsTrueOrderByDataCriacaoDesc(PageRequest.of(pg, lim));
+		return entidade.get();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<T> findByIds(List<PK> ids) {
-		return repository().findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(ids);
+	public List<T> buscarTodos(Integer lim, Integer pg) {
+		return repositorio().findAllByAtivoIsTrueOrderByDataCriacaoDesc(PageRequest.of(pg, lim));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<T> findByInterval(PK startId, PK endId) {
-		return repository().findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(startId, endId);
+	public List<T> buscarPorIds(List<PK> ids) {
+		return repositorio().findAllByAtivoIsTrueAndIdIsInOrderByDataCriacaoDesc(ids);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<T> buscarPorIntervalo(PK startId, PK endId) {
+		return repositorio().findAllByAtivoIsTrueAndIdBetweenOrderByDataCriacaoDesc(startId, endId);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T save(Dto dto) {
+	public T salvar(Dto dto) {
 		if (dto.getId() != null) {
-			throw new NegocioException("Entidade do tipo '" + this.getModelName()
+			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' com id: '" + dto.getId() + "'já existe, caso queira modificá-la, use o método update");
 		}
-		return repository().save(convertToEntity(dto));
+		return repositorio().save(converterParaEntidade(dto));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T update(Dto dto) {
+	public T atualizar(Dto dto) {
 		if (dto.getId() == null) {
-			throw new NegocioException("Entidade do tipo '" + this.getModelName()
+			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' com id: '" + dto.getId() + "'ainda não existe, caso queira salvá-la, use o método save");
 		}
-		return repository().save(convertToEntity(dto));
+		return repositorio().save(converterParaEntidade(dto));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<T> saveAll(List<T> entities) {
-		return repository().saveAll(entities);
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void deleteById(PK id) {
-		Optional<T> entity = repository().findById(id);
-		if (entity.isEmpty()) {
-			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.getModelName()
+	public void remover(PK id) {
+		Optional<T> entidade = repositorio().findById(id);
+		if (entidade.isEmpty()) {
+			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' de id: '" + id + "' não encontrada");
 		} else {
-			repository().deleteById(id);
+			repositorio().deleteById(id);
 		}
 	}
 }

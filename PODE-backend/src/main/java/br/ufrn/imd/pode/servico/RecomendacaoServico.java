@@ -66,7 +66,7 @@ public class RecomendacaoServico {
 			exceptionHelper.add("vinculo inconsistente");
 		} else {
 			try {
-				this.vinculoService.findById(vinculoId);
+				this.vinculoService.buscarPorId(vinculoId);
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
 			}
@@ -150,10 +150,10 @@ public class RecomendacaoServico {
 	}
 
 	public List<DisciplinaPeriodoDTO> recomendarDisciplinasPorPlanoDeCurso(Long idVinculo) {
-		Vinculo vinculo = vinculoService.findById(idVinculo);
+		Vinculo vinculo = vinculoService.buscarPorId(idVinculo);
 		return vinculo.getPlanoCurso().getDisciplinasPendentes().stream()
 				.filter(disciplinaPeriodo -> disciplinaPeriodo.getPeriodo() <= vinculo.getPeriodoAtual())
-				.collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::convertToDto)
+				.collect(Collectors.toSet()).stream().map(disciplinaPeriodoService::converterParaDTO)
 				.sorted(Comparator.comparing(DisciplinaPeriodoDTO::getPeriodo)).collect(Collectors.toList());
 	}
 

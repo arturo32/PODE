@@ -37,17 +37,17 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	private EnfaseServico enfaseService;
 
 	@Override
-	public PlanoCursoDTO convertToDto(PlanoCurso planoCurso) {
+	public PlanoCursoDTO converterParaDTO(PlanoCurso planoCurso) {
 		return new PlanoCursoDTO(planoCurso);
 	}
 
 	@Override
-	public PlanoCurso convertToEntity(PlanoCursoDTO dto) {
+	public PlanoCurso converterParaEntidade(PlanoCursoDTO dto) {
 		PlanoCurso planoCurso = new PlanoCurso();
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			planoCurso = this.findById(dto.getId());
+			planoCurso = this.buscarPorId(dto.getId());
 		}
 
 		planoCurso.setId(dto.getId());
@@ -60,7 +60,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 				try {
 					planoCurso.getDisciplinasCursadas()
-							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO));
+							.add(this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodoDTO));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("disciplinaCursada inconsistente");
 				}
@@ -76,7 +76,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 				try {
 					planoCurso.getDisciplinasPendentes()
-							.add(this.disciplinaPeriodoService.findById(disciplinaPeriodoDTO));
+							.add(this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodoDTO));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("disciplinaPendente inconsistente");
 				}
@@ -92,7 +92,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 				try {
 					planoCurso.getPesInteresse()
-							.add(this.pesService.findById(desDTO));
+							.add(this.pesService.buscarPorId(desDTO));
 				}
 				catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("pes inconsistente");
@@ -104,7 +104,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	}
 
 	@Override
-	protected GenericoRepositorio<PlanoCurso, Long> repository() {
+	protected GenericoRepositorio<PlanoCurso, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -163,7 +163,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	}
 
 	@Override
-	public PlanoCursoDTO validate(PlanoCursoDTO planoCurso) {
+	public PlanoCursoDTO validar(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica disciplinasCursadas
@@ -173,7 +173,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 					exceptionHelper.add("disciplinaCursada inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo);
+						this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodo);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaCursada(id=" + disciplinaPeriodo + ") inexistente");
 					}
@@ -188,7 +188,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 					exceptionHelper.add("disciplinaPendente inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(disciplinaPeriodo);
+						this.disciplinaPeriodoService.buscarPorId(disciplinaPeriodo);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaPendente(id=" + disciplinaPeriodo + ") inexistente");
 					}
@@ -203,7 +203,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 					exceptionHelper.add("disciplinaPendente inconsistente");
 				} else {
 					try {
-						this.pesService.findById(pes);
+						this.pesService.buscarPorId(pes);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("pes(id=" + pes + ") inexistente");
 					}
@@ -237,11 +237,11 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 	public PlanoCurso adicionaDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		PlanoCurso planoCurso = this.findById(planoCursoId);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
 		Set<Disciplina> cursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 		for (DisciplinaPeriodoDTO dp: disciplinasPeriodoDTOS) {
-			Disciplina d =disciplinaService.findById(dp.getIdDisciplina());
+			Disciplina d =disciplinaService.buscarPorId(dp.getIdDisciplina());
 			if (disciplinaService.checarPrerequisitos(cursadas, d)) {
 				cursadas.add(d);
 				disciplinasPeriodo.add(disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dp.getPeriodo(), dp.getIdDisciplina()));
@@ -265,7 +265,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	}
 
 	public PlanoCurso removeDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
-		PlanoCurso planoCurso = this.findById(planoCursoId);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
 		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
 			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
@@ -278,7 +278,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	public PlanoCurso adicionaDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		// TODO: validação de tempo maximo por semestre
-		PlanoCurso planoCurso = this.findById(planoCursoId);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet());
 
 		Collection<DisciplinaPeriodo> disciplinasPeriodoValidas = new HashSet<>();
@@ -304,7 +304,7 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 	public PlanoCurso removeDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
-		PlanoCurso planoCurso = this.findById(planoCursoId);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<DisciplinaPeriodo> disciplinasPeriodo = new HashSet<>();
 		for (DisciplinaPeriodoDTO dpDTO: disciplinasPeriodoDTOS) {
 			DisciplinaPeriodo dp = disciplinaPeriodoService.getDisciplinaPeriodoPorPeriodoDisciplinaId(dpDTO.getPeriodo(), dpDTO.getIdDisciplina());
@@ -326,10 +326,10 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 	}
 
 	public PlanoCurso adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
-		PlanoCurso planoCurso = this.findById(planoCursoId);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Vinculo vinculo = vinculoService.findByPlanoCursoId(planoCurso.getId());
 		List<Integer> chs = this.cargaHorariaPeriodos(planoCurso, vinculo);
-		List<Pes> pesList = pesService.findByIds(pesIds);
+		List<Pes> pesList = pesService.buscarPorIds(pesIds);
 		List<Disciplina> disciplinas = planoCurso.getDisciplinasPendentes().stream()
 				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList());
 		for (Pes pes : pesList) {
@@ -353,8 +353,8 @@ public class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO
 
 	public PlanoCurso removeInteressePes(Long planoCursoId, List<Long> pesIds) {
 		// TODO: verificar se alguns dos PES restantes não teve nenhuma disciplina removida com a remoção dos outros PES
-		PlanoCurso planoCurso = this.findById(planoCursoId);
-		List<Pes> pesList = pesService.findByIds(pesIds);
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
+		List<Pes> pesList = pesService.buscarPorIds(pesIds);
 		List<DisciplinaPeriodo> to_remove = new ArrayList<>();
 		for (Pes pes : pesList) {
 			for (Disciplina d: pes.getDisciplinasObrigatorias()) {

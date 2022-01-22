@@ -28,17 +28,17 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 	private EstudanteServico estudanteService;
 
 	@Override
-	public VinculoDTO convertToDto(Vinculo vinculo) {
+	public VinculoDTO converterParaDTO(Vinculo vinculo) {
 		return new VinculoDTO(vinculo);
 	}
 
 	@Override
-	public Vinculo convertToEntity(VinculoDTO dto) {
+	public Vinculo converterParaEntidade(VinculoDTO dto) {
 		Vinculo vinculo = new Vinculo();
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			vinculo = this.findById(dto.getId());
+			vinculo = this.buscarPorId(dto.getId());
 		}
 
 		vinculo.setId(dto.getId());
@@ -61,7 +61,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 		//Busca curso
 		if(dto.getIdCurso() != null){
 			try {
-				vinculo.setCurso(this.cursoService.findById(dto.getIdCurso()));
+				vinculo.setCurso(this.cursoService.buscarPorId(dto.getIdCurso()));
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				throw new EntidadeInconsistenteException("curso inconsistente");
 			}
@@ -69,7 +69,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 		//Busca enfase
 		if(dto.getIdEnfase() != null){
 			try {
-				vinculo.setEnfase(this.enfaseService.findById(dto.getIdEnfase()));
+				vinculo.setEnfase(this.enfaseService.buscarPorId(dto.getIdEnfase()));
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				throw new EntidadeInconsistenteException("enfase inconsistente");
 			}
@@ -87,7 +87,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 		//Busca plano de curso
 		if(dto.getIdPlanoCurso() != null && dto.getId() != null){
 			try {
-				vinculo.setPlanoCurso(this.planoCursoService.findById(dto.getIdPlanoCurso()));
+				vinculo.setPlanoCurso(this.planoCursoService.buscarPorId(dto.getIdPlanoCurso()));
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				throw new EntidadeInconsistenteException("planoCurso inconsistente");
 			}
@@ -96,7 +96,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 		//Busca estudante
 		if(dto.getIdEstudante() != null){
 			try {
-				vinculo.setEstudante(this.estudanteService.findById(dto.getIdEstudante()));
+				vinculo.setEstudante(this.estudanteService.buscarPorId(dto.getIdEstudante()));
 			} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 				throw new EntidadeInconsistenteException("estudante inconsistente");
 			}
@@ -106,12 +106,12 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 	}
 
 	@Override
-	public VinculoDTO validate(VinculoDTO dto) {
+	public VinculoDTO validar(VinculoDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		if (dto.getIdEstudante() != null) {
 			try {
-				estudanteService.findById(dto.getIdEstudante());
+				estudanteService.buscarPorId(dto.getIdEstudante());
 			} catch (EntidadeNaoEncontradaException e) {
 				exceptionHelper.add("estudante de id: "+dto.getIdEstudante()+" não encontrado");
 			}
@@ -126,7 +126,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 
 		if (dto.getIdCurso() != null) {
 			try {
-				cursoService.findById(dto.getIdCurso());
+				cursoService.buscarPorId(dto.getIdCurso());
 			} catch (EntidadeNaoEncontradaException e) {
 				exceptionHelper.add("curso de id: "+dto.getIdCurso()+" não encontrado");
 			}
@@ -136,7 +136,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 
 		if (dto.getIdEnfase() != null) {
 			try {
-				Enfase enfase = enfaseService.findById(dto.getIdEnfase());
+				Enfase enfase = enfaseService.buscarPorId(dto.getIdEnfase());
 				if (!enfase.getCurso().getId().equals(dto.getIdCurso())) {
 					exceptionHelper.add("enfase de id: "+dto.getIdEnfase()+" não pertence ao curso de id: " + dto.getIdCurso());
 				}
@@ -173,7 +173,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 	}
 
 	@Override
-	protected GenericoRepositorio<Vinculo, Long> repository() {
+	protected GenericoRepositorio<Vinculo, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -209,15 +209,15 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 	public Vinculo findByPlanoCursoId(Long id) {
 		Optional<Vinculo> entity = repository.findByAtivoIsTrueAndPlanoCurso_Id(id);
 		if (entity.isEmpty()) {
-			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.getModelName()
+			throw new EntidadeNaoEncontradaException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' de id: '" + id + "' não encontrada");
 		}
 		return entity.get();
 	}
 
 	public Vinculo mudaEnfase(Long vinculoId, Long enfaseId) {
-		Vinculo vinculo = this.findById(vinculoId);
-		Enfase enfase = this.enfaseService.findById(enfaseId);
+		Vinculo vinculo = this.buscarPorId(vinculoId);
+		Enfase enfase = this.enfaseService.buscarPorId(enfaseId);
 		if(vinculo.getCurso().getId().equals(enfase.getCurso().getId())) {
 			vinculo.setEnfase(enfase);
 			vinculo.setPlanoCurso(planoCursoService.alterarPlanoCursoEnfase(vinculo.getPlanoCurso(), enfase));
@@ -228,7 +228,7 @@ public class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
 	}
 
 	public Vinculo atualizaPeriodoAtual(Long vinculoId, Integer periodoNovo) {
-		Vinculo vinculo = this.findById(vinculoId);
+		Vinculo vinculo = this.buscarPorId(vinculoId);
 		vinculo.setPeriodoAtualAno(periodoNovo);
 		return repository.save(vinculo);
 	}

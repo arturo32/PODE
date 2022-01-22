@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pes")
-public class PesControlador extends GenericControlador<Pes, PesDTO, Long> {
+public class PesControlador extends GenericoControlador<Pes, PesDTO, Long> {
 
 	private PesServico service;
 
@@ -30,20 +30,20 @@ public class PesControlador extends GenericControlador<Pes, PesDTO, Long> {
 	}
 
 	@Override
-	protected GenericoServico<Pes, PesDTO, Long> service() {
+	protected GenericoServico<Pes, PesDTO, Long> servico() {
 		return this.service;
 	}
 
 	@GetMapping("/{id}/disciplinas-obrigatorias")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasObrigatoriasPes(@PathVariable Long id) {
-		Set<Disciplina> disciplinasObrigatorias = service.findById(id).getDisciplinasObrigatorias();
+		Set<Disciplina> disciplinasObrigatorias = service.buscarPorId(id).getDisciplinasObrigatorias();
 		return ResponseEntity
 				.ok(disciplinasObrigatorias.stream().map(DisciplinaDTO::new).collect(Collectors.toList()));
 	}
 
 	@GetMapping("/{id}/disciplinas-optativas")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasOptativasPes(@PathVariable Long id) {
-		Set<Disciplina> disciplinasOptativas = service.findById(id).getDisciplinasOptativas();
+		Set<Disciplina> disciplinasOptativas = service.buscarPorId(id).getDisciplinasOptativas();
 		return ResponseEntity
 				.ok(disciplinasOptativas.stream().map(DisciplinaDTO::new).collect(Collectors.toList()));
 	}

@@ -28,17 +28,17 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 	private DisciplinaRepositorio repository;
 
 	@Override
-	public DisciplinaDTO convertToDto(Disciplina disciplina) {
+	public DisciplinaDTO converterParaDTO(Disciplina disciplina) {
 		return new DisciplinaDTO(disciplina);
 	}
 
 	@Override
-	public Disciplina convertToEntity(DisciplinaDTO dto) {
+	public Disciplina converterParaEntidade(DisciplinaDTO dto) {
 		Disciplina disciplina = new Disciplina();
 
 		// Se for uma edição
 		if (dto.getId() != null) {
-			disciplina = this.findById(dto.getId());
+			disciplina = this.buscarPorId(dto.getId());
 		}
 
 		disciplina.setId(dto.getId());
@@ -65,7 +65,7 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 	}
 
 	@Override
-	protected GenericoRepositorio<Disciplina, Long> repository() {
+	protected GenericoRepositorio<Disciplina, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -133,7 +133,7 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 	}
 
 	@Override
-	public DisciplinaDTO validate(DisciplinaDTO disciplina) {
+	public DisciplinaDTO validar(DisciplinaDTO disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		// Verifica código

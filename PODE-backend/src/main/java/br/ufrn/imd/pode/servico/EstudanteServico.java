@@ -38,17 +38,17 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 	}
 
 	@Override
-	public EstudanteDTO convertToDto(Estudante estudante) {
+	public EstudanteDTO converterParaDTO(Estudante estudante) {
 		return new EstudanteDTO(estudante);
 	}
 
 	@Override
-	public Estudante convertToEntity(EstudanteDTO dto) {
+	public Estudante converterParaEntidade(EstudanteDTO dto) {
 		Estudante estudante = new Estudante();
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			estudante = this.findById(dto.getId());
+			estudante = this.buscarPorId(dto.getId());
 		}
 
 		estudante.setId(dto.getId());
@@ -67,7 +67,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 
 			for (Long idVinculo: dto.getIdVinculos()) {
 				try {
-					estudante.getVinculos().add(this.vinculoService.findById(idVinculo));
+					estudante.getVinculos().add(this.vinculoService.buscarPorId(idVinculo));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("vinculo inconsistente");
 				}
@@ -78,7 +78,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 	}
 
 	@Override
-	public EstudanteDTO validate(EstudanteDTO dto) {
+	public EstudanteDTO validar(EstudanteDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -104,7 +104,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 	}
 
 	@Override
-	protected GenericoRepositorio<Estudante, Long> repository() {
+	protected GenericoRepositorio<Estudante, Long> repositorio() {
 		return this.repository;
 	}
 

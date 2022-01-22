@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/vinculos")
-public class VinculoControlador extends GenericControlador<Vinculo, VinculoDTO, Long> {
+public class VinculoControlador extends GenericoControlador<Vinculo, VinculoDTO, Long> {
 
 	private VinculoServico service;
 
@@ -24,18 +24,18 @@ public class VinculoControlador extends GenericControlador<Vinculo, VinculoDTO, 
 	}
 
 	@Override
-	protected GenericoServico<Vinculo, VinculoDTO, Long> service() {
+	protected GenericoServico<Vinculo, VinculoDTO, Long> servico() {
 		return this.service;
 	}
 
 	@PostMapping("/{id}/muda-enfase/{enfase_id}")
 	public ResponseEntity<VinculoDTO> mudaEnfase(@PathVariable Long id, @PathVariable Long enfase_id) {
-		return ResponseEntity.ok(service.convertToDto(service.mudaEnfase(id, enfase_id)));
+		return ResponseEntity.ok(service.converterParaDTO(service.mudaEnfase(id, enfase_id)));
 	}
 
 	@PostMapping("/{id}/atualiza-periodo/{periodo}")
 	public ResponseEntity<VinculoDTO> mudaEnfase(@PathVariable Long id, @PathVariable Integer periodo) {
-		return ResponseEntity.ok(service.convertToDto(service.atualizaPeriodoAtual(id, periodo)));
+		return ResponseEntity.ok(service.converterParaDTO(service.atualizaPeriodoAtual(id, periodo)));
 	}
 
 }

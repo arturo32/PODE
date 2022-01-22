@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/estudantes")
-public class EstudanteControlador extends GenericControlador<Estudante, EstudanteDTO, Long> {
+public class EstudanteControlador extends GenericoControlador<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteServico service;
 
@@ -21,7 +21,7 @@ public class EstudanteControlador extends GenericControlador<Estudante, Estudant
 	}
 
 	@Override
-	protected GenericoServico<Estudante, EstudanteDTO, Long> service() {
+	protected GenericoServico<Estudante, EstudanteDTO, Long> servico() {
 		return this.service;
 	}
 

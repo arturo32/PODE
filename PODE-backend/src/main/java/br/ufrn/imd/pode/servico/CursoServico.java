@@ -25,17 +25,17 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 	private DisciplinaServico disciplinaService;
 
 	@Override
-	public CursoDTO convertToDto(Curso curso) {
+	public CursoDTO converterParaDTO(Curso curso) {
 		return new CursoDTO(curso);
 	}
 
 	@Override
-	public Curso convertToEntity(CursoDTO dto) {
+	public Curso converterParaEntidade(CursoDTO dto) {
 		Curso curso = new Curso();
 
 		//Se for uma edição
 		if (dto.getId() != null){
-			curso = this.findById(dto.getId());
+			curso = this.buscarPorId(dto.getId());
 		}
 
 		curso.setId(dto.getId());
@@ -82,7 +82,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 
 				try{
 					curso.getDisciplinasObrigatorias()
-							.add(this.disciplinaPeriodoService.findById(idDisciplinaPeriodo));
+							.add(this.disciplinaPeriodoService.buscarPorId(idDisciplinaPeriodo));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("disciplinaObrigatoria inconsistente");
 				}
@@ -98,7 +98,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 
 				try {
 					curso.getDisciplinasOptativas()
-							.add(this.disciplinaService.findById(idDisciplina));
+							.add(this.disciplinaService.buscarPorId(idDisciplina));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException){
 					throw new EntidadeInconsistenteException("disciplinaOptativa inconsistente");
 				}
@@ -109,7 +109,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 	}
 
 	@Override
-	protected GenericoRepositorio<Curso, Long> repository() {
+	protected GenericoRepositorio<Curso, Long> repositorio() {
 		return this.repository;
 	}
 
@@ -141,7 +141,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 	}
 
 	@Override
-	public CursoDTO validate(CursoDTO curso) {
+	public CursoDTO validar(CursoDTO curso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -280,7 +280,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 					exceptionHelper.add("disciplinaObrigatoria inconsistente");
 				} else {
 					try {
-						this.disciplinaPeriodoService.findById(idDisciplinaPeriodo);
+						this.disciplinaPeriodoService.buscarPorId(idDisciplinaPeriodo);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaObrigatoria(id=" + idDisciplinaPeriodo + ") inexistente");
 					}
@@ -295,7 +295,7 @@ public class CursoServico extends GenericoServico<Curso, CursoDTO, Long> {
 					exceptionHelper.add("disciplinaOptativa inconsistente");
 				} else {
 					try {
-						this.disciplinaService.findById(idDisciplina);
+						this.disciplinaService.buscarPorId(idDisciplina);
 					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 						exceptionHelper.add("disciplinaOptativa(id=" + idDisciplina + ") inexistente");
 					}
