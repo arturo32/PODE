@@ -5,7 +5,7 @@ import br.ufrn.imd.pode.modelo.view.DisciplinaPendente;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RecomendacaoPesDTO {
+public class RecomendacaoDTO {
 
 	private String nome;
 	private Integer cargaHorariaObrigatoria;
@@ -15,7 +15,7 @@ public class RecomendacaoPesDTO {
 	private Set<DisciplinaPendente> disciplinasObrigatorias;
 	private Set<DisciplinaPendente> disciplinasOptativas;
 
-	public RecomendacaoPesDTO() {
+	public RecomendacaoDTO() {
 		this.nome = "";
 		this.cargaHorariaObrigatoria = 0;
 		this.cargaHorariaObrigatoriaPendente = 0;
@@ -25,10 +25,10 @@ public class RecomendacaoPesDTO {
 		this.disciplinasOptativas = new HashSet<DisciplinaPendente>();
 	}
 
-	public RecomendacaoPesDTO(String nome, Integer cargaHorariaObrigatoria,
-			Integer cargaHorariaObrigatoriaPendente, Integer cargaHorariaOptativaMinima,
-			Integer cargaHorariaOptativaPendente, Set<DisciplinaPendente> disciplinasObrigatorias,
-			Set<DisciplinaPendente> disciplinasOptativas) {
+	public RecomendacaoDTO(String nome, Integer cargaHorariaObrigatoria,
+						   Integer cargaHorariaObrigatoriaPendente, Integer cargaHorariaOptativaMinima,
+						   Integer cargaHorariaOptativaPendente, Set<DisciplinaPendente> disciplinasObrigatorias,
+						   Set<DisciplinaPendente> disciplinasOptativas) {
 		this.nome = nome;
 		this.cargaHorariaObrigatoria = cargaHorariaObrigatoria;
 		this.cargaHorariaObrigatoriaPendente = cargaHorariaObrigatoriaPendente;
