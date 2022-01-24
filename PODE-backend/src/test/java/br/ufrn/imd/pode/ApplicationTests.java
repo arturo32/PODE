@@ -30,18 +30,18 @@ public class ApplicationTests {
 
     @Test
     public void equivalencia() {
-        Set<Disciplina> disciplina = disciplinaService.findDisciplinasByCodigo("IMD1113");
+        Set<Disciplina> disciplina = disciplinaService.buscarDisciplinasPorCodigo("IMD1113");
         Set<Disciplina> test = new HashSet<>();
-        test.addAll(disciplinaService.findDisciplinasByCodigo("IMD0033"));
-        test.addAll(disciplinaService.findDisciplinasByCodigo("DIM0132"));
+        test.addAll(disciplinaService.buscarDisciplinasPorCodigo("IMD0033"));
+        test.addAll(disciplinaService.buscarDisciplinasPorCodigo("DIM0132"));
 
         for (Disciplina d:disciplina) {
             Assert.assertTrue(disciplinaService.checarEquivalencia(test, d));
         }
 
         test = new HashSet<>();
-        test.addAll(disciplinaService.findDisciplinasByCodigo("BSI1305"));
-        test.addAll(disciplinaService.findDisciplinasByCodigo("APS1048"));
+        test.addAll(disciplinaService.buscarDisciplinasPorCodigo("BSI1305"));
+        test.addAll(disciplinaService.buscarDisciplinasPorCodigo("APS1048"));
         for (Disciplina d:disciplina) {
             Assert.assertFalse(disciplinaService.checarEquivalencia(test, d));
         }
@@ -49,19 +49,19 @@ public class ApplicationTests {
 
     @Test
     public void prerequisito() {
-        Set<Disciplina> disciplina = disciplinaService.findDisciplinasByCodigo("DIM0121");
-        Set<Disciplina> test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("IMD0028"));
+        Set<Disciplina> disciplina = disciplinaService.buscarDisciplinasPorCodigo("DIM0121");
+        Set<Disciplina> test = new HashSet<>(disciplinaService.buscarDisciplinasPorCodigo("IMD0028"));
 
         for (Disciplina d:disciplina) {
             Assert.assertTrue(disciplinaService.checarPrerequisitos(test, d));
         }
 
-        test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("DIM0115"));
+        test = new HashSet<>(disciplinaService.buscarDisciplinasPorCodigo("DIM0115"));
         for (Disciplina d:disciplina) {
             Assert.assertTrue(disciplinaService.checarPrerequisitos(test, d));
         }
 
-        test = new HashSet<>(disciplinaService.findDisciplinasByCodigo("IMD0022"));
+        test = new HashSet<>(disciplinaService.buscarDisciplinasPorCodigo("IMD0022"));
         for (Disciplina d:disciplina) {
             Assert.assertFalse(disciplinaService.checarPrerequisitos(test, d));
         }

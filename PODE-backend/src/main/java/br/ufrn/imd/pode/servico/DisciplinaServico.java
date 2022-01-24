@@ -78,7 +78,7 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		this.repository = disciplinaRepository;
 	}
 
-	public Set<Disciplina> findDisciplinasByCodigo(String codigo) {
+	public Set<Disciplina> buscarDisciplinasPorCodigo(String codigo) {
 		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 

@@ -4,13 +4,13 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import br.ufrn.imd.pode.modelo.GradeCurricular;
 import org.springframework.data.jpa.repository.Query;
 
-import br.ufrn.imd.pode.modelo.Pes;
 import br.ufrn.imd.pode.modelo.view.PesChObrigatoriaCumprida;
 import br.ufrn.imd.pode.modelo.view.PesChOptativaCumprida;
 
-public interface PesRepositorio extends GenericoRepositorio<Pes, Long> {
+public interface PesRepositorio extends GenericoRepositorio<GradeCurricular, Long> {
 	
 	@Query(value = "SELECT\n" + 
 			"	pes.id AS id,\n" + 
