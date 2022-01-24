@@ -4,16 +4,8 @@ import br.ufrn.imd.pode.exception.NegocioException;
 import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
 import br.ufrn.imd.pode.servico.GenericoServico;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -51,12 +43,12 @@ public abstract class GenericoControlador<T extends ModeloAbstrato<PK>, Dto exte
 
 	@PostMapping
 	public ResponseEntity<Dto> salvar(@Valid @RequestBody Dto dto) {
-		return ResponseEntity.ok(servico().converterParaDTO(servico().salvar(servico().validar(dto))));
+		return ResponseEntity.ok(servico().converterParaDTO(servico().salvar(dto)));
 	}
 
 	@PutMapping
 	public ResponseEntity<Dto> atualizar(@Valid @RequestBody Dto dto) {
-		return ResponseEntity.ok(servico().converterParaDTO(servico().atualizar(servico().validar(dto))));
+		return ResponseEntity.ok(servico().converterParaDTO(servico().atualizar(dto)));
 	}
 
 	@DeleteMapping("/{id}")

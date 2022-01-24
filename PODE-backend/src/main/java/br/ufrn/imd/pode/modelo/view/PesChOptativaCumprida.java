@@ -2,17 +2,17 @@ package br.ufrn.imd.pode.modelo.view;
 
 public interface PesChOptativaCumprida {
 
-	public Long getId();
+	Long getId();
 
-	public String getNome();
+	String getNome();
 
-	public Integer getChm();
+	Integer getChm();
 
-	public Integer getCho();
+	Integer getCho();
 
-	public Integer getChc();
+	Integer getChc();
 
-	public default Integer getChp() {
+	default Integer getChp() {
 		return this.getChm() - (this.getCho() + this.getChc());
 	}
 

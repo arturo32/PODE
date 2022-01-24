@@ -1,14 +1,13 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Estudante;
 import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,10 +57,10 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 			estudante.setSenha(dto.getSenha());
 		}
 
-		if(dto.getIdVinculos() != null){
+		if (dto.getIdVinculos() != null) {
 			estudante.setVinculos(new HashSet<>());
 
-			for (Long idVinculo: dto.getIdVinculos()) {
+			for (Long idVinculo : dto.getIdVinculos()) {
 				try {
 					estudante.getVinculos().add(this.vinculoServico.buscarPorId(idVinculo));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
@@ -111,7 +110,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 
 	public Estudante buscarPorEmail(String email) {
 		Optional<Estudante> estudante = repositorio.findByAtivoIsTrueAndEmail(email);
-		if (estudante.isPresent()){
+		if (estudante.isPresent()) {
 			return estudante.get();
 		} else {
 			throw new EntidadeNaoEncontradaException("Estudante de email: '" + email + "' não encontrado");

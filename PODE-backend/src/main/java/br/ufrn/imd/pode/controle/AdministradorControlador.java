@@ -4,7 +4,6 @@ import br.ufrn.imd.pode.modelo.Administrador;
 import br.ufrn.imd.pode.modelo.dto.AdministradorDTO;
 import br.ufrn.imd.pode.servico.AdministradorServico;
 import br.ufrn.imd.pode.servico.GenericoServico;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

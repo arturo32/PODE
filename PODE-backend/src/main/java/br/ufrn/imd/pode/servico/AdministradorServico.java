@@ -7,7 +7,6 @@ import br.ufrn.imd.pode.modelo.Administrador;
 import br.ufrn.imd.pode.modelo.dto.AdministradorDTO;
 import br.ufrn.imd.pode.repositorio.AdministradorRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 		Administrador administrador = new Administrador();
 
 		//Se for uma edição
-		if (dto.getId() != null){
+		if (dto.getId() != null) {
 			administrador = this.buscarPorId(administrador.getId());
 		}
 
@@ -96,7 +95,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 
 	public Administrador findByEmail(String email) {
 		Optional<Administrador> adm = repository.findByAtivoIsTrueAndEmail(email);
-		if (adm.isPresent()){
+		if (adm.isPresent()) {
 			return adm.get();
 		} else {
 			throw new EntidadeNaoEncontradaException("Administrador de email: '" + email + "' não encontrado");
@@ -105,7 +104,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 
 	public Administrador findByNome(String nome) {
 		Optional<Administrador> adm = repository.findByAtivoIsTrueAndNome(nome);
-		if (adm.isPresent()){
+		if (adm.isPresent()) {
 			return adm.get();
 		} else {
 			throw new EntidadeNaoEncontradaException("Administrador de nome: '" + nome + "' não encontrado");

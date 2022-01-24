@@ -2,18 +2,18 @@ package br.ufrn.imd.pode.modelo.view;
 
 public interface DisciplinaPendente {
 
-	public Long getId();
+	Long getId();
 
-	public String getNome();
+	String getNome();
 
-	public String getCodigo();
+	String getCodigo();
 
-	public Integer getCh();
+	Integer getCh();
 
-	public String getPrerequisitos();
+	String getPrerequisitos();
 
-	public String getCorequisitos();
+	String getCorequisitos();
 
-	public String getEquivalentes();
+	String getEquivalentes();
 
 }

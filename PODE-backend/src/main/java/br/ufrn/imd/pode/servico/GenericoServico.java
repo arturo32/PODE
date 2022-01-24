@@ -1,11 +1,10 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.NegocioException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.exception.NegocioException;
 import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,7 +24,7 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	public GenericoServico() {
 		this.nomeModelo = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-		this.nomeModelo = this.nomeModelo.substring(this.nomeModelo.lastIndexOf(".")+1);
+		this.nomeModelo = this.nomeModelo.substring(this.nomeModelo.lastIndexOf(".") + 1);
 	}
 
 	public String obterNomeModelo() {
@@ -36,7 +35,7 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	public abstract T converterParaEntidade(Dto dto);
 
-	public abstract Dto validar(Dto dto);
+	protected abstract Dto validar(Dto dto);
 
 	public Collection<Dto> converterParaListaDTO(Collection<T> entidades) {
 		return entidades.stream().map(this::converterParaDTO).collect(Collectors.toList());
@@ -71,6 +70,7 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T salvar(Dto dto) {
+		this.validar(dto);
 		if (dto.getId() != null) {
 			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' com id: '" + dto.getId() + "'já existe, caso queira modificá-la, use o método update");
@@ -80,6 +80,7 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T atualizar(Dto dto) {
+		this.validar(dto);
 		if (dto.getId() == null) {
 			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
 					+ "' com id: '" + dto.getId() + "'ainda não existe, caso queira salvá-la, use o método save");

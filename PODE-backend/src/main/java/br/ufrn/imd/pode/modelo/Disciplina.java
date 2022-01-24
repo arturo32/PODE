@@ -2,14 +2,7 @@ package br.ufrn.imd.pode.modelo;
 
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -26,7 +19,7 @@ public class Disciplina extends ModeloAbstrato<Long> {
 //	@Column(unique = true)
 	private String codigo;
 
-//	@NotNull
+	//	@NotNull
 //	@NotBlank
 	@Column(length = 1024)
 	private String nome;
@@ -36,12 +29,6 @@ public class Disciplina extends ModeloAbstrato<Long> {
 
 	@Column(length = 1024)
 	private String prerequisitos;
-
-	@Column(length = 1024)
-	private String corequisitos;
-
-	@Column(length = 1024)
-	private String equivalentes;
 
 	public Disciplina() {
 	}
@@ -101,19 +88,4 @@ public class Disciplina extends ModeloAbstrato<Long> {
 		this.prerequisitos = prerequisitos;
 	}
 
-	public String getCorequisitos() {
-		return corequisitos;
-	}
-
-	public void setCorequisitos(String corequisitos) {
-		this.corequisitos = corequisitos;
-	}
-
-	public String getEquivalentes() {
-		return equivalentes;
-	}
-
-	public void setEquivalentes(String equivalentes) {
-		this.equivalentes = equivalentes;
-	}
 }

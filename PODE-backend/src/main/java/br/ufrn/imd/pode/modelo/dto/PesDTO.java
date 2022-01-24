@@ -1,8 +1,6 @@
 package br.ufrn.imd.pode.modelo.dto;
 
 import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.Pes;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;

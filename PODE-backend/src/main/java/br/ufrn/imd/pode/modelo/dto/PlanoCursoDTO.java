@@ -1,9 +1,7 @@
 package br.ufrn.imd.pode.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.pode.modelo.Pes;
+import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
@@ -25,14 +23,11 @@ public class PlanoCursoDTO extends AbstratoDTO {
 
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
-		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
+		for (Disciplina disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
 			this.idDisciplinasCursadas.add(disciplinaPeriodo.getId());
 		}
-		for (DisciplinaPeriodo disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
+		for (Disciplina disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
 			this.idDisciplinasPendentes.add(disciplinaPeriodo.getId());
-		}
-		for (Pes pes : planoCurso.getPesInteresse()) {
-			this.idPesInteresse.add(pes.getId());
 		}
 	}
 

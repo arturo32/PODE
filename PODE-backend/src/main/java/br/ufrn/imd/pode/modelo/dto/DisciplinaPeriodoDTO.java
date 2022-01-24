@@ -1,7 +1,5 @@
 package br.ufrn.imd.pode.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.DisciplinaPeriodo;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DisciplinaPeriodoDTO extends AbstratoDTO {

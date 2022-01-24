@@ -8,5 +8,5 @@ import java.util.Optional;
 @Repository
 public interface VinculoRepositorio extends GenericoRepositorio<Vinculo, Long> {
 
-	public Optional<Vinculo> findByAtivoIsTrueAndPlanoCurso_Id(Long planoCursoId);
+	Optional<Vinculo> findByAtivoIsTrueAndPlanoCurso_Id(Long planoCursoId);
 }

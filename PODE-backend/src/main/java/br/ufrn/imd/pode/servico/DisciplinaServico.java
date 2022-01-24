@@ -4,17 +4,14 @@ import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.modelo.view.DisciplinaPendente;
 import br.ufrn.imd.pode.repositorio.DisciplinaRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-
-import org.springframework.util.StringUtils;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -54,12 +51,6 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		if (dto.getPrerequisitos() != null) {
 			disciplina.setPrerequisitos(dto.getPrerequisitos());
 		}
-		if (dto.getCorequisitos() != null) {
-			disciplina.setCorequisitos(dto.getCorequisitos());
-		}
-		if (dto.getEquivalentes() != null) {
-			disciplina.setEquivalentes(dto.getEquivalentes());
-		}
 
 		return disciplina;
 	}
@@ -95,18 +86,6 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		return (boolean) MVEL.eval(expressao);
 	}
 
-	// Checa se um conjunto de disciplinas é equivalente a disciplina alvo (se
-	// atendem a expressão de equivalencia)
-
-	public boolean checarEquivalencia(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
-		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
-		String expressao = disciplina_alvo.getEquivalentes();
-		if (StringUtils.isEmpty(expressao)) {
-			return false;
-		}
-		return checarEquivalencia(codigos, expressao);
-	}
-
 	public boolean checarPrerequisitos(Collection<String> codigos, String expressao) {
 		expressao = expressao.replace(" E ", " && ");
 		expressao = expressao.replace(" OU ", " || ");
@@ -122,7 +101,6 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 
 	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina
 	// alvo (se atendem a expressão de prerequisito)
-
 	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
 		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
 		String expressao = disciplina_alvo.getPrerequisitos();
@@ -162,14 +140,6 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		} else {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
-	}
-
-	public Set<DisciplinaPendente> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
-		return this.getRepository().findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesId);
-	}
-
-	public Set<DisciplinaPendente> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
-		return this.getRepository().findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesId);
 	}
 
 }

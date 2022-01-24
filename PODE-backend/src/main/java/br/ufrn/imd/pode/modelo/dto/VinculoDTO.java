@@ -32,7 +32,7 @@ public class VinculoDTO extends AbstratoDTO {
 		this.setPeriodoInicialPeriodo(vinculo.getPeriodoInicialPeriodo());
 		this.setPeriodoAtualAno(vinculo.getPeriodoAtualAno());
 		this.setPeriodoAtualPeriodo(vinculo.getPeriodoAtualPeriodo());
-		this.setIdCurso(vinculo.getCurso().getId());
+		this.setIdCurso(vinculo.getGradeCurricula().getId());
 		if (vinculo.getEnfase() != null) {
 			this.setIdEnfase(vinculo.getEnfase().getId());
 		}

@@ -1,7 +1,6 @@
 package br.ufrn.imd.pode.repositorio;
 
 import br.ufrn.imd.pode.modelo.PlanoCurso;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface PlanoCursoRepositorio extends GenericoRepositorio<PlanoCurso, Long> {
 
 	@Query(value = "SELECT pc.* FROM planocurso AS pc, vinculo AS v WHERE pc.id = v.planocurso_id AND v.id = :vinculoId", nativeQuery = true)
-	public PlanoCurso findPlanoCursoByVinculoId(Long vinculoId);
+	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId);
 }

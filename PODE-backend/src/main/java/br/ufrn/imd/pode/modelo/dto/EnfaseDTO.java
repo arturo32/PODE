@@ -1,8 +1,5 @@
 package br.ufrn.imd.pode.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.pode.modelo.Enfase;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
@@ -25,7 +22,7 @@ public class EnfaseDTO extends AbstratoDTO {
 		setId(enfase.getId());
 		setNome(enfase.getNome());
 		setIdCurso(enfase.getCurso().getId());
-		for(DisciplinaPeriodo disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
+		for (DisciplinaPeriodo disciplinaPeriodo : enfase.getDisciplinasObrigatorias()) {
 			this.idDisciplinasObrigatorias.add(disciplinaPeriodo.getId());
 		}
 	}

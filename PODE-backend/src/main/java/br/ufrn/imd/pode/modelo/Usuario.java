@@ -2,7 +2,6 @@ package br.ufrn.imd.pode.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 

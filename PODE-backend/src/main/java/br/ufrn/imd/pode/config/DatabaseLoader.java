@@ -1,8 +1,7 @@
 package br.ufrn.imd.pode.config;
 
-import br.ufrn.imd.pode.modelo.*;
-import br.ufrn.imd.pode.repositorio.*;
-import br.ufrn.imd.pode.servico.DisciplinaPeriodoServico;
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.repositorio.DisciplinaRepositorio;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
