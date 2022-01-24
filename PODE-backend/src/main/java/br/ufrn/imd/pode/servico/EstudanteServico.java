@@ -23,18 +23,14 @@ import java.util.regex.Pattern;
 @Transactional
 public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, Long> {
 
-	private EstudanteRepositorio repository;
-	private VinculoServico vinculoService;
+	private EstudanteRepositorio repositorio;
+	private VinculoServico vinculoServico;
 
 	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-	public VinculoServico getVinculoService() {
-		return vinculoService;
-	}
-
 	@Autowired
-	public void setVinculoService(VinculoServico vinculoService) {
-		this.vinculoService = vinculoService;
+	public void setVinculoServico(VinculoServico vinculoServico) {
+		this.vinculoServico = vinculoServico;
 	}
 
 	@Override
@@ -67,7 +63,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 
 			for (Long idVinculo: dto.getIdVinculos()) {
 				try {
-					estudante.getVinculos().add(this.vinculoService.buscarPorId(idVinculo));
+					estudante.getVinculos().add(this.vinculoServico.buscarPorId(idVinculo));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("vinculo inconsistente");
 				}
@@ -105,33 +101,20 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 
 	@Override
 	protected GenericoRepositorio<Estudante, Long> repositorio() {
-		return this.repository;
-	}
-
-	public EstudanteRepositorio getRepository() {
-		return this.repository;
+		return this.repositorio;
 	}
 
 	@Autowired
-	public void setRepository(EstudanteRepositorio repository) {
-		this.repository = repository;
+	public void setRepositorio(EstudanteRepositorio repositorio) {
+		this.repositorio = repositorio;
 	}
 
-	public Estudante findByEmail(String email) {
-		Optional<Estudante> estudante = repository.findByAtivoIsTrueAndEmail(email);
+	public Estudante buscarPorEmail(String email) {
+		Optional<Estudante> estudante = repositorio.findByAtivoIsTrueAndEmail(email);
 		if (estudante.isPresent()){
 			return estudante.get();
 		} else {
 			throw new EntidadeNaoEncontradaException("Estudante de email: '" + email + "' não encontrado");
-		}
-	}
-
-	public Estudante findByNome(String nome) {
-		Optional<Estudante> estudante = repository.findByAtivoIsTrueAndNome(nome);
-		if (estudante.isPresent()){
-			return estudante.get();
-		} else {
-			throw new EntidadeNaoEncontradaException("Estudante de nome: '" + nome + "' não encontrado");
 		}
 	}
 }

@@ -46,7 +46,7 @@ public class DetalhesUsuarioServico implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario;
 		try {
-			usuario = estudanteService.findByEmail(username);
+			usuario = estudanteService.buscarPorEmail(username);
 		} catch (EntidadeNaoEncontradaException enfe) {
 			try {
 				usuario = administradorService.findByEmail(username);
