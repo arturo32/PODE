@@ -46,30 +46,6 @@ public abstract class VinculoServico extends GenericoServico<Vinculo, VinculoDTO
 			exceptionHelper.add("matricula não foi informada");
 		}
 
-		if (dto.getPeriodoInicialAno() == null) {
-			exceptionHelper.add("ano inicial não foi informado");
-		}
-
-		if (dto.getPeriodoAtualAno() == null) {
-			exceptionHelper.add("ano atual não foi informado");
-		}
-
-		if (dto.getPeriodoInicialPeriodo() != null) {
-			if (dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
-				exceptionHelper.add("periodo inicial invalido, deve ser 1 ou 2");
-			}
-		} else {
-			exceptionHelper.add("periodo inicial não foi informado");
-		}
-
-		if (dto.getPeriodoAtualPeriodo() != null) {
-			if (dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
-				exceptionHelper.add("periodo atual invalido, deve ser 1 ou 2");
-			}
-		} else {
-			exceptionHelper.add("periodo atual não foi informado");
-		}
-
 		return dto;
 	}
 

@@ -2,7 +2,6 @@ package br.ufrn.imd.pode.controle;
 
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
@@ -36,19 +35,19 @@ public class PlanoCursoControlador extends GenericoControlador<PlanoCurso, Plano
 
 	@PostMapping("/{id}/remove-disciplinas-cursadas")
 	public ResponseEntity<PlanoCursoDTO> removerDisciplinaCursada(@PathVariable Long id,
-																  @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaCursada(id, disciplinasPeriodoDTOS)));
+																  @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaCursada(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/disciplinas-pendentes")
 	public ResponseEntity<PlanoCursoDTO> adicionarDisciplinaPendente(@PathVariable Long id,
-																	 @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaPendente(id, disciplinasPeriodoDTOS)));
+																	 @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaPendente(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-pendentes")
 	public ResponseEntity<PlanoCursoDTO> removerDisciplinaPendente(@PathVariable Long id,
-																   @RequestBody List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaPendente(id, disciplinasPeriodoDTOS)));
+																   @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaPendente(id, disciplinasDTOS)));
 	}
 }

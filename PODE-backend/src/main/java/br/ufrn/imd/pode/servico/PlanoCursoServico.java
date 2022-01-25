@@ -9,7 +9,6 @@ import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
@@ -184,10 +183,10 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		return repositorio.save(planoCurso);
 	}
 
-	public PlanoCurso removerDisciplinaCursada(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+	public PlanoCurso removerDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinasPeriodo = new HashSet<>();
-		for (DisciplinaPeriodoDTO dpDTO : disciplinasPeriodoDTOS) {
+		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
 			Disciplina dp = disciplinaServico.buscarPorId(dpDTO.getId());
 			disciplinasPeriodo.add(dp);
 		}
@@ -195,13 +194,13 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		return repositorio.save(planoCurso);
 	}
 
-	public abstract PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasDTOS);
+	public abstract PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS);
 
-	public PlanoCurso removerDisciplinaPendente(Long planoCursoId, List<DisciplinaPeriodoDTO> disciplinasPeriodoDTOS) {
+	public PlanoCurso removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinasPeriodo = new HashSet<>();
-		for (DisciplinaPeriodoDTO dpDTO : disciplinasPeriodoDTOS) {
+		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
 			Disciplina dp = disciplinaServico.buscarPorId(dpDTO.getId());
 			disciplinasPeriodo.add(dp);
 		}

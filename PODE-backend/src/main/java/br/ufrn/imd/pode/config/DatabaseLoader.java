@@ -28,44 +28,9 @@ public class DatabaseLoader implements ApplicationRunner {
 
 	private DisciplinaRepositorio disciplinaRepository;
 
-	private CursoRepositorio cursoRepository;
-
-	private EnfaseRepositorio enfaseRepository;
-
-	private PesRepositorio pesRepository;
-
-	@SuppressWarnings("unused")
-	private DisciplinaPeriodoRepositorio disciplinaPeriodoRepository;
-	private DisciplinaPeriodoServico disciplinaPeriodoService;
-
 	@Autowired
 	public void setDisciplinaRepository(DisciplinaRepositorio disciplinaRepository) {
 		this.disciplinaRepository = disciplinaRepository;
-	}
-
-	@Autowired
-	public void setCursoRepository(CursoRepositorio cursoRepository) {
-		this.cursoRepository = cursoRepository;
-	}
-
-	@Autowired
-	public void setEnfaseRepository(EnfaseRepositorio enfaseRepository) {
-		this.enfaseRepository = enfaseRepository;
-	}
-
-	@Autowired
-	public void setPesRepository(PesRepositorio pesRepository) {
-		this.pesRepository = pesRepository;
-	}
-
-	@Autowired
-	public void setDisciplinaPeriodoRepository(DisciplinaPeriodoRepositorio disciplinaPeriodoRepository) {
-		this.disciplinaPeriodoRepository = disciplinaPeriodoRepository;
-	}
-
-	@Autowired
-	public void setDisciplinaPeriodoService(DisciplinaPeriodoServico disciplinaPeriodoService) {
-		this.disciplinaPeriodoService = disciplinaPeriodoService;
 	}
 
 	@Override
@@ -73,16 +38,8 @@ public class DatabaseLoader implements ApplicationRunner {
 		if (dbmode.equals("create")) {
 			inserirDisciplinas();
 			System.out.println("Disciplinas inseridas");
-			inserirCursos();
-			System.out.println("Cursos inseridos");
-			inserirEnfases();
-			System.out.println("Enfases inseridas");
-			inserirPes();
-			System.out.println("PES inseridos");
-			inserirDisciplasCursos();
-			System.out.println("Disciplinas obrigatorias e optativas dos cursos e enfases inseridas");
-			inserirDisciplinaPes();
-			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
+			//inserirCursos();
+			//System.out.println("Cursos inseridos");
 
 			System.out.println("Tudo pronto!");
 		}
@@ -95,9 +52,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			String[] values;
 			while ((values = csvReader.readNext()) != null) {
 				Disciplina disciplina = new Disciplina(values[0], values[1], Integer.parseInt(values[4]));
-				disciplina.setEquivalentes(values[5]);
 				disciplina.setPrerequisitos(values[6]);
-				disciplina.setCorequisitos(values[7]);
 				this.disciplinaRepository.save(disciplina);
 
 			}
@@ -106,7 +61,7 @@ public class DatabaseLoader implements ApplicationRunner {
 		}
 	}
 
-	void inserirCursos() {
+	/*void inserirCursos() {
 		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_ti.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
@@ -122,40 +77,9 @@ public class DatabaseLoader implements ApplicationRunner {
 		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	void inserirEnfases() {
-		Curso curso = cursoRepository.getOne(2L);
-		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/enfases_ti.csv"))) {
-			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
-			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
-
-			String[] values;
-			while ((values = csvReader.readNext()) != null) {
-				Enfase enfase = new Enfase(values[2] + " - " + values[1], curso);
-				this.enfaseRepository.save(enfase);
-			}
-		} catch (IOException | CsvValidationException e) {
-			e.printStackTrace();
-		}
-	}
-
-	void inserirPes() {
-		try (BufferedReader br = new BufferedReader(new FileReader("extracao_dados/dados_extraidos/cursos_pes.csv"))) {
-			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
-			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
-
-			String[] values;
-			while ((values = csvReader.readNext()) != null) {
-				Pes pes = new Pes(values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]));
-				this.pesRepository.save(pes);
-			}
-		} catch (IOException | CsvValidationException e) {
-			e.printStackTrace();
-		}
-	}
-
-	void inserirDisciplasCursos() {
+	/*void inserirDisciplasCursos() {
 		Curso curso = cursoRepository.getOne(2L);
 		try (BufferedReader br = new BufferedReader(
 				new FileReader("extracao_dados/dados_extraidos/obrigatorias_diurno.csv"))) {
@@ -284,39 +208,5 @@ public class DatabaseLoader implements ApplicationRunner {
 		} catch (IOException | CsvValidationException e) {
 			e.printStackTrace();
 		}
-	}
-
-	void inserirDisciplinaPes() {
-		long last_id = 0L;
-		long current_id = 0L;
-		Pes pes = pesRepository.getOne(current_id + 1);
-		try (BufferedReader br = new BufferedReader(
-				new FileReader("extracao_dados/dados_extraidos/curriculo_componente_pes.csv"))) {
-			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
-			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
-
-			String[] values;
-			while ((values = csvReader.readNext()) != null) {
-				current_id = Long.parseLong(values[1]);
-				if (last_id != current_id) {
-					last_id = current_id;
-					pes = pesRepository.getOne(current_id + 1);
-				}
-				Set<Disciplina> disciplinas = disciplinaRepository.findDisciplinasByAtivoIsTrueAndCodigoIs(values[3]);
-				for (Disciplina d : disciplinas) {
-					if (values[2].equals("OPTATIVA")) {
-						pes.adicionarDisciplinaOptativa(d);
-					} else {
-						pes.adicionarDisciplinaObrigatoria(d);
-					}
-					this.pesRepository.save(pes);
-				}
-				if (disciplinas.isEmpty()) {
-					System.err.println("PES - Disciplina de código '" + values[3] + "' não encontrada.");
-				}
-			}
-		} catch (IOException | CsvValidationException e) {
-			e.printStackTrace();
-		}
-	}
+	}*/
 }

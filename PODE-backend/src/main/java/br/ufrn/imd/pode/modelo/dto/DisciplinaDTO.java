@@ -12,12 +12,6 @@ public class DisciplinaDTO extends AbstratoDTO {
 
 	private String prerequisitos;
 
-	private String corequisitos;
-
-	private String equivalentes;
-
-	public DisciplinaDTO() {
-	}
 
 	public DisciplinaDTO(Disciplina entity) {
 		this.setId(entity.getId());
@@ -25,8 +19,6 @@ public class DisciplinaDTO extends AbstratoDTO {
 		this.setNome(entity.getNome());
 		this.setCh(entity.getCh());
 		this.setPrerequisitos(entity.getPrerequisitos());
-		this.setCorequisitos(entity.getPrerequisitos());
-		this.setEquivalentes(entity.getEquivalentes());
 	}
 
 	public String getCodigo() {
@@ -59,21 +51,5 @@ public class DisciplinaDTO extends AbstratoDTO {
 
 	public void setPrerequisitos(String prerequisitos) {
 		this.prerequisitos = prerequisitos;
-	}
-
-	public String getCorequisitos() {
-		return corequisitos;
-	}
-
-	public void setCorequisitos(String corequisitos) {
-		this.corequisitos = corequisitos;
-	}
-
-	public String getEquivalentes() {
-		return equivalentes;
-	}
-
-	public void setEquivalentes(String equivalentes) {
-		this.equivalentes = equivalentes;
 	}
 }
