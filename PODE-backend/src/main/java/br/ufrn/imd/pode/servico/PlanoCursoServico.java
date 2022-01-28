@@ -200,7 +200,7 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Set<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas();
-		for (DisciplinaDTO dDTO: disciplinasDTOS) {
+		for (DisciplinaDTO dDTO : disciplinasDTOS) {
 			Disciplina d = disciplinaServico.buscarPorId(dDTO.getId());
 			if (disciplinaServico.checarPrerequisitos(disciplinasCursadas, d)) {
 				disciplinasCursadas.add(d);

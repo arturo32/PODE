@@ -21,9 +21,9 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 	@NotNull
 	private Integer chm;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "grade_curricular_disciplina", joinColumns = {
-			@JoinColumn(name = "grade_curricular_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_id") })
+			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<Disciplina> disciplinas;
 
 	@Override

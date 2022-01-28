@@ -26,9 +26,9 @@ public class RecomendacaoDTO {
 	}
 
 	public RecomendacaoDTO(String nome, Integer cargaHorariaObrigatoria,
-						   Integer cargaHorariaObrigatoriaPendente, Integer cargaHorariaOptativaMinima,
-						   Integer cargaHorariaOptativaPendente, Set<DisciplinaPendente> disciplinasObrigatorias,
-						   Set<DisciplinaPendente> disciplinasOptativas) {
+	                       Integer cargaHorariaObrigatoriaPendente, Integer cargaHorariaOptativaMinima,
+	                       Integer cargaHorariaOptativaPendente, Set<DisciplinaPendente> disciplinasObrigatorias,
+	                       Set<DisciplinaPendente> disciplinasOptativas) {
 		this.nome = nome;
 		this.cargaHorariaObrigatoria = cargaHorariaObrigatoria;
 		this.cargaHorariaObrigatoriaPendente = cargaHorariaObrigatoriaPendente;

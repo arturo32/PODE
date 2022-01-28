@@ -26,7 +26,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@NotNull
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(@NotNull HttpMessageNotReadableException ex,
-																  @NotNull HttpHeaders headers, @NotNull HttpStatus status, @NotNull WebRequest request) {
+	                                                              @NotNull HttpHeaders headers, @NotNull HttpStatus status, @NotNull WebRequest request) {
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "Problemas de formação do JSON"));
 	}
 

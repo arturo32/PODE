@@ -1,7 +1,6 @@
 package br.ufrn.imd.pode.controle;
 
 import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
-import br.ufrn.imd.pode.servico.FiltroDisciplinaServico;
 import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

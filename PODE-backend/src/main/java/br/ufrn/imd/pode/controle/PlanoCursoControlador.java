@@ -29,25 +29,25 @@ public class PlanoCursoControlador extends GenericoControlador<PlanoCurso, Plano
 
 	@PostMapping("/{planoCursoId}/disciplinas-cursadas")
 	public ResponseEntity<PlanoCursoDTO> adicionarDisciplinaCursada(@PathVariable Long planoCursoId,
-																	@RequestBody List<DisciplinaDTO> disciplinas) {
+	                                                                @RequestBody List<DisciplinaDTO> disciplinas) {
 		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaCursada(planoCursoId, disciplinas)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-cursadas")
 	public ResponseEntity<PlanoCursoDTO> removerDisciplinaCursada(@PathVariable Long id,
-																  @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+	                                                              @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
 		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaCursada(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/disciplinas-pendentes")
 	public ResponseEntity<PlanoCursoDTO> adicionarDisciplinaPendente(@PathVariable Long id,
-																	 @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+	                                                                 @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
 		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaPendente(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-pendentes")
 	public ResponseEntity<PlanoCursoDTO> removerDisciplinaPendente(@PathVariable Long id,
-																   @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+	                                                               @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
 		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaPendente(id, disciplinasDTOS)));
 	}
 }

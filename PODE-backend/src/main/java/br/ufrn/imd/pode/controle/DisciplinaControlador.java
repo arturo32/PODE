@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -42,7 +41,7 @@ public abstract class DisciplinaControlador extends GenericoControlador<Discipli
 
 	@GetMapping("/filtro/{nome_filtro}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasPorFiltro(@PathVariable String nome_filtro,
-																				@RequestParam Map<String,String> parametros) {
+	                                                                            @RequestParam Map<String, String> parametros) {
 		return ResponseEntity.ok(filtros.get(nome_filtro).filtrar(parametros));
 	}
 

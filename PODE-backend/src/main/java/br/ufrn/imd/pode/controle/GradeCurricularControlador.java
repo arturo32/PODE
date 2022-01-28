@@ -1,14 +1,11 @@
 package br.ufrn.imd.pode.controle;
 
-import br.ufrn.imd.pode.servico.GradeCurricularServico;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.ufrn.imd.pode.modelo.GradeCurricular;
+import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public abstract class GradeCurricularControlador {
-
-	private GradeCurricularServico servico;
-
-	@Autowired
-	public void setServico(GradeCurricularServico servico) {
-		this.servico = servico;
-	}
+@RestController
+@RequestMapping("/grades-curriculares")
+public abstract class GradeCurricularControlador<T extends GradeCurricular, E extends GradeCurricularDTO> extends GenericoControlador<T, E, Long> {
 }
