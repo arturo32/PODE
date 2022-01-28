@@ -11,9 +11,12 @@ public interface RecomendacaoServico {
 
 	String getNomeServico();
 
-	Long validar(Long vinculoId);
+	void validar(Long vinculoId);
 
-	RecomendacaoDTO recomendarDisciplinas(Long idVinculo);
+	default RecomendacaoDTO recomendarDisciplinas(Long idVinculo) {
+		validar(idVinculo);
+		return recomendar(idVinculo);
+	}
 
 	RecomendacaoDTO recomendar(Long vinculoId);
 

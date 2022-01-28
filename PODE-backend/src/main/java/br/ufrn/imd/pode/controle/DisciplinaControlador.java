@@ -7,13 +7,14 @@ import br.ufrn.imd.pode.servico.FiltroDisciplinaServico;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/disciplinas")
@@ -21,7 +22,13 @@ public abstract class DisciplinaControlador extends GenericoControlador<Discipli
 
 	private DisciplinaServico servico;
 
-	private HashMap<String, FiltroDisciplinaServico> filtros;
+	private Map<String, FiltroDisciplinaServico> filtros;
+
+	@Autowired
+	public void setFiltros(Set<FiltroDisciplinaServico> filtros) {
+		this.filtros = filtros.stream()
+				.collect(Collectors.toMap(FiltroDisciplinaServico::obterNome, Function.identity()));
+	}
 
 	@Autowired
 	public void setDisciplinaService(DisciplinaServico disciplinaService) {
@@ -33,17 +40,11 @@ public abstract class DisciplinaControlador extends GenericoControlador<Discipli
 		return this.servico;
 	}
 
-	/*@GetMapping("/filtro/{nome_filtro}")
+	@GetMapping("/filtro/{nome_filtro}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasPorFiltro(@PathVariable String nome_filtro,
-																				@RequestParam Optional<List<String>> parametro) {
-		if(parametro.isPresent()) {
-			return ResponseEntity.ok(filtros.get(nome_filtro).filtrar(parametro));
-		}
-		else {
-			return
-		}
-
-	}*/
+																				@RequestParam Map<String,String> parametros) {
+		return ResponseEntity.ok(filtros.get(nome_filtro).filtrar(parametros));
+	}
 
 	@GetMapping("/codigos/{codigo}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {

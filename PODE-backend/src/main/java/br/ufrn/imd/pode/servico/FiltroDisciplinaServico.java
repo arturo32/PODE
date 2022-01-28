@@ -8,9 +8,12 @@ import java.util.Set;
 public interface FiltroDisciplinaServico {
 	String obterNome();
 
-	Set<DisciplinaDTO> buscarDisciplinasPorFiltro(Map<String, Object> parametros);
+	default Set<DisciplinaDTO> buscarDisciplinasPorFiltro(Map<String, String> parametros) {
+		this.validar(parametros);
+		return filtrar(parametros);
+	}
 
-	void validar(Map<String, Object> parametros);
+	void validar(Map<String, String> parametros);
 
-	Set<DisciplinaDTO> filtrar(Map<String, Object> parametros);
+	Set<DisciplinaDTO> filtrar(Map<String, String> parametros);
 }

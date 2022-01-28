@@ -178,33 +178,52 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinas);
-		Set<Disciplina> pendentes = new HashSet<>(planoCurso.getDisciplinasPendentes());
-		planoCurso.setDisciplinasPendentes(pendentes);
+		planoCurso.getDisciplinasPendentes().removeAll(disciplinas);
 		return repositorio.save(planoCurso);
 	}
 
 	public PlanoCurso removerDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
-		Collection<Disciplina> disciplinasPeriodo = new HashSet<>();
+		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
-			Disciplina dp = disciplinaServico.buscarPorId(dpDTO.getId());
-			disciplinasPeriodo.add(dp);
+			Disciplina d = disciplinaServico.buscarPorId(dpDTO.getId());
+			if (planoCurso.getDisciplinasCursadas().contains(d)) {
+				disciplinas.add(d);
+			}
 		}
-		disciplinasPeriodo.forEach(planoCurso.getDisciplinasCursadas()::remove);
+		planoCurso.getDisciplinasCursadas().removeAll(disciplinas);
+		planoCurso.getDisciplinasPendentes().addAll(disciplinas);
 		return repositorio.save(planoCurso);
 	}
 
-	public abstract PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS);
+	public PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
+		Set<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas();
+		for (DisciplinaDTO dDTO: disciplinasDTOS) {
+			Disciplina d = disciplinaServico.buscarPorId(dDTO.getId());
+			if (disciplinaServico.checarPrerequisitos(disciplinasCursadas, d)) {
+				disciplinasCursadas.add(d);
+			} else {
+				exceptionHelper.add("Os pre-requisitos necessários para a disciplina '" +
+						d.getCodigo() + "' não serão atendidos. Expressão: " + d.getPrerequisitos());
+			}
+		}
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
+		}
+		planoCurso.setDisciplinasPendentes(disciplinasCursadas);
+		return repositorio.save(planoCurso);
+	}
 
 	public PlanoCurso removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
-		// TODO: validação de tempo minimo por semestre
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
-		Collection<Disciplina> disciplinasPeriodo = new HashSet<>();
+		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
 			Disciplina dp = disciplinaServico.buscarPorId(dpDTO.getId());
-			disciplinasPeriodo.add(dp);
+			disciplinas.add(dp);
 		}
-		disciplinasPeriodo.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		planoCurso.getDisciplinasPendentes().removeAll(disciplinas);
 		return repositorio.save(planoCurso);
 	}
 }

@@ -19,21 +19,8 @@ public abstract class GenericoControlador<T extends ModeloAbstrato<PK>, Dto exte
 	protected abstract GenericoServico<T, Dto, PK> servico();
 
 	@GetMapping
-	public ResponseEntity<Collection<Dto>> buscarTodos(@RequestParam("limit") Optional<Integer> limite,
-													   @RequestParam("page") Optional<Integer> pagina, @RequestParam("ids") Optional<List<PK>> ids,
-													   @RequestParam("start") Optional<PK> start, @RequestParam("end") Optional<PK> end) {
-		ResponseEntity<Collection<Dto>> result;
-		if (limite.isPresent() && pagina.isPresent()) {
-			result = ResponseEntity.ok(servico().converterParaListaDTO(servico().buscarTodos(limite.get(), pagina.get())));
-		} else if (ids.isPresent()) {
-			result = ResponseEntity.ok(servico().converterParaListaDTO(servico().buscarPorIds(ids.get())));
-		} else if (start.isPresent() && end.isPresent()) {
-			result = ResponseEntity.ok(servico().converterParaListaDTO(servico().buscarPorIntervalo(start.get(), end.get())));
-		} else {
-			throw new NegocioException(
-					"Informe o limite e a pagina ou os ids a serem buscados ou o intervalo de ids a ser buscado");
-		}
-		return result;
+	public ResponseEntity<Collection<Dto>> buscarTodos(@RequestParam("limit") Integer limite, @RequestParam("page") Integer pagina) {
+		return ResponseEntity.ok(servico().converterParaListaDTO(servico().buscarTodos(limite, pagina)));
 	}
 
 	@GetMapping("/{id}")

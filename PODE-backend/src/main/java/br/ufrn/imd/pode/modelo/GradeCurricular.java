@@ -1,15 +1,29 @@
 package br.ufrn.imd.pode.modelo;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GRADECURRICULAR")
+	@SequenceGenerator(name = "SEQ_GRADECURRICULAR", sequenceName = "id_seq_grade_curricular", allocationSize = 1)
 	private Long id;
 
+	@NotNull
+	@NotBlank
 	private String nome;
 
+	@NotNull
 	private Integer chm;
 
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "grade_curricular_disciplina", joinColumns = {
+			@JoinColumn(name = "grade_curricular_id") }, inverseJoinColumns = { @JoinColumn(name = "disciplina_id") })
 	private Set<Disciplina> disciplinas;
 
 	@Override
