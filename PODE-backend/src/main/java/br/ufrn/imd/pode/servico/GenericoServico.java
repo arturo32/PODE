@@ -35,7 +35,7 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	public abstract T converterParaEntidade(Dto dto);
 
-	protected abstract Dto validar(Dto dto);
+	protected abstract void validar(Dto dto);
 
 	public Collection<Dto> converterParaListaDTO(Collection<T> entidades) {
 		return entidades.stream().map(this::converterParaDTO).collect(Collectors.toList());

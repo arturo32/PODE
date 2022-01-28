@@ -1,11 +1,11 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
@@ -34,51 +34,6 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 	@Override
 	public PlanoCursoDTO converterParaDTO(PlanoCurso planoCurso) {
 		return new PlanoCursoDTO(planoCurso);
-	}
-
-	@Override
-	public PlanoCurso converterParaEntidade(PlanoCursoDTO dto) {
-		PlanoCurso planoCurso = new PlanoCurso();
-
-		//Se for uma edição
-		if (dto.getId() != null) {
-			planoCurso = this.buscarPorId(dto.getId());
-		}
-
-		planoCurso.setId(dto.getId());
-		if (dto.getIdDisciplinasCursadas() != null) {
-			planoCurso.setDisciplinasCursadas(new HashSet<>());
-			for (Long disciplinaPeriodoDTO : dto.getIdDisciplinasCursadas()) {
-				if (disciplinaPeriodoDTO == null) {
-					throw new EntidadeInconsistenteException("disciplinaCursada inconsistente");
-				}
-
-				try {
-					planoCurso.getDisciplinasCursadas()
-							.add(this.disciplinaServico.buscarPorId(disciplinaPeriodoDTO));
-				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
-					throw new EntidadeInconsistenteException("disciplinaCursada inconsistente");
-				}
-			}
-		}
-
-		if (dto.getIdDisciplinasPendentes() != null) {
-			planoCurso.setDisciplinasPendentes(new HashSet<>());
-			for (Long disciplinaPeriodoDTO : dto.getIdDisciplinasPendentes()) {
-				if (disciplinaPeriodoDTO == null) {
-					throw new EntidadeInconsistenteException("disciplinaPendente inconsistente");
-				}
-
-				try {
-					planoCurso.getDisciplinasPendentes()
-							.add(this.disciplinaServico.buscarPorId(disciplinaPeriodoDTO));
-				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
-					throw new EntidadeInconsistenteException("disciplinaPendente inconsistente");
-				}
-			}
-		}
-
-		return planoCurso;
 	}
 
 	@Override
@@ -114,7 +69,7 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 	}
 
 	@Override
-	public PlanoCursoDTO validar(PlanoCursoDTO planoCurso) {
+	public void validar(PlanoCursoDTO planoCurso) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica disciplinasCursadas
@@ -148,28 +103,23 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		}
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return planoCurso;
 		} else {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
 	}
 
-	public PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
-		PlanoCurso planoCurso = new PlanoCurso();
-		planoCurso.setDisciplinasPendentes(new HashSet<>(curso.getDisciplinas()));
-		return repositorio.save(planoCurso);
-	}
+	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
 
 	public PlanoCurso adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
-		Set<Disciplina> cursadas = planoCurso.getDisciplinasCursadas();
+		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
 		for (DisciplinaDTO dp : disciplinasDTOS) {
 			Disciplina d = disciplinaServico.buscarPorId(dp.getId());
-			if (disciplinaServico.checarPrerequisitos(cursadas, d)) {
+			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
-				disciplinas.add(disciplinaServico.buscarPorId(dp.getId()));
+				disciplinas.add(d);
 			} else {
 				exceptionHelper.add("Disciplina de código '" + d.getCodigo() + "' não teve os prerequisitos atendidos");
 			}
@@ -199,11 +149,13 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 	public PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
-		Set<Disciplina> disciplinasCursadas = planoCurso.getDisciplinasCursadas();
+		Set<DisciplinaInterface> naoPendentes = new HashSet<>();
+		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
 		for (DisciplinaDTO dDTO : disciplinasDTOS) {
 			Disciplina d = disciplinaServico.buscarPorId(dDTO.getId());
-			if (disciplinaServico.checarPrerequisitos(disciplinasCursadas, d)) {
-				disciplinasCursadas.add(d);
+			if (d.checarPrerequisitosDisciplinas(cursadas)) {
+				cursadas.add(d);
+				naoPendentes.add(d);
 			} else {
 				exceptionHelper.add("Os pre-requisitos necessários para a disciplina '" +
 						d.getCodigo() + "' não serão atendidos. Expressão: " + d.getPrerequisitos());
@@ -212,7 +164,7 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		if (exceptionHelper.getMessage().isEmpty()) {
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
-		planoCurso.setDisciplinasPendentes(disciplinasCursadas);
+		planoCurso.setDisciplinasPendentes(naoPendentes);
 		return repositorio.save(planoCurso);
 	}
 

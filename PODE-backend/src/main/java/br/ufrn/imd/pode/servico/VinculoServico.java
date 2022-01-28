@@ -28,7 +28,7 @@ public abstract class VinculoServico extends GenericoServico<Vinculo, VinculoDTO
 	public abstract Vinculo converterParaEntidade(VinculoDTO dto);
 
 	@Override
-	protected VinculoDTO validar(VinculoDTO dto) {
+	protected void validar(VinculoDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		if (dto.getIdEstudante() != null) {
@@ -46,7 +46,6 @@ public abstract class VinculoServico extends GenericoServico<Vinculo, VinculoDTO
 			exceptionHelper.add("matricula não foi informada");
 		}
 
-		return dto;
 	}
 
 	@Override

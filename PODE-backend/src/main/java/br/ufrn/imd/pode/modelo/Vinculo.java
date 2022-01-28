@@ -19,7 +19,7 @@ public abstract class Vinculo extends ModeloAbstrato<Long> {
 	protected String matricula;
 
 	@ManyToOne
-	protected @NotNull GradeCurricular gradeCurricula;
+	protected @NotNull GradeCurricular gradeCurricular;
 
 	@NotNull
 	@ManyToOne
@@ -32,9 +32,9 @@ public abstract class Vinculo extends ModeloAbstrato<Long> {
 	public Vinculo() {
 	}
 
-	public Vinculo(String matricula, @NotNull GradeCurricular gradeCurricula) {
+	public Vinculo(String matricula, @NotNull GradeCurricular gradeCurricular) {
 		this.matricula = matricula;
-		this.gradeCurricula = gradeCurricula;
+		this.gradeCurricular = gradeCurricular;
 	}
 
 	@Override
@@ -55,12 +55,12 @@ public abstract class Vinculo extends ModeloAbstrato<Long> {
 		this.matricula = matricula;
 	}
 
-	public @NotNull GradeCurricular getGradeCurricula() {
-		return gradeCurricula;
+	public @NotNull GradeCurricular getGradeCurricular() {
+		return gradeCurricular;
 	}
 
-	public void setGradeCurricula(@NotNull GradeCurricular curso) {
-		this.gradeCurricula = curso;
+	public void setGradeCurricular(@NotNull GradeCurricular curso) {
+		this.gradeCurricular = curso;
 	}
 
 	public PlanoCurso getPlanoCurso() {

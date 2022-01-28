@@ -6,17 +6,14 @@ import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repositorio.DisciplinaRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -73,45 +70,8 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
-	public boolean checarEquivalencia(Collection<String> codigos, String expressao) {
-		expressao = expressao.replace(" E ", " && ");
-		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
-		while (matcher.find()) {
-			for (int i = 0; i < matcher.groupCount(); i++) {
-				String eval = String.valueOf(codigos.contains(matcher.group(i)));
-				expressao = expressao.replace(matcher.group(i), eval);
-			}
-		}
-		return (boolean) MVEL.eval(expressao);
-	}
-
-	public boolean checarPrerequisitos(Collection<String> codigos, String expressao) {
-		expressao = expressao.replace(" E ", " && ");
-		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
-		while (matcher.find()) {
-			for (int i = 0; i < matcher.groupCount(); i++) {
-				String eval = String.valueOf(checarEquivalencia(codigos, matcher.group(i)));
-				expressao = expressao.replace(matcher.group(i), eval);
-			}
-		}
-		return (boolean) MVEL.eval(expressao);
-	}
-
-	// Checa se um conjunto de disciplinas atende os prerequisitos da disciplina
-	// alvo (se atendem a expressão de prerequisito)
-	public boolean checarPrerequisitos(Collection<Disciplina> disciplinas, Disciplina disciplina_alvo) {
-		Set<String> codigos = disciplinas.stream().map(Disciplina::getCodigo).collect(Collectors.toSet());
-		String expressao = disciplina_alvo.getPrerequisitos();
-		if (StringUtils.isEmpty(expressao)) {
-			return true;
-		}
-		return checarPrerequisitos(codigos, expressao);
-	}
-
 	@Override
-	public DisciplinaDTO validar(DisciplinaDTO disciplina) {
+	public void validar(DisciplinaDTO disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		// Verifica código
@@ -136,7 +96,6 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 		// TODO verificar expressões de prequisitos, equivalencias e corequisitos
 		// Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
-			return disciplina;
 		} else {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}

@@ -73,7 +73,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 	}
 
 	@Override
-	public EstudanteDTO validar(EstudanteDTO dto) {
+	public void validar(EstudanteDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -92,7 +92,6 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			dto.setSenha(encoder.encode(dto.getSenha()));
-			return dto;
 		} else {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}

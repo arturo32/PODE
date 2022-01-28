@@ -15,7 +15,7 @@ public class VinculoDTO extends AbstratoDTO {
 	public VinculoDTO(Vinculo vinculo) {
 		this.setId(vinculo.getId());
 		this.setMatricula(vinculo.getMatricula());
-		this.setIdCurso(vinculo.getGradeCurricula().getId());
+		this.setIdCurso(vinculo.getGradeCurricular().getId());
 		this.setIdPlanoCurso(vinculo.getPlanoCurso().getId());
 		this.setIdEstudante(vinculo.getEstudante().getId());
 	}

@@ -20,12 +20,20 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 	protected String nome;
 
 	@NotNull
-	protected Integer chm;
+	protected Integer chobm;
+
+	@NotNull
+	protected Integer chopm;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "grade_curricular_disciplina", joinColumns = {
+	@JoinTable(name = "grade_curricular_disciplina_obrigatorias", joinColumns = {
 			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	protected Set<Disciplina> disciplinas;
+	protected Set<Disciplina> disciplinasObrigatorias;
+
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "grade_curricular_disciplina_optativas", joinColumns = {
+			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	protected Set<Disciplina> disciplinasOptativas;
 
 	@Override
 	public Long getId() {
@@ -45,19 +53,35 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 		this.nome = nome;
 	}
 
-	public Integer getChm() {
-		return chm;
+	public Integer getChobm() {
+		return chobm;
 	}
 
-	public void setChm(Integer chm) {
-		this.chm = chm;
+	public void setChobm(Integer chobm) {
+		this.chobm = chobm;
 	}
 
-	public Set<Disciplina> getDisciplinas() {
-		return disciplinas;
+	public Integer getChopm() {
+		return chopm;
 	}
 
-	public void setDisciplinas(Set<Disciplina> disciplinas) {
-		this.disciplinas = disciplinas;
+	public void setChopm(Integer chopm) {
+		this.chopm = chopm;
+	}
+
+	public Set<Disciplina> getDisciplinasObrigatorias() {
+		return disciplinasObrigatorias;
+	}
+
+	public void setDisciplinasObrigatorias(Set<Disciplina> disciplinasObrigatorias) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	}
+
+	public Set<Disciplina> getDisciplinasOptativas() {
+		return disciplinasOptativas;
+	}
+
+	public void setDisciplinasOptativas(Set<Disciplina> disciplinasOptativas) {
+		this.disciplinasOptativas = disciplinasOptativas;
 	}
 }

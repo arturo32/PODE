@@ -8,14 +8,18 @@ import java.util.stream.Collectors;
 
 public class GradeCurricularDTO extends AbstratoDTO {
 	private String nome;
-	private Integer chm;
-	private Set<Long> disciplinas;
+	private Integer chobm;
+	private Integer chopm;
+	private Set<Long> disciplinasObrigatorias;
+	private Set<Long> disciplinasOptativas;
 
 	public GradeCurricularDTO(GradeCurricular entity) {
 		this.setId(entity.getId());
 		this.setNome(entity.getNome());
-		this.setChm(entity.getChm());
-		this.setDisciplinas(entity.getDisciplinas().stream().map(Disciplina::getId).collect(Collectors.toSet()));
+		this.setChobm(entity.getChobm());
+		this.setChopm(entity.getChopm());
+		this.setDisciplinasObrigatorias(entity.getDisciplinasObrigatorias().stream().map(Disciplina::getId).collect(Collectors.toSet()));
+		this.setDisciplinasOptativas(entity.getDisciplinasOptativas().stream().map(Disciplina::getId).collect(Collectors.toSet()));
 	}
 
 	public String getNome() {
@@ -26,19 +30,35 @@ public class GradeCurricularDTO extends AbstratoDTO {
 		this.nome = nome;
 	}
 
-	public Integer getChm() {
-		return chm;
+	public Integer getChobm() {
+		return chobm;
 	}
 
-	public void setChm(Integer chm) {
-		this.chm = chm;
+	public void setChobm(Integer chobm) {
+		this.chobm = chobm;
 	}
 
-	public Set<Long> getDisciplinas() {
-		return disciplinas;
+	public Integer getChopm() {
+		return chopm;
 	}
 
-	public void setDisciplinas(Set<Long> disciplinas) {
-		this.disciplinas = disciplinas;
+	public void setChopm(Integer chopm) {
+		this.chopm = chopm;
+	}
+
+	public Set<Long> getDisciplinasObrigatorias() {
+		return disciplinasObrigatorias;
+	}
+
+	public void setDisciplinasObrigatorias(Set<Long> disciplinasObrigatorias) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	}
+
+	public Set<Long> getDisciplinasOptativas() {
+		return disciplinasOptativas;
+	}
+
+	public void setDisciplinasOptativas(Set<Long> disciplinasOptativas) {
+		this.disciplinasOptativas = disciplinasOptativas;
 	}
 }

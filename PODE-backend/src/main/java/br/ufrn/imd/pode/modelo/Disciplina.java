@@ -1,15 +1,19 @@
 package br.ufrn.imd.pode.modelo;
 
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import org.mvel2.MVEL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "disciplina")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Disciplina extends ModeloAbstrato<Long> {
+public class Disciplina extends ModeloAbstrato<Long> implements DisciplinaInterface {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")
 	@SequenceGenerator(name = "SEQ_DISCIPLINA", sequenceName = "id_seq_disciplina", allocationSize = 1)
@@ -87,6 +91,20 @@ public class Disciplina extends ModeloAbstrato<Long> {
 
 	public void setPrerequisitos(String prerequisitos) {
 		this.prerequisitos = prerequisitos;
+	}
+
+	@Override
+	public boolean checarPrerequisitosCodigos(Collection<String> codigos) {
+		String expressao = getPrerequisitos().replace(" E ", " && ");
+		expressao = expressao.replace(" OU ", " || ");
+		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
+		while (matcher.find()) {
+			for (int i = 0; i < matcher.groupCount(); i++) {
+				String eval = String.valueOf(codigos.contains(matcher.group(i)));
+				expressao = expressao.replace(matcher.group(i), eval);
+			}
+		}
+		return (boolean) MVEL.eval(expressao);
 	}
 
 }

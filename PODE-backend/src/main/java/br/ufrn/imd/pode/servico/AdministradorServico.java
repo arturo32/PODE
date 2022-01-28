@@ -53,7 +53,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 	}
 
 	@Override
-	public AdministradorDTO validar(AdministradorDTO dto) {
+	public void validar(AdministradorDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		//Verifica nome
@@ -72,7 +72,6 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			dto.setSenha(encoder.encode(dto.getSenha()));
-			return dto;
 		} else {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
