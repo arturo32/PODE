@@ -2,10 +2,14 @@ package br.ufrn.imd.app1.modelo;
 
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(
+		name = "cursobti"
+)
 public class CursoBTI extends GradeCurricular {
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
 	private Integer cho;
 
@@ -24,6 +28,10 @@ public class CursoBTI extends GradeCurricular {
 	private Integer prazoMaximo;
 
 	private Integer prazoEsperado;
+
+	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
+
+	private Set<DisciplinaBTI> disciplinasOptativas;
 
 	public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
 		return disciplinasObrigatorias;

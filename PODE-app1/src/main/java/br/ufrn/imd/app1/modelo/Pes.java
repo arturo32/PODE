@@ -2,12 +2,20 @@ package br.ufrn.imd.app1.modelo;
 
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Set;
 
+@Entity
+@Table(
+		name = "cursobti"
+)
 public class Pes extends GradeCurricular {
 	private Integer chm;
 
 	private Integer cho;
+
+	private Set<DisciplinaBTI> disciplinasObrigatorias;
 
 	private Set<DisciplinaBTI> disciplinasOptativas;
 
