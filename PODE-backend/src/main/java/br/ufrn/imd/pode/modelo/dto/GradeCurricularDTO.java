@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.modelo.dto;
 
 import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
 import java.util.Set;
@@ -18,8 +19,8 @@ public class GradeCurricularDTO extends AbstratoDTO {
 		this.setNome(entity.getNome());
 		this.setChobm(entity.getChobm());
 		this.setChopm(entity.getChopm());
-		this.setDisciplinasObrigatorias(entity.getDisciplinasObrigatorias().stream().map(Disciplina::getId).collect(Collectors.toSet()));
-		this.setDisciplinasOptativas(entity.getDisciplinasOptativas().stream().map(Disciplina::getId).collect(Collectors.toSet()));
+		this.setDisciplinasObrigatorias(entity.getDisciplinasObrigatorias().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
+		this.setDisciplinasOptativas(entity.getDisciplinasOptativas().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
 	}
 
 	public String getNome() {

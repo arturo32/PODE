@@ -25,15 +25,15 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 	@NotNull
 	protected Integer chopm;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "grade_curricular_disciplina_obrigatorias", joinColumns = {
-			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	protected Set<Disciplina> disciplinasObrigatorias;
-
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "grade_curricular_disciplina_optativas", joinColumns = {
-			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	protected Set<Disciplina> disciplinasOptativas;
+//	@ManyToMany(cascade = {CascadeType.ALL})
+//	@JoinTable(name = "grade_curricular_disciplina_obrigatorias", joinColumns = {
+//			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+//	protected Set<Disciplina> disciplinasObrigatorias;
+//
+//	@ManyToMany(cascade = {CascadeType.ALL})
+//	@JoinTable(name = "grade_curricular_disciplina_optativas", joinColumns = {
+//			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+//	protected Set<Disciplina> disciplinasOptativas;
 
 	@Override
 	public Long getId() {
@@ -69,19 +69,11 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 		this.chopm = chopm;
 	}
 
-	public Set<Disciplina> getDisciplinasObrigatorias() {
-		return disciplinasObrigatorias;
-	}
+	public abstract Set<DisciplinaInterface> getDisciplinasObrigatorias();
 
-	public void setDisciplinasObrigatorias(Set<Disciplina> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
-	}
+	public abstract void setDisciplinasObrigatorias(Set<DisciplinaInterface> disciplinasObrigatorias);
 
-	public Set<Disciplina> getDisciplinasOptativas() {
-		return disciplinasOptativas;
-	}
+	public abstract Set<DisciplinaInterface> getDisciplinasOptativas();
 
-	public void setDisciplinasOptativas(Set<Disciplina> disciplinasOptativas) {
-		this.disciplinasOptativas = disciplinasOptativas;
-	}
+	public abstract void setDisciplinasOptativas(Set<DisciplinaInterface> disciplinasOptativas);
 }
