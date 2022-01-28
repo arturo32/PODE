@@ -6,27 +6,28 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "vinculo")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Vinculo extends ModeloAbstrato<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VINCULO")
 	@SequenceGenerator(name = "SEQ_VINCULO", sequenceName = "id_seq_vinculo", allocationSize = 1)
-	private Long id;
+	protected Long id;
 
 	@NotBlank
 	@Column(unique = true)
-	private String matricula;
+	protected String matricula;
 
 	@ManyToOne
-	private @NotNull GradeCurricular gradeCurricula;
+	protected @NotNull GradeCurricular gradeCurricula;
 
 	@NotNull
 	@ManyToOne
-	private PlanoCurso planoCurso;
+	protected PlanoCurso planoCurso;
 
 	@ManyToOne
 	@JoinColumn(name = "estudante_id")
-	private Estudante estudante;
+	protected Estudante estudante;
 
 	public Vinculo() {
 	}

@@ -8,24 +8,25 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "disciplina")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Disciplina extends ModeloAbstrato<Long> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")
 	@SequenceGenerator(name = "SEQ_DISCIPLINA", sequenceName = "id_seq_disciplina", allocationSize = 1)
-	private Long id;
+	protected Long id;
 
 	@NotNull
 	@NotBlank
 //	@Column(unique = true)
-	private String codigo;
+	protected String codigo;
 
 	//	@NotNull
 //	@NotBlank
 	@Column(length = 1024)
-	private String nome;
+	protected String nome;
 
 	@NotNull
-	private Integer ch;
+	protected Integer ch;
 
 	@Column(length = 1024)
 	private String prerequisitos;

@@ -6,25 +6,26 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
+@Table(name = "gradecurricular")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GRADECURRICULAR")
 	@SequenceGenerator(name = "SEQ_GRADECURRICULAR", sequenceName = "id_seq_grade_curricular", allocationSize = 1)
-	private Long id;
+	protected Long id;
 
 	@NotNull
 	@NotBlank
-	private String nome;
+	protected String nome;
 
 	@NotNull
-	private Integer chm;
+	protected Integer chm;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "grade_curricular_disciplina", joinColumns = {
 			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinas;
+	protected Set<Disciplina> disciplinas;
 
 	@Override
 	public Long getId() {
