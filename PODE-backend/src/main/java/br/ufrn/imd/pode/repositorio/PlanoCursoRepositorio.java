@@ -5,8 +5,5 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlanoCursoRepositorio extends GenericoRepositorio<PlanoCurso, Long> {
-
-	@Query(value = "SELECT pc.* FROM planocurso AS pc, vinculo AS v WHERE pc.id = v.planocurso_id AND v.id = :vinculoId", nativeQuery = true)
-	PlanoCurso findPlanoCursoByVinculoId(Long vinculoId);
+public interface PlanoCursoRepositorio<T extends PlanoCurso> extends GenericoRepositorio<T, Long> {
 }

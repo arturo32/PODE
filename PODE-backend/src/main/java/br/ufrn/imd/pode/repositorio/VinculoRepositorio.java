@@ -7,6 +7,4 @@ import java.util.Optional;
 
 @Repository
 public interface VinculoRepositorio<T extends Vinculo> extends GenericoRepositorio<T, Long> {
-
-	Optional<T> findByAtivoIsTrueAndPlanoCurso_Id(Long planoCursoId);
 }
