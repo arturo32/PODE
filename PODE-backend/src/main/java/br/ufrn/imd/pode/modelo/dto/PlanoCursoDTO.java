@@ -4,28 +4,24 @@ import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PlanoCursoDTO extends AbstratoDTO {
 
 	@JsonProperty("id-disciplinas-cursadas")
-	private Set<Long> idDisciplinasCursadas = new HashSet<>();
+	private Set<Long> idDisciplinasCursadas;
 
 	@JsonProperty("id-disciplinas-pendentes")
-	private Set<Long> idDisciplinasPendentes = new HashSet<>();
+	private Set<Long> idDisciplinasPendentes;
 
 	public PlanoCursoDTO() {
 	}
 
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
-		for (DisciplinaInterface disciplinaPeriodo : planoCurso.getDisciplinasCursadas()) {
-			this.idDisciplinasCursadas.add(disciplinaPeriodo.getId());
-		}
-		for (DisciplinaInterface disciplinaPeriodo : planoCurso.getDisciplinasPendentes()) {
-			this.idDisciplinasPendentes.add(disciplinaPeriodo.getId());
-		}
+		this.setIdDisciplinasCursadas(planoCurso.getDisciplinasCursadas().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
+		this.setIdDisciplinasPendentes(planoCurso.getDisciplinasPendentes().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
 	}
 
 	public Set<Long> getIdDisciplinasCursadas() {

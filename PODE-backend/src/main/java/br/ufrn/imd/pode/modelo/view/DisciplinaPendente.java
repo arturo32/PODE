@@ -12,8 +12,4 @@ public interface DisciplinaPendente {
 
 	String getPrerequisitos();
 
-	String getCorequisitos();
-
-	String getEquivalentes();
-
 }

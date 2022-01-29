@@ -1,6 +1,6 @@
 package br.ufrn.imd.pode.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.view.DisciplinaPendente;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +12,8 @@ public class RecomendacaoDTO {
 	private Integer cargaHorariaObrigatoriaPendente;
 	private Integer cargaHorariaOptativaMinima;
 	private Integer cargaHorariaOptativaPendente;
-	private Set<DisciplinaPendente> disciplinasObrigatorias;
-	private Set<DisciplinaPendente> disciplinasOptativas;
+	private Set<DisciplinaInterface> disciplinasObrigatorias;
+	private Set<DisciplinaInterface> disciplinasOptativas;
 
 	public RecomendacaoDTO() {
 		this.nome = "";
@@ -21,14 +21,14 @@ public class RecomendacaoDTO {
 		this.cargaHorariaObrigatoriaPendente = 0;
 		this.cargaHorariaOptativaMinima = 0;
 		this.cargaHorariaOptativaPendente = 0;
-		this.disciplinasObrigatorias = new HashSet<DisciplinaPendente>();
-		this.disciplinasOptativas = new HashSet<DisciplinaPendente>();
+		this.disciplinasObrigatorias = new HashSet<>();
+		this.disciplinasOptativas = new HashSet<>();
 	}
 
 	public RecomendacaoDTO(String nome, Integer cargaHorariaObrigatoria,
 	                       Integer cargaHorariaObrigatoriaPendente, Integer cargaHorariaOptativaMinima,
-	                       Integer cargaHorariaOptativaPendente, Set<DisciplinaPendente> disciplinasObrigatorias,
-	                       Set<DisciplinaPendente> disciplinasOptativas) {
+	                       Integer cargaHorariaOptativaPendente, Set<DisciplinaInterface> disciplinasObrigatorias,
+	                       Set<DisciplinaInterface> disciplinasOptativas) {
 		this.nome = nome;
 		this.cargaHorariaObrigatoria = cargaHorariaObrigatoria;
 		this.cargaHorariaObrigatoriaPendente = cargaHorariaObrigatoriaPendente;
@@ -78,19 +78,19 @@ public class RecomendacaoDTO {
 		this.cargaHorariaOptativaPendente = cargaHorariaOptativaPendente;
 	}
 
-	public Set<DisciplinaPendente> getDisciplinasObrigatorias() {
+	public Set<DisciplinaInterface> getDisciplinasObrigatorias() {
 		return disciplinasObrigatorias;
 	}
 
-	public void setDisciplinasObrigatorias(Set<DisciplinaPendente> disciplinasObrigatorias) {
+	public void setDisciplinasObrigatorias(Set<DisciplinaInterface> disciplinasObrigatorias) {
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
-	public Set<DisciplinaPendente> getDisciplinasOptativas() {
+	public Set<DisciplinaInterface> getDisciplinasOptativas() {
 		return disciplinasOptativas;
 	}
 
-	public void setDisciplinasOptativas(Set<DisciplinaPendente> disciplinasOptativas) {
+	public void setDisciplinasOptativas(Set<DisciplinaInterface> disciplinasOptativas) {
 		this.disciplinasOptativas = disciplinasOptativas;
 	}
 
