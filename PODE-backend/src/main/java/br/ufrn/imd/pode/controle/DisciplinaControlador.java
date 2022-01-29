@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/disciplinas")
-public abstract class DisciplinaControlador extends GenericoControlador<Disciplina, DisciplinaDTO, Long> {
+public class DisciplinaControlador extends GenericoControlador<Disciplina, DisciplinaDTO, Long> {
 
 	private DisciplinaServico servico;
 

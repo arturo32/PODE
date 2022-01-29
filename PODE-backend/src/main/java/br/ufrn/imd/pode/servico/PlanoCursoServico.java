@@ -23,34 +23,16 @@ import java.util.Set;
 
 @Service
 @Transactional
-public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, PlanoCursoDTO, Long> {
+public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoServico<T, E, Long> {
 
-	private PlanoCursoRepositorio repositorio;
 	private DisciplinaServico disciplinaServico;
 	private VinculoServico<Vinculo, VinculoDTO> vinculoService;
-
-	@Override
-	public PlanoCursoDTO converterParaDTO(PlanoCurso planoCurso) {
-		return new PlanoCursoDTO(planoCurso);
-	}
-
-	@Override
-	protected GenericoRepositorio<PlanoCurso, Long> repositorio() {
-		return this.repositorio;
-	}
-
-	public PlanoCursoRepositorio getRepositorio() {
-		return this.repositorio;
-	}
-
-	@Autowired
-	public void setRepositorio(PlanoCursoRepositorio planoCursoRepository) {
-		this.repositorio = planoCursoRepository;
-	}
 
 	public DisciplinaServico getDisciplinaServico() {
 		return disciplinaServico;
 	}
+
+	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
 
 	@Autowired
 	public void setDisciplinaServico(DisciplinaServico disciplinaServico) {
@@ -66,49 +48,9 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		this.vinculoService = vinculoService;
 	}
 
-	@Override
-	public void validar(PlanoCursoDTO planoCurso) {
-		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-		//Verifica disciplinasCursadas
-		if (planoCurso.getIdDisciplinasCursadas() != null) {
-			for (Long disciplinaPeriodo : planoCurso.getIdDisciplinasCursadas()) {
-				if (disciplinaPeriodo == null || disciplinaPeriodo < 0) {
-					exceptionHelper.add("disciplinaCursada inconsistente");
-				} else {
-					try {
-						this.disciplinaServico.buscarPorId(disciplinaPeriodo);
-					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
-						exceptionHelper.add("disciplinaCursada(id=" + disciplinaPeriodo + ") inexistente");
-					}
-				}
-			}
-		}
-
-		//Verifica disciplinasPendentes
-		if (planoCurso.getIdDisciplinasPendentes() != null) {
-			for (Long disciplinaPeriodo : planoCurso.getIdDisciplinasPendentes()) {
-				if (disciplinaPeriodo == null || disciplinaPeriodo < 0) {
-					exceptionHelper.add("disciplinaPendente inconsistente");
-				} else {
-					try {
-						this.disciplinaServico.buscarPorId(disciplinaPeriodo);
-					} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
-						exceptionHelper.add("disciplinaPendente(id=" + disciplinaPeriodo + ") inexistente");
-					}
-				}
-			}
-		}
-		//Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
-		} else {
-			throw new ValidacaoException(exceptionHelper.getMessage());
-		}
-	}
-
 	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
 
-	public PlanoCurso adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
+	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
@@ -127,10 +69,10 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		}
 		planoCurso.getDisciplinasCursadas().addAll(disciplinas);
 		planoCurso.getDisciplinasPendentes().removeAll(disciplinas);
-		return repositorio.save(planoCurso);
+		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
-	public PlanoCurso removerDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
+	public T removerDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
@@ -141,10 +83,10 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		}
 		planoCurso.getDisciplinasCursadas().removeAll(disciplinas);
 		planoCurso.getDisciplinasPendentes().addAll(disciplinas);
-		return repositorio.save(planoCurso);
+		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
-	public PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
+	public T adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Set<DisciplinaInterface> pendentes = new HashSet<>();
@@ -163,10 +105,10 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
 		planoCurso.getDisciplinasPendentes().addAll(pendentes);
-		return repositorio.save(planoCurso);
+		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
-	public PlanoCurso removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
+	public T removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
@@ -174,6 +116,6 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 			disciplinas.add(dp);
 		}
 		planoCurso.getDisciplinasPendentes().removeAll(disciplinas);
-		return repositorio.save(planoCurso);
+		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 }

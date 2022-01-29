@@ -13,41 +13,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/planos-de-curso")
-public class PlanoCursoControlador extends GenericoControlador<PlanoCurso, PlanoCursoDTO, Long> {
+public abstract class PlanoCursoControlador<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoControlador<T, E, Long> {
 
-	private PlanoCursoServico servico;
-
-	@Autowired
-	public void setServico(PlanoCursoServico servico) {
-		this.servico = servico;
-	}
-
-	@Override
-	protected GenericoServico<PlanoCurso, PlanoCursoDTO, Long> servico() {
-		return this.servico;
-	}
+	public abstract PlanoCursoServico<T, E> getPlanoCursoServico();
 
 	@PostMapping("/{planoCursoId}/disciplinas-cursadas")
-	public ResponseEntity<PlanoCursoDTO> adicionarDisciplinaCursada(@PathVariable Long planoCursoId,
+	public ResponseEntity<E> adicionarDisciplinaCursada(@PathVariable Long planoCursoId,
 	                                                                @RequestBody List<DisciplinaDTO> disciplinas) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaCursada(planoCursoId, disciplinas)));
+		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().adicionarDisciplinaCursada(planoCursoId, disciplinas)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-cursadas")
-	public ResponseEntity<PlanoCursoDTO> removerDisciplinaCursada(@PathVariable Long id,
+	public ResponseEntity<E> removerDisciplinaCursada(@PathVariable Long id,
 	                                                              @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaCursada(id, disciplinasDTOS)));
+		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().removerDisciplinaCursada(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/disciplinas-pendentes")
-	public ResponseEntity<PlanoCursoDTO> adicionarDisciplinaPendente(@PathVariable Long id,
+	public ResponseEntity<E> adicionarDisciplinaPendente(@PathVariable Long id,
 	                                                                 @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.adicionarDisciplinaPendente(id, disciplinasDTOS)));
+		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().adicionarDisciplinaPendente(id, disciplinasDTOS)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-pendentes")
-	public ResponseEntity<PlanoCursoDTO> removerDisciplinaPendente(@PathVariable Long id,
+	public ResponseEntity<E> removerDisciplinaPendente(@PathVariable Long id,
 	                                                               @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
-		return ResponseEntity.ok(servico.converterParaDTO(servico.removerDisciplinaPendente(id, disciplinasDTOS)));
+		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().removerDisciplinaPendente(id, disciplinasDTOS)));
 	}
 }
