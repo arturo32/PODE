@@ -14,51 +14,22 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public abstract class VinculoServico extends GenericoServico<Vinculo, VinculoDTO, Long> {
+public abstract class VinculoServico<T extends Vinculo, E extends VinculoDTO> extends GenericoServico<T, E, Long> {
 
-	private VinculoRepositorio repositorio;
+	private VinculoRepositorio<T> repositorio;
 	private EstudanteServico estudanteServico;
 
 	@Override
-	public VinculoDTO converterParaDTO(Vinculo vinculo) {
-		return new VinculoDTO(vinculo);
-	}
-
-	@Override
-	public abstract Vinculo converterParaEntidade(VinculoDTO dto);
-
-	@Override
-	protected void validar(VinculoDTO dto) {
-		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-		if (dto.getIdEstudante() != null) {
-			try {
-				estudanteServico.buscarPorId(dto.getIdEstudante());
-			} catch (EntidadeNaoEncontradaException e) {
-				exceptionHelper.add("estudante de id: " + dto.getIdEstudante() + " não encontrado");
-			}
-		} else {
-			exceptionHelper.add("estudante não foi informado");
-		}
-
-		// Verifica matricula
-		if (StringUtils.isEmpty(dto.getMatricula())) {
-			exceptionHelper.add("matricula não foi informada");
-		}
-
-	}
-
-	@Override
-	protected GenericoRepositorio<Vinculo, Long> repositorio() {
+	protected GenericoRepositorio<T, Long> repositorio() {
 		return this.repositorio;
 	}
 
-	public VinculoRepositorio getRepositorio() {
+	public VinculoRepositorio<T> getRepositorio() {
 		return repositorio;
 	}
 
 	@Autowired
-	public void setRepositorio(VinculoRepositorio repositorio) {
+	public void setRepositorio(VinculoRepositorio<T> repositorio) {
 		this.repositorio = repositorio;
 	}
 

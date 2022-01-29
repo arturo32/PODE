@@ -38,9 +38,5 @@ public abstract class PlanoCurso extends ModeloAbstrato<Long> {
 
 	public abstract Set<DisciplinaInterface> getDisciplinasCursadas();
 
-	public abstract void setDisciplinasCursadas(Set<DisciplinaInterface> disciplinasCursadas);
-
 	public abstract Set<DisciplinaInterface> getDisciplinasPendentes();
-
-	public abstract void setDisciplinasPendentes(Set<DisciplinaInterface> disciplinasPendentes);
 }

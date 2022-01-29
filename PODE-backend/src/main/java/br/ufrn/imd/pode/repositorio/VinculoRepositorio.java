@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VinculoRepositorio extends GenericoRepositorio<Vinculo, Long> {
+public interface VinculoRepositorio<T extends Vinculo> extends GenericoRepositorio<T, Long> {
 
-	Optional<Vinculo> findByAtivoIsTrueAndPlanoCurso_Id(Long planoCursoId);
+	Optional<T> findByAtivoIsTrueAndPlanoCurso_Id(Long planoCursoId);
 }

@@ -5,7 +5,9 @@ import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Estudante;
+import br.ufrn.imd.pode.modelo.Vinculo;
 import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
+import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,12 @@ import java.util.regex.Pattern;
 public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteRepositorio repositorio;
-	private VinculoServico vinculoServico;
+	private VinculoServico<Vinculo, VinculoDTO> vinculoServico;
 
 	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
-	public void setVinculoServico(VinculoServico vinculoServico) {
+	public void setVinculoServico(VinculoServico<Vinculo, VinculoDTO> vinculoServico) {
 		this.vinculoServico = vinculoServico;
 	}
 

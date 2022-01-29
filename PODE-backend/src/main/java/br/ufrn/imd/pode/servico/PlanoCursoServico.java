@@ -4,12 +4,10 @@ import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
-import br.ufrn.imd.pode.modelo.GradeCurricular;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
+import br.ufrn.imd.pode.modelo.*;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
+import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 
 	private PlanoCursoRepositorio repositorio;
 	private DisciplinaServico disciplinaServico;
-	private VinculoServico vinculoService;
+	private VinculoServico<Vinculo, VinculoDTO> vinculoService;
 
 	@Override
 	public PlanoCursoDTO converterParaDTO(PlanoCurso planoCurso) {
@@ -59,12 +57,12 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		this.disciplinaServico = disciplinaServico;
 	}
 
-	public VinculoServico getVinculoService() {
+	public VinculoServico<Vinculo, VinculoDTO> getVinculoService() {
 		return vinculoService;
 	}
 
 	@Autowired
-	public void setVinculoService(VinculoServico vinculoService) {
+	public void setVinculoService(VinculoServico<Vinculo, VinculoDTO> vinculoService) {
 		this.vinculoService = vinculoService;
 	}
 
@@ -149,13 +147,13 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 	public PlanoCurso adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
-		Set<DisciplinaInterface> naoPendentes = new HashSet<>();
+		Set<DisciplinaInterface> pendentes = new HashSet<>();
 		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
 		for (DisciplinaDTO dDTO : disciplinasDTOS) {
 			Disciplina d = disciplinaServico.buscarPorId(dDTO.getId());
 			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
-				naoPendentes.add(d);
+				pendentes.add(d);
 			} else {
 				exceptionHelper.add("Os pre-requisitos necessários para a disciplina '" +
 						d.getCodigo() + "' não serão atendidos. Expressão: " + d.getPrerequisitos());
@@ -164,7 +162,7 @@ public abstract class PlanoCursoServico extends GenericoServico<PlanoCurso, Plan
 		if (exceptionHelper.getMessage().isEmpty()) {
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
-		planoCurso.setDisciplinasPendentes(naoPendentes);
+		planoCurso.getDisciplinasPendentes().addAll(pendentes);
 		return repositorio.save(planoCurso);
 	}
 

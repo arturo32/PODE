@@ -71,9 +71,5 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 
 	public abstract Set<DisciplinaInterface> getDisciplinasObrigatorias();
 
-	public abstract void setDisciplinasObrigatorias(Set<DisciplinaInterface> disciplinasObrigatorias);
-
 	public abstract Set<DisciplinaInterface> getDisciplinasOptativas();
-
-	public abstract void setDisciplinasOptativas(Set<DisciplinaInterface> disciplinasOptativas);
 }

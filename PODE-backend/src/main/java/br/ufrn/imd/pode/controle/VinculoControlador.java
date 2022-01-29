@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/vinculos")
-public abstract class VinculoControlador extends GenericoControlador<Vinculo, VinculoDTO, Long> {
+public abstract class VinculoControlador<T extends Vinculo, E extends VinculoDTO> extends GenericoControlador<T, E, Long> {
 
-	private VinculoServico servico;
+	private VinculoServico<T, E> servico;
 
 	@Autowired
-	public void setServico(VinculoServico servico) {
+	public void setServico(VinculoServico<T, E> servico) {
 		this.servico = servico;
 	}
 
 	@Override
-	protected GenericoServico<Vinculo, VinculoDTO, Long> servico() {
+	protected GenericoServico<T, E, Long> servico() {
 		return this.servico;
 	}
 
