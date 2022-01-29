@@ -15,9 +15,6 @@ public class PlanoCursoDTO extends AbstratoDTO {
 	@JsonProperty("id-disciplinas-pendentes")
 	private Set<Long> idDisciplinasPendentes = new HashSet<>();
 
-	@JsonProperty("id-pes-interesse")
-	private Set<Long> idPesInteresse = new HashSet<>();
-
 	public PlanoCursoDTO() {
 	}
 
@@ -45,13 +42,5 @@ public class PlanoCursoDTO extends AbstratoDTO {
 
 	public void setIdDisciplinasPendentes(Set<Long> idDisciplinasPendentes) {
 		this.idDisciplinasPendentes = idDisciplinasPendentes;
-	}
-
-	public Set<Long> getIdPesInteresse() {
-		return idPesInteresse;
-	}
-
-	public void setIdPesInteresse(Set<Long> idPesInteresse) {
-		this.idPesInteresse = idPesInteresse;
 	}
 }
