@@ -62,7 +62,7 @@ public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements Disciplin
 
 	@Override
 	public void setCodigo(String codigo) {
-
+		// TODO: o que fazer aqui?
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements Disciplin
 
 	@Override
 	public void setNome(String nome) {
-
+		// TODO: o que fazer aqui?
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements Disciplin
 
 	@Override
 	public void setCh(Integer ch) {
-
+		// TODO: o que fazer aqui?
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements Disciplin
 
 	@Override
 	public void setPrerequisitos(String prerequisitos) {
-
+		// TODO: o que fazer aqui?
 	}
 
 	@Override

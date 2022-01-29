@@ -1,8 +1,10 @@
 package br.ufrn.imd.app1.modelo;
 
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,10 +12,6 @@ import java.util.Set;
 		name = "cursobti"
 )
 public class CursoBTI extends GradeCurricular {
-
-	private Integer cho;
-
-	private Integer chom;
 
 	private Integer chcm;
 
@@ -29,33 +27,15 @@ public class CursoBTI extends GradeCurricular {
 
 	private Integer prazoEsperado;
 
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "cursobti_disciplina_obrigatorias", joinColumns = {
+	@JoinColumn(name = "cursobti_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "cursobti_disciplina_optativas", joinColumns = {
+			@JoinColumn(name = "cursobti_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<DisciplinaBTI> disciplinasOptativas;
-
-	public Set<DisciplinaPeriodo> getDisciplinasObrigatorias() {
-		return disciplinasObrigatorias;
-	}
-
-	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
-	}
-
-	public Integer getCho() {
-		return cho;
-	}
-
-	public void setCho(Integer cho) {
-		this.cho = cho;
-	}
-
-	public Integer getChom() {
-		return chom;
-	}
-
-	public void setChom(Integer chom) {
-		this.chom = chom;
-	}
 
 	public Integer getChcm() {
 		return chcm;
@@ -111,5 +91,21 @@ public class CursoBTI extends GradeCurricular {
 
 	public void setPrazoEsperado(Integer prazoEsperado) {
 		this.prazoEsperado = prazoEsperado;
+	}
+
+	public Set<DisciplinaInterface> getDisciplinasObrigatorias() {
+		return new HashSet<>(disciplinasObrigatorias);
+	}
+
+	public Set<DisciplinaInterface> getDisciplinasOptativas() {
+		return new HashSet<>(disciplinasOptativas);
+	}
+
+	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
+	}
+
+	public void setDisciplinasOptativas(Set<DisciplinaBTI> disciplinasOptativas) {
+		this.disciplinasOptativas = disciplinasOptativas;
 	}
 }

@@ -2,6 +2,13 @@ package br.ufrn.imd.app1.modelo;
 
 import br.ufrn.imd.pode.modelo.Vinculo;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(
+		name = "vinculobti"
+)
 public class VinculoBTI extends Vinculo {
 	private Integer periodoInicialAno;
 

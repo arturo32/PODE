@@ -1,9 +1,10 @@
 package br.ufrn.imd.app1.modelo;
 
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,32 +14,34 @@ import java.util.Set;
 public class Pes extends GradeCurricular {
 	private Integer chm;
 
-	private Integer cho;
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "pes_disciplina_obrigatorias", joinColumns = {
+			@JoinColumn(name = "pes_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
 
-	private Set<DisciplinaBTI> disciplinasObrigatorias;
-
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "pes_disciplina_optativas", joinColumns = {
+			@JoinColumn(name = "pes_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<DisciplinaBTI> disciplinasOptativas;
 
-	@Override
 	public Integer getChm() {
 		return chm;
 	}
 
-	@Override
 	public void setChm(Integer chm) {
 		this.chm = chm;
 	}
 
-	public Integer getCho() {
-		return cho;
+	public Set<DisciplinaInterface> getDisciplinasObrigatorias() {
+		return new HashSet<>(disciplinasObrigatorias);
 	}
 
-	public void setCho(Integer cho) {
-		this.cho = cho;
+	public Set<DisciplinaInterface> getDisciplinasOptativas() {
+		return new HashSet<>(disciplinasOptativas);
 	}
 
-	public Set<DisciplinaBTI> getDisciplinasOptativas() {
-		return disciplinasOptativas;
+	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
+		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 
 	public void setDisciplinasOptativas(Set<DisciplinaBTI> disciplinasOptativas) {
