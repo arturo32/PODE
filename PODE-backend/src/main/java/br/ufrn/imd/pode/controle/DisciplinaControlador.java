@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -17,26 +18,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/disciplinas")
-public class DisciplinaControlador<T extends Disciplina, E extends DisciplinaDTO> extends GenericoControlador<T, E, Long> {
-
-	private DisciplinaServico<T, E> servico;
+public abstract class DisciplinaControlador<T extends Disciplina, E extends DisciplinaDTO> extends GenericoControlador<T, E, Long> {
 
 	private Map<String, FiltroDisciplinaServico> filtros;
 
-	@Autowired
-	public void setFiltros(Set<FiltroDisciplinaServico> filtros) {
+	public abstract DisciplinaServico<T, E> getDisciplinaServico();
+
+	@Autowired(required = false)
+	public void setFiltros(List<FiltroDisciplinaServico> filtros) {
 		this.filtros = filtros.stream()
 				.collect(Collectors.toMap(FiltroDisciplinaServico::obterNome, Function.identity()));
-	}
-
-	@Autowired
-	public void setDisciplinaService(DisciplinaServico<T, E> disciplinaService) {
-		this.servico = disciplinaService;
-	}
-
-	@Override
-	protected GenericoServico<T, E, Long> servico() {
-		return this.servico;
 	}
 
 	@GetMapping("/filtro/{nome_filtro}")
@@ -47,7 +38,7 @@ public class DisciplinaControlador<T extends Disciplina, E extends DisciplinaDTO
 
 	@GetMapping("/codigos/{codigo}")
 	public ResponseEntity<Collection<E>> buscarDisciplinaCodigo(@PathVariable String codigo) {
-		return ResponseEntity.ok(servico.converterParaListaDTO(servico.buscarDisciplinasPorCodigo(codigo)));
+		return ResponseEntity.ok(getDisciplinaServico().converterParaListaDTO(getDisciplinaServico().buscarDisciplinasPorCodigo(codigo)));
 	}
 
 }

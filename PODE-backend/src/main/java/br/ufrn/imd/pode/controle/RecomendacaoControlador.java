@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -21,8 +22,8 @@ public class RecomendacaoControlador {
 
 	private Map<String, RecomendacaoServico> recomendadores = new HashMap<>();
 
-	@Autowired
-	public void setRecomendadores(Set<RecomendacaoServico> recomendadores) {
+	@Autowired(required = false)
+	public void setRecomendadores(List<RecomendacaoServico> recomendadores) {
 		this.recomendadores = recomendadores.stream()
 				.collect(Collectors.toMap(RecomendacaoServico::getNomeServico, Function.identity()));
 	}

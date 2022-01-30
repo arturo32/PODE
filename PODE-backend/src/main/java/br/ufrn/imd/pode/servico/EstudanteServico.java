@@ -25,12 +25,12 @@ import java.util.regex.Pattern;
 public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, Long> {
 
 	private EstudanteRepositorio repositorio;
-	private VinculoServico<Vinculo, VinculoDTO> vinculoServico;
+	private VinculoServicoInterface vinculoServico;
 
 	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
-	public void setVinculoServico(VinculoServico<Vinculo, VinculoDTO> vinculoServico) {
+	public void setVinculoServico(VinculoServicoInterface vinculoServico) {
 		this.vinculoServico = vinculoServico;
 	}
 

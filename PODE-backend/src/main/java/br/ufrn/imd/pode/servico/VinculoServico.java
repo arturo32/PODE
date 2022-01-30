@@ -11,29 +11,9 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public abstract class VinculoServico<T extends Vinculo, E extends VinculoDTO> extends GenericoServico<T, E, Long> {
+public abstract class VinculoServico<T extends Vinculo, E extends VinculoDTO> extends GenericoServico<T, E, Long> implements VinculoServicoInterface{
 
-	private VinculoRepositorio<T> repositorio;
-	private EstudanteServico estudanteServico;
-
-	@Override
-	protected GenericoRepositorio<T, Long> repositorio() {
-		return this.repositorio;
-	}
-
-	public VinculoRepositorio<T> getRepositorio() {
-		return repositorio;
-	}
-
-	@Autowired
-	public void setRepositorio(VinculoRepositorio<T> repositorio) {
-		this.repositorio = repositorio;
-	}
-
-	@Autowired
-	public void setEstudanteServico(EstudanteServico estudanteServico) {
-		this.estudanteServico = estudanteServico;
-	}
+	public abstract VinculoRepositorio<T> getRepositorio();
 
 	public Double obterPercentualConclusao(Long id) {
 		// TODO: Validar o id

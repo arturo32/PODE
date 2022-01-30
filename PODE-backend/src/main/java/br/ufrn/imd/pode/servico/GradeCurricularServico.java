@@ -10,10 +10,4 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 public abstract class GradeCurricularServico<T extends GradeCurricular, D extends GradeCurricularDTO> extends GenericoServico<T, D, Long> {
-	protected DisciplinaServico disciplinaServico;
-
-	@Autowired
-	public DisciplinaServico getDisciplinaServico() {
-		return this.disciplinaServico;
-	}
 }

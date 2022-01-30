@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "vinculo")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Vinculo extends ModeloAbstrato<Long> {
+public class Vinculo extends ModeloAbstrato<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VINCULO")
@@ -26,7 +26,6 @@ public abstract class Vinculo extends ModeloAbstrato<Long> {
 	protected PlanoCurso planoCurso;
 
 	@ManyToOne
-	@JoinColumn(name = "estudante_id")
 	protected Estudante estudante;
 
 	public Vinculo() {

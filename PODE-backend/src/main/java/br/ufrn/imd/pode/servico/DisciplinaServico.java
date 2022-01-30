@@ -17,9 +17,7 @@ import java.util.regex.Pattern;
 
 @Service
 @Transactional
-public class DisciplinaServico<T extends Disciplina, E extends DisciplinaDTO> extends GenericoServico<T, E, Long> {
-
-	private DisciplinaRepositorio<T> repository;
+public abstract class DisciplinaServico<T extends Disciplina, E extends DisciplinaDTO> extends GenericoServico<T, E, Long> {
 
 	@Override
 	public E converterParaDTO(T disciplina) {
@@ -52,22 +50,10 @@ public class DisciplinaServico<T extends Disciplina, E extends DisciplinaDTO> ex
 		return (T) disciplina;
 	}
 
-	@Override
-	protected GenericoRepositorio<T, Long> repositorio() {
-		return this.repository;
-	}
-
-	public DisciplinaRepositorio<T> getRepository() {
-		return this.repository;
-	}
-
-	@Autowired
-	public void setRepository(DisciplinaRepositorio<T> disciplinaRepository) {
-		this.repository = disciplinaRepository;
-	}
+	public abstract DisciplinaRepositorio<T> getDisciplinaRpositorio();
 
 	public Set<T> buscarDisciplinasPorCodigo(String codigo) {
-		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
+		return getDisciplinaRpositorio().findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
 	@Override

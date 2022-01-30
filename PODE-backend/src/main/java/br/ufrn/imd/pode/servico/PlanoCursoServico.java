@@ -25,20 +25,9 @@ import java.util.Set;
 @Transactional
 public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoServico<T, E, Long> {
 
-	private VinculoServico<Vinculo, VinculoDTO> vinculoService;
-
 	public abstract DisciplinaServico<?, ?> getDisciplinaServico();
 
 	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
-
-	public VinculoServico<Vinculo, VinculoDTO> getVinculoService() {
-		return vinculoService;
-	}
-
-	@Autowired
-	public void setVinculoService(VinculoServico<Vinculo, VinculoDTO> vinculoService) {
-		this.vinculoService = vinculoService;
-	}
 
 	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
 
