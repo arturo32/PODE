@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Entity
 @Table(
-		name = "disciplinabti"
+		name = "disciplinaperiodo"
 )
 public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements DisciplinaInterface {
 

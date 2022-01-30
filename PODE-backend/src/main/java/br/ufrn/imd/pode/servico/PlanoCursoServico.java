@@ -25,19 +25,11 @@ import java.util.Set;
 @Transactional
 public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoServico<T, E, Long> {
 
-	private DisciplinaServico disciplinaServico;
 	private VinculoServico<Vinculo, VinculoDTO> vinculoService;
 
-	public DisciplinaServico getDisciplinaServico() {
-		return disciplinaServico;
-	}
+	public abstract DisciplinaServico<?, ?> getDisciplinaServico();
 
 	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
-
-	@Autowired
-	public void setDisciplinaServico(DisciplinaServico disciplinaServico) {
-		this.disciplinaServico = disciplinaServico;
-	}
 
 	public VinculoServico<Vinculo, VinculoDTO> getVinculoService() {
 		return vinculoService;
@@ -56,7 +48,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		Collection<Disciplina> disciplinas = new HashSet<>();
 		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
 		for (DisciplinaDTO dp : disciplinasDTOS) {
-			Disciplina d = disciplinaServico.buscarPorId(dp.getId());
+			Disciplina d = getDisciplinaServico().buscarPorId(dp.getId());
 			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
 				disciplinas.add(d);
@@ -76,7 +68,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
-			Disciplina d = disciplinaServico.buscarPorId(dpDTO.getId());
+			Disciplina d = getDisciplinaServico().buscarPorId(dpDTO.getId());
 			if (planoCurso.getDisciplinasCursadas().contains(d)) {
 				disciplinas.add(d);
 			}
@@ -92,7 +84,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		Set<DisciplinaInterface> pendentes = new HashSet<>();
 		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
 		for (DisciplinaDTO dDTO : disciplinasDTOS) {
-			Disciplina d = disciplinaServico.buscarPorId(dDTO.getId());
+			Disciplina d = getDisciplinaServico().buscarPorId(dDTO.getId());
 			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
 				pendentes.add(d);
@@ -112,7 +104,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
 		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
-			Disciplina dp = disciplinaServico.buscarPorId(dpDTO.getId());
+			Disciplina dp = getDisciplinaServico().buscarPorId(dpDTO.getId());
 			disciplinas.add(dp);
 		}
 		planoCurso.getDisciplinasPendentes().removeAll(disciplinas);

@@ -1,36 +1,62 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.modelo.DisciplinaBTI;
+import br.ufrn.imd.app1.modelo.PlanoCursoPes;
+import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
 import br.ufrn.imd.app1.modelo.dto.PlanoCursoPesDTO;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+import br.ufrn.imd.app1.repositorio.DisciplinaBTIRepositorio;
+import br.ufrn.imd.app1.repositorio.PlanoCursoPesRepositorio;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
-import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
+import br.ufrn.imd.pode.servico.DisciplinaServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
-public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCurso, PlanoCursoPesDTO> {
+@Service
+@Transactional
+public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, PlanoCursoPesDTO> {
+
+	private DisciplinaBTIServico disciplinaBTIServico;
+
+	private PlanoCursoPesRepositorio repositorio;
+
+	@Autowired
+	public void setRepositorio(PlanoCursoPesRepositorio repositorio) {
+		this.repositorio = repositorio;
+	}
+
+	@Autowired
+	public void setDisciplinaBTIServico(DisciplinaBTIServico disciplinaBTIServico) {
+		this.disciplinaBTIServico = disciplinaBTIServico;
+	}
 
 	@Override
-	public PlanoCursoRepositorio<PlanoCurso> getPlanoCursoRepositorio() {
+	public DisciplinaServico<DisciplinaBTI, DisciplinaBTIDTO> getDisciplinaServico() {
+		return disciplinaBTIServico;
+	}
+
+	@Override
+	public PlanoCursoRepositorio<PlanoCursoPes> getPlanoCursoRepositorio() {
+		return repositorio;
+	}
+
+	@Override
+	public PlanoCursoPes criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
 		return null;
 	}
 
 	@Override
-	public PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
+	public PlanoCursoPesDTO converterParaDTO(PlanoCursoPes entity) {
 		return null;
 	}
 
 	@Override
-	public PlanoCursoPesDTO converterParaDTO(PlanoCurso entity) {
-		return null;
-	}
-
-	@Override
-	public PlanoCurso converterParaEntidade(PlanoCursoPesDTO dto) {
+	public PlanoCursoPes converterParaEntidade(PlanoCursoPesDTO dto) {
 		return null;
 	}
 
@@ -40,7 +66,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCurso, PlanoCur
 	}
 
 	@Override
-	protected GenericoRepositorio repositorio() {
-		return null;
+	protected GenericoRepositorio<PlanoCursoPes, Long> repositorio() {
+		return repositorio;
 	}
 }

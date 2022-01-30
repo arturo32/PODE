@@ -17,17 +17,17 @@ import java.util.regex.Pattern;
 
 @Service
 @Transactional
-public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO, Long> {
+public class DisciplinaServico<T extends Disciplina, E extends DisciplinaDTO> extends GenericoServico<T, E, Long> {
 
-	private DisciplinaRepositorio repository;
+	private DisciplinaRepositorio<T> repository;
 
 	@Override
-	public DisciplinaDTO converterParaDTO(Disciplina disciplina) {
-		return new DisciplinaDTO(disciplina);
+	public E converterParaDTO(T disciplina) {
+		return (E) new DisciplinaDTO(disciplina);
 	}
 
 	@Override
-	public Disciplina converterParaEntidade(DisciplinaDTO dto) {
+	public T converterParaEntidade(E dto) {
 		Disciplina disciplina = new Disciplina();
 
 		// Se for uma edição
@@ -49,29 +49,29 @@ public class DisciplinaServico extends GenericoServico<Disciplina, DisciplinaDTO
 			disciplina.setPrerequisitos(dto.getPrerequisitos());
 		}
 
-		return disciplina;
+		return (T) disciplina;
 	}
 
 	@Override
-	protected GenericoRepositorio<Disciplina, Long> repositorio() {
+	protected GenericoRepositorio<T, Long> repositorio() {
 		return this.repository;
 	}
 
-	public DisciplinaRepositorio getRepository() {
+	public DisciplinaRepositorio<T> getRepository() {
 		return this.repository;
 	}
 
 	@Autowired
-	public void setRepository(DisciplinaRepositorio disciplinaRepository) {
+	public void setRepository(DisciplinaRepositorio<T> disciplinaRepository) {
 		this.repository = disciplinaRepository;
 	}
 
-	public Set<Disciplina> buscarDisciplinasPorCodigo(String codigo) {
+	public Set<T> buscarDisciplinasPorCodigo(String codigo) {
 		return this.repository.findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
 	}
 
 	@Override
-	public void validar(DisciplinaDTO disciplina) {
+	public void validar(E disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		// Verifica código

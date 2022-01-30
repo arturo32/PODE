@@ -11,11 +11,11 @@ import java.util.Collection;
 import java.util.Set;
 
 @Repository
-public interface DisciplinaRepositorio extends GenericoRepositorio<Disciplina, Long> {
+public interface DisciplinaRepositorio<T extends Disciplina> extends GenericoRepositorio<T, Long> {
 
-	Set<Disciplina> findDisciplinasByAtivoIsTrueAndCodigoIs(@NotNull @NotBlank String codigo);
+	Set<T> findDisciplinasByAtivoIsTrueAndCodigoIs(@NotNull @NotBlank String codigo);
 
-	Set<Disciplina> findDisciplinasByAtivoIsTrueAndCodigoIn(Collection<@NotNull @NotBlank String> codigos);
+	Set<T> findDisciplinasByAtivoIsTrueAndCodigoIn(Collection<@NotNull @NotBlank String> codigos);
 
 	@Query(value = "SELECT\n" +
 			"	disciplina.id,\n" +

@@ -3,7 +3,12 @@ package br.ufrn.imd.app1.servico;
 import br.ufrn.imd.app1.modelo.VinculoBTI;
 import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
 import br.ufrn.imd.pode.servico.VinculoServico;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO> {
 
 	@Override

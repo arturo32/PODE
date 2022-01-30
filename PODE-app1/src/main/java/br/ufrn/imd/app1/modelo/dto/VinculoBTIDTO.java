@@ -11,6 +11,7 @@ public class VinculoBTIDTO extends VinculoDTO {
 	private Integer periodoAtualAno;
 
 	private Integer periodoInicialPeriodo;
+
 	public VinculoBTIDTO(VinculoBTI vinculo) {
 		super(vinculo);
 		periodoInicialAno = vinculo.getPeriodoInicialAno();

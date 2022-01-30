@@ -28,5 +28,7 @@ public abstract class VinculoControlador<T extends Vinculo, E extends VinculoDTO
 	}
 
 	@PostMapping("/{id}/percentual-conclusao")
-	public abstract ResponseEntity<VinculoDTO> obterPercentualConclusao(@PathVariable Long id);
+	public ResponseEntity<Double> obterPercentualConclusao(@PathVariable Long id) {
+		return ResponseEntity.ok(servico.obterPercentualConclusao(id));
+	}
 }

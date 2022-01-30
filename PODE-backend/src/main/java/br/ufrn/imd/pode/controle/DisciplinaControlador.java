@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/disciplinas")
-public class DisciplinaControlador extends GenericoControlador<Disciplina, DisciplinaDTO, Long> {
+public class DisciplinaControlador<T extends Disciplina, E extends DisciplinaDTO> extends GenericoControlador<T, E, Long> {
 
-	private DisciplinaServico servico;
+	private DisciplinaServico<T, E> servico;
 
 	private Map<String, FiltroDisciplinaServico> filtros;
 
@@ -30,12 +30,12 @@ public class DisciplinaControlador extends GenericoControlador<Disciplina, Disci
 	}
 
 	@Autowired
-	public void setDisciplinaService(DisciplinaServico disciplinaService) {
+	public void setDisciplinaService(DisciplinaServico<T, E> disciplinaService) {
 		this.servico = disciplinaService;
 	}
 
 	@Override
-	protected GenericoServico<Disciplina, DisciplinaDTO, Long> servico() {
+	protected GenericoServico<T, E, Long> servico() {
 		return this.servico;
 	}
 
@@ -46,7 +46,7 @@ public class DisciplinaControlador extends GenericoControlador<Disciplina, Disci
 	}
 
 	@GetMapping("/codigos/{codigo}")
-	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinaCodigo(@PathVariable String codigo) {
+	public ResponseEntity<Collection<E>> buscarDisciplinaCodigo(@PathVariable String codigo) {
 		return ResponseEntity.ok(servico.converterParaListaDTO(servico.buscarDisciplinasPorCodigo(codigo)));
 	}
 

@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-		name = "cursobti"
+		name = "pes"
 )
 public class Pes extends GradeCurricular {
 	private Integer chm;
