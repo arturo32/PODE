@@ -18,11 +18,9 @@ import java.util.regex.Pattern;
 
 @Service
 @Transactional
-public class AdministradorServico extends GenericoServico<Administrador, AdministradorDTO, Long> {
+public class AdministradorServico extends UsuarioService<Administrador, AdministradorDTO> {
 
 	private AdministradorRepositorio repository;
-
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Override
 	public AdministradorDTO converterParaDTO(Administrador administrador) {
@@ -35,7 +33,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 
 		//Se for uma edição
 		if (dto.getId() != null) {
-			administrador = this.buscarPorId(administrador.getId());
+			administrador = this.buscarPorId(dto.getId());
 		}
 
 		administrador.setId(dto.getId());
@@ -54,27 +52,7 @@ public class AdministradorServico extends GenericoServico<Administrador, Adminis
 
 	@Override
 	public void validar(AdministradorDTO dto) {
-		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-		//Verifica nome
-		if (StringUtils.isEmpty(dto.getNome())) {
-			exceptionHelper.add("nome inválido");
-		}
-		//Verifica senha
-		if (StringUtils.isEmpty(dto.getSenha()) || dto.getSenha().length() < 7) {
-			exceptionHelper.add("senha inválida");
-		}
-		//Verifica email
-		String regex = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
-		if (StringUtils.isEmpty(dto.getEmail()) || !Pattern.compile(regex).matcher(dto.getEmail()).matches()) {
-			exceptionHelper.add("email inválido");
-		}
-		//Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
-			dto.setSenha(encoder.encode(dto.getSenha()));
-		} else {
-			throw new ValidacaoException(exceptionHelper.getMessage());
-		}
+		this.validarUsuario(dto);
 	}
 
 	@Override

@@ -22,12 +22,10 @@ import java.util.regex.Pattern;
 
 @Service
 @Transactional
-public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, Long> {
+public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 
 	private EstudanteRepositorio repositorio;
 	private VinculoServicoInterface vinculoServico;
-
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public void setVinculoServico(VinculoServicoInterface vinculoServico) {
@@ -76,27 +74,7 @@ public class EstudanteServico extends GenericoServico<Estudante, EstudanteDTO, L
 
 	@Override
 	public void validar(EstudanteDTO dto) {
-		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-		//Verifica nome
-		if (StringUtils.isEmpty(dto.getNome())) {
-			exceptionHelper.add("nome inválido");
-		}
-		//Verifica senha
-		if (StringUtils.isEmpty(dto.getSenha()) || dto.getSenha().length() < 8) {
-			exceptionHelper.add("senha inválida");
-		}
-		//Verifica email
-		String regex = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
-		if (StringUtils.isEmpty(dto.getEmail()) || !Pattern.compile(regex).matcher(dto.getEmail()).matches()) {
-			exceptionHelper.add("email inválido");
-		}
-		//Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
-			dto.setSenha(encoder.encode(dto.getSenha()));
-		} else {
-			throw new ValidacaoException(exceptionHelper.getMessage());
-		}
+		this.validarUsuario(dto);
 	}
 
 	@Override

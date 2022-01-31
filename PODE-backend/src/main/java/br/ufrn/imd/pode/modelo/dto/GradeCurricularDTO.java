@@ -1,6 +1,5 @@
 package br.ufrn.imd.pode.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
@@ -13,6 +12,10 @@ public class GradeCurricularDTO extends AbstratoDTO {
 	private Integer chopm;
 	private Set<Long> disciplinasObrigatorias;
 	private Set<Long> disciplinasOptativas;
+
+	public GradeCurricularDTO() {
+
+	}
 
 	public GradeCurricularDTO(GradeCurricular entity) {
 		this.setId(entity.getId());

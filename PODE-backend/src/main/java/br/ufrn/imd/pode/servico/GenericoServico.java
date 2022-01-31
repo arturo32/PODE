@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends AbstratoDTO, PK extends Serializable> {
 
 	protected String nomeModelo;

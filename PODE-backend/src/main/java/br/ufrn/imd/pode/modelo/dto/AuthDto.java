@@ -13,6 +13,8 @@ public class AuthDto extends User {
 
 	private final Long id;
 
+
+
 	public AuthDto(String nome, Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 		this.nome = nome;

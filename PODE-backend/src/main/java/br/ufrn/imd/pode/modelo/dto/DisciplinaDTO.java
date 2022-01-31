@@ -12,6 +12,8 @@ public class DisciplinaDTO extends AbstratoDTO {
 
 	private String prerequisitos;
 
+	public DisciplinaDTO() {
+	}
 
 	public DisciplinaDTO(Disciplina entity) {
 		this.setId(entity.getId());

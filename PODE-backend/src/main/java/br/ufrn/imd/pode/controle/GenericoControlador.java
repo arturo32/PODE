@@ -30,6 +30,12 @@ public abstract class GenericoControlador<T extends ModeloAbstrato<PK>, Dto exte
 		return ResponseEntity.ok(servico().converterParaDTO(servico().salvar(dto)));
 	}
 
+//	@PostMapping
+//	public String salvar(@Valid @RequestBody String dto) {
+//		dto.length();
+//		return dto;
+//	}
+
 	@PutMapping
 	public ResponseEntity<Dto> atualizar(@Valid @RequestBody Dto dto) {
 		return ResponseEntity.ok(servico().converterParaDTO(servico().atualizar(dto)));
