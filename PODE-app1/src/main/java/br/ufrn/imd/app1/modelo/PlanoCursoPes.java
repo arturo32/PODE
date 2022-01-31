@@ -28,7 +28,7 @@ public class PlanoCursoPes extends PlanoCurso {
 	@JoinTable(name = "plano_curso_disciplina_pendente", joinColumns = {
 			@JoinColumn(name = "plano_curso_id")}, inverseJoinColumns = {
 			@JoinColumn(name = "disciplina_periodo_id")})
-	protected Set<DisciplinaBTI> disciplinasPendentes;
+	protected Set<DisciplinaPeriodo> disciplinasPendentes;
 
 	public List<Pes> getGradesParalelas() {
 		return gradesParalelas;
@@ -36,6 +36,14 @@ public class PlanoCursoPes extends PlanoCurso {
 
 	public void setGradesParalelas(List<Pes> gradesParalelas) {
 		this.gradesParalelas = gradesParalelas;
+	}
+
+	public void setDisciplinasCursadas(Set<DisciplinaPeriodo> disciplinasCursadas) {
+		this.disciplinasCursadas = disciplinasCursadas;
+	}
+
+	public void setDisciplinasPendentes(Set<DisciplinaPeriodo> disciplinasPendentes) {
+		this.disciplinasPendentes = disciplinasPendentes;
 	}
 
 	@Override

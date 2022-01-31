@@ -17,7 +17,7 @@ public class Pes extends GradeCurricular {
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "pes_disciplina_obrigatorias", joinColumns = {
 			@JoinColumn(name = "pes_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
+	private Set<DisciplinaBTI> disciplinasObrigatorias;
 
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "pes_disciplina_optativas", joinColumns = {
@@ -40,7 +40,7 @@ public class Pes extends GradeCurricular {
 		return new HashSet<>(disciplinasOptativas);
 	}
 
-	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
+	public void setDisciplinasObrigatorias(Set<DisciplinaBTI> disciplinasObrigatorias) {
 		this.disciplinasObrigatorias = disciplinasObrigatorias;
 	}
 

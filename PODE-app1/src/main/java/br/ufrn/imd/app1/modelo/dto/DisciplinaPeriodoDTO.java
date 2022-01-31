@@ -1,14 +1,29 @@
 package br.ufrn.imd.app1.modelo.dto;
 
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
 
-public class DisciplinaPeriodoDTO extends DisciplinaBTIDTO {
+public class DisciplinaPeriodoDTO extends AbstratoDTO {
 
 	private Integer periodo;
 
+	private Long idDisciplinaBTI;
+
+	public DisciplinaPeriodoDTO() {
+	}
+
 	public DisciplinaPeriodoDTO(DisciplinaPeriodo entity) {
-		super(entity.getDisciplina());
+		this.setId(entity.getId());
+		this.setIdDisciplinaBTI(entity.getDisciplina().getId());
 		this.setPeriodo(entity.getPeriodo());
+	}
+
+	public Long getIdDisciplinaBTI() {
+		return idDisciplinaBTI;
+	}
+
+	public void setIdDisciplinaBTI(Long idDisciplinaBTI) {
+		this.idDisciplinaBTI = idDisciplinaBTI;
 	}
 
 	public Integer getPeriodo() {

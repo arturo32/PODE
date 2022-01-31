@@ -7,6 +7,9 @@ public class PesDTO extends GradeCurricularDTO {
 
 	private Integer chm;
 
+	public PesDTO() {
+	}
+
 	public PesDTO(Pes entity) {
 		super(entity);
 		this.setChm(entity.getChm());

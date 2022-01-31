@@ -20,4 +20,12 @@ public class PlanoCursoPesDTO extends PlanoCursoDTO {
 		super(planoCurso);
 		idPes = planoCurso.getGradesParalelas().stream().map(Pes::getId).collect(Collectors.toSet());
 	}
+
+	public Set<Long> getIdPes() {
+		return idPes;
+	}
+
+	public void setIdPes(Set<Long> idPes) {
+		this.idPes = idPes;
+	}
 }

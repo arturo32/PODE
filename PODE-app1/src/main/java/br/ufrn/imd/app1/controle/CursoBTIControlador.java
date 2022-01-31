@@ -3,7 +3,7 @@ package br.ufrn.imd.app1.controle;
 import br.ufrn.imd.app1.modelo.CursoBTI;
 import br.ufrn.imd.app1.modelo.dto.CursoBTIDTO;
 import br.ufrn.imd.app1.servico.CursoBTIServico;
-import br.ufrn.imd.pode.controle.GradeCurricularControlador;
+import br.ufrn.imd.pode.controle.GenericoControlador;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/cursos-bti")
-public class CursoBTIControlador extends GradeCurricularControlador<CursoBTI, CursoBTIDTO> {
+public class CursoBTIControlador extends GenericoControlador<CursoBTI, CursoBTIDTO, Long> {
 
 	private CursoBTIServico servico;
 

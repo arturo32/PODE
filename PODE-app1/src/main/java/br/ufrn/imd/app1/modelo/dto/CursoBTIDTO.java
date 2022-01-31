@@ -5,6 +5,7 @@ import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
 
 public class CursoBTIDTO extends GradeCurricularDTO {
 
+	private Integer chm;
 	private Integer chcm;
 	private Integer chem;
 	private Integer chminp;
@@ -13,8 +14,11 @@ public class CursoBTIDTO extends GradeCurricularDTO {
 	private Integer prazoMaximo;
 	private Integer prazoEsperado;
 
+	public CursoBTIDTO() {}
+
 	public CursoBTIDTO(CursoBTI entity) {
 		super(entity);
+		this.chm = entity.getChm();
 		this.chcm = entity.getChcm();
 		this.chem = entity.getChem();
 		this.chminp = entity.getChminp();
@@ -22,6 +26,14 @@ public class CursoBTIDTO extends GradeCurricularDTO {
 		this.prazoMinimo = entity.getPrazoMinimo();
 		this.prazoMaximo = entity.getPrazoMaximo();
 		this.prazoEsperado = entity.getPrazoEsperado();
+	}
+
+	public Integer getChm() {
+		return chm;
+	}
+
+	public void setChm(Integer chm) {
+		this.chm = chm;
 	}
 
 	public Integer getChcm() {

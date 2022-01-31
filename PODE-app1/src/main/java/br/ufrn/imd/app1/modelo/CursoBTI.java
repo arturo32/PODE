@@ -13,6 +13,8 @@ import java.util.Set;
 )
 public class CursoBTI extends GradeCurricular {
 
+	private Integer chm;
+
 	private Integer chcm;
 
 	private Integer chem;
@@ -36,6 +38,14 @@ public class CursoBTI extends GradeCurricular {
 	@JoinTable(name = "cursobti_disciplina_optativas", joinColumns = {
 			@JoinColumn(name = "cursobti_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
 	private Set<DisciplinaBTI> disciplinasOptativas;
+
+	public Integer getChm() {
+		return chm;
+	}
+
+	public void setChm(Integer chm) {
+		this.chm = chm;
+	}
 
 	public Integer getChcm() {
 		return chcm;
@@ -107,5 +117,13 @@ public class CursoBTI extends GradeCurricular {
 
 	public void setDisciplinasOptativas(Set<DisciplinaBTI> disciplinasOptativas) {
 		this.disciplinasOptativas = disciplinasOptativas;
+	}
+
+	public Set<DisciplinaPeriodo> getDisciplinasPeriodoObrigatorias() {
+		return disciplinasObrigatorias;
+	}
+
+	public Set<DisciplinaBTI> getDisciplinasBTIOptativas() {
+		return disciplinasOptativas;
 	}
 }
