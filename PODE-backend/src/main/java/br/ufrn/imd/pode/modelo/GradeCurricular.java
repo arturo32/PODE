@@ -25,16 +25,6 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 	@NotNull
 	protected Integer chopm;
 
-//	@ManyToMany(cascade = {CascadeType.ALL})
-//	@JoinTable(name = "grade_curricular_disciplina_obrigatorias", joinColumns = {
-//			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-//	protected Set<Disciplina> disciplinasObrigatorias;
-//
-//	@ManyToMany(cascade = {CascadeType.ALL})
-//	@JoinTable(name = "grade_curricular_disciplina_optativas", joinColumns = {
-//			@JoinColumn(name = "grade_curricular_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-//	protected Set<Disciplina> disciplinasOptativas;
-
 	@Override
 	public Long getId() {
 		return id;

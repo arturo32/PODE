@@ -13,11 +13,11 @@ public interface RecomendacaoServico {
 
 	void validar(Long vinculoId);
 
+	RecomendacaoDTO recomendar(Long vinculoId);
+
 	default RecomendacaoDTO recomendarDisciplinas(Long idVinculo) {
 		validar(idVinculo);
 		return recomendar(idVinculo);
 	}
-
-	RecomendacaoDTO recomendar(Long vinculoId);
 
 }

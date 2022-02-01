@@ -7,10 +7,10 @@ import br.ufrn.imd.pode.controle.PlanoCursoControlador;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/planos-de-curso")
 public class PlanoCursoPesControlador extends PlanoCursoControlador<PlanoCursoPes, PlanoCursoPesDTO> {
 
