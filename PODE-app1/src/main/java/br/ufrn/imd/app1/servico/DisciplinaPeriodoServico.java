@@ -5,7 +5,9 @@ import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.app1.repositorio.DisciplinaPeriodoRepositorio;
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
+public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<DisciplinaPeriodo, DisciplinaPeriodoDTO> {
 
 	private DisciplinaBTIServico disciplinaBTIServico;
 	private DisciplinaPeriodoRepositorio repositorio;
@@ -45,12 +47,12 @@ public class DisciplinaPeriodoServico extends GenericoServico<DisciplinaPeriodo,
 
 		disciplinaPeriodo.setId(dto.getId());
 
-		if (dto.getIdDisciplinaBTI() == null) {
+		if (dto.getDisciplinaId() == null) {
 			throw new EntidadeInconsistenteException("disciplina inconsistente");
 		}
 		try {
 			disciplinaPeriodo
-					.setDisciplina(this.disciplinaBTIServico.buscarPorId(dto.getIdDisciplinaBTI()));
+					.setDisciplina(this.disciplinaBTIServico.buscarPorId(dto.getDisciplinaId()));
 		} catch (EntidadeNaoEncontradaException entityNotFoundException){
 			throw new EntidadeInconsistenteException("disciplina inconsistente");
 		}

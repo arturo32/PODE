@@ -59,6 +59,11 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 	}
 
 	@Override
+	protected void validar(DisciplinaBTIDTO dto) {
+
+	}
+
+	@Override
 	protected GenericoRepositorio<DisciplinaBTI, Long> repositorio() {
 		return repositorio;
 	}

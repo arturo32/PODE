@@ -25,12 +25,6 @@ import java.util.regex.Pattern;
 public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 
 	private EstudanteRepositorio repositorio;
-	private VinculoServico vinculoServico;
-
-	@Autowired
-	public void setVinculoServico(VinculoServico vinculoServico) {
-		this.vinculoServico = vinculoServico;
-	}
 
 	@Override
 	public EstudanteDTO converterParaDTO(Estudante estudante) {
@@ -56,18 +50,11 @@ public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 		if (dto.getSenha() != null) {
 			estudante.setSenha(dto.getSenha());
 		}
-
 		if (dto.getIdVinculos() != null) {
-			estudante.setVinculos(new HashSet<>());
-
-			for (Long idVinculo : dto.getIdVinculos()) {
-				try {
-					estudante.getVinculos().add(this.vinculoServico.buscarPorId(idVinculo));
-				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
-					throw new EntidadeInconsistenteException("vinculo inconsistente");
-				}
-			}
+			//TODO
+			throw new EntidadeInconsistenteException("Nenhum vinculo para esse estudante pode existir antes dele ser criado");
 		}
+		estudante.setVinculos(new HashSet<>());
 
 		return estudante;
 	}

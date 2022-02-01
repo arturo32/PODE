@@ -7,11 +7,13 @@ import br.ufrn.imd.app1.repositorio.DisciplinaBTIRepositorio;
 import br.ufrn.imd.app1.repositorio.PlanoCursoPesRepositorio;
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.Vinculo;
 import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
+import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 import br.ufrn.imd.pode.servico.DisciplinaServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
 import br.ufrn.imd.pode.servico.VinculoServico;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -61,6 +64,11 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	}
 
 	@Override
+	public DisciplinaCursadaServico<?, ?> getDisciplinaCursadaServico() {
+		return disciplinaPeriodoServico;
+	}
+
+	@Override
 	public PlanoCursoRepositorio<PlanoCursoPes> getPlanoCursoRepositorio() {
 		return repositorio;
 	}
@@ -68,9 +76,8 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	@Override
 	public PlanoCursoPes criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
 		// TODO
-		CursoBTI curso1 = (CursoBTI) curso;
 		PlanoCursoPes planoCurso = new PlanoCursoPes();
-		planoCurso.setDisciplinasPendentes(new HashSet<>(curso1.getDisciplinasPeriodoObrigatorias()));
+		planoCurso.setDisciplinasPendentes(curso.getDisciplinasObrigatorias().stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet()));
 		return repositorio.save(planoCurso);
 	}
 
@@ -101,7 +108,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 					throw new EntidadeInconsistenteException("disciplinaCursada inconsistente");
 				}
 			}
-			planoCurso.setDisciplinasCursadas(disciplinas);
+			planoCurso.setDisciplinasCursadas(new HashSet<>(disciplinas));
 		}
 
 		if (dto.getIdDisciplinasPendentes() != null){
@@ -116,7 +123,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 					throw new EntidadeInconsistenteException("disciplinaPendente inconsistente");
 				}
 			}
-			planoCurso.setDisciplinasPendentes(disciplinas);
+			planoCurso.setDisciplinasPendentes(disciplinas.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet()));
 		}
 
 		if (dto.getIdPes() != null) {

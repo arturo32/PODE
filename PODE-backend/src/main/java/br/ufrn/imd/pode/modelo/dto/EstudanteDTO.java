@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class EstudanteDTO extends UsuarioDTO {
 
 	@JsonProperty("id-vinculos")
-	private Set<Long> idVinculos = new HashSet<>();
+	private Set<Long> idVinculos;
 
 	public EstudanteDTO() {
 	}

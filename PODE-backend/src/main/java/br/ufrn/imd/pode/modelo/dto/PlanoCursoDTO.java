@@ -1,5 +1,7 @@
 package br.ufrn.imd.pode.modelo.dto;
 
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,8 +22,8 @@ public class PlanoCursoDTO extends AbstratoDTO {
 
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
-		this.setIdDisciplinasCursadas(planoCurso.getDisciplinasCursadas().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
-		this.setIdDisciplinasPendentes(planoCurso.getDisciplinasPendentes().stream().map(DisciplinaInterface::getId).collect(Collectors.toSet()));
+		this.setIdDisciplinasCursadas(planoCurso.getDisciplinasCursadas().stream().map(DisciplinaCursada::getId).collect(Collectors.toSet()));
+		this.setIdDisciplinasPendentes(planoCurso.getDisciplinasPendentes().stream().map(Disciplina::getId).collect(Collectors.toSet()));
 	}
 
 	public Set<Long> getIdDisciplinasCursadas() {

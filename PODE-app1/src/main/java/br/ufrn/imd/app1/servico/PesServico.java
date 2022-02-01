@@ -1,6 +1,7 @@
 package br.ufrn.imd.app1.servico;
 
 import br.ufrn.imd.app1.modelo.DisciplinaBTI;
+import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app1.modelo.Pes;
 import br.ufrn.imd.app1.modelo.dto.PesDTO;
 import br.ufrn.imd.app1.repositorio.PesRepositorio;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 @Transactional
 public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 
+	private DisciplinaPeriodoServico disciplinaPeriodoServico;
 	private DisciplinaBTIServico disciplinaBTIServico;
 	private PesRepositorio repositorio;
 
@@ -29,6 +31,11 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 	@Autowired
 	public void setDisciplinaBTIServico(DisciplinaBTIServico disciplinaBTIServico) {
 		this.disciplinaBTIServico = disciplinaBTIServico;
+	}
+
+	@Autowired
+	public void setDisciplinaPeriodoServico(DisciplinaPeriodoServico disciplinaPeriodoServico) {
+		this.disciplinaPeriodoServico = disciplinaPeriodoServico;
 	}
 
 	@Override
@@ -62,18 +69,18 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 			pes.setChopm(dto.getChopm());
 		}
 		if (dto.getDisciplinasObrigatorias() != null) {
-			HashSet<DisciplinaBTI> disciplinaBTIS = new HashSet<>();
+			HashSet<DisciplinaPeriodo> disciplinaBTIS = new HashSet<>();
 			for (Long disciplinaId : dto.getDisciplinasObrigatorias()) {
 				if (disciplinaId == null) {
 					throw new EntidadeInconsistenteException("disciplinaObrigatoria inconsistente");
 				}
 				try {
-					disciplinaBTIS.add(this.disciplinaBTIServico.buscarPorId(disciplinaId));
+					disciplinaBTIS.add(this.disciplinaPeriodoServico.buscarPorId(disciplinaId));
 				} catch (EntidadeNaoEncontradaException entityNotFoundException) {
 					throw new EntidadeInconsistenteException("disciplinaObrigatoria inconsistente");
 				}
 			}
-			pes.setDisciplinasObrigatorias(disciplinaBTIS);
+			pes.setDisciplinasObrigatorias(new HashSet<>(disciplinaBTIS));
 		}
 
 		if (dto.getDisciplinasOptativas() != null) {
@@ -88,7 +95,7 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 					throw new EntidadeInconsistenteException("disciplinaOptativa inconsistente");
 				}
 			}
-			pes.setDisciplinasOptativas(disciplinaBTIS);
+			pes.setDisciplinasOptativas(new HashSet<>(disciplinaBTIS));
 		}
 		return pes;
 	}

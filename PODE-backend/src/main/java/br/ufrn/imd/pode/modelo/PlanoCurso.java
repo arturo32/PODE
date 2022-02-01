@@ -1,7 +1,6 @@
 package br.ufrn.imd.pode.modelo;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,18 +13,6 @@ public abstract class PlanoCurso extends ModeloAbstrato<Long> {
 	@SequenceGenerator(name = "SEQ_PLANO_CURSO", sequenceName = "id_seq_plano_curso", allocationSize = 1)
 	protected Long id;
 
-//	@ManyToMany(cascade = {CascadeType.ALL})
-//	@JoinTable(name = "plano_curso_disciplina_cursada", joinColumns = {
-//			@JoinColumn(name = "plano_curso_id")}, inverseJoinColumns = {
-//			@JoinColumn(name = "disciplina_periodo_id")})
-//	protected Set<Disciplina> disciplinasCursadas;
-//
-//	@ManyToMany(cascade = {CascadeType.ALL})
-//	@JoinTable(name = "plano_curso_disciplina_pendente", joinColumns = {
-//			@JoinColumn(name = "plano_curso_id")}, inverseJoinColumns = {
-//			@JoinColumn(name = "disciplina_periodo_id")})
-//	protected Set<Disciplina> disciplinasPendentes;
-
 	@Override
 	public Long getId() {
 		return id;
@@ -36,7 +23,30 @@ public abstract class PlanoCurso extends ModeloAbstrato<Long> {
 		this.id = id;
 	}
 
-	public abstract Set<DisciplinaInterface> getDisciplinasCursadas();
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "planocurso_disciplina_cursadas", joinColumns = {
+			@JoinColumn(name = "planocurso_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	private Set<DisciplinaCursada> disciplinasCursadas;
 
-	public abstract Set<DisciplinaInterface> getDisciplinasPendentes();
+	@ManyToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "planocurso_disciplina_pendentes", joinColumns = {
+			@JoinColumn(name = "planocurso_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
+	private Set<Disciplina> disciplinasPendentes;
+
+
+	public Set<DisciplinaCursada> getDisciplinasCursadas() {
+		return disciplinasCursadas;
+	}
+
+	public void setDisciplinasCursadas(Set<DisciplinaCursada> disciplinasCursadas) {
+		this.disciplinasCursadas = disciplinasCursadas;
+	}
+
+	public Set<Disciplina> getDisciplinasPendentes() {
+		return disciplinasPendentes;
+	}
+
+	public void setDisciplinasPendentes(Set<Disciplina> disciplinasPendentes) {
+		this.disciplinasPendentes = disciplinasPendentes;
+	}
 }

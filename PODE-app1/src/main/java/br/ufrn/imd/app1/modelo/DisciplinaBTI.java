@@ -1,13 +1,10 @@
 package br.ufrn.imd.app1.modelo;
 
-import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import org.mvel2.MVEL;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +14,12 @@ import java.util.regex.Pattern;
 		name = "disciplinabti"
 )
 public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")
+	@SequenceGenerator(name = "SEQ_DISCIPLINA", sequenceName = "id_seq_disciplina", allocationSize = 1)
+	protected Long id;
+
 	@Column(
 			length = 1024
 	)
@@ -24,13 +27,14 @@ public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
 
 	public DisciplinaBTI() {}
 
-	public DisciplinaBTI(String codigo, String nome, Integer ch) {
-		super(codigo, nome, ch);
+	@Override
+	public Long getId() {
+		return id;
 	}
 
-	public DisciplinaBTI(DisciplinaBTIDTO disciplina) {
-		super(disciplina);
-		this.setEquivalentes(disciplina.getEquivalentes());
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getEquivalentes() {

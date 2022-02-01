@@ -15,7 +15,7 @@ public abstract class VinculoControlador<T extends Vinculo, D extends VinculoDTO
 
     public abstract VinculoServico<T, D> getVinculoServico();
 
-    @GetMapping("/{id}/percentual-conclusao")
+    @GetMapping("/{idVinculo}/percentual-conclusao")
     public Double obterPercentualConclusao(@PathVariable Long idVinculo) {
         return this.getVinculoServico().obterPercentualConclusao(idVinculo);
     }

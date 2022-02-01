@@ -1,6 +1,7 @@
 package br.ufrn.imd.pode.controle;
 
 import br.ufrn.imd.pode.modelo.PlanoCurso;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.servico.GenericoServico;
@@ -19,13 +20,13 @@ public abstract class PlanoCursoControlador<T extends PlanoCurso, E extends Plan
 
 	@PostMapping("/{planoCursoId}/disciplinas-cursadas")
 	public ResponseEntity<E> adicionarDisciplinaCursada(@PathVariable Long planoCursoId,
-	                                                                @RequestBody List<DisciplinaDTO> disciplinas) {
+	                                                                @RequestBody List<DisciplinaCursadaDTO> disciplinas) {
 		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().adicionarDisciplinaCursada(planoCursoId, disciplinas)));
 	}
 
 	@PostMapping("/{id}/remove-disciplinas-cursadas")
 	public ResponseEntity<E> removerDisciplinaCursada(@PathVariable Long id,
-	                                                              @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
+	                                                              @RequestBody List<DisciplinaCursadaDTO> disciplinasDTOS) {
 		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().removerDisciplinaCursada(id, disciplinasDTOS)));
 	}
 

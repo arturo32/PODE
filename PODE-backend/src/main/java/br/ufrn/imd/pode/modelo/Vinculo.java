@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "vinculo")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Vinculo extends ModeloAbstrato<Long> {
+public abstract class Vinculo extends ModeloAbstrato<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VINCULO")
@@ -18,8 +18,9 @@ public class Vinculo extends ModeloAbstrato<Long> {
 	@Column(unique = true)
 	protected String matricula;
 
+	@NotNull
 	@ManyToOne
-	protected @NotNull GradeCurricular gradeCurricular;
+	protected GradeCurricular gradeCurricular;
 
 	@NotNull
 	@ManyToOne

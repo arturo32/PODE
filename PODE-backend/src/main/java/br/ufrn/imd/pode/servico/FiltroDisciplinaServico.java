@@ -1,10 +1,12 @@
 package br.ufrn.imd.pode.servico;
 
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
 
+@Service
 public interface FiltroDisciplinaServico {
 	String obterNome();
 
