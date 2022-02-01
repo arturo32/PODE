@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "disciplina")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Disciplina extends ModeloAbstrato<Long> implements DisciplinaInterface {
+public abstract class Disciplina extends ModeloAbstrato<Long> implements DisciplinaInterface {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")
 	@SequenceGenerator(name = "SEQ_DISCIPLINA", sequenceName = "id_seq_disciplina", allocationSize = 1)

@@ -1,18 +1,20 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.VinculoBTI;
-import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
-import br.ufrn.imd.app1.repositorio.VinculoBTIRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import br.ufrn.imd.pode.servico.EstudanteServico;
 import br.ufrn.imd.pode.servico.VinculoServico;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import br.ufrn.imd.app1.modelo.VinculoBTI;
+import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
+import br.ufrn.imd.app1.repositorio.VinculoBTIRepositorio;
 
 @Service
 @Transactional
@@ -41,11 +43,6 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 	@Autowired
 	public void setEstudanteServico(EstudanteServico estudanteServico) {
 		this.estudanteServico = estudanteServico;
-	}
-
-	@Override
-	public VinculoRepositorio<VinculoBTI> getRepositorio() {
-		return repositorio;
 	}
 
 	@Override
@@ -120,7 +117,7 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 
 	@Override
 	protected void validar(VinculoBTIDTO dto) {
-
+		// TODO
 	}
 
 	@Override

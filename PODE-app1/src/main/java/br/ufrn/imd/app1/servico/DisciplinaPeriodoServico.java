@@ -1,18 +1,20 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.app1.repositorio.DisciplinaPeriodoRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 import br.ufrn.imd.pode.servico.GenericoServico;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
+import br.ufrn.imd.app1.repositorio.DisciplinaPeriodoRepositorio;
 
 @Service
 @Transactional
@@ -66,7 +68,7 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 
 	@Override
 	protected void validar(DisciplinaPeriodoDTO dto) {
-
+		// TODO
 	}
 
 	@Override

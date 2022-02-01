@@ -1,15 +1,16 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.DisciplinaBTI;
-import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
-import br.ufrn.imd.app1.repositorio.DisciplinaBTIRepositorio;
-import br.ufrn.imd.pode.repositorio.DisciplinaRepositorio;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.servico.DisciplinaServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+import br.ufrn.imd.pode.servico.DisciplinaServico;
+
+import br.ufrn.imd.app1.modelo.DisciplinaBTI;
+import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
+import br.ufrn.imd.app1.repositorio.DisciplinaBTIRepositorio;
 
 @Service
 @Transactional
@@ -68,8 +69,4 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 		return repositorio;
 	}
 
-	@Override
-	public DisciplinaRepositorio<DisciplinaBTI> getDisciplinaRpositorio() {
-		return repositorio;
-	}
 }

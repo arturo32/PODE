@@ -1,19 +1,23 @@
 package br.ufrn.imd.app1.modelo;
 
-import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import org.mvel2.MVEL;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+
+import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
+
 @Entity
-@Table(
-		name = "disciplinabti"
-)
+@Table(name = "disciplinabti")
 public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
+	@Column(length = 1024)
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")

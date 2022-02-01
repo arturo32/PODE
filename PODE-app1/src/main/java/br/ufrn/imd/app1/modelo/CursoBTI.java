@@ -1,13 +1,14 @@
 package br.ufrn.imd.app1.modelo;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 
-import javax.persistence.*;
-
 @Entity
-@Table(
-		name = "cursobti"
-)
+@Table(name = "cursobti")
 public class CursoBTI extends GradeCurricular {
 
 	private Integer chm;
