@@ -1,8 +1,5 @@
 package br.ufrn.imd.app1.modelo;
 
-import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
-import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import org.mvel2.MVEL;
 
 import javax.persistence.Column;
@@ -12,14 +9,15 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+
+import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
+
 @Entity
-@Table(
-		name = "disciplinabti"
-)
+@Table(name = "disciplinabti")
 public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
-	@Column(
-			length = 1024
-	)
+	@Column(length = 1024)
 	private String equivalentes;
 
 	public DisciplinaBTI() {}

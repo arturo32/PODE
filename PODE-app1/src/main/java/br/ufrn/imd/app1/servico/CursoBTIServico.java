@@ -1,19 +1,21 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.CursoBTI;
-import br.ufrn.imd.app1.modelo.DisciplinaBTI;
-import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.app1.modelo.dto.CursoBTIDTO;
-import br.ufrn.imd.app1.repositorio.CursoBTIRepositorio;
-import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.HashSet;
+
+import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
+import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+import br.ufrn.imd.pode.servico.GenericoServico;
+
+import br.ufrn.imd.app1.modelo.CursoBTI;
+import br.ufrn.imd.app1.modelo.DisciplinaBTI;
+import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.app1.modelo.dto.CursoBTIDTO;
+import br.ufrn.imd.app1.repositorio.CursoBTIRepositorio;
 
 @Service
 @Transactional

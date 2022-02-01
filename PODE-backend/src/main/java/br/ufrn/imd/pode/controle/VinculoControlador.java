@@ -13,7 +13,9 @@ import br.ufrn.imd.pode.servico.VinculoServico;
 @RequestMapping("/vinculos")
 public abstract class VinculoControlador<T extends Vinculo, D extends VinculoDTO> extends GenericoControlador<T, D, Long> {
 
-    public abstract VinculoServico<T, D> getVinculoServico();
+    private VinculoServico<T, D> getVinculoServico() {
+        return (VinculoServico<T, D>) this.servico();
+    }
 
     @GetMapping("/{id}/percentual-conclusao")
     public Double obterPercentualConclusao(@PathVariable Long idVinculo) {

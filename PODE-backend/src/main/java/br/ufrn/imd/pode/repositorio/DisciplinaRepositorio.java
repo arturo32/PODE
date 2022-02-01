@@ -15,6 +15,4 @@ public interface DisciplinaRepositorio<T extends Disciplina> extends GenericoRep
 
 	Set<T> findDisciplinasByAtivoIsTrueAndCodigoIs(@NotNull @NotBlank String codigo);
 
-	Set<T> findDisciplinasByAtivoIsTrueAndCodigoIn(Collection<@NotNull @NotBlank String> codigos);
-
 }

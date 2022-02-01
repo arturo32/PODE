@@ -1,9 +1,9 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 
 @Service
 @Transactional

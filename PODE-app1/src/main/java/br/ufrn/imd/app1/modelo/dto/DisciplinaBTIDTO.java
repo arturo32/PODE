@@ -1,8 +1,9 @@
 package br.ufrn.imd.app1.modelo.dto;
 
-import br.ufrn.imd.app1.modelo.DisciplinaBTI;
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+
+import br.ufrn.imd.app1.modelo.DisciplinaBTI;
 
 public class DisciplinaBTIDTO extends DisciplinaDTO {
 	private String equivalentes;

@@ -7,7 +7,7 @@ import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
 
 @RestController
-@RequestMapping("/grades")
+@RequestMapping("/grades-curriculares")
 public abstract class GradeCurricularControlador <T extends GradeCurricular, D extends GradeCurricularDTO> extends GenericoControlador<T, D, Long> {
 
 }
