@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.servico;
 
+import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
@@ -22,16 +24,16 @@ import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
 @Transactional
 public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoServico<T, E, Long> {
 
-	public abstract DisciplinaServico<Disciplina, DisciplinaDTO> getDisciplinaServico();
+	public abstract DisciplinaServico<?, ?> getDisciplinaServico();
 
-	public abstract DisciplinaCursadaServico<DisciplinaCursada, DisciplinaCursadaDTO> getDisciplinaCursadaServico();
+	public abstract DisciplinaCursadaServico<?, ?> getDisciplinaCursadaServico();
 
 	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
 
 	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
+	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaCursadaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		T planoCurso = this.buscarPorId(planoCursoId);
 		Set<DisciplinaCursada> disciplinas = new HashSet<>();

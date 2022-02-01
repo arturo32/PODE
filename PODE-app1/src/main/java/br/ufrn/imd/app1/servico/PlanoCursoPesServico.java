@@ -1,5 +1,9 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
@@ -52,8 +57,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 		this.pesServico = pesServico;
 	}
 
-	@Override
-	public DisciplinaServico<DisciplinaBTI, DisciplinaBTIDTO> getDisciplinaServico() {
+	public DisciplinaServico<?, ?> getDisciplinaServico() {
 		return disciplinaBTIServico;
 	}
 

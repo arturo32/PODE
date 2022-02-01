@@ -1,14 +1,13 @@
 package br.ufrn.imd.app1.modelo.dto;
 
-import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 
-public class DisciplinaPeriodoDTO extends AbstratoDTO {
+public class DisciplinaPeriodoDTO extends DisciplinaCursadaDTO {
 
 	private Integer periodo;
-
-	private Long idDisciplinaBTI;
 
 	public DisciplinaPeriodoDTO() {
 	}

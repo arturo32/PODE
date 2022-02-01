@@ -3,6 +3,7 @@ package br.ufrn.imd.app1.modelo;
 import javax.persistence.*;
 import java.util.Collection;
 
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 

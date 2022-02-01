@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.servico;
 
+import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

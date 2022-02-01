@@ -60,7 +60,7 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 	}
 
 	@Override
-	protected void validar(DisciplinaBTIDTO dto) {
+	public void validar(DisciplinaBTIDTO dto) {
 
 	}
 

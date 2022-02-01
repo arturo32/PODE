@@ -2,9 +2,7 @@ package br.ufrn.imd.app1.modelo;
 
 import org.mvel2.MVEL;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
