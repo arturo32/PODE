@@ -3,6 +3,7 @@ package br.ufrn.imd.pode.servico;
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.modelo.Estudante;
+import br.ufrn.imd.pode.modelo.Vinculo;
 import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
 import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
@@ -55,7 +56,7 @@ public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 
 			for (Long idVinculo : dto.getIdVinculos()) {
 				try {
-					estudante.getVinculos().add(this.vinculoServico.buscarPorId(idVinculo));
+					estudante.getVinculos().add((Vinculo) this.vinculoServico.buscarPorId(idVinculo));
 				} catch (EntidadeNaoEncontradaException entidadeNaoEncontradaException) {
 					throw new EntidadeInconsistenteException("vinculo inconsistente");
 				}

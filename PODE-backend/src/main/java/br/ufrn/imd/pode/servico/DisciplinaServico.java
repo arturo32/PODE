@@ -24,34 +24,6 @@ public abstract class DisciplinaServico<T extends Disciplina, E extends Discipli
 	}
 
 	@Override
-	public E converterParaDTO(T disciplina) {
-		return (E) new DisciplinaDTO(disciplina);
-	}
-
-	@Override
-	public T converterParaEntidade(E dto) {
-		Disciplina disciplina = new Disciplina();
-		// Se for uma edição
-		if (dto.getId() != null) {
-			disciplina = this.buscarPorId(dto.getId());
-		}
-		disciplina.setId(dto.getId());
-		if (dto.getCodigo() != null) {
-			disciplina.setCodigo(dto.getCodigo());
-		}
-		if (dto.getNome() != null) {
-			disciplina.setNome(dto.getNome());
-		}
-		if (dto.getCh() != null) {
-			disciplina.setCh(dto.getCh());
-		}
-		if (dto.getPrerequisitos() != null) {
-			disciplina.setPrerequisitos(dto.getPrerequisitos());
-		}
-		return (T) disciplina;
-	}
-
-	@Override
 	public void validar(E disciplina) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		// Verifica código
