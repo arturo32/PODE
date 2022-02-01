@@ -25,10 +25,10 @@ import java.util.regex.Pattern;
 public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 
 	private EstudanteRepositorio repositorio;
-	private VinculoServicoInterface vinculoServico;
+	private VinculoServico vinculoServico;
 
 	@Autowired
-	public void setVinculoServico(VinculoServicoInterface vinculoServico) {
+	public void setVinculoServico(VinculoServico vinculoServico) {
 		this.vinculoServico = vinculoServico;
 	}
 

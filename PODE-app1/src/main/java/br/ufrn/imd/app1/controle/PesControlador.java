@@ -6,10 +6,10 @@ import br.ufrn.imd.app1.servico.PesServico;
 import br.ufrn.imd.pode.controle.GenericoControlador;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/pes")
 public class PesControlador extends GenericoControlador<Pes, PesDTO, Long> {
 

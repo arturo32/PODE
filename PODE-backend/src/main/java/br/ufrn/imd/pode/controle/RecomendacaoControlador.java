@@ -34,4 +34,5 @@ public class RecomendacaoControlador {
 			@PathVariable(value = "id_vinculo") Long id_vinculo) {
 		return ResponseEntity.ok(this.recomendadores.get(nome_recomendador).recomendarDisciplinas(id_vinculo));
 	}
+
 }
