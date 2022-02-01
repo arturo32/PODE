@@ -1,7 +1,8 @@
 package br.ufrn.imd.app1.modelo.dto;
 
-import br.ufrn.imd.app1.modelo.CursoBTI;
 import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
+
+import br.ufrn.imd.app1.modelo.CursoBTI;
 
 public class CursoBTIDTO extends GradeCurricularDTO {
 

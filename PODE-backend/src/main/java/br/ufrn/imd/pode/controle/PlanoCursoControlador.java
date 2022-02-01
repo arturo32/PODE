@@ -15,7 +15,9 @@ import java.util.List;
 @RequestMapping("/planos-de-curso")
 public abstract class PlanoCursoControlador<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoControlador<T, E, Long> {
 
-	public abstract PlanoCursoServico<T, E> getPlanoCursoServico();
+	private PlanoCursoServico<T, E> getPlanoCursoServico() {
+		return (PlanoCursoServico<T, E>) this.servico();
+	}
 
 	@PostMapping("/{planoCursoId}/disciplinas-cursadas")
 	public ResponseEntity<E> adicionarDisciplinaCursada(@PathVariable Long planoCursoId,
@@ -40,4 +42,5 @@ public abstract class PlanoCursoControlador<T extends PlanoCurso, E extends Plan
 	                                                               @RequestBody List<DisciplinaDTO> disciplinasDTOS) {
 		return ResponseEntity.ok(getPlanoCursoServico().converterParaDTO(getPlanoCursoServico().removerDisciplinaPendente(id, disciplinasDTOS)));
 	}
+
 }

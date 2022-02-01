@@ -1,25 +1,22 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.*;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
-import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.*;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
+import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
 
 @Service
 @Transactional
@@ -31,6 +28,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 
 	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
@@ -53,6 +51,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public T removerDisciplinaCursada(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();
@@ -67,6 +66,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public T adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
@@ -89,6 +89,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 		return getPlanoCursoRepositorio().save((T) planoCurso);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public T removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
 		PlanoCurso planoCurso = this.buscarPorId(planoCursoId);
 		Collection<Disciplina> disciplinas = new HashSet<>();

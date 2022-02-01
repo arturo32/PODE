@@ -2,23 +2,16 @@ package br.ufrn.imd.pode.servico;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Estudante;
-import br.ufrn.imd.pode.modelo.Vinculo;
 import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
-import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional

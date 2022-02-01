@@ -1,17 +1,15 @@
 package br.ufrn.imd.app1.modelo;
 
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+import br.ufrn.imd.pode.modelo.PlanoCurso;
+
 @Entity
-@Table(
-		name = "planocursopes"
-)
+@Table(name = "planocursopes")
 public class PlanoCursoPes extends PlanoCurso {
 	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(name = "planocursopes_interesse_pes", joinColumns = {

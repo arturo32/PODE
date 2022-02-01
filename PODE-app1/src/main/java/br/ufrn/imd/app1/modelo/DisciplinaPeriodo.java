@@ -1,15 +1,13 @@
 package br.ufrn.imd.app1.modelo;
 
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
-
 import javax.persistence.*;
 import java.util.Collection;
 
+import br.ufrn.imd.pode.modelo.ModeloAbstrato;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+
 @Entity
-@Table(
-		name = "disciplinaperiodo"
-)
+@Table(name = "disciplinaperiodo")
 public class DisciplinaPeriodo extends ModeloAbstrato<Long> implements DisciplinaInterface {
 
 	@Id

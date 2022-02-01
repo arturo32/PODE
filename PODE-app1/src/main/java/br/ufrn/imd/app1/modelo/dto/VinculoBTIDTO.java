@@ -1,8 +1,9 @@
 package br.ufrn.imd.app1.modelo.dto;
 
-import br.ufrn.imd.app1.modelo.VinculoBTI;
 import br.ufrn.imd.pode.modelo.Vinculo;
 import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
+
+import br.ufrn.imd.app1.modelo.VinculoBTI;
 
 public class VinculoBTIDTO extends VinculoDTO {
 	private Integer periodoInicialAno;
