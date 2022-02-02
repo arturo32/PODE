@@ -10,23 +10,13 @@ public interface DisciplinaInterface {
 
     Long getId();
 
-    void setId(Long id);
-
     String getCodigo();
-
-    void setCodigo(String codigo);
 
     String getNome();
 
-    void setNome(String nome);
-
     Integer getCh();
 
-    void setCh(Integer ch);
-
     String getPrerequisitos();
-
-    void setPrerequisitos(String prerequisitos);
 
     boolean checarPrerequisitosCodigos(Collection<String> codigos);
 

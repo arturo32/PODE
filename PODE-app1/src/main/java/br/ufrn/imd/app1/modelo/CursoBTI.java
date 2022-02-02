@@ -27,16 +27,6 @@ public class CursoBTI extends GradeCurricular {
 
 	private Integer prazoEsperado;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "cursobti_disciplina_obrigatorias", joinColumns = {
-	@JoinColumn(name = "cursobti_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<DisciplinaPeriodo> disciplinasObrigatorias;
-
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name = "cursobti_disciplina_optativas", joinColumns = {
-			@JoinColumn(name = "cursobti_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<DisciplinaBTI> disciplinasOptativas;
-
 	public Integer getChm() {
 		return chm;
 	}
@@ -99,29 +89,5 @@ public class CursoBTI extends GradeCurricular {
 
 	public void setPrazoEsperado(Integer prazoEsperado) {
 		this.prazoEsperado = prazoEsperado;
-	}
-
-	public Set<DisciplinaInterface> getDisciplinasObrigatorias() {
-		return new HashSet<>(disciplinasObrigatorias);
-	}
-
-	public Set<DisciplinaInterface> getDisciplinasOptativas() {
-		return new HashSet<>(disciplinasOptativas);
-	}
-
-	public void setDisciplinasObrigatorias(Set<DisciplinaPeriodo> disciplinasObrigatorias) {
-		this.disciplinasObrigatorias = disciplinasObrigatorias;
-	}
-
-	public void setDisciplinasOptativas(Set<DisciplinaBTI> disciplinasOptativas) {
-		this.disciplinasOptativas = disciplinasOptativas;
-	}
-
-	public Set<DisciplinaPeriodo> getDisciplinasPeriodoObrigatorias() {
-		return disciplinasObrigatorias;
-	}
-
-	public Set<DisciplinaBTI> getDisciplinasBTIOptativas() {
-		return disciplinasOptativas;
 	}
 }

@@ -106,7 +106,7 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 					throw new EntidadeInconsistenteException("disciplinaObrigatoria inconsistente");
 				}
 			}
-			curso.setDisciplinasObrigatorias(disciplinas);
+			curso.setDisciplinasObrigatorias(new HashSet<>(disciplinas));
 		}
 
 		if (dto.getDisciplinasOptativas() != null) {
@@ -121,7 +121,7 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 					throw new EntidadeInconsistenteException("disciplinaOptativa inconsistente");
 				}
 			}
-			curso.setDisciplinasOptativas(disciplinas);
+			curso.setDisciplinasOptativas(new HashSet<>(disciplinas));
 		}
 
 		return curso;

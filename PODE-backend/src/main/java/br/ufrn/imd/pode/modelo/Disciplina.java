@@ -21,11 +21,11 @@ public abstract class Disciplina extends ModeloAbstrato<Long> implements Discipl
 
 	@NotNull
 	@NotBlank
-//	@Column(unique = true)
+	@Column(unique = true)
 	protected String codigo;
 
-	//	@NotNull
-//	@NotBlank
+	@NotNull
+	@NotBlank
 	@Column(length = 1024)
 	protected String nome;
 
@@ -36,19 +36,6 @@ public abstract class Disciplina extends ModeloAbstrato<Long> implements Discipl
 	private String prerequisitos;
 
 	public Disciplina() {
-	}
-
-	public Disciplina(String codigo, String nome, Integer ch) {
-		this.codigo = codigo;
-		this.nome = nome;
-		this.ch = ch;
-	}
-
-	public Disciplina(DisciplinaDTO disciplina) {
-		this.id = disciplina.getId();
-		this.codigo = disciplina.getCodigo();
-		this.nome = disciplina.getNome();
-		this.ch = disciplina.getCh();
 	}
 
 	@Override

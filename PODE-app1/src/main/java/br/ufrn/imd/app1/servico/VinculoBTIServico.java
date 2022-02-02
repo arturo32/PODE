@@ -30,6 +30,11 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 		this.repositorio = repositorio;
 	}
 
+	@Override
+	public VinculoRepositorio<VinculoBTI> getRepositorio() {
+		return repositorio;
+	}
+
 	@Autowired
 	public void setCursoBTIServico(CursoBTIServico cursoBTIServico) {
 		this.cursoBTIServico = cursoBTIServico;

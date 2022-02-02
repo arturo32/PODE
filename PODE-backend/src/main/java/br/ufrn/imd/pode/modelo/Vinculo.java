@@ -18,8 +18,9 @@ public abstract class Vinculo extends ModeloAbstrato<Long> {
 	@Column(unique = true)
 	protected String matricula;
 
+	@NotNull
 	@ManyToOne
-	protected @NotNull GradeCurricular gradeCurricular;
+	protected GradeCurricular gradeCurricular;
 
 	@NotNull
 	@ManyToOne
