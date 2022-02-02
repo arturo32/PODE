@@ -20,9 +20,11 @@ public abstract class GradeCurricular extends ModeloAbstrato<Long> {
 	protected String nome;
 
 	@NotNull
+	//Carga horária obrigatória mínima
 	protected Integer chobm;
 
 	@NotNull
+	//Carga horária optativa mínima
 	protected Integer chopm;
 
 	@ManyToMany(cascade = {CascadeType.ALL})

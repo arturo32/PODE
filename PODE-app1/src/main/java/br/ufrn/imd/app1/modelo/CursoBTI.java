@@ -1,6 +1,7 @@
 package br.ufrn.imd.app1.modelo;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,14 +12,24 @@ import br.ufrn.imd.pode.modelo.GradeCurricular;
 @Table(name = "cursobti")
 public class CursoBTI extends GradeCurricular {
 
+	@NotNull
+	// Carga horária mínima
 	private Integer chm;
 
+	@NotNull
+	// Carga horária complementar mínima
 	private Integer chcm;
 
+	@NotNull
+	// Carga horária eletiva máxima
 	private Integer chem;
 
+	@NotNull
+	// Carga horária mínima por período
 	private Integer chminp;
 
+	@NotNull
+	// Carga horária máxima por período
 	private Integer chmaxp;
 
 	private Integer prazoMinimo;

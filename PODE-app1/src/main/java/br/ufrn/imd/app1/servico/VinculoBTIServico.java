@@ -1,5 +1,11 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.modelo.DisciplinaBTI;
+import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
+import br.ufrn.imd.pode.modelo.PlanoCurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +57,36 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 	}
 
 	@Override
-	protected Double gerarPercentualConclusao(Long id) {
-		return 1.0;
+	protected Double gerarPercentualConclusao(Long idVinculo) {
+		VinculoBTI vinculo = this.buscarPorId(idVinculo);
+		PlanoCurso planoCurso = vinculo.getPlanoCurso();
+
+		Integer cargaHorariaObrigatoriaCumprida = planoCurso.getDisciplinasCursadas().stream()
+				.filter(d -> vinculo.getGradeCurricular().getDisciplinasObrigatorias().contains(d))
+				.map(DisciplinaCursada::getCh)
+				.reduce(0, Integer::sum);
+
+		Integer cargaHorariaOptativaCumprida = planoCurso.getDisciplinasCursadas().stream()
+				.filter(d -> vinculo.getGradeCurricular().getDisciplinasOptativas().contains(d.getDisciplina()))
+				.map(DisciplinaCursada::getCh)
+				.reduce(0, Integer::sum);
+
+		Integer chobm = vinculo.getGradeCurricular().getChobm();
+		Integer chopm = vinculo.getGradeCurricular().getChopm();
+
+		Integer cargaHorariaTotal = chobm + chopm;
+
+		Double taxaObrigatorias =  (double) chobm / cargaHorariaTotal;
+		Double taxaOptativas =  (double) chopm / cargaHorariaTotal;
+
+		Double taxaObrigatoriasCumpridas = (double) cargaHorariaObrigatoriaCumprida / chobm;
+		Double taxaOptativasCumpridas = (double) cargaHorariaOptativaCumprida /chopm;
+
+		if(taxaOptativasCumpridas > 1) {
+			taxaOptativasCumpridas = 1.0;
+		}
+
+		return (taxaObrigatorias*taxaObrigatoriasCumpridas + taxaOptativas*taxaOptativasCumpridas) * 100;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import br.ufrn.imd.pode.modelo.GradeCurricular;
 @Entity
 @Table(name = "pes")
 public class Pes extends GradeCurricular {
+	// Carga horária
 	private Integer chm;
 
 	public Integer getChm() {
