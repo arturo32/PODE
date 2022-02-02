@@ -64,7 +64,7 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 
 	@Override
 	public void validar(DisciplinaBTIDTO dto) {
-
+		super.validar(dto);
 	}
 
 	@Override
