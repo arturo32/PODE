@@ -1,4 +1,4 @@
-package br.ufrn.imd.pode.modelo.view;
+package br.ufrn.imd.app1.modelo.view;
 
 public interface PesChObrigatoriaCumprida {
 
