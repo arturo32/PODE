@@ -1,5 +1,7 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +70,27 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 
 	@Override
 	protected void validar(DisciplinaPeriodoDTO dto) {
-		// TODO
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
+		//Verifica disciplina
+		if (dto.getDisciplinaId() == null || dto.getDisciplinaId() < 0) {
+			exceptionHelper.add("disciplina inconsistente");
+		} else {
+			try {
+				this.disciplinaBTIServico.buscarPorId(dto.getDisciplinaId());
+			} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+				exceptionHelper.add("disciplina inexistente");
+			}
+		}
+
+		//Verifica período
+		if (dto.getPeriodo() == null || dto.getPeriodo() <= 0) {
+			exceptionHelper.add("periodo inválido");
+		}
+		//Verifica se existe exceção
+		if (!exceptionHelper.getMessage().isEmpty()) {
+			throw new ValidacaoException(exceptionHelper.getMessage());
+		}
 	}
 
 	@Override

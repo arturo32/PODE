@@ -27,7 +27,7 @@ public class DisciplinaFiltroControlador {
 
 	@GetMapping("/filtro/{nome_filtro}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasPorFiltro(@PathVariable String nome_filtro,
-	                                                                            @RequestParam Map<String, String> parametros) {
-		return ResponseEntity.ok(filtros.get(nome_filtro).filtrar(parametros));
+	                                                                            @RequestParam Map<String, String> dataQuery) {
+		return ResponseEntity.ok(filtros.get(nome_filtro).buscarDisciplinasPorFiltro(dataQuery));
 	}
 }

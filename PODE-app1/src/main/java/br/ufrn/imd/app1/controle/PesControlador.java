@@ -1,5 +1,6 @@
 package br.ufrn.imd.app1.controle;
 
+import br.ufrn.imd.pode.controle.GenericoControlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import br.ufrn.imd.app1.servico.PesServico;
 
 @RestController
 @RequestMapping("/pes")
-public class PesControlador extends GradeCurricularControlador<Pes, PesDTO> {
+public class PesControlador extends GenericoControlador<Pes, PesDTO, Long> {
 
 	private PesServico pesServico;
 

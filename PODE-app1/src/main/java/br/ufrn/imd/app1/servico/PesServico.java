@@ -1,11 +1,14 @@
 package br.ufrn.imd.app1.servico;
 
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
+import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Set;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
@@ -106,4 +109,13 @@ public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
 	protected void validar(PesDTO dto) {
 		//TODO validação
 	}
+
+	public Set<PesChObrigatoriaCumprida> obterPesComChObrigatoriaCumprida(long vinculoId) {
+		return this.repositorio.findPesComChObrigatoriaCumprida(vinculoId);
+	}
+
+	public Set<PesChOptativaCumprida> obterPesComChOptativaCumprida(long vinculoId) {
+		return this.repositorio.findPesComChOptativaCumprida(vinculoId);
+	}
+
 }

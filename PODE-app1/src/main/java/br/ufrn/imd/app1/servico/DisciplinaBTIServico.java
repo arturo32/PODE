@@ -1,5 +1,6 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.modelo.view.DisciplinaPendente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import br.ufrn.imd.pode.servico.DisciplinaServico;
 import br.ufrn.imd.app1.modelo.DisciplinaBTI;
 import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
 import br.ufrn.imd.app1.repositorio.DisciplinaBTIRepositorio;
+
+import java.util.Set;
 
 @Service
 @Transactional
@@ -61,12 +64,20 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 
 	@Override
 	public void validar(DisciplinaBTIDTO dto) {
-
+		super.validar(dto);
 	}
 
 	@Override
 	protected GenericoRepositorio<DisciplinaBTI, Long> repositorio() {
 		return repositorio;
+	}
+
+	public Set<Long> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
+		return this.repositorio.findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesId);
+	}
+
+	public Set<Long> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
+		return this.repositorio.findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesId);
 	}
 
 }
