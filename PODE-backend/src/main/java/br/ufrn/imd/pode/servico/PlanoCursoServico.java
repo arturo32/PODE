@@ -1,6 +1,5 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +18,12 @@ import br.ufrn.imd.pode.modelo.*;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 
 @Service
 @Transactional
-public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCursoDTO> extends GenericoServico<T, E, Long> {
+public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCursoDTO> extends GenericoServico<T, D, Long> {
 
 	public abstract DisciplinaServico<?, ?> getDisciplinaServico();
 
@@ -31,6 +32,11 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, E extends PlanoCur
 	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
 
 	public abstract PlanoCurso criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso);
+
+	@Override
+	protected void validarModoPersistencia(TipoPersistencia tipoPersistencia, D dto) {
+		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaCursadaDTO> disciplinasDTOS) {

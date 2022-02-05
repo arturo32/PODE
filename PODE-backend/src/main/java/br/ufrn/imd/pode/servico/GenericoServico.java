@@ -1,10 +1,7 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.exception.NegocioException;
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
 import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,9 +14,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.modelo.ModeloAbstrato;
+import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+
 @Service
 @Transactional
-public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends AbstratoDTO, PK extends Serializable> {
+public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto, PK extends Serializable> {
 
 	protected String nomeModelo;
 
@@ -35,6 +36,8 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 	public abstract Dto converterParaDTO(T entity);
 
 	public abstract T converterParaEntidade(Dto dto);
+
+	protected abstract void validarModoPersistencia(TipoPersistencia tipoPersistencia, Dto dto);
 
 	protected abstract void validar(Dto dto);
 
@@ -71,21 +74,15 @@ public abstract class GenericoServico<T extends ModeloAbstrato<PK>, Dto extends 
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T salvar(Dto dto) {
+		this.validarModoPersistencia(TipoPersistencia.ADICIONAR, dto);
 		this.validar(dto);
-		if (dto.getId() != null) {
-			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
-					+ "' com id: '" + dto.getId() + "'já existe, caso queira modificá-la, use o método update");
-		}
 		return repositorio().save(converterParaEntidade(dto));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T atualizar(Dto dto) {
+		this.validarModoPersistencia(TipoPersistencia.ATUALIZAR, dto);
 		this.validar(dto);
-		if (dto.getId() == null) {
-			throw new NegocioException("Entidade do tipo '" + this.obterNomeModelo()
-					+ "' com id: '" + dto.getId() + "'ainda não existe, caso queira salvá-la, use o método save");
-		}
 		return repositorio().save(converterParaEntidade(dto));
 	}
 

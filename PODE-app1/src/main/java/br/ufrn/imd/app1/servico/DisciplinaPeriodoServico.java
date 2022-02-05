@@ -1,7 +1,5 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +7,10 @@ import javax.transaction.Transactional;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
-import br.ufrn.imd.pode.servico.GenericoServico;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
@@ -43,14 +41,11 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 	@Override
 	public DisciplinaPeriodo converterParaEntidade(DisciplinaPeriodoDTO dto) {
 		DisciplinaPeriodo disciplinaPeriodo = new DisciplinaPeriodo();
-
 		//Se for uma edição
 		if (dto.getId() != null) {
 			disciplinaPeriodo = this.buscarPorId(dto.getId());
 		}
-
 		disciplinaPeriodo.setId(dto.getId());
-
 		if (dto.getDisciplinaId() == null) {
 			throw new EntidadeInconsistenteException("disciplina inconsistente");
 		}
@@ -60,18 +55,15 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 		} catch (EntidadeNaoEncontradaException entityNotFoundException){
 			throw new EntidadeInconsistenteException("disciplina inconsistente");
 		}
-
 		if (dto.getPeriodo() != null) {
 			disciplinaPeriodo.setPeriodo(dto.getPeriodo());
 		}
-
 		return disciplinaPeriodo;
 	}
 
 	@Override
 	protected void validar(DisciplinaPeriodoDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
 		//Verifica disciplina
 		if (dto.getDisciplinaId() == null || dto.getDisciplinaId() < 0) {
 			exceptionHelper.add("disciplina inconsistente");
@@ -82,7 +74,6 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 				exceptionHelper.add("disciplina inexistente");
 			}
 		}
-
 		//Verifica período
 		if (dto.getPeriodo() == null || dto.getPeriodo() <= 0) {
 			exceptionHelper.add("periodo inválido");

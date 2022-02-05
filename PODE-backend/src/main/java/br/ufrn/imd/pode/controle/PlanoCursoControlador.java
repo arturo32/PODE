@@ -1,16 +1,15 @@
 package br.ufrn.imd.pode.controle;
 
-import br.ufrn.imd.pode.modelo.PlanoCurso;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
-import br.ufrn.imd.pode.servico.GenericoServico;
-import br.ufrn.imd.pode.servico.PlanoCursoServico;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import br.ufrn.imd.pode.modelo.PlanoCurso;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
+import br.ufrn.imd.pode.servico.PlanoCursoServico;
 
 @RestController
 @RequestMapping("/planos-de-curso")

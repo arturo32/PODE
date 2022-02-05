@@ -1,8 +1,8 @@
 package br.ufrn.imd.pode.repositorio;
 
-import br.ufrn.imd.pode.modelo.PlanoCurso;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import br.ufrn.imd.pode.modelo.PlanoCurso;
 
 @Repository
 public interface PlanoCursoRepositorio<T extends PlanoCurso> extends GenericoRepositorio<T, Long> {

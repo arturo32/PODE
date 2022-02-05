@@ -1,9 +1,8 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -11,18 +10,19 @@ import java.util.HashSet;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.servico.GenericoServico;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.servico.GradeCurricularServico;
 
 import br.ufrn.imd.app1.modelo.CursoBTI;
 import br.ufrn.imd.app1.modelo.DisciplinaBTI;
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app1.modelo.dto.CursoBTIDTO;
 import br.ufrn.imd.app1.repositorio.CursoBTIRepositorio;
-import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
-public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long> {
+public class CursoBTIServico extends GradeCurricularServico<CursoBTI, CursoBTIDTO> {
 
 	private DisciplinaPeriodoServico disciplinaPeriodoServico;
 	private DisciplinaBTIServico disciplinaBTIServico;
@@ -133,12 +133,10 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 	@Override
 	protected void validar(CursoBTIDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
-
 		//Verifica nome
 		if (StringUtils.isEmpty(dto.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-
 		//Verifica chm
 		boolean statusChm = false;
 		if (dto.getChm() == null || dto.getChm() <= 0) {
@@ -146,7 +144,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusChm = true;
 		}
-
 		//Verifica cho
 		boolean statusCho = false;
 		if (dto.getChobm() == null || dto.getChobm() <= 0) {
@@ -154,7 +151,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusCho = true;
 		}
-
 		//Verifica chom
 		boolean statusChom = false;
 		if (dto.getChopm() == null || dto.getChopm() <= 0) {
@@ -162,7 +158,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusChom = true;
 		}
-
 		//Verifica chcm
 		boolean statusChcm = false;
 		if (dto.getChcm() == null || dto.getChcm() <= 0) {
@@ -170,40 +165,34 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusChcm = true;
 		}
-
 		//Verifica cho em relação a chm
 		if (statusCho && statusChm) {
 			if (dto.getChopm() > dto.getChm()) {
 				exceptionHelper.add("impossível chopm ser maior do que chm");
 			}
 		}
-
 		//Verifica chom em relação a chm
 		if (statusChom && statusChm) {
 			if (dto.getChobm() > dto.getChm()) {
 				exceptionHelper.add("impossível chobm ser maior do que chm");
 			}
 		}
-
 		//Verifica chcm em relação a chm
 		if (statusChcm && statusChm) {
 			if (dto.getChcm() > dto.getChm()) {
 				exceptionHelper.add("impossível chcm ser maior do que chm");
 			}
 		}
-
 		//Verifica a relação entre cho, chom, chcm e chm
 		if (statusCho && statusChm && statusChom && statusChcm) {
 			if ((dto.getChobm() + dto.getChopm() + dto.getChcm()) != dto.getChm()) {
 				exceptionHelper.add("cho, cho e chcm somados devem resultar em chm");
 			}
 		}
-
 		//Verifica chem
 		if (dto.getChem() == null || dto.getChem() <= 0) {
 			exceptionHelper.add("chem inválido");
 		}
-
 		//Verifica chminp
 		boolean chminp = false;
 		if (dto.getChminp() == null || dto.getChminp() <= 0) {
@@ -211,7 +200,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			chminp = true;
 		}
-
 		//Verifica chmaxp
 		boolean chmaxp = false;
 		if (dto.getChmaxp() == null || dto.getChmaxp() <= 0) {
@@ -219,7 +207,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			chmaxp = true;
 		}
-
 		//Verifica a relação entre chminp e chmaxp
 		if (chminp && chmaxp) {
 			if (dto.getChminp() > dto.getChmaxp()) {
@@ -233,7 +220,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusPrazoMinimo = true;
 		}
-
 		//Verifica prazoMaximo
 		boolean statusPrazoMaximo = false;
 		if (dto.getPrazoMaximo() == null || dto.getPrazoMaximo() <= 0) {
@@ -241,7 +227,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusPrazoMaximo = true;
 		}
-
 		//Verifica prazoEsperado
 		boolean statusPrazoEsperado = false;
 		if (dto.getPrazoEsperado() == null || dto.getPrazoEsperado() <= 0) {
@@ -249,7 +234,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 		} else {
 			statusPrazoEsperado = true;
 		}
-
 		//Verifica a relação entre prazoMinimo, prazoMaximo e prazoEsperado
 		if (statusPrazoMinimo && statusPrazoMaximo && statusPrazoEsperado) {
 			if (dto.getPrazoMinimo() > dto.getPrazoMaximo()) {
@@ -262,7 +246,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 				exceptionHelper.add("impossível prazoEsperado ser maior do que prazoMaximo");
 			}
 		}
-
 		//Verifica disciplinasObrigatorias
 		if (dto.getDisciplinasObrigatorias() != null) {
 			for (Long idDisciplinaPeriodo : dto.getDisciplinasObrigatorias()) {
@@ -277,7 +260,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 				}
 			}
 		}
-
 		//Verifica disciplinasOptativas
 		if (dto.getDisciplinasOptativas() != null) {
 			for (Long idDisciplina : dto.getDisciplinasOptativas()) {
@@ -292,7 +274,6 @@ public class CursoBTIServico extends GenericoServico<CursoBTI, CursoBTIDTO, Long
 				}
 			}
 		}
-
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());

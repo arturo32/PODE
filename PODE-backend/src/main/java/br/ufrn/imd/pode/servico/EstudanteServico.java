@@ -1,19 +1,19 @@
 package br.ufrn.imd.pode.servico;
 
-import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.modelo.Estudante;
-import br.ufrn.imd.pode.modelo.Vinculo;
-import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
-import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
-import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
+
+import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.modelo.Estudante;
+import br.ufrn.imd.pode.modelo.dto.EstudanteDTO;
+import br.ufrn.imd.pode.repositorio.EstudanteRepositorio;
+import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 
 @Service
 @Transactional
@@ -35,12 +35,10 @@ public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 	@Override
 	public Estudante converterParaEntidade(EstudanteDTO dto) {
 		Estudante estudante = new Estudante();
-
 		//Se for uma edição
 		if (dto.getId() != null) {
 			estudante = this.buscarPorId(dto.getId());
 		}
-
 		estudante.setId(dto.getId());
 		if (dto.getNome() != null) {
 			estudante.setNome(dto.getNome());
@@ -51,7 +49,6 @@ public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 		if (dto.getSenha() != null) {
 			estudante.setSenha(dto.getSenha());
 		}
-
 		if (dto.getIdVinculos() != null) {
 			estudante.setVinculos(new HashSet<>());
 
@@ -63,12 +60,16 @@ public class EstudanteServico extends UsuarioService<Estudante, EstudanteDTO> {
 				}
 			}
 		}
-
 		return estudante;
 	}
 
 	@Override
-	public void validar(EstudanteDTO dto) {
+	protected void validarModoPersistencia(TipoPersistencia tipoPersistencia, EstudanteDTO dto) {
+		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
+	}
+
+	@Override
+	protected void validar(EstudanteDTO dto) {
 		this.validarUsuario(dto);
 	}
 

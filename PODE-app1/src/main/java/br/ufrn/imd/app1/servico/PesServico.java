@@ -1,8 +1,6 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
-import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
+import br.ufrn.imd.pode.servico.GradeCurricularServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +11,18 @@ import java.util.Set;
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.servico.GenericoServico;
 
 import br.ufrn.imd.app1.modelo.DisciplinaBTI;
 import br.ufrn.imd.app1.modelo.Pes;
 import br.ufrn.imd.app1.modelo.dto.PesDTO;
 import br.ufrn.imd.app1.repositorio.PesRepositorio;
+import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
+import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
+import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
 
 @Service
 @Transactional
-public class PesServico extends GenericoServico<Pes, PesDTO, Long> {
+public class PesServico extends GradeCurricularServico<Pes, PesDTO> {
 
 	private DisciplinaPeriodoServico disciplinaPeriodoServico;
 	private DisciplinaBTIServico disciplinaBTIServico;
