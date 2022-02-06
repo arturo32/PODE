@@ -31,7 +31,7 @@ public abstract class PlanoCurso extends ModeloAbstrato<Long> {
 	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(name = "planocurso_disciplina_pendentes", joinColumns = {
 			@JoinColumn(name = "planocurso_id")}, inverseJoinColumns = {@JoinColumn(name = "disciplina_id")})
-	private Set<Disciplina> disciplinasPendentes;
+	private Set<DisciplinaCursada> disciplinasPendentes;
 
 
 	public Set<DisciplinaCursada> getDisciplinasCursadas() {
@@ -42,11 +42,11 @@ public abstract class PlanoCurso extends ModeloAbstrato<Long> {
 		this.disciplinasCursadas = disciplinasCursadas;
 	}
 
-	public Set<Disciplina> getDisciplinasPendentes() {
+	public Set<DisciplinaCursada> getDisciplinasPendentes() {
 		return disciplinasPendentes;
 	}
 
-	public void setDisciplinasPendentes(Set<Disciplina> disciplinasPendentes) {
+	public void setDisciplinasPendentes(Set<DisciplinaCursada> disciplinasPendentes) {
 		this.disciplinasPendentes = disciplinasPendentes;
 	}
 }

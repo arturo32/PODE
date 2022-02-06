@@ -23,7 +23,7 @@ public class PlanoCursoDTO extends AbstratoDTO {
 	public PlanoCursoDTO(PlanoCurso planoCurso) {
 		this.setId(planoCurso.getId());
 		this.setIdDisciplinasCursadas(planoCurso.getDisciplinasCursadas().stream().map(DisciplinaCursada::getId).collect(Collectors.toSet()));
-		this.setIdDisciplinasPendentes(planoCurso.getDisciplinasPendentes().stream().map(Disciplina::getId).collect(Collectors.toSet()));
+		this.setIdDisciplinasPendentes(planoCurso.getDisciplinasPendentes().stream().map(DisciplinaCursada::getId).collect(Collectors.toSet()));
 	}
 
 	public Set<Long> getIdDisciplinasCursadas() {

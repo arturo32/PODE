@@ -10,12 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.PrerequisitosNaoAtendidosException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.*;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
 import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
@@ -23,11 +21,10 @@ import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 
 @Service
 @Transactional
-public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCursoDTO> extends GenericoServico<T, D, Long> {
+public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCursoDTO,
+		DiscDTO extends DisciplinaCursadaDTO> extends GenericoServico<T, D, Long> {
 
-	public abstract DisciplinaServico<?, ?> getDisciplinaServico();
-
-	public abstract DisciplinaCursadaServico<?, ?> getDisciplinaCursadaServico();
+	public abstract DisciplinaCursadaServico<?, DiscDTO> getDisciplinaCursadaServico();
 
 	public abstract PlanoCursoRepositorio<T> getPlanoCursoRepositorio();
 
@@ -39,13 +36,13 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T adicionarDisciplinaCursada(Long planoCursoId, List<DisciplinaCursadaDTO> disciplinasDTOS) {
+	public T adicionarDisciplinaCursada(Long planoCursoId, List<DiscDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		T planoCurso = this.buscarPorId(planoCursoId);
 		Set<DisciplinaCursada> disciplinas = new HashSet<>();
 		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
-		for (DisciplinaCursadaDTO dp : disciplinasDTOS) {
-			DisciplinaCursada d = getDisciplinaCursadaServico().buscarPorId(dp.getId());
+		for (DiscDTO dp : disciplinasDTOS) {
+			DisciplinaCursada d = getDisciplinaCursadaServico().obterDisciplinaCursada(dp);
 			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
 				disciplinas.add(d);
@@ -61,16 +58,16 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 		dCursadas.addAll(disciplinas);
 		planoCurso.setDisciplinasCursadas(dCursadas);
 
-		Set<Disciplina> dPendentes = planoCurso.getDisciplinasPendentes();
-		dPendentes.removeAll(disciplinas.stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet()));
+		Set<DisciplinaCursada> dPendentes = planoCurso.getDisciplinasPendentes();
+		dPendentes.removeAll(disciplinas);
 		planoCurso.setDisciplinasPendentes(dPendentes);
 		return getPlanoCursoRepositorio().save(planoCurso);
 	}
 
-	public T removerDisciplinaCursada(Long planoCursoId, List<DisciplinaCursadaDTO> disciplinasPeriodoDTOS) {
+	public T removerDisciplinaCursada(Long planoCursoId, List<DiscDTO> disciplinasPeriodoDTOS) {
 		T planoCurso = this.buscarPorId(planoCursoId);
 		Collection<DisciplinaCursada> disciplinas = new HashSet<>();
-		for (DisciplinaCursadaDTO dpDTO : disciplinasPeriodoDTOS) {
+		for (DiscDTO dpDTO : disciplinasPeriodoDTOS) {
 			DisciplinaCursada d = getDisciplinaCursadaServico().buscarPorId(dpDTO.getId());
 			if (planoCurso.getDisciplinasCursadas().contains(d)) {
 				disciplinas.add(d);
@@ -81,21 +78,21 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 		dCursadas.removeAll(disciplinas);
 		planoCurso.setDisciplinasCursadas(dCursadas);
 
-		Set<Disciplina> dPendentes = planoCurso.getDisciplinasPendentes();
-		dPendentes.addAll(disciplinas.stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet()));
+		Set<DisciplinaCursada> dPendentes = planoCurso.getDisciplinasPendentes();
+		dPendentes.addAll(disciplinas);
 		planoCurso.setDisciplinasPendentes(dPendentes);
 
 		return getPlanoCursoRepositorio().save(planoCurso);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T adicionarDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasDTOS) {
+	public T adicionarDisciplinaPendente(Long planoCursoId, List<DiscDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		T planoCurso = this.buscarPorId(planoCursoId);
-		Set<Disciplina> disciplinas = new HashSet<>();
+		Set<DisciplinaCursada> disciplinas = new HashSet<>();
 		Collection<DisciplinaInterface> cursadas = new HashSet<>(planoCurso.getDisciplinasCursadas());
-		for (DisciplinaDTO dDTO : disciplinasDTOS) {
-			Disciplina d = getDisciplinaServico().buscarPorId(dDTO.getId());
+		for (DiscDTO dDTO : disciplinasDTOS) {
+			DisciplinaCursada d = getDisciplinaCursadaServico().obterDisciplinaCursada(dDTO);
 			if (d.checarPrerequisitosDisciplinas(cursadas)) {
 				cursadas.add(d);
 				disciplinas.add(d);
@@ -108,7 +105,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
 
-		Set<Disciplina> dPendentes = planoCurso.getDisciplinasPendentes();
+		Set<DisciplinaCursada> dPendentes = planoCurso.getDisciplinasPendentes();
 		dPendentes.addAll(disciplinas);
 		planoCurso.setDisciplinasPendentes(dPendentes);
 
@@ -116,15 +113,15 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public T removerDisciplinaPendente(Long planoCursoId, List<DisciplinaDTO> disciplinasPeriodoDTOS) {
+	public T removerDisciplinaPendente(Long planoCursoId, List<DiscDTO> disciplinasPeriodoDTOS) {
 		T planoCurso = this.buscarPorId(planoCursoId);
-		Collection<Disciplina> disciplinas = new HashSet<>();
-		for (DisciplinaDTO dpDTO : disciplinasPeriodoDTOS) {
-			Disciplina dp = getDisciplinaServico().buscarPorId(dpDTO.getId());
+		Collection<DisciplinaCursada> disciplinas = new HashSet<>();
+		for (DiscDTO dpDTO : disciplinasPeriodoDTOS) {
+			DisciplinaCursada dp = getDisciplinaCursadaServico().obterDisciplinaCursada(dpDTO);
 			disciplinas.add(dp);
 		}
 
-		Set<Disciplina> dPendentes = planoCurso.getDisciplinasPendentes();
+		Set<DisciplinaCursada> dPendentes = planoCurso.getDisciplinasPendentes();
 		dPendentes.removeAll(disciplinas);
 		planoCurso.setDisciplinasPendentes(dPendentes);
 

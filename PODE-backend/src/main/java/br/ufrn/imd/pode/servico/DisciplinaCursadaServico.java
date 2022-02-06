@@ -11,4 +11,6 @@ public abstract class DisciplinaCursadaServico <T extends DisciplinaCursada, D e
         ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
     }
 
+    abstract public T obterDisciplinaCursada(D dto);
+
 }
