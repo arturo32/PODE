@@ -26,7 +26,12 @@ public class DisciplinaFiltroControlador {
 				.collect(Collectors.toMap(FiltroDisciplinaServico::obterNome, Function.identity()));
 	}
 
-	@GetMapping("/filtro/{nome_filtro}")
+	@GetMapping()
+	public ResponseEntity<Collection<String>> listarFiltros() {
+		return ResponseEntity.ok(filtros.keySet());
+	}
+
+	@GetMapping("/{nome_filtro}")
 	public ResponseEntity<Collection<DisciplinaDTO>> buscarDisciplinasPorFiltro(@PathVariable String nome_filtro,
 	                                                                            @RequestParam Map<String, String> dataQuery) {
 		return ResponseEntity.ok(filtros.get(nome_filtro).buscarDisciplinasPorFiltro(dataQuery));

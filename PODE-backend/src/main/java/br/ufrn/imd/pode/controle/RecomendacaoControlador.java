@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,12 @@ public class RecomendacaoControlador {
 				.collect(Collectors.toMap(RecomendacaoServico::getNomeServico, Function.identity()));
 	}
 
-	@GetMapping("/recomendar-disciplinas/{nome_recomendador}/{id_vinculo}")
+	@GetMapping()
+	public ResponseEntity<Collection<String>> listarRecomendacoes() {
+		return ResponseEntity.ok(recomendadores.keySet());
+	}
+
+	@GetMapping("/{nome_recomendador}/{id_vinculo}")
 	public ResponseEntity<RecomendacaoDTO> recomendarDisciplinas(
 			@PathVariable(value = "nome_recomendador") String nome_recomendador,
 			@PathVariable(value = "id_vinculo") Long id_vinculo) {
