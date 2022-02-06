@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
@@ -34,6 +32,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	private DisciplinaBTIServico disciplinaBTIServico;
 	private DisciplinaPeriodoServico disciplinaPeriodoServico;
 	private PesServico pesServico;
+	private VinculoBTIServico vinculoBTIServico;
 
 	private PlanoCursoPesRepositorio repositorio;
 
@@ -55,6 +54,11 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	@Autowired
 	public void setPesServico(PesServico pesServico) {
 		this.pesServico = pesServico;
+	}
+
+	@Autowired
+	public void setVinculoBTIServico(VinculoBTIServico vinculoBTIServico) {
+		this.vinculoBTIServico = vinculoBTIServico;
 	}
 
 	public DisciplinaServico<?, ?> getDisciplinaServico() {
@@ -201,5 +205,62 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	@Override
 	protected GenericoRepositorio<PlanoCursoPes, Long> repositorio() {
 		return repositorio;
+	}
+
+	public List<Integer> cargaHorariaPeriodos(PlanoCursoPes planoCurso, VinculoBTI vinculo) {
+		CursoBTI curso = (CursoBTI) vinculo.getGradeCurricular();
+		List<Integer> result = new ArrayList<>(Collections.nCopies(curso.getPrazoMaximo(), 0));
+		for (DisciplinaCursada disciplinaCursada: planoCurso.getDisciplinasCursadas()) {
+			DisciplinaPeriodo dp = (DisciplinaPeriodo) disciplinaCursada;
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		for (DisciplinaCursada disciplinaCursada: planoCurso.getDisciplinasPendentes()) {
+			DisciplinaPeriodo dp = (DisciplinaPeriodo) disciplinaCursada;
+			result.set(dp.getPeriodo() - 1, result.get(dp.getPeriodo() - 1) + dp.getDisciplina().getCh());
+		}
+		return result.subList(vinculo.getPeriodoAtualPeriodo()-1, curso.getPrazoMaximo()-1);
+	}
+
+	public PlanoCursoPes adicionaInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCursoPes planoCurso = this.buscarPorId(planoCursoId);
+		VinculoBTI vinculo = vinculoBTIServico.buscarPorPlanoCursoId(planoCurso.getId());
+		List<Integer> chs = this.cargaHorariaPeriodos(planoCurso, vinculo);
+		List<Pes> pesList = pesServico.buscarPorIds(pesIds);
+		Set<DisciplinaCursada> disciplinas = planoCurso.getDisciplinasPendentes();
+		for (Pes pes : pesList) {
+			for (DisciplinaCursada d: pes.getDisciplinasObrigatorias()) {
+				int minIdx = vinculo.getPeriodoAtualPeriodo();
+				for (int i = vinculo.getPeriodoAtualPeriodo()+1; i < chs.size(); ++i) {
+					if (chs.get(i) < chs.get(minIdx)) {
+						minIdx = i;
+					}
+				}
+				if (!disciplinas.contains(d)) {
+					disciplinas.add(d);
+					planoCurso.getDisciplinasPendentes().add(new DisciplinaPeriodo((DisciplinaBTI) d.getDisciplina(), minIdx));
+					chs.set(minIdx, chs.get(minIdx)+d.getCh());
+				}
+			}
+		}
+		planoCurso.getGradesParalelas().addAll(pesList);
+		return repositorio.save(planoCurso);
+	}
+
+	public PlanoCursoPes removeInteressePes(Long planoCursoId, List<Long> pesIds) {
+		PlanoCursoPes planoCurso = this.buscarPorId(planoCursoId);
+		List<Pes> pesList = pesServico.buscarPorIds(pesIds);
+		List<DisciplinaCursada> to_remove = new ArrayList<>();
+		for (Pes pes : pesList) {
+			for (DisciplinaCursada d: pes.getDisciplinasObrigatorias()) {
+				for (DisciplinaCursada dp: planoCurso.getDisciplinasPendentes()) {
+					if (dp.getDisciplina() == d.getDisciplina()) {
+						to_remove.add(dp);
+					}
+				}
+			}
+			to_remove.forEach(planoCurso.getDisciplinasPendentes()::remove);
+		}
+		pesList.forEach(planoCurso.getGradesParalelas()::remove);
+		return repositorio.save(planoCurso);
 	}
 }
