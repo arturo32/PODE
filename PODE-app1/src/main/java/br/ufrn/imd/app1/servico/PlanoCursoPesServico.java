@@ -3,6 +3,8 @@ package br.ufrn.imd.app1.servico;
 import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -262,5 +264,18 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 		}
 		pesList.forEach(planoCurso.getGradesParalelas()::remove);
 		return repositorio.save(planoCurso);
+	}
+
+	@Override
+	public Set<DisciplinaCursada> atualizaPendentesCursadas(Set<DisciplinaCursada> dPendentes, Set<DisciplinaCursada> cursadas) {
+		Set<DisciplinaInterface> disciplinas = cursadas.stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet());
+		Set<DisciplinaCursada> pendentes = new HashSet<>();
+		for (DisciplinaCursada dp: dPendentes) {
+			DisciplinaBTI d = (DisciplinaBTI) dp.getDisciplina();
+			if (!disciplinas.contains(d) && !d.checarEquivalentesDisciplinas(disciplinas)) {
+				pendentes.add(dp);
+			}
+		}
+		return pendentes;
 	}
 }

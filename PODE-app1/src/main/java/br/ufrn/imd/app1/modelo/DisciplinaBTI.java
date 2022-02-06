@@ -4,11 +4,14 @@ import org.mvel2.MVEL;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "disciplinabti")
@@ -40,6 +43,14 @@ public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
 			}
 		}
 		return (boolean) MVEL.eval(expressao);
+	}
+
+	public boolean checarEquivalentesDisciplinas(Collection<DisciplinaInterface> disciplinas) {
+		Set<String> codigos = disciplinas.stream().map(DisciplinaInterface::getCodigo).collect(Collectors.toSet());
+		if (StringUtils.isEmpty(getEquivalentes())) {
+			return false;
+		}
+		return checarEquivalentesCodigos(codigos, getEquivalentes());
 	}
 
 	@Override
