@@ -29,34 +29,6 @@ public abstract class DisciplinaServico<T extends Disciplina, D extends Discipli
 		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
 	}
 
-	@Override
-	protected void validar(D dto) {
-		ExceptionHelper exceptionHelper = new ExceptionHelper();
-		// Verifica código
-		if (StringUtils.isEmpty(dto.getCodigo())) {
-			exceptionHelper.add("codigo inválido");
-		} else {
-			Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(dto.getCodigo());
-			if (!matcher.find()) {
-				exceptionHelper.add("formato de código inválido (exemplo: ABC1234)");
-			}
-		}
-		// Verifica nome
-		if (StringUtils.isEmpty(dto.getNome())) {
-			exceptionHelper.add("nome inválido");
-		}
-		// Verifica carga horária
-		if (dto.getCh() == null || dto.getCh() <= 0) {
-			exceptionHelper.add("ch inválido");
-		}
-		// TODO verificar expressões de prequisitos, equivalencias e corequisitos
-		// Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
-		} else {
-			throw new ValidacaoException(exceptionHelper.getMessage());
-		}
-	}
-
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public Set<T> buscarDisciplinasPorCodigo(String codigo) {
 		return getDisciplinaRepositorio().findDisciplinasByAtivoIsTrueAndCodigoIs(codigo);
