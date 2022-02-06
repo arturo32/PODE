@@ -101,7 +101,7 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 						d.getCodigo() + "' não serão atendidos. Expressão: " + d.getPrerequisitos());
 			}
 		}
-		if (exceptionHelper.getMessage().isEmpty()) {
+		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new PrerequisitosNaoAtendidosException(exceptionHelper.getMessage());
 		}
 
