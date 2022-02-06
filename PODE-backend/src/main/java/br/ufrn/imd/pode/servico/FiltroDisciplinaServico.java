@@ -11,10 +11,14 @@ import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 @Service
 @Transactional
 public interface FiltroDisciplinaServico {
+	
+	// extension/dependency
 	String obterNome();
 
+	// extension/dependency
 	void validar(Map<String, String> parametros);
 
+	// extension/dependency
 	Set<DisciplinaDTO> filtrar(Map<String, String> parametros);
 
 	default Set<DisciplinaDTO> buscarDisciplinasPorFiltro(Map<String, String> parametros) {

@@ -27,6 +27,7 @@ public abstract class VinculoServico<T extends Vinculo, D extends VinculoDTO> ex
         this.buscarPorId(idVinculo);
     }
 
+    // extension/dependency
     protected abstract Double gerarPercentualConclusao(Long idVinculo);
 
     public Double obterPercentualConclusao(Long idVinculo) {

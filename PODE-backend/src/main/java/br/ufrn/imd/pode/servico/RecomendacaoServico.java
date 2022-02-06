@@ -9,10 +9,13 @@ import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 @Transactional
 public interface RecomendacaoServico {
 
+	// extension/dependency
 	String getNomeServico();
 
+	// extension/dependency
 	void validar(Long vinculoId);
 
+	// extension/dependency
 	RecomendacaoDTO recomendar(Long vinculoId);
 
 	default RecomendacaoDTO recomendarDisciplinas(Long idVinculo) {

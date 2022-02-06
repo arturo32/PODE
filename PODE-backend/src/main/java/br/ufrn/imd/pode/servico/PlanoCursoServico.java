@@ -35,6 +35,8 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
 	}
 
+	abstract public Set<DisciplinaCursada> atualizaPendentesCursadas(Set<DisciplinaCursada> dPendentes, Set<DisciplinaCursada> cursadas);
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T adicionarDisciplinaCursada(Long planoCursoId, List<DiscDTO> disciplinasDTOS) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -58,9 +60,8 @@ public abstract class PlanoCursoServico<T extends PlanoCurso, D extends PlanoCur
 		dCursadas.addAll(disciplinas);
 		planoCurso.setDisciplinasCursadas(dCursadas);
 
-		Set<DisciplinaCursada> dPendentes = planoCurso.getDisciplinasPendentes();
-		dPendentes.removeAll(disciplinas);
-		planoCurso.setDisciplinasPendentes(dPendentes);
+		planoCurso.setDisciplinasPendentes(this.atualizaPendentesCursadas(planoCurso.getDisciplinasPendentes(), disciplinas));
+
 		return getPlanoCursoRepositorio().save(planoCurso);
 	}
 
