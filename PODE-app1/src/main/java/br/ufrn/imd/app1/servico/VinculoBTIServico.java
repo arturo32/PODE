@@ -1,7 +1,11 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.modelo.*;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
+import br.ufrn.imd.pode.modelo.GradeCurricular;
+import br.ufrn.imd.pode.modelo.PlanoCurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +17,11 @@ import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import br.ufrn.imd.pode.servico.EstudanteServico;
 import br.ufrn.imd.pode.servico.VinculoServico;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
 
-import br.ufrn.imd.app1.modelo.VinculoBTI;
 import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
 import br.ufrn.imd.app1.repositorio.VinculoBTIRepositorio;
 import org.springframework.util.StringUtils;
+
 
 @Service
 @Transactional
@@ -55,23 +57,20 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 		this.estudanteServico = estudanteServico;
 	}
 
-	@Override
-	protected Double gerarPercentualConclusao(Long idVinculo) {
-		VinculoBTI vinculo = this.buscarPorId(idVinculo);
-		PlanoCurso planoCurso = vinculo.getPlanoCurso();
 
+	private Double gerarPercentualConclusaoGrade(PlanoCurso planoCurso, GradeCurricular grade){
 		Integer cargaHorariaObrigatoriaCumprida = planoCurso.getDisciplinasCursadas().stream()
-				.filter(d -> vinculo.getGradeCurricular().getDisciplinasObrigatorias().contains(d))
+				.filter(d -> grade.getDisciplinasObrigatorias().contains(d))
 				.map(DisciplinaCursada::getCh)
 				.reduce(0, Integer::sum);
 
 		Integer cargaHorariaOptativaCumprida = planoCurso.getDisciplinasCursadas().stream()
-				.filter(d -> vinculo.getGradeCurricular().getDisciplinasOptativas().contains(d.getDisciplina()))
+				.filter(d -> grade.getDisciplinasOptativas().contains(d.getDisciplina()))
 				.map(DisciplinaCursada::getCh)
 				.reduce(0, Integer::sum);
 
-		Integer chobm = vinculo.getGradeCurricular().getChobm();
-		Integer chopm = vinculo.getGradeCurricular().getChopm();
+		Integer chobm = grade.getChobm();
+		Integer chopm = grade.getChopm();
 
 		Integer cargaHorariaTotal = chobm + chopm;
 
@@ -85,7 +84,40 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 			taxaOptativasCumpridas = 1.0;
 		}
 
-		return (taxaObrigatorias*taxaObrigatoriasCumpridas + taxaOptativas*taxaOptativasCumpridas) * 100;
+		return (taxaObrigatorias * taxaObrigatoriasCumpridas + taxaOptativas * taxaOptativasCumpridas) * 100;
+	}
+
+	@Override
+	protected Double gerarPercentualConclusao(Long idVinculo) {
+		VinculoBTI vinculo = this.buscarPorId(idVinculo);
+		PlanoCurso planoCurso = vinculo.getPlanoCurso();
+		GradeCurricular grade = vinculo.getGradeCurricular();
+
+		Integer chTotalPes = ((PlanoCursoPes) planoCurso).getGradesParalelas().stream()
+				.map(d -> d.getChopm() + d.getChobm())
+				.reduce(0, Integer::sum);
+
+		Integer chTotalCurso = grade.getChobm() + grade.getChopm();
+
+		Integer chTotal = chTotalPes + chTotalCurso;
+
+		Double horasCumpridasPes = ((PlanoCursoPes) planoCurso).getGradesParalelas().stream()
+				.map(gradePes -> {
+					Integer chTotalGradePes = gradePes.getChobm() + gradePes.getChopm();
+					return (gerarPercentualConclusaoGrade(planoCurso, gradePes) / 100 )* chTotalGradePes;
+				})
+				.reduce(0.0, Double::sum);
+
+		Double horasCumpridasCurso = (gerarPercentualConclusaoGrade(planoCurso, grade) / 100) * chTotalCurso;
+
+		Double taxaPesCumpridas = horasCumpridasPes / chTotal;
+		Double taxaCursoCumpridas = horasCumpridasCurso / chTotal;
+
+		Double taxaPes = (double) chTotalPes / chTotal;
+		Double taxaCurso = (double) chTotalCurso / chTotal;
+
+
+		return (taxaPesCumpridas * taxaPes + taxaCursoCumpridas * taxaCurso) * 100;
 	}
 
 	@Override
