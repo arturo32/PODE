@@ -1,5 +1,7 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,12 @@ import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
 import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class RecomendacaoPesServico implements RecomendacaoServico {
+
+	private VinculoBTIServico vinculoBTIServico;
 
 	private PesServico pesServico;
 
@@ -38,7 +44,21 @@ public class RecomendacaoPesServico implements RecomendacaoServico {
 
 	@Override
 	public void validar(Long vinculoId) {
-		// TODO
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+		/* verifica vinculoId */
+		if (vinculoId < 0) {
+			exceptionHelper.add("vinculo inconsistente");
+		} else {
+			try {
+				this.vinculoBTIServico.buscarPorId(vinculoId);
+			} catch (EntityNotFoundException entityNotFoundException) {
+				exceptionHelper.add("vinculo(id=" + vinculoId + ") inexistente");
+			}
+		}
+		/* verifica se existe exceçao */
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new ValidacaoException(exceptionHelper.getMessage());
+		}
 	}
 
 	@Override

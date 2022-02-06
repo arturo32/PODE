@@ -1,5 +1,6 @@
 package br.ufrn.imd.app1;
 
+import org.mvel2.MVEL;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

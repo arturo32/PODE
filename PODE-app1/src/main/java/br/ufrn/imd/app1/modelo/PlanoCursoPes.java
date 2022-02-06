@@ -1,11 +1,8 @@
 package br.ufrn.imd.app1.modelo;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 
 @Entity

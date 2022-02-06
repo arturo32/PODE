@@ -1,5 +1,7 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.servico.GradeCurricularServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import br.ufrn.imd.app1.repositorio.PesRepositorio;
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
 import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -107,7 +110,62 @@ public class PesServico extends GradeCurricularServico<Pes, PesDTO> {
 
 	@Override
 	protected void validar(PesDTO dto) {
-		//TODO validação
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
+		// Verifica nome
+		if (StringUtils.isEmpty(dto.getNome())) {
+			exceptionHelper.add("nome inválido");
+		}
+
+		// Verifica chm
+		if (dto.getChm() == null || dto.getChm() <= 0) {
+			exceptionHelper.add("chm inválido");
+		}
+
+		// Verifica chobm
+		if (dto.getChobm() == null || dto.getChobm() <= 0) {
+			exceptionHelper.add("cho inválido");
+		}
+
+		// Verifica cho
+		if (dto.getChopm() == null || dto.getChopm() <= 0) {
+			exceptionHelper.add("cho inválido");
+		}
+
+		// Verifica disciplinasObrigatorias
+		if (dto.getDisciplinasObrigatorias() != null) {
+			for (Long disciplina : dto.getDisciplinasObrigatorias()) {
+				if (disciplina == null || disciplina < 0) {
+					exceptionHelper.add("disciplinaObrigatoria inconsistente");
+				} else {
+					try {
+						this.disciplinaBTIServico.buscarPorId(disciplina);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("disciplinaObrigatoria(id=" + disciplina + ") inexistente");
+					}
+				}
+			}
+		}
+
+		// Verifica disciplinasOptativas
+		if (dto.getDisciplinasOptativas() != null) {
+			for (Long disciplina : dto.getDisciplinasOptativas()) {
+				if (disciplina == null || disciplina < 0) {
+					exceptionHelper.add("disciplinaOptativa inconsistente");
+				} else {
+					try {
+						this.disciplinaBTIServico.buscarPorId(disciplina);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("disciplinaOptativa(id=" + disciplina + ") inexistente");
+					}
+				}
+			}
+		}
+
+		// Verifica se existe exceção
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new ValidacaoException(exceptionHelper.getMessage());
+		}
 	}
 
 	public Set<PesChObrigatoriaCumprida> obterPesComChObrigatoriaCumprida(long vinculoId) {

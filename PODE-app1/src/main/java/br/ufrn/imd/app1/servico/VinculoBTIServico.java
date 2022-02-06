@@ -1,5 +1,7 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import br.ufrn.imd.pode.modelo.PlanoCurso;
 import br.ufrn.imd.app1.modelo.VinculoBTI;
 import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
 import br.ufrn.imd.app1.repositorio.VinculoBTIRepositorio;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -152,7 +155,62 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 
 	@Override
 	protected void validar(VinculoBTIDTO dto) {
-		// TODO
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
+		if (dto.getIdEstudante() != null) {
+			try {
+				estudanteServico.buscarPorId(dto.getIdEstudante());
+			} catch (EntidadeNaoEncontradaException e) {
+				exceptionHelper.add("estudante de id: "+dto.getIdEstudante()+" não encontrado");
+			}
+		} else {
+			exceptionHelper.add("estudante não foi informado");
+		}
+
+		// Verifica matricula
+		if (StringUtils.isEmpty(dto.getMatricula())) {
+			exceptionHelper.add("matricula não foi informada");
+		}
+
+		if (dto.getIdCurso() != null) {
+			try {
+				cursoBTIServico.buscarPorId(dto.getIdCurso());
+			} catch (EntidadeNaoEncontradaException e) {
+				exceptionHelper.add("curso de id: "+dto.getIdCurso()+" não encontrado");
+			}
+		} else {
+			exceptionHelper.add("curso não foi informado");
+		}
+
+		if (dto.getPeriodoInicialAno() == null) {
+			exceptionHelper.add("ano inicial não foi informado");
+		}
+
+		if (dto.getPeriodoAtualAno() == null) {
+			exceptionHelper.add("ano atual não foi informado");
+		}
+
+		if (dto.getPeriodoInicialPeriodo() != null) {
+			if(dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
+				exceptionHelper.add("periodo inicial invalido, deve ser 1 ou 2");
+			}
+		} else {
+			exceptionHelper.add("periodo inicial não foi informado");
+		}
+
+		if (dto.getPeriodoAtualPeriodo() != null) {
+			if(dto.getPeriodoInicialPeriodo() != 1 || dto.getPeriodoInicialPeriodo() != 2) {
+				exceptionHelper.add("periodo atual invalido, deve ser 1 ou 2");
+			}
+		} else {
+			exceptionHelper.add("periodo atual não foi informado");
+		}
+
+		// Verifica se existe exceção
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new ValidacaoException(exceptionHelper.getMessage());
+		}
+
 	}
 
 	@Override

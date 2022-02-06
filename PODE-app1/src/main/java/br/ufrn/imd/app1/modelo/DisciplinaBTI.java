@@ -10,17 +10,9 @@ import java.util.regex.Pattern;
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 
-import br.ufrn.imd.app1.modelo.dto.DisciplinaBTIDTO;
-
 @Entity
 @Table(name = "disciplinabti")
 public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
-	@Column(length = 1024)
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DISCIPLINA")
-	@SequenceGenerator(name = "SEQ_DISCIPLINA", sequenceName = "id_seq_disciplina", allocationSize = 1)
-	protected Long id;
 
 	@Column(
 			length = 1024
@@ -28,16 +20,6 @@ public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
 	private String equivalentes;
 
 	public DisciplinaBTI() {}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getEquivalentes() {
 		return equivalentes;

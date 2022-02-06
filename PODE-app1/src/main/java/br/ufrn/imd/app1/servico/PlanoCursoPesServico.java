@@ -1,6 +1,8 @@
 package br.ufrn.imd.app1.servico;
 
 import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +73,6 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 
 	@Override
 	public PlanoCursoPes criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
-		// TODO
 		PlanoCursoPes planoCurso = new PlanoCursoPes();
 		planoCurso.setDisciplinasPendentes(curso.getDisciplinasObrigatorias());
 		return repositorio.save(planoCurso);
@@ -144,7 +145,57 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 
 	@Override
 	protected void validar(PlanoCursoPesDTO dto) {
-		// TODO
+		ExceptionHelper exceptionHelper = new ExceptionHelper();
+
+		//Verifica disciplinasCursadas
+		if (dto.getIdDisciplinasCursadas() != null) {
+			for (Long disciplinaPeriodo : dto.getIdDisciplinasCursadas()) {
+				if (disciplinaPeriodo == null || disciplinaPeriodo < 0) {
+					exceptionHelper.add("disciplinaCursada inconsistente");
+				} else {
+					try {
+						this.disciplinaPeriodoServico.buscarPorId(disciplinaPeriodo);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("disciplinaCursada(id=" + disciplinaPeriodo + ") inexistente");
+					}
+				}
+			}
+		}
+
+		//Verifica disciplinasPendentes
+		if (dto.getIdDisciplinasPendentes() != null) {
+			for (Long disciplinaPeriodo : dto.getIdDisciplinasPendentes()) {
+				if (disciplinaPeriodo== null || disciplinaPeriodo < 0) {
+					exceptionHelper.add("disciplinaPendente inconsistente");
+				} else {
+					try {
+						this.disciplinaPeriodoServico.buscarPorId(disciplinaPeriodo);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("disciplinaPendente(id=" + disciplinaPeriodo + ") inexistente");
+					}
+				}
+			}
+		}
+
+		//Verifica pesInteresse
+		if (dto.getIdPes() != null) {
+			for (Long pes : dto.getIdPes()) {
+				if (pes == null || pes < 0) {
+					exceptionHelper.add("disciplinaPendente inconsistente");
+				} else {
+					try {
+						this.pesServico.buscarPorId(pes);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("pes(id=" + pes + ") inexistente");
+					}
+				}
+			}
+		}
+
+		//Verifica se existe exceção
+		if (exceptionHelper.getMessage().isEmpty()) {
+			throw new ValidacaoException(exceptionHelper.getMessage());
+		}
 	}
 
 	@Override
