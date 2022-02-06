@@ -28,6 +28,11 @@ public class RecomendacaoPesServico implements RecomendacaoServico {
 	private DisciplinaBTIServico disciplinaBTIServico;
 
 	@Autowired
+	public void setVinculoBTIServico(VinculoBTIServico vinculoBTIServico) {
+		this.vinculoBTIServico = vinculoBTIServico;
+	}
+
+	@Autowired
 	public void setPesServico(PesServico pesServico) {
 		this.pesServico = pesServico;
 	}
