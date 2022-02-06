@@ -15,6 +15,15 @@ public class DisciplinaPeriodo extends DisciplinaCursada implements DisciplinaIn
 
 	private Integer periodo;
 
+	public DisciplinaPeriodo(DisciplinaBTI disciplinaBTI, Integer periodo) {
+		this.disciplina = disciplinaBTI;
+		this.periodo = periodo;
+	}
+
+	public DisciplinaPeriodo() {
+
+	}
+
 	public Integer getPeriodo() {
 		return periodo;
 	}

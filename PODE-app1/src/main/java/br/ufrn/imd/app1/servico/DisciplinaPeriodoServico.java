@@ -16,6 +16,8 @@ import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
 import br.ufrn.imd.app1.repositorio.DisciplinaPeriodoRepositorio;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<DisciplinaPeriodo, DisciplinaPeriodoDTO> {
@@ -87,5 +89,11 @@ public class DisciplinaPeriodoServico extends DisciplinaCursadaServico<Disciplin
 	@Override
 	protected GenericoRepositorio<DisciplinaPeriodo, Long> repositorio() {
 		return repositorio;
+	}
+
+	@Override
+	public DisciplinaPeriodo obterDisciplinaCursada(DisciplinaPeriodoDTO dto) {
+		Optional<DisciplinaPeriodo> opt = repositorio.findByAtivoIsTrueAndPeriodoAndDisciplina_Id(dto.getPeriodo(), dto.getDisciplinaId());
+		return opt.orElseGet(() -> repositorio.save(new DisciplinaPeriodo(disciplinaBTIServico.buscarPorId(dto.getDisciplinaId()), dto.getPeriodo())));
 	}
 }

@@ -1,5 +1,6 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ import br.ufrn.imd.app1.repositorio.PlanoCursoPesRepositorio;
 
 @Service
 @Transactional
-public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, PlanoCursoPesDTO> {
+public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, PlanoCursoPesDTO, DisciplinaPeriodoDTO> {
 
 	private DisciplinaBTIServico disciplinaBTIServico;
 	private DisciplinaPeriodoServico disciplinaPeriodoServico;
@@ -59,7 +60,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	}
 
 	@Override
-	public DisciplinaCursadaServico<?, ?> getDisciplinaCursadaServico() {
+	public DisciplinaCursadaServico<?, DisciplinaPeriodoDTO> getDisciplinaCursadaServico() {
 		return disciplinaPeriodoServico;
 	}
 
@@ -72,7 +73,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	public PlanoCursoPes criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
 		// TODO
 		PlanoCursoPes planoCurso = new PlanoCursoPes();
-		planoCurso.setDisciplinasPendentes(curso.getDisciplinasObrigatorias().stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet()));
+		planoCurso.setDisciplinasPendentes(curso.getDisciplinasObrigatorias());
 		return repositorio.save(planoCurso);
 	}
 
@@ -118,7 +119,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 					throw new EntidadeInconsistenteException("disciplinaPendente inconsistente");
 				}
 			}
-			planoCurso.setDisciplinasPendentes(disciplinas.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toSet()));
+			planoCurso.setDisciplinasPendentes(new HashSet<>(disciplinas));
 		}
 
 		if (dto.getIdPes() != null) {
