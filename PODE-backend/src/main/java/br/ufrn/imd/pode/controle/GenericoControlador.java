@@ -1,8 +1,5 @@
 package br.ufrn.imd.pode.controle;
 
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
-import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
-import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +7,11 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Collection;
 
+import br.ufrn.imd.pode.modelo.ModeloAbstrato;
+import br.ufrn.imd.pode.servico.GenericoServico;
+
 @CrossOrigin
-public abstract class GenericoControlador<T extends ModeloAbstrato<PK>, Dto extends AbstratoDTO, PK extends Serializable> {
+public abstract class GenericoControlador<T extends ModeloAbstrato<PK>, Dto, PK extends Serializable> {
 
 	protected abstract GenericoServico<T, Dto, PK> servico();
 

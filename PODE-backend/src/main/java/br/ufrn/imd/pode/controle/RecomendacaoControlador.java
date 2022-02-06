@@ -1,7 +1,5 @@
 package br.ufrn.imd.pode.controle;
 
-import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
-import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
+import br.ufrn.imd.pode.servico.RecomendacaoServico;
 
 @RestController
 @RequestMapping("/recomendacoes")

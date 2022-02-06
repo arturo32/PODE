@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufrn.imd.pode.controle.GenericoControlador;
+import br.ufrn.imd.pode.controle.DisciplinaCursadaControlador;
 import br.ufrn.imd.pode.servico.GenericoServico;
 
 import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
@@ -13,7 +13,7 @@ import br.ufrn.imd.app1.servico.DisciplinaPeriodoServico;
 
 @RestController
 @RequestMapping("/disciplinas-periodo")
-public class DisciplinaPeriodoControlador extends GenericoControlador<DisciplinaPeriodo, DisciplinaPeriodoDTO, Long> {
+public class DisciplinaPeriodoControlador extends DisciplinaCursadaControlador<DisciplinaPeriodo, DisciplinaPeriodoDTO> {
 
 	private DisciplinaPeriodoServico disciplinaBTIServico;
 

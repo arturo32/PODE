@@ -1,11 +1,5 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.DisciplinaBTI;
-import br.ufrn.imd.app1.modelo.DisciplinaPeriodo;
-import br.ufrn.imd.app1.modelo.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +11,8 @@ import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import br.ufrn.imd.pode.servico.EstudanteServico;
 import br.ufrn.imd.pode.servico.VinculoServico;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
+import br.ufrn.imd.pode.modelo.PlanoCurso;
 
 import br.ufrn.imd.app1.modelo.VinculoBTI;
 import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;

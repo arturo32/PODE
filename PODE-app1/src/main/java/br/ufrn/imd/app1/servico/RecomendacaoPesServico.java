@@ -1,16 +1,18 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
-import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
-import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
+import br.ufrn.imd.pode.servico.RecomendacaoServico;
+
+import br.ufrn.imd.app1.modelo.view.PesChObrigatoriaCumprida;
+import br.ufrn.imd.app1.modelo.view.PesChOptativaCumprida;
 
 @Service
 public class RecomendacaoPesServico implements RecomendacaoServico {

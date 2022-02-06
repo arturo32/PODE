@@ -14,33 +14,39 @@ import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.repositorio.DisciplinaRepositorio;
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
 
 @Service
 @Transactional
-public abstract class DisciplinaServico<T extends Disciplina, E extends DisciplinaDTO> extends GenericoServico<T, E, Long> {
+public abstract class DisciplinaServico<T extends Disciplina, D extends DisciplinaDTO> extends GenericoServico<T, D, Long> {
 
 	private DisciplinaRepositorio<T> getDisciplinaRepositorio() {
 		return (DisciplinaRepositorio<T>) this.repositorio();
 	}
 
 	@Override
-	public void validar(E disciplina) {
+	protected void validarModoPersistencia(TipoPersistencia tipoPersistencia, D dto) {
+		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
+	}
+
+	@Override
+	protected void validar(D dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 		// Verifica código
-		if (StringUtils.isEmpty(disciplina.getCodigo())) {
+		if (StringUtils.isEmpty(dto.getCodigo())) {
 			exceptionHelper.add("codigo inválido");
 		} else {
-			Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(disciplina.getCodigo());
+			Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(dto.getCodigo());
 			if (!matcher.find()) {
 				exceptionHelper.add("formato de código inválido (exemplo: ABC1234)");
 			}
 		}
 		// Verifica nome
-		if (StringUtils.isEmpty(disciplina.getNome())) {
+		if (StringUtils.isEmpty(dto.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
 		// Verifica carga horária
-		if (disciplina.getCh() == null || disciplina.getCh() <= 0) {
+		if (dto.getCh() == null || dto.getCh() <= 0) {
 			exceptionHelper.add("ch inválido");
 		}
 		// TODO verificar expressões de prequisitos, equivalencias e corequisitos

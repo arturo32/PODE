@@ -1,5 +1,6 @@
 package br.ufrn.imd.pode.servico;
 
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
 import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,11 +10,16 @@ import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 
 @Service
 @Transactional
-public abstract class VinculoServico<T extends Vinculo, E extends VinculoDTO> extends GenericoServico<T, E, Long> {
+public abstract class VinculoServico<T extends Vinculo, D extends VinculoDTO> extends GenericoServico<T, D, Long> {
 
     public abstract VinculoRepositorio<T> getRepositorio();
 
-    public void validar(Long idVinculo) {
+    @Override
+    protected void validarModoPersistencia(TipoPersistencia tipoPersistencia, D dto) {
+        ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
+    }
+
+    protected void validar(Long idVinculo) {
         this.buscarPorId(idVinculo);
     }
 

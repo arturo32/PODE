@@ -11,12 +11,18 @@ import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Usuario;
 import br.ufrn.imd.pode.modelo.dto.UsuarioDTO;
+import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
 
 @Service
 @Transactional
-public abstract class UsuarioService<T extends Usuario, E extends UsuarioDTO> extends GenericoServico<T, E, Long>{
+public abstract class UsuarioService<T extends Usuario, D extends UsuarioDTO> extends GenericoServico<T, D, Long>{
 
 	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+	@Override
+	protected void validarModoPersistencia(TipoPersistencia tipoPersistencia, D dto) {
+		ErrorPersistenciaHelper.validate(tipoPersistencia, super.obterNomeModelo(), dto);
+	}
 
 	protected void validarUsuario(UsuarioDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -35,23 +41,19 @@ public abstract class UsuarioService<T extends Usuario, E extends UsuarioDTO> ex
 				novaSenha = true;
 			}
 		}
-
 		//Verifica nome
 		if (StringUtils.isEmpty(dto.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-
 		//Verifica senha
 		if (StringUtils.isEmpty(dto.getSenha()) || dto.getSenha().length() < 7) {
 			exceptionHelper.add("senha inválida");
 		}
-
 		//Verifica email
 		String regex = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
 		if (StringUtils.isEmpty(dto.getEmail()) || !Pattern.compile(regex).matcher(dto.getEmail()).matches()) {
 			exceptionHelper.add("email inválido");
 		}
-
 		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			if (dto.getId() == null || novaSenha) {

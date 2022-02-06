@@ -1,6 +1,5 @@
 package br.ufrn.imd.app1.controle;
 
-import br.ufrn.imd.pode.controle.GenericoControlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/disciplinas-bti")
-public class DisciplinaBTIControlador extends GenericoControlador<DisciplinaBTI, DisciplinaBTIDTO, Long> {
+public class DisciplinaBTIControlador extends DisciplinaControlador<DisciplinaBTI, DisciplinaBTIDTO> {
 
 	private DisciplinaBTIServico disciplinaBTIServico;
 

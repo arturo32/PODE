@@ -1,6 +1,5 @@
 package br.ufrn.imd.app1.servico;
 
-import br.ufrn.imd.app1.modelo.view.DisciplinaPendente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

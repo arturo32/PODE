@@ -1,6 +1,5 @@
 package br.ufrn.imd.pode.repositorio;
 
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +11,8 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+
+import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 
 @NoRepositoryBean
 public interface GenericoRepositorio<T extends ModeloAbstrato<PK>, PK extends Serializable> extends JpaRepository<T, PK> {
