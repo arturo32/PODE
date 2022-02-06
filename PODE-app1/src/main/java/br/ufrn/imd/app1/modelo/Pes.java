@@ -13,6 +13,17 @@ public class Pes extends GradeCurricular {
 	// Carga horária
 	private Integer chm;
 
+	public Pes(String nome, Integer chm, Integer chobm, Integer chopm) {
+		this.nome = nome;
+		this.chm = chm;
+		this.chobm = chobm;
+		this.chopm = chopm;
+	}
+
+	public Pes() {
+
+	}
+
 	public Integer getChm() {
 		return chm;
 	}

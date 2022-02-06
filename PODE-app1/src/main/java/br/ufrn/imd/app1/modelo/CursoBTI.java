@@ -35,6 +35,25 @@ public class CursoBTI extends GradeCurricular {
 
 	private Integer prazoEsperado;
 
+	public CursoBTI(String nome, Integer chm, Integer chobm, Integer chopm, Integer chcm, Integer chem, Integer chminp,
+	             Integer chmaxp, Integer prazoMinimo, Integer prazoMaximo, Integer prazoEsperado) {
+		this.nome = nome;
+		this.chm = chm;
+		this.chobm = chobm;
+		this.chopm = chopm;
+		this.chcm = chcm;
+		this.chem = chem;
+		this.chminp = chminp;
+		this.chmaxp = chmaxp;
+		this.prazoMinimo = prazoMinimo;
+		this.prazoMaximo = prazoMaximo;
+		this.prazoEsperado = prazoEsperado;
+	}
+
+	public CursoBTI() {
+
+	}
+
 	public Integer getChm() {
 		return chm;
 	}
