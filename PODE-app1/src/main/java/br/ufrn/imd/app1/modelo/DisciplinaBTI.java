@@ -24,6 +24,12 @@ public class DisciplinaBTI extends Disciplina implements DisciplinaInterface {
 
 	public DisciplinaBTI() {}
 
+	public DisciplinaBTI(String codigo, String nome, int ch) {
+		this.codigo = codigo;
+		this.nome = nome;
+		this.ch = ch;
+	}
+
 	public String getEquivalentes() {
 		return equivalentes;
 	}

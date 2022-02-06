@@ -17,6 +17,11 @@ public class DisciplinaPeriodoDTO extends DisciplinaCursadaDTO {
 		this.setPeriodo(entity.getPeriodo());
 	}
 
+	public DisciplinaPeriodoDTO(Long id, int periodo) {
+		setDisciplinaId(id);
+		this.periodo = periodo;
+	}
+
 	public Integer getPeriodo() {
 		return periodo;
 	}
