@@ -13,6 +13,10 @@ public class RecomendacaoDTO {
 	private Set<Long> disciplinasOptativas;
 
 	public RecomendacaoDTO() {
+		this.cargaHorariaObrigatoria = 0;
+		this.cargaHorariaObrigatoriaPendente = 0;
+		this.cargaHorariaOptativaMinima = 0;
+		this.cargaHorariaOptativaPendente = 0;
 	}
 
 	public String getNome() {

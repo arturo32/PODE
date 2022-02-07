@@ -78,7 +78,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	}
 
 	void inserirDisciplinas() {
-		try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dados_extraidos/disciplinas.csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/teste.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(false).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 			String[] values;
@@ -94,7 +94,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	}
 
 	void inserirCursos() {
-		try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dados_extraidos/cursos_ti.csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/cursos_ti.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -112,7 +112,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	}
 
 	void inserirPes() {
-		try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/dados_extraidos/cursos_pes.csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/cursos_pes.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -131,7 +131,7 @@ public class DatabaseLoader implements ApplicationRunner {
 		curso.setDisciplinasObrigatorias(new HashSet<>());
 		curso.setDisciplinasOptativas(new HashSet<>());
 		try (BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/dados_extraidos/obrigatorias_diurno.csv"))) {
+				new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/obrigatorias_diurno.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -152,7 +152,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			e.printStackTrace();
 		}
 		try (BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/dados_extraidos/optativas_diurno.csv"))) {
+				new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/optativas_diurno.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -175,7 +175,7 @@ public class DatabaseLoader implements ApplicationRunner {
 		curso.setDisciplinasObrigatorias(new HashSet<>());
 		curso.setDisciplinasOptativas(new HashSet<>());
 		try (BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/dados_extraidos/obrigatorias_noturno.csv"))) {
+				new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/obrigatorias_noturno.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -196,7 +196,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			e.printStackTrace();
 		}
 		try (BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/dados_extraidos/optativas_noturno.csv"))) {
+				new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/optativas_noturno.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 
@@ -223,7 +223,7 @@ public class DatabaseLoader implements ApplicationRunner {
 		pes.setDisciplinasObrigatorias(new HashSet<>());
 		pes.setDisciplinasOptativas(new HashSet<>());
 		try (BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/dados_extraidos/curriculo_componente_pes.csv"))) {
+				new FileReader("/home/alex/git/PODE/extracao_dados/dados_extraidos/curriculo_componente_pes.csv"))) {
 			CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
 			CSVReader csvReader = new CSVReaderBuilder(br).withSkipLines(1).withCSVParser(parser).build();
 

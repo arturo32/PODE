@@ -14,54 +14,56 @@ import java.util.Set;
 @Repository
 public interface DisciplinaBTIRepositorio extends DisciplinaRepositorio<DisciplinaBTI> {
 	@Query(value = "SELECT\n" +
-			"	disciplina.id " +
+			"	disciplinabti.id " +
 			"FROM pes\n" +
-			"INNER JOIN pes_disciplina_obrigatoria\n" +
-			" 	ON pes.id = pes_disciplina_obrigatoria.pes_id\n" +
-			"INNER JOIN disciplina\n" +
-			"	ON pes_disciplina_obrigatoria.disciplina_id = disciplina.id\n" +
+			"INNER JOIN gradecurricular_disciplina_obrigatorias\n" +
+			" 	ON pes.id = gradecurricular_disciplina_obrigatorias.gradecurricular_id\n" +
+			"INNER JOIN disciplinaperiodo\n" +
+			"	ON gradecurricular_disciplina_obrigatorias.disciplina_id = disciplinaperiodo.id\n" +
+			"INNER JOIN disciplinabti\n" +
+			"	ON disciplinaperiodo.disciplina_id = disciplinabti.id\n" +
 			"WHERE \n" +
 			"	pes.id = ?2 AND \n" +
-			"	disciplina.id NOT IN (\n" +
+			"	disciplinabti.id NOT IN (\n" +
 			"		SELECT\n" +
-			"			disciplina_cursada.id\n" +
-			"		FROM vinculo\n" +
-			"		INNER JOIN planocurso AS plano_curso\n" +
-			"			ON vinculo.planocurso_id = plano_curso.id\n" +
-			"		INNER JOIN plano_curso_disciplina_cursada\n" +
-			"			ON plano_curso.id = plano_curso_disciplina_cursada.plano_curso_id\n" +
+			"			planocurso_disciplina_cursadas.disciplina_id\n" +
+			"		FROM vinculobti\n" +
+			"		INNER JOIN planocursopes AS plano_curso\n" +
+			"			ON vinculobti.planocurso_id = plano_curso.id\n" +
+			"		INNER JOIN planocurso_disciplina_cursadas\n" +
+			"			ON plano_curso.id = planocurso_disciplina_cursadas.planocurso_id\n" +
 			"		INNER JOIN disciplinaperiodo AS disciplina_periodo_cursada\n" +
-			"			ON plano_curso_disciplina_cursada.disciplina_periodo_id = disciplina_periodo_cursada.id\n" +
-			"		INNER JOIN disciplina AS disciplina_cursada\n" +
-			"			ON disciplina_periodo_cursada.disciplina_id = disciplina.id\n" +
-			"		WHERE vinculo.id = ?1\n" +
+			"			ON planocurso_disciplina_cursadas.disciplina_id = disciplina_periodo_cursada.id\n" +
+			"		INNER JOIN disciplinabti AS disciplina_cursada\n" +
+			"			ON disciplina_periodo_cursada.disciplina_id = disciplinabti.id\n" +
+			"		WHERE vinculobti.id = ?1\n" +
 			"	)\n" +
-			"ORDER BY disciplina.ch DESC;", nativeQuery = true)
+			"ORDER BY disciplinabti.ch DESC;", nativeQuery = true)
 	public Set<Long> findDisciplinasObrigatoriasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 
 	@Query(value = "SELECT" +
-			"	disciplina.id " +
+			"	disciplinabti.id " +
 			"FROM pes\n" +
-			"INNER JOIN pes_disciplina_optativa\n" +
-			" 	ON pes.id = pes_disciplina_optativa.pes_id\n" +
-			"INNER JOIN disciplina\n" +
-			"	ON pes_disciplina_optativa.disciplina_id = disciplina.id\n" +
+			"INNER JOIN gradecurricular_disciplina_optativas\n" +
+			" 	ON pes.id = gradecurricular_disciplina_optativas.gradecurricular_id\n" +
+			"INNER JOIN disciplinabti\n" +
+			"	ON gradecurricular_disciplina_optativas.disciplina_id = disciplinabti.id\n" +
 			"WHERE \n" +
 			"	pes.id = ?2 AND \n" +
-			"	disciplina.id NOT IN (\n" +
+			"	disciplinabti.id NOT IN (\n" +
 			"		SELECT\n" +
-			"			disciplina_cursada.id\n" +
-			"		FROM vinculo\n" +
-			"		INNER JOIN planocurso AS plano_curso\n" +
-			"			ON vinculo.planocurso_id = plano_curso.id\n" +
-			"		INNER JOIN plano_curso_disciplina_cursada\n" +
-			"			ON plano_curso.id = plano_curso_disciplina_cursada.plano_curso_id\n" +
+			"			planocurso_disciplina_cursadas.disciplina_id\n" +
+			"		FROM vinculobti\n" +
+			"		INNER JOIN planocursopes AS plano_curso\n" +
+			"			ON vinculobti.planocurso_id = plano_curso.id\n" +
+			"		INNER JOIN planocurso_disciplina_cursadas\n" +
+			"			ON plano_curso.id = planocurso_disciplina_cursadas.planocurso_id\n" +
 			"		INNER JOIN disciplinaperiodo AS disciplina_periodo_cursada\n" +
-			"			ON plano_curso_disciplina_cursada.disciplina_periodo_id = disciplina_periodo_cursada.id\n" +
-			"		INNER JOIN disciplina AS disciplina_cursada\n" +
-			"			ON disciplina_periodo_cursada.disciplina_id = disciplina.id\n" +
-			"		WHERE vinculo.id = ?1\n" +
+			"			ON planocurso_disciplina_cursadas.disciplina_id = disciplina_periodo_cursada.id\n" +
+			"		INNER JOIN disciplinabti AS disciplina_cursada\n" +
+			"			ON disciplina_periodo_cursada.disciplina_id = disciplinabti.id\n" +
+			"		WHERE vinculobti.id = ?1\n" +
 			"	)\n" +
-			"ORDER BY disciplina.ch DESC;", nativeQuery = true)
+			"ORDER BY disciplinabti.ch DESC;", nativeQuery = true)
 	public Set<Long> findDisciplinasOptativasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 }

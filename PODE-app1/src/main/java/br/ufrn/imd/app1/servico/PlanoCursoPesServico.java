@@ -80,7 +80,7 @@ public class PlanoCursoPesServico extends PlanoCursoServico<PlanoCursoPes, Plano
 	@Override
 	public PlanoCursoPes criarPlanoDeCursoUsandoCurso(@NotNull GradeCurricular curso) {
 		PlanoCursoPes planoCurso = new PlanoCursoPes();
-		planoCurso.setDisciplinasPendentes(curso.getDisciplinasObrigatorias());
+		planoCurso.setDisciplinasPendentes(new HashSet<>(curso.getDisciplinasObrigatorias()));
 		return repositorio.save(planoCurso);
 	}
 

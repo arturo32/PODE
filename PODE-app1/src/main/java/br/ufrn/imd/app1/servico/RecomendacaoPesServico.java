@@ -61,7 +61,7 @@ public class RecomendacaoPesServico implements RecomendacaoServico {
 			}
 		}
 		/* verifica se existe exceçao */
-		if (exceptionHelper.getMessage().isEmpty()) {
+		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
 	}
