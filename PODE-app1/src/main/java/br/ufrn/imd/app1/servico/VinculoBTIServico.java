@@ -3,6 +3,7 @@ package br.ufrn.imd.app1.servico;
 import br.ufrn.imd.app1.modelo.*;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.Disciplina;
 import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
@@ -21,6 +22,9 @@ import br.ufrn.imd.pode.servico.VinculoServico;
 import br.ufrn.imd.app1.modelo.dto.VinculoBTIDTO;
 import br.ufrn.imd.app1.repositorio.VinculoBTIRepositorio;
 import org.springframework.util.StringUtils;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -58,9 +62,13 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 	}
 
 
-	private Double gerarPercentualConclusaoGrade(PlanoCurso planoCurso, GradeCurricular grade){
+	private Double gerarTaxaConclusaoGrade(PlanoCurso planoCurso, GradeCurricular grade){
+
+		Set<Disciplina> disciplinasObrigatoriasGrade = grade.getDisciplinasObrigatorias().stream()
+				.map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet());
+
 		Integer cargaHorariaObrigatoriaCumprida = planoCurso.getDisciplinasCursadas().stream()
-				.filter(d -> grade.getDisciplinasObrigatorias().contains(d))
+				.filter(d -> disciplinasObrigatoriasGrade.contains(d.getDisciplina()))
 				.map(DisciplinaCursada::getCh)
 				.reduce(0, Integer::sum);
 
@@ -84,7 +92,7 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 			taxaOptativasCumpridas = 1.0;
 		}
 
-		return (taxaObrigatorias * taxaObrigatoriasCumpridas + taxaOptativas * taxaOptativasCumpridas) * 100;
+		return taxaObrigatorias * taxaObrigatoriasCumpridas + taxaOptativas * taxaOptativasCumpridas;
 	}
 
 	@Override
@@ -104,18 +112,15 @@ public class VinculoBTIServico extends VinculoServico<VinculoBTI, VinculoBTIDTO>
 		Double horasCumpridasPes = ((PlanoCursoPes) planoCurso).getGradesParalelas().stream()
 				.map(gradePes -> {
 					Integer chTotalGradePes = gradePes.getChobm() + gradePes.getChopm();
-					return (gerarPercentualConclusaoGrade(planoCurso, gradePes) / 100 )* chTotalGradePes;
+					return gerarTaxaConclusaoGrade(planoCurso, gradePes) * chTotalGradePes;
 				})
 				.reduce(0.0, Double::sum);
 
-		Double horasCumpridasCurso = (gerarPercentualConclusaoGrade(planoCurso, grade) / 100) * chTotalCurso;
-
 		Double taxaPesCumpridas = horasCumpridasPes / chTotal;
-		Double taxaCursoCumpridas = horasCumpridasCurso / chTotal;
+		Double taxaCursoCumpridas = gerarTaxaConclusaoGrade(planoCurso, grade);
 
 		Double taxaPes = (double) chTotalPes / chTotal;
 		Double taxaCurso = (double) chTotalCurso / chTotal;
-
 
 		return (taxaPesCumpridas * taxaPes + taxaCursoCumpridas * taxaCurso) * 100;
 	}
