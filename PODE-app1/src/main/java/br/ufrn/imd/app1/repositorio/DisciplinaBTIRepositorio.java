@@ -1,6 +1,5 @@
 package br.ufrn.imd.app1.repositorio;
 
-import br.ufrn.imd.app1.modelo.view.DisciplinaPendente;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -39,7 +38,7 @@ public interface DisciplinaBTIRepositorio extends DisciplinaRepositorio<Discipli
 			"		WHERE vinculobti.id = ?1\n" +
 			"	)\n" +
 			"ORDER BY disciplinabti.ch DESC;", nativeQuery = true)
-	public Set<Long> findDisciplinasObrigatoriasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
+	public Set<DisciplinaIdInterface> findDisciplinasObrigatoriasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 
 	@Query(value = "SELECT" +
 			"	disciplinabti.id " +
@@ -65,5 +64,5 @@ public interface DisciplinaBTIRepositorio extends DisciplinaRepositorio<Discipli
 			"		WHERE vinculobti.id = ?1\n" +
 			"	)\n" +
 			"ORDER BY disciplinabti.ch DESC;", nativeQuery = true)
-	public Set<Long> findDisciplinasOptativasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
+	public Set<DisciplinaIdInterface> findDisciplinasOptativasPendentesByVinculoAndPes(@NotNull long vinculoId, @NotNull long pesId);
 }

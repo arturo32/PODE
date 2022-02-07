@@ -1,5 +1,6 @@
 package br.ufrn.imd.app1.servico;
 
+import br.ufrn.imd.app1.repositorio.DisciplinaIdInterface;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.mvel2.MVEL;
@@ -125,11 +126,11 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 		return repositorio;
 	}
 
-	public Set<Long> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
+	public Set<DisciplinaIdInterface> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
 		return this.repositorio.findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesId);
 	}
 
-	public Set<Long> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
+	public Set<DisciplinaIdInterface> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
 		return this.repositorio.findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesId);
 	}
 
