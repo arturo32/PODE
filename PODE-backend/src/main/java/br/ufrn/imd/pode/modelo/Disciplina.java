@@ -1,6 +1,5 @@
 package br.ufrn.imd.pode.modelo;
 
-import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import org.mvel2.MVEL;
 
 import javax.persistence.*;
@@ -33,7 +32,7 @@ public abstract class Disciplina extends ModeloAbstrato<Long> implements Discipl
 	protected Integer ch;
 
 	@Column(length = 1024)
-	private String prerequisitos;
+	protected String prerequisitos;
 
 	public Disciplina() {
 	}

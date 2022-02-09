@@ -12,11 +12,11 @@ public class Estudante extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ESTUDANTE")
 	@SequenceGenerator(name = "SEQ_ESTUDANTE", sequenceName = "id_seq_estudante", allocationSize = 1)
-	private Long id;
+	protected Long id;
 
 	@NotNull
 	@OneToMany(mappedBy = "estudante", cascade = {CascadeType.ALL})
-	private Set<Vinculo> vinculos;
+	protected Set<Vinculo> vinculos;
 
 	public Estudante() {
 		this.vinculos = new HashSet<>();
