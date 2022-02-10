@@ -5,6 +5,8 @@ import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +19,7 @@ import br.ufrn.imd.app2.modelo.dto.DisciplinaBTIDTO;
 import br.ufrn.imd.app2.repositorio.DisciplinaBTIRepositorio;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,12 +129,7 @@ public class DisciplinaBTIServico extends DisciplinaServico<DisciplinaBTI, Disci
 		return repositorio;
 	}
 
-	public Set<DisciplinaIdInterface> obterDisciplinasObrigatoriasPendentesPes(long vinculoId, long pesId) {
-		return this.repositorio.findDisciplinasObrigatoriasPendentesByVinculoAndPes(vinculoId, pesId);
+	public Collection<DisciplinaBTIDTO> obterDisciplinasSemPrerequisitos(Pageable pageable) {
+		return this.converterParaListaDTO(this.repositorio.findDisciplinaBTISByAtivoIsTrueAndPrerequisitosEquals("", pageable));
 	}
-
-	public Set<DisciplinaIdInterface> obterDisciplinasOptativasPendentesPes(long vinculoId, long pesId) {
-		return this.repositorio.findDisciplinasOptativasPendentesByVinculoAndPes(vinculoId, pesId);
-	}
-
 }

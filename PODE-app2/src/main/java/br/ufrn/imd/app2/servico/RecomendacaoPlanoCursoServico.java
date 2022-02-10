@@ -2,16 +2,12 @@ package br.ufrn.imd.app2.servico;
 
 import br.ufrn.imd.app2.modelo.DisciplinaPeriodo;
 import br.ufrn.imd.app2.modelo.VinculoBTI;
-import br.ufrn.imd.app2.modelo.dto.DisciplinaPeriodoDTO;
-import br.ufrn.imd.app2.repositorio.DisciplinaIdInterface;
 import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import br.ufrn.imd.pode.exception.ValidacaoException;
@@ -20,7 +16,7 @@ import br.ufrn.imd.pode.helper.ExceptionHelper;
 import javax.persistence.EntityNotFoundException;
 
 @Service
-public class RecomendacaoObrigatoriasServico implements RecomendacaoServico {
+public class RecomendacaoPlanoCursoServico implements RecomendacaoServico {
 
     private VinculoBTIServico vinculoBTIServico;
 
@@ -31,7 +27,7 @@ public class RecomendacaoObrigatoriasServico implements RecomendacaoServico {
 
     @Override
     public String getNomeServico() {
-        return "obrigatorias";
+        return "plano_curso";
     }
 
     @Override
