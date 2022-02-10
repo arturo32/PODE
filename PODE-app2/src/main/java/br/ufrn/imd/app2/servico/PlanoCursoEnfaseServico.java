@@ -1,9 +1,10 @@
 package br.ufrn.imd.app2.servico;
 
 import br.ufrn.imd.app2.modelo.dto.DisciplinaPeriodoDTO;
+import br.ufrn.imd.pode.exception.NegocioException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
+import br.ufrn.imd.pode.modelo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,10 @@ import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
 import br.ufrn.imd.pode.servico.DisciplinaServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 
 import br.ufrn.imd.app2.modelo.*;
@@ -128,23 +127,15 @@ public class PlanoCursoEnfaseServico extends PlanoCursoServico<PlanoCursoEnfase,
 			planoCurso.setDisciplinasPendentes(new HashSet<>(disciplinas));
 		}
 
-		// TODO: enfase
-//		if (dto.getIdPes() != null) {
-//			List<Enfase> pes = new ArrayList<>();
-//			for (Long desDTO : dto.getIdPes()) {
-//				if (desDTO == null) {
-//					throw new EntidadeInconsistenteException("pes inconsistente");
-//				}
-//
-//				try {
-//					pes.add(this.enfaseServico.buscarPorId(desDTO));
-//				}
-//				catch (EntidadeNaoEncontradaException entityNotFoundException) {
-//					throw new EntidadeInconsistenteException("pes inconsistente");
-//				}
-//			}
-//			planoCurso.setGradesParalelas(pes);
-//		}
+		if (dto.getIdEnfase() != null) {
+			try {
+				Enfase enfase = this.enfaseServico.buscarPorId(dto.getIdEnfase());
+				planoCurso.setGradeSequencial(enfase);
+			}
+			catch (EntidadeNaoEncontradaException entityNotFoundException) {
+				throw new EntidadeInconsistenteException("enfase inconsistente");
+			}
+		}
 
 		return planoCurso;
 	}
@@ -183,23 +174,19 @@ public class PlanoCursoEnfaseServico extends PlanoCursoServico<PlanoCursoEnfase,
 			}
 		}
 
-		// TODO: enfase
-//		if (dto.getIdPes() != null) {
-//			for (Long pes : dto.getIdPes()) {
-//				if (pes == null || pes < 0) {
-//					exceptionHelper.add("disciplinaPendente inconsistente");
-//				} else {
-//					try {
-//						this.enfaseServico.buscarPorId(pes);
-//					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
-//						exceptionHelper.add("pes(id=" + pes + ") inexistente");
-//					}
-//				}
-//			}
-//		}
-
+		if (dto.getIdEnfase() != null) {
+			if (dto.getIdEnfase() < 0) {
+				exceptionHelper.add("enfase inconsistente");
+			} else {
+				try {
+					this.enfaseServico.buscarPorId(dto.getIdEnfase());
+				} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+					exceptionHelper.add("enfase(id=" + dto.getIdEnfase() + ") inexistente");
+				}
+			}
+		}
 		//Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
+		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
 	}
@@ -223,16 +210,47 @@ public class PlanoCursoEnfaseServico extends PlanoCursoServico<PlanoCursoEnfase,
 		return result.subList(vinculo.getPeriodoAtualPeriodo()-1, curso.getPrazoMaximo()-1);
 	}
 
+	public PlanoCursoEnfase alterarPlanoCursoEnfase(PlanoCursoEnfase planoCurso, Enfase enfase) {
+		Set<DisciplinaCursada> obrigatoriasEnfase = enfase.getDisciplinasObrigatorias();
+		Set<DisciplinaInterface> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet());
+		Set<DisciplinaCursada> pendentes = new HashSet<>();
+		for (DisciplinaCursada dp: obrigatoriasEnfase) {
+			DisciplinaBTI dbti = (DisciplinaBTI)dp.getDisciplina();
+			if (!disciplinas.contains(dp.getDisciplina()) && !dbti.checarEquivalentesDisciplinas(disciplinas)) {
+				pendentes.add(dp);
+			}
+		}
+		planoCurso.setDisciplinasPendentes(pendentes);
+		return this.repositorio.save(planoCurso);
+	}
+
 	public PlanoCursoEnfase atualizaEnfase(Long planoCursoId, Long enfaseId) {
 		PlanoCursoEnfase planoCurso = this.buscarPorId(planoCursoId);
-		// TODO
-		return repositorio.save(planoCurso);
+		Vinculo vinculo = this.vinculoBTIServico.buscarPorPlanoCursoId(planoCursoId);
+		Enfase enfase = this.enfaseServico.buscarPorId(enfaseId);
+		if(vinculo.getGradeCurricular().getId().equals(enfase.getCurso().getId())) {
+			planoCurso.setGradeSequencial(enfase);
+			return this.alterarPlanoCursoEnfase(planoCurso, enfase);
+		} else {
+			throw new NegocioException("Ênfase indicada não pertence ao curso que o vínculo está associado");
+		}
 	}
 
 	public PlanoCursoEnfase removeEnfase(Long planoCursoId) {
 		PlanoCursoEnfase planoCurso = this.buscarPorId(planoCursoId);
-		// TODO
-		return repositorio.save(planoCurso);
+		Set<DisciplinaCursada> obrigatoriasEnfase = planoCurso.getGradeSequencial().getDisciplinasObrigatorias();
+		Set<DisciplinaInterface> disciplinas = planoCurso.getDisciplinasCursadas().stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet());
+		Set<DisciplinaCursada> remover = new HashSet<>();
+		for (DisciplinaCursada dp: obrigatoriasEnfase) {
+			DisciplinaBTI dbti = (DisciplinaBTI)dp.getDisciplina();
+			if (!disciplinas.contains(dp.getDisciplina()) && !dbti.checarEquivalentesDisciplinas(disciplinas)) {
+				remover.add(dp);
+			}
+		}
+		Set<DisciplinaCursada> pendentes = planoCurso.getDisciplinasPendentes();
+		pendentes.removeAll(remover);
+		planoCurso.setDisciplinasPendentes(pendentes);
+		return this.repositorio.save(planoCurso);
 	}
 
 	@Override

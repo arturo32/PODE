@@ -73,7 +73,7 @@ public class DatabaseLoader implements ApplicationRunner {
 			inserirDisciplasCursos();
 			System.out.println("Disciplinas obrigatorias e optativas dos cursos inseridas");
 			inserirDisciplinaEnfases();
-			System.out.println("Disciplinas obrigatorias e optativas dos PES inseridas");
+			System.out.println("Disciplinas obrigatorias e optativas das enfases inseridas");
 
 			System.out.println("Tudo pronto!");
 		}
@@ -220,7 +220,7 @@ public class DatabaseLoader implements ApplicationRunner {
 	}
 
 	void inserirDisciplinaEnfases() {
-		Enfase enfase = enfaseRepositorio.getOne(1L); // TODO: colocar o ID certo
+		Enfase enfase = enfaseRepositorio.getOne(3L);
 		Set<DisciplinaCursada> disciplinaPeriodoSet = new HashSet<>();
 		try (BufferedReader br = new BufferedReader(
 				new FileReader("../extracao_dados/dados_extraidos/obrigatorias_dev_soft.csv"))) {
@@ -245,7 +245,7 @@ public class DatabaseLoader implements ApplicationRunner {
 		enfase.setDisciplinasObrigatorias(disciplinaPeriodoSet);
 		this.enfaseRepositorio.save(enfase);
 
-		enfase = enfaseRepositorio.getOne(2L); // TODO: colocar o ID certo
+		enfase = enfaseRepositorio.getOne(4L);
 		disciplinaPeriodoSet = new HashSet<>();
 		try (BufferedReader br = new BufferedReader(
 				new FileReader("../extracao_dados/dados_extraidos/obrigatorias_comput.csv"))) {

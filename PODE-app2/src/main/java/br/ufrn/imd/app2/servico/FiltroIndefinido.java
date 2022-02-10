@@ -5,7 +5,6 @@ import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.pode.servico.FiltroDisciplinaServico;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
