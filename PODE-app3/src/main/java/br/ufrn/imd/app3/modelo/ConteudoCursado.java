@@ -6,22 +6,26 @@ import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "conteudocursado")
 public class ConteudoCursado extends DisciplinaCursada implements DisciplinaInterface {
 
-	@NotNull
-	private LocalDateTime localDateTime;
+	private @NotNull LocalDate localDate;
 
 	public ConteudoCursado() {}
 
-	public LocalDateTime getLocalDateTime() {
-		return localDateTime;
+	public ConteudoCursado(Conteudo conteudo, LocalDate localDate) {
+		this.setDisciplina(conteudo);
+		this.setLocalDate(localDate);
 	}
 
-	public void setLocalDateTime(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
+	public @NotNull LocalDate getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(@NotNull LocalDate localDateTime) {
+		this.localDate = localDateTime;
 	}
 }

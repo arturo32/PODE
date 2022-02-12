@@ -1,5 +1,6 @@
 package br.ufrn.imd.app3.servico;
 
+import br.ufrn.imd.app3.modelo.Tema;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.mvel2.MVEL;
@@ -26,10 +27,22 @@ import java.util.regex.Pattern;
 public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 
 	private ConteudoRepositorio repositorio;
+	private TemaServico temaServico;
+	private TopicoServico topicoServico;
 
 	@Autowired
 	public void setRepositorio(ConteudoRepositorio repositorio) {
 		this.repositorio = repositorio;
+	}
+
+	@Autowired
+	public void setTemaServico(TemaServico temaServico) {
+		this.temaServico = temaServico;
+	}
+
+	@Autowired
+	public void setTopicoServico(TopicoServico topicoServico) {
+		this.topicoServico = topicoServico;
 	}
 
 	@Override
@@ -39,31 +52,38 @@ public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 
 	@Override
 	public Conteudo converterParaEntidade(ConteudoDTO dto) {
-		Conteudo disciplina = new Conteudo();
+		Conteudo conteudo = new Conteudo();
 		if (dto.getId() != null) {
-			disciplina = this.buscarPorId(dto.getId());
+			conteudo = this.buscarPorId(dto.getId());
 		}
 
-		disciplina.setId(dto.getId());
+		conteudo.setId(dto.getId());
 		if (dto.getCodigo() != null) {
-			disciplina.setCodigo(dto.getCodigo());
+			conteudo.setCodigo(dto.getCodigo());
 		}
 
-		if (dto.getNome() != null) {
-			disciplina.setNome(dto.getNome());
+		if (!StringUtils.isEmpty(dto.getNome())) {
+			conteudo.setNome(dto.getNome());
 		}
 
 		if (dto.getCh() != null) {
-			disciplina.setCh(dto.getCh());
+			conteudo.setCh(dto.getCh());
 		}
 
 		if (dto.getPrerequisitos() != null) {
-			disciplina.setPrerequisitos(dto.getPrerequisitos());
+			conteudo.setPrerequisitos(dto.getPrerequisitos());
 		}
 
-		//TODO
-
-		return disciplina;
+		if (dto.getTema() != null) {
+			conteudo.setTema(temaServico.buscarPorId(dto.getTema()));
+		}
+		if (dto.getTopico() != null) {
+			conteudo.setTopico(topicoServico.buscarPorId(dto.getTopico()));
+		}
+		if (!StringUtils.isEmpty(dto.getNivel())) {
+			conteudo.setNivel(dto.getNivel());
+		}
+		return conteudo;
 	}
 
 	private boolean checarExpressao(String expressao) {

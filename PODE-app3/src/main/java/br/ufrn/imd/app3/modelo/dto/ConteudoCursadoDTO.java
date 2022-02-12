@@ -3,22 +3,23 @@ package br.ufrn.imd.app3.modelo.dto;
 import br.ufrn.imd.app3.modelo.ConteudoCursado;
 import br.ufrn.imd.pode.modelo.dto.DisciplinaCursadaDTO;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public class ConteudoCursadoDTO extends DisciplinaCursadaDTO {
 
-	private LocalDateTime localDateTime;
+	private @NotNull LocalDate localDate;
 
 	public ConteudoCursadoDTO(ConteudoCursado conteudoCursado) {
 		super(conteudoCursado);
-		this.localDateTime = conteudoCursado.getLocalDateTime();
+		this.localDate = conteudoCursado.getLocalDate();
 	}
 
-	public LocalDateTime getLocalDateTime() {
-		return localDateTime;
+	public @NotNull LocalDate getLocalDate() {
+		return localDate;
 	}
 
-	public void setLocalDateTime(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
+	public void setLocalDate(@NotNull LocalDate localDate) {
+		this.localDate = localDate;
 	}
 }
