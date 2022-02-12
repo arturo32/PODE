@@ -1,7 +1,6 @@
 package br.ufrn.imd.app2.servico;
 
 import br.ufrn.imd.app2.modelo.*;
-import br.ufrn.imd.app2.util.NumberUtil;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.modelo.Disciplina;
