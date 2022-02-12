@@ -30,7 +30,7 @@ import br.ufrn.imd.app3.repositorio.PlanoCursoTemaRepositorio;
 public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, PlanoCursoTemaDTO, ConteudoCursadoDTO> {
 
 	private ConteudoCursadoServico conteudoCursadoServico;
-
+	private TemaServico temaServico;
 	private PlanoCursoTemaRepositorio repositorio;
 
 	@Autowired
@@ -41,6 +41,11 @@ public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, Pla
 	@Autowired
 	public void setConteudoCursadoServico(ConteudoCursadoServico conteudoCursadoServico) {
 		this.conteudoCursadoServico = conteudoCursadoServico;
+	}
+
+	@Autowired
+	public void setTemaServico(TemaServico temaServico) {
+		this.temaServico = temaServico;
 	}
 
 	@Override
@@ -111,7 +116,20 @@ public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, Pla
 			planoCurso.setDisciplinasPendentes(new HashSet<>(disciplinas));
 		}
 
-		// TODO
+		if (dto.getTemas() != null) {
+			HashSet<Tema> temas = new HashSet<>();
+			for (Long temaId: dto.getTemas()) {
+				if (temaId == null) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+				try {
+					temas.add(this.temaServico.buscarPorId(temaId));
+				} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+			}
+			planoCurso.setTemas(temas);
+		}
 
 		return planoCurso;
 	}
@@ -150,7 +168,20 @@ public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, Pla
 			}
 		}
 
-		//TODO
+		if (dto.getTemas() != null) {
+			for (Long temaId : dto.getTemas()) {
+				if (temaId== null || temaId < 0) {
+					exceptionHelper.add("tema inconsistente");
+				} else {
+					try {
+						this.temaServico.buscarPorId(temaId);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("tema(id=" + temaId + ") inexistente");
+					}
+				}
+			}
+		}
+
 		//Verifica se existe exceção
 		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());

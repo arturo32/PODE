@@ -129,7 +129,15 @@ public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 			exceptionHelper.add("expressão de prequisitos inválida");
 		}
 
-		//TODO
+		if (dto.getTema() == null) {
+			exceptionHelper.add("tema inválido");
+		}
+		if (dto.getTopico() == null) {
+			exceptionHelper.add("topico inválido");
+		}
+		if (StringUtils.isEmpty(dto.getNivel())) {
+			exceptionHelper.add("nivel inválido");
+		}
 
 		// Verifica se existe exceção
 		if (!exceptionHelper.getMessage().isEmpty()) {

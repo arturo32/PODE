@@ -1,6 +1,8 @@
 package br.ufrn.imd.app3.servico;
 
 import br.ufrn.imd.app3.modelo.ConteudoCursado;
+import br.ufrn.imd.app3.modelo.Tema;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,7 +28,9 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 
 	private ConteudoCursadoServico conteudoCursadoServico;
 	private ConteudoServico conteudoServico;
+	private TemaServico temaServico;
 	private CursoRepositorio repositorio;
+
 
 	@Autowired
 	public void setRepositorio(CursoRepositorio repositorio) {
@@ -40,6 +44,16 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 
 	@Autowired
 	public void setDisciplinaBTIServico(ConteudoServico conteudoServico) {
+		this.conteudoServico = conteudoServico;
+	}
+
+	@Autowired
+	public void setTemaServico(TemaServico temaServico) {
+		this.temaServico = temaServico;
+	}
+
+	@Autowired
+	public void setConteudoServico(ConteudoServico conteudoServico) {
 		this.conteudoServico = conteudoServico;
 	}
 
@@ -75,7 +89,20 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 		if (dto.getChopm() != null){
 			curso.setChopm(dto.getChopm());
 		}
-		// TODO
+		if (dto.getTemas() != null) {
+			HashSet<Tema> temas = new HashSet<>();
+			for (Long temaId: dto.getTemas()) {
+				if (temaId == null) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+				try {
+					temas.add(this.temaServico.buscarPorId(temaId));
+				} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+			}
+			curso.setTemas(temas);
+		}
 
 		if (dto.getDisciplinasObrigatorias() != null) {
 			HashSet<ConteudoCursado> disciplinas = new HashSet<>();
@@ -117,30 +144,20 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 		if (StringUtils.isEmpty(dto.getNome())) {
 			exceptionHelper.add("nome inválido");
 		}
-		//Verifica chm
-		boolean statusChm = false;
 		if (dto.getChm() == null || dto.getChm() <= 0) {
 			exceptionHelper.add("chm inválido");
-		} else {
-			statusChm = true;
 		}
-		//Verifica cho
-		boolean statusCho = false;
 		if (dto.getChobm() == null || dto.getChobm() <= 0) {
 			exceptionHelper.add("chobm inválido");
-		} else {
-			statusCho = true;
 		}
-		//Verifica chom
-		boolean statusChom = false;
 		if (dto.getChopm() == null || dto.getChopm() <= 0) {
 			exceptionHelper.add("chopm inválido");
-		} else {
-			statusChom = true;
 		}
-		//TODO
 
-		//Verifica disciplinasObrigatorias
+		if (dto.getTemas() == null || dto.getTemas().isEmpty()) {
+			exceptionHelper.add("temas inválidos");
+		}
+
 		if (dto.getDisciplinasObrigatorias() != null) {
 			for (Long idDisciplinaPeriodo : dto.getDisciplinasObrigatorias()) {
 				if (idDisciplinaPeriodo == null || idDisciplinaPeriodo < 0) {
@@ -154,7 +171,6 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 				}
 			}
 		}
-		//Verifica disciplinasOptativas
 		if (dto.getDisciplinasOptativas() != null) {
 			for (Long idDisciplina : dto.getDisciplinasOptativas()) {
 				if (idDisciplina == null || idDisciplina < 0) {
@@ -168,7 +184,6 @@ public class CursoServico extends GradeCurricularServico<Curso, CursoDTO> {
 				}
 			}
 		}
-		//Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}

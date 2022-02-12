@@ -14,7 +14,7 @@ public class FiltroSemNome implements FiltroDisciplinaServico {
 
 	@Override
 	public String obterNome() {
-		return "obrigatorias";
+		return "sem_nome";
 	}
 
 	@Override

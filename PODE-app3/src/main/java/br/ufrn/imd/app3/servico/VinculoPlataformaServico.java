@@ -23,6 +23,7 @@ import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaTO;
 import br.ufrn.imd.app3.repositorio.VinculoPlataformaRepositorio;
 import org.springframework.util.StringUtils;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 	private CursoServico cursoServico;
 	private PlanoCursoTemaServico planoCursoPesServico;
 	private EstudanteServico estudanteServico;
+	private TemaServico temaServico;
 
 	@Autowired
 	public void setRepositorio(VinculoPlataformaRepositorio repositorio) {
@@ -44,6 +46,11 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 	@Override
 	public VinculoRepositorio<VinculoPlataforma> getRepositorio() {
 		return repositorio;
+	}
+
+	@Autowired
+	public void setTemaServico(TemaServico temaServico) {
+		this.temaServico = temaServico;
 	}
 
 	@Autowired
@@ -146,7 +153,6 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 		if (dto.getMatricula() != null) {
 			vinculo.setMatricula(dto.getMatricula());
 		}
-		// TODO
 
 		//Busca curso
 		if(dto.getIdCurso() != null){
@@ -177,6 +183,21 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 			} catch (EntidadeNaoEncontradaException entityNotFoundException) {
 				throw new EntidadeInconsistenteException("estudante inconsistente");
 			}
+		}
+
+		if (dto.getTemasInteresse() != null) {
+			HashSet<Tema> temas = new HashSet<>();
+			for (Long temaId: dto.getTemasInteresse()) {
+				if (temaId == null) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+				try {
+					temas.add(this.temaServico.buscarPorId(temaId));
+				} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+					throw new EntidadeInconsistenteException("tema inconsistente");
+				}
+			}
+			vinculo.setTemasInteresse(temas);
 		}
 
 		return vinculo;
@@ -211,7 +232,19 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 			exceptionHelper.add("curso não foi informado");
 		}
 
-		// TODO
+		if (dto.getTemasInteresse() != null) {
+			for (Long temaId : dto.getTemasInteresse()) {
+				if (temaId== null || temaId < 0) {
+					exceptionHelper.add("tema inconsistente");
+				} else {
+					try {
+						this.temaServico.buscarPorId(temaId);
+					} catch (EntidadeNaoEncontradaException entityNotFoundException) {
+						exceptionHelper.add("tema(id=" + temaId + ") inexistente");
+					}
+				}
+			}
+		}
 
 		// Verifica se existe exceção
 		if (exceptionHelper.getMessage().isEmpty()) {
