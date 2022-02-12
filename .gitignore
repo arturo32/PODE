@@ -31,3 +31,6 @@ PODE-frontend/pode/node_modules/*
 
 # PostgreSQL
 postgres
+postgres-1
+postgres-2
+postgres-3
