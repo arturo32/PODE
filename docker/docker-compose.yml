@@ -1,39 +1,15 @@
 version: '3.9'
 
 services:
-  # postgres-1:
-  #   image: postgres:latest
-  #   container_name: postgres-1
-  #   volumes:
-  #     - ./postgres-1/data:/var/lib/postgresql/data
-  #   ports:
-  #     - 9000:5432
-  #   environment:
-  #     POSTGRES_DB: app1
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: homologacao
-  #   restart: always
-  postgres-2:
+  postgres:
     image: postgres:latest
-    container_name: postgres-2
+    container_name: postgres
     volumes:
-      - ./postgres-2/data:/var/lib/postgresql/data
+      - ./postgres/data:/var/lib/postgresql/data
     ports:
-      - 9001:5432
+      - 5432:5432
     environment:
       POSTGRES_DB: app2
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: homologacao
     restart: always
-  # postgres-3:
-  #   image: postgres:latest
-  #   container_name: postgres-3
-  #   volumes:
-  #     - ./postgres-3/data:/var/lib/postgresql/data
-  #   ports:
-  #     - 9002:5432
-  #   environment:
-  #     POSTGRES_DB: app3
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: homologacao
-  #   restart: always
