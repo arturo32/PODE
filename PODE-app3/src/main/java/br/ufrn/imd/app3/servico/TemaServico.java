@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
+import java.util.Set;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
@@ -92,5 +93,9 @@ public class TemaServico extends GenericoServico<Tema, TemaDTO, Long> {
 	@Override
 	protected GenericoRepositorio<Tema, Long> repositorio() {
 		return temaRepositorio;
+	}
+
+	public Set<Tema> buscarTemasPorNome(String nome) {
+		return this.temaRepositorio.findTemasByNomeAndAtivoIsTrue(nome);
 	}
 }

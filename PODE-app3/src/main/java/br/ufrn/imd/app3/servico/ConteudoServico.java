@@ -7,6 +7,8 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -150,6 +152,12 @@ public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 
 	public Collection<Conteudo> buscarPorTema(Tema tema) {
 		return repositorio.findConteudosByAtivoIsTrueAndTema_Id(tema.getId());
+	}
+
+	public Collection<Conteudo> buscarPorTemas(Collection<Tema> temas) {
+		Set<Conteudo> conteudos = new HashSet<>();
+		temas.forEach(tema -> conteudos.addAll(this.buscarPorTema(tema)));
+		return conteudos;
 	}
 
 }
