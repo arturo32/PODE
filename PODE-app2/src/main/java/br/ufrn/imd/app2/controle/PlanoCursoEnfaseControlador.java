@@ -31,7 +31,7 @@ public class PlanoCursoEnfaseControlador extends PlanoCursoControlador<PlanoCurs
 
 	@PostMapping("/{id}/atualiza-enfase/{enfase}")
 	public ResponseEntity<PlanoCursoEnfaseDTO> escolheEnfase(@PathVariable Long id, @PathVariable Long enfase) {
-		return ResponseEntity.ok(planoCursoPesServico.converterParaDTO(planoCursoPesServico.atualizaEnfase(id, enfase)));
+		return ResponseEntity.ok(planoCursoPesServico.converterParaDTO(planoCursoPesServico.escolheEnfase(id, enfase)));
 	}
 
 	@PostMapping("/{id}/remove-enfase")
