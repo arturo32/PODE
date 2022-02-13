@@ -1,22 +1,20 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.Conteudo;
-import br.ufrn.imd.app3.modelo.ConteudoCursado;
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.app3.modelo.VinculoPlataforma;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 
-import javax.persistence.EntityNotFoundException;
+import br.ufrn.imd.app3.modelo.Conteudo;
+import br.ufrn.imd.app3.modelo.Tema;
+import br.ufrn.imd.app3.modelo.VinculoPlataforma;
 
 @Service
 public class RecomendacaoSemNome implements RecomendacaoServico {
@@ -36,7 +34,7 @@ public class RecomendacaoSemNome implements RecomendacaoServico {
 
     @Override
     public String getNomeServico() {
-        return "???";
+        return "tema_mais_cursado";
     }
 
     @Override

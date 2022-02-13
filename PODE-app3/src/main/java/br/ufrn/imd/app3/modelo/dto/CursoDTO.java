@@ -1,21 +1,18 @@
 package br.ufrn.imd.app3.modelo.dto;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.pode.modelo.GradeCurricular;
-import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
-
-import br.ufrn.imd.app3.modelo.Curso;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CursoDTO extends GradeCurricularDTO {
+import br.ufrn.imd.pode.modelo.dto.GradeCurricularDTO;
 
+import br.ufrn.imd.app3.modelo.Curso;
+import br.ufrn.imd.app3.modelo.Tema;
+
+public class CursoDTO extends GradeCurricularDTO {
 	private Integer chm;
-	Set<Long> temas;
+	private Set<Long> temas;
 
 	public CursoDTO() {}
-
 
 	public CursoDTO(Curso curso) {
 		super(curso);

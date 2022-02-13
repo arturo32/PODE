@@ -1,13 +1,15 @@
 package br.ufrn.imd.app3.controle;
 
-import br.ufrn.imd.app3.modelo.Topico;
-import br.ufrn.imd.app3.modelo.dto.TopicoDTO;
-import br.ufrn.imd.app3.servico.TopicoServico;
-import br.ufrn.imd.pode.controle.GenericoControlador;
-import br.ufrn.imd.pode.servico.GenericoServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.ufrn.imd.pode.controle.GenericoControlador;
+import br.ufrn.imd.pode.servico.GenericoServico;
+
+import br.ufrn.imd.app3.modelo.Topico;
+import br.ufrn.imd.app3.modelo.dto.TopicoDTO;
+import br.ufrn.imd.app3.servico.TopicoServico;
 
 @RestController
 @RequestMapping("/topicos")

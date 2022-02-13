@@ -1,11 +1,12 @@
 package br.ufrn.imd.app3.modelo.dto;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.app3.modelo.Topico;
-import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
-
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
+
+import br.ufrn.imd.app3.modelo.Tema;
+import br.ufrn.imd.app3.modelo.Topico;
 
 public class TemaDTO extends AbstratoDTO {
 	private String nome;

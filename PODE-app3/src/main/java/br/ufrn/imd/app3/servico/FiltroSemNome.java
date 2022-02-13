@@ -1,13 +1,14 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
-import br.ufrn.imd.pode.servico.FiltroDisciplinaServico;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
+
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
+import br.ufrn.imd.pode.servico.FiltroDisciplinaServico;
 
 @Service
 public class FiltroSemNome implements FiltroDisciplinaServico {

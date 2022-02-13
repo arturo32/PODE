@@ -1,20 +1,22 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.ConteudoCursado;
-import br.ufrn.imd.app3.modelo.dto.ConteudoCursadoDTO;
-import br.ufrn.imd.app3.repositorio.ConteudoCursadoRepositorio;
-import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
-import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Optional;
+
+import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
+import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
+
+import br.ufrn.imd.app3.modelo.ConteudoCursado;
+import br.ufrn.imd.app3.modelo.dto.ConteudoCursadoDTO;
+import br.ufrn.imd.app3.repositorio.ConteudoCursadoRepositorio;
 
 @Service
 @Transactional

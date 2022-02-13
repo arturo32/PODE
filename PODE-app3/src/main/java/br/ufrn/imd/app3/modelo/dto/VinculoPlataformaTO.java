@@ -1,16 +1,15 @@
 package br.ufrn.imd.app3.modelo.dto;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
-
-import br.ufrn.imd.app3.modelo.VinculoPlataforma;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
+
+import br.ufrn.imd.app3.modelo.VinculoPlataforma;
+import br.ufrn.imd.app3.modelo.Tema;
+
 public class VinculoPlataformaTO extends VinculoDTO {
 	private Set<Long> temasInteresse;
-
 
 	public VinculoPlataformaTO(VinculoPlataforma vinculo) {
 		super(vinculo);

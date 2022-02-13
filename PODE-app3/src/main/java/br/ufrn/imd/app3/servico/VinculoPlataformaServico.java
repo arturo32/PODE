@@ -1,16 +1,12 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.*;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaCursada;
-import br.ufrn.imd.pode.modelo.GradeCurricular;
-import br.ufrn.imd.pode.modelo.PlanoCurso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
@@ -18,15 +14,17 @@ import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.VinculoRepositorio;
 import br.ufrn.imd.pode.servico.EstudanteServico;
 import br.ufrn.imd.pode.servico.VinculoServico;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.Disciplina;
+import br.ufrn.imd.pode.modelo.DisciplinaCursada;
+import br.ufrn.imd.pode.modelo.GradeCurricular;
+import br.ufrn.imd.pode.modelo.PlanoCurso;
 
 import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaTO;
 import br.ufrn.imd.app3.repositorio.VinculoPlataformaRepositorio;
 import org.springframework.util.StringUtils;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import br.ufrn.imd.app3.modelo.*;
 
 @Service
 @Transactional

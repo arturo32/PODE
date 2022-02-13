@@ -1,11 +1,9 @@
 package br.ufrn.imd.app3.modelo;
 
 import javax.persistence.*;
+import java.util.Set;
 
 import br.ufrn.imd.pode.modelo.Vinculo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "vinculoplataforma")

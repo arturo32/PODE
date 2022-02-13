@@ -1,10 +1,9 @@
 package br.ufrn.imd.app3.modelo;
 
 import javax.persistence.*;
+import java.util.Set;
 
 import br.ufrn.imd.pode.modelo.PlanoCurso;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "planocursotema")

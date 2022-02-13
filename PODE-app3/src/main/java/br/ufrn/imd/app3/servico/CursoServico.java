@@ -1,8 +1,5 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.ConteudoCursado;
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,11 +13,14 @@ import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.servico.GradeCurricularServico;
+import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 
 import br.ufrn.imd.app3.modelo.Curso;
 import br.ufrn.imd.app3.modelo.Conteudo;
 import br.ufrn.imd.app3.modelo.dto.CursoDTO;
 import br.ufrn.imd.app3.repositorio.CursoRepositorio;
+import br.ufrn.imd.app3.modelo.ConteudoCursado;
+import br.ufrn.imd.app3.modelo.Tema;
 
 @Service
 @Transactional

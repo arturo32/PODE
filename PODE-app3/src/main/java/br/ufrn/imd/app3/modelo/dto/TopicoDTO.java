@@ -1,7 +1,8 @@
 package br.ufrn.imd.app3.modelo.dto;
 
-import br.ufrn.imd.app3.modelo.Topico;
 import br.ufrn.imd.pode.modelo.dto.AbstratoDTO;
+
+import br.ufrn.imd.app3.modelo.Topico;
 
 public class TopicoDTO extends AbstratoDTO {
 	private String nome;
