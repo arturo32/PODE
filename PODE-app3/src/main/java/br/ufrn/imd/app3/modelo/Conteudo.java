@@ -1,20 +1,14 @@
 package br.ufrn.imd.app3.modelo;
 
-import org.mvel2.MVEL;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.ufrn.imd.pode.modelo.Disciplina;
-import br.ufrn.imd.pode.modelo.DisciplinaInterface;
 
 @Entity
 @Table(name = "conteudo")
-public class Conteudo extends Disciplina implements DisciplinaInterface {
+public class Conteudo extends Disciplina {
 
 	@ManyToOne
 	@NotNull
@@ -60,17 +54,4 @@ public class Conteudo extends Disciplina implements DisciplinaInterface {
 		this.nivel = nivel;
 	}
 
-	@Override
-	public boolean checarPrerequisitosCodigos(Collection<String> codigos) {
-		String expressao = getPrerequisitos().replace(" E ", " && ");
-		expressao = expressao.replace(" OU ", " || ");
-		Matcher matcher = Pattern.compile("([A-Z]{3}[0-9]{4}|[A-Z]{3}[0-9]{3})").matcher(expressao);
-		while (matcher.find()) {
-			for (int i = 0; i < matcher.groupCount(); i++) {
-				String eval = String.valueOf(codigos.contains(matcher.group(i)));
-				expressao = expressao.replace(matcher.group(i), eval);
-			}
-		}
-		return (boolean) MVEL.eval(expressao);
-	}
 }

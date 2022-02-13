@@ -5,10 +5,9 @@ import br.ufrn.imd.pode.modelo.dto.DisciplinaDTO;
 import br.ufrn.imd.app3.modelo.Conteudo;
 
 public class ConteudoDTO extends DisciplinaDTO {
-
-	Long tema;
-	Long topico;
-	String nivel;
+	private Long tema;
+	private Long topico;
+	private String nivel;
 
 	public ConteudoDTO() {
 	}

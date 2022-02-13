@@ -1,9 +1,12 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.app3.modelo.Topico;
-import br.ufrn.imd.app3.modelo.dto.TemaDTO;
-import br.ufrn.imd.app3.repositorio.TemaRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
+
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ErrorPersistenciaHelper;
@@ -11,12 +14,11 @@ import br.ufrn.imd.pode.helper.ExceptionHelper;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.servico.GenericoServico;
 import br.ufrn.imd.pode.servico.TipoPersistencia;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
+import br.ufrn.imd.app3.modelo.Tema;
+import br.ufrn.imd.app3.modelo.Topico;
+import br.ufrn.imd.app3.modelo.dto.TemaDTO;
+import br.ufrn.imd.app3.repositorio.TemaRepositorio;
 
 @Service
 public class TemaServico extends GenericoServico<Tema, TemaDTO, Long> {

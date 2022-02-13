@@ -1,17 +1,14 @@
 package br.ufrn.imd.app3.modelo.dto;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.modelo.dto.PlanoCursoDTO;
 
 import br.ufrn.imd.app3.modelo.PlanoCursoTema;
-
-import java.util.Set;
-import java.util.stream.Collectors;
+import br.ufrn.imd.app3.modelo.Tema;
 
 public class PlanoCursoTemaDTO extends PlanoCursoDTO {
-
 	private Set<Long> temas;
 
 	public PlanoCursoTemaDTO() {

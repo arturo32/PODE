@@ -1,29 +1,26 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.dto.ConteudoCursadoDTO;
-import br.ufrn.imd.pode.exception.NegocioException;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
-import br.ufrn.imd.pode.modelo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.repositorio.PlanoCursoRepositorio;
-import br.ufrn.imd.pode.servico.DisciplinaServico;
 import br.ufrn.imd.pode.servico.PlanoCursoServico;
 import br.ufrn.imd.pode.servico.DisciplinaCursadaServico;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
+import br.ufrn.imd.pode.modelo.*;
 
 import br.ufrn.imd.app3.modelo.*;
 import br.ufrn.imd.app3.modelo.dto.PlanoCursoTemaDTO;
 import br.ufrn.imd.app3.repositorio.PlanoCursoTemaRepositorio;
+import br.ufrn.imd.app3.modelo.dto.ConteudoCursadoDTO;
 
 @Service
 @Transactional

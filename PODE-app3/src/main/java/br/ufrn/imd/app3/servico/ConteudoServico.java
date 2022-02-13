@@ -1,26 +1,22 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.Tema;
-import br.ufrn.imd.pode.exception.ValidacaoException;
-import br.ufrn.imd.pode.helper.ExceptionHelper;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.ufrn.imd.pode.repositorio.GenericoRepositorio;
 import br.ufrn.imd.pode.servico.DisciplinaServico;
+import br.ufrn.imd.pode.exception.ValidacaoException;
+import br.ufrn.imd.pode.helper.ExceptionHelper;
 
 import br.ufrn.imd.app3.modelo.Conteudo;
 import br.ufrn.imd.app3.modelo.dto.ConteudoDTO;
 import br.ufrn.imd.app3.repositorio.ConteudoRepositorio;
-import org.springframework.util.StringUtils;
-
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional

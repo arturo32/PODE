@@ -1,17 +1,17 @@
 package br.ufrn.imd.app3.servico;
 
-import br.ufrn.imd.app3.modelo.VinculoPlataforma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import javax.persistence.EntityNotFoundException;
 
 import br.ufrn.imd.pode.modelo.dto.RecomendacaoDTO;
 import br.ufrn.imd.pode.servico.RecomendacaoServico;
 import br.ufrn.imd.pode.exception.ValidacaoException;
 import br.ufrn.imd.pode.helper.ExceptionHelper;
 
-import javax.persistence.EntityNotFoundException;
+import br.ufrn.imd.app3.modelo.VinculoPlataforma;
 
 @Service
 public class RecomendacaoSemNome implements RecomendacaoServico {

@@ -1,10 +1,10 @@
 package br.ufrn.imd.app3.modelo;
 
-import br.ufrn.imd.pode.modelo.ModeloAbstrato;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import br.ufrn.imd.pode.modelo.ModeloAbstrato;
 
 @Entity
 @Table(name = "topico")

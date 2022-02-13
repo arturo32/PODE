@@ -2,10 +2,9 @@ package br.ufrn.imd.app3.modelo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 import br.ufrn.imd.pode.modelo.GradeCurricular;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "curso")
