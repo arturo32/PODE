@@ -12,11 +12,11 @@ public class Topico extends ModeloAbstrato<Long> {
 	@Id
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
-			generator = "SEQ_TEMA"
+			generator = "SEQ_TOPICO"
 	)
 	@SequenceGenerator(
-			name = "SEQ_TEMA",
-			sequenceName = "id_seq_tema",
+			name = "SEQ_TOPICO",
+			sequenceName = "id_seq_topico",
 			allocationSize = 1
 	)
 	protected Long id;
