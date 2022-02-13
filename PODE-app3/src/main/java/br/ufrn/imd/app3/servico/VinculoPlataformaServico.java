@@ -218,10 +218,12 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 					}
 				}
 			}
+		} else {
+			dto.setTemasInteresse(new HashSet<>());
 		}
 
 		// Verifica se existe exceção
-		if (exceptionHelper.getMessage().isEmpty()) {
+		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
 

@@ -122,6 +122,7 @@ public class DatabaseLoader implements ApplicationRunner {
 				conteudo.setPrerequisitos(values[4]);
 				conteudo.setTema(this.temaRepositorio.getOne(Long.parseLong(values[5])));
 				conteudo.setTopico(this.topicoRepositorio.getOne(Long.parseLong(values[6])));
+				conteudo.setNivel(values[7]);
 				this.conteudoRepositorio.save(conteudo);
 			}
 		} catch (IOException | CsvValidationException e) {
