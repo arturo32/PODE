@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import br.ufrn.imd.pode.exception.EntidadeInconsistenteException;
 import br.ufrn.imd.pode.exception.EntidadeNaoEncontradaException;
@@ -64,7 +65,8 @@ public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, Pla
 
 	@Override
 	public Set<DisciplinaCursada> atualizaPendentesCursadas(Set<DisciplinaCursada> dPendentes, Set<DisciplinaCursada> cursadas) {
-		dPendentes.removeAll(cursadas);
+		Set<Disciplina> dcursadas = cursadas.stream().map(DisciplinaCursada::getDisciplina).collect(Collectors.toSet());
+		dPendentes.removeIf(disciplinaCursada -> dcursadas.contains(disciplinaCursada.getDisciplina()));
 		return dPendentes;
 	}
 
@@ -189,4 +191,5 @@ public class PlanoCursoTemaServico extends PlanoCursoServico<PlanoCursoTema, Pla
 	protected GenericoRepositorio<PlanoCursoTema, Long> repositorio() {
 		return repositorio;
 	}
+
 }
