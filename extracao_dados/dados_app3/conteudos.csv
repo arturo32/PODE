@@ -1,32 +1,31 @@
-id,codigo,nome,ch,prerequisitos,tema_id,topico_id
-1,MAT0001,Funções do 1º Grau,60,,1,1
-2,MAT0002,Funções do 2º Grau,60,,1,1
-3,MAT0003,Polinomios,60,,1,1
-4,MAT0004,Aritmética I,60,,1,2
-5,MAT0005,Aritmética II,60,,1,2
-6,MAT0006,Aritmética III,60,,1,2
-7,MAT0007,Álgebra I,60,,1,3
-8,MAT0008,Álgebra II,60,,1,3
-9,MAT0009,Álgebra III,60,,1,3
-10,MAT0010,Probabilidade I,60,,1,4
-11,MAT0011,Probabilidade II,60,,1,4
-12,MAT0012,Probabilidade III,60,,1,4
-13,MAT0013,Geometria I,60,,1,5
-14,MAT0014,Geometria II,60,,1,5
-15,MAT0015,Geometria III,60,,1,5
-
-16,BIO0001,I,60,,2,1
-17,BIO0002,II,60,,2,1
-18,BIO0003,III60,,2,1
-19,BIO0004,I,60,,2,2
-20,BIO0005,II,60,,2,2
-21,BIO0006,III,60,,2,2
-22,BIO0007,I,60,,2,3
-23,BIO0008,II,60,,2,3
-24,BIO0009,III,60,,2,3
-25,BIO0010,I,60,,2,3
-26,BIO0011,II,60,,2,3
-27,BIO0012,III,60,,2,3
-28,BIO0013,I,60,,2,3
-29,BIO0014,II,60,,2,3
-30,BIO0015,III,60,,2,3
+id,codigo,nome,ch,prerequisitos,tema_id,topico_id,nivel
+1,MAT0001,Funções do 1º Grau,60,,1,1,basico
+2,MAT0002,Funções do 2º Grau,60,,1,1,intermediario
+3,MAT0003,Polinomios,60,,1,1,avançado
+4,MAT0004,Aritmética I,60,,1,2,basico
+5,MAT0005,Aritmética II,60,,1,2,intermediario
+6,MAT0006,Aritmética III,60,,1,2,avançado
+7,MAT0007,Álgebra I,60,,1,3,basico
+8,MAT0008,Álgebra II,60,,1,3,intermediario
+9,MAT0009,Álgebra III,60,,1,3,avançado
+10,MAT0010,Probabilidade I,60,,1,4,basico
+11,MAT0011,Probabilidade II,60,,1,4,intermediario
+12,MAT0012,Probabilidade III,60,,1,4,avançado
+13,MAT0013,Geometria I,60,,1,5,basico
+14,MAT0014,Geometria II,60,,1,5,intermediario
+15,MAT0015,Geometria III,60,,1,5,avançado
+16,BIO0001,Bioquímica I,60,,2,6,basico
+17,BIO0002,Bioquímica II,60,,2,6,intermediario
+18,BIO0003,Bioquímica III,60,,2,6,avançado
+19,BIO0004,Citologia I,60,,2,7,basico
+20,BIO0005,Citologia II,60,,2,7,intermediario
+21,BIO0006,Citologia III,60,,2,7,avançado
+22,BIO0007,Genética I,60,,2,8,basico
+23,BIO0008,Genética II,60,,2,8,intermediario
+24,BIO0009,Genética III,60,,2,8,avançado
+25,BIO0010,Ecologia I,60,,2,9,basico
+26,BIO0011,Ecologia II,60,,2,9,intermediario
+27,BIO0012,Ecologia III,60,,2,9,avançado
+28,BIO0013,Histologia I,60,,2,10,basico
+29,BIO0014,Histologia II,60,,2,10,intermediario
+30,BIO0015,Histologia III,60,,2,10,avançado
