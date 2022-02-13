@@ -1,0 +1,11 @@
+codigo,nome,ch,prerequisitos,tema_id,topico_id
+MAT0001,Operações Matemáticas,60,,1,2
+MAT0002,Funções do 2º Grau,60,,1,1
+MAT0003,Combinação,60,,1,4
+BIO0001,Organelas,60,,2,7
+BIO0002,Proteinas,60,,2,6
+BIO0003,DNA,60,,2,8
+HST0001,Egito Antigo,60,,3,12
+HST0002,Nobreza Feudal,60,,3,13
+HST0003,2ª Guerra Mundial,60,,3,15
+

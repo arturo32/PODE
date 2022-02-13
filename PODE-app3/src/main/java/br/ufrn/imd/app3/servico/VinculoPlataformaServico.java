@@ -66,7 +66,6 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 		this.estudanteServico = estudanteServico;
 	}
 
-
 	private Double gerarTaxaConclusaoGrade(PlanoCurso planoCurso, GradeCurricular grade){
 
 		Set<Disciplina> disciplinasObrigatoriasGrade = grade.getDisciplinasObrigatorias().stream()
@@ -91,7 +90,7 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 		Double taxaOptativas =  (double) chopm / cargaHorariaTotal;
 
 		Double taxaObrigatoriasCumpridas = (double) cargaHorariaObrigatoriaCumprida / chobm;
-		Double taxaOptativasCumpridas = (double) cargaHorariaOptativaCumprida /chopm;
+		Double taxaOptativasCumpridas = (double) cargaHorariaOptativaCumprida / chopm;
 
 		if(taxaOptativasCumpridas > 1) {
 			taxaOptativasCumpridas = 1.0;
@@ -106,31 +105,8 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 		PlanoCurso planoCurso = vinculo.getPlanoCurso();
 		GradeCurricular grade = vinculo.getGradeCurricular();
 
-		// TODO:
-//		Integer chTotalPes = ((PlanoCursoEnfase) planoCurso).getGradesParalelas().stream()
-//				.map(d -> d.getChopm() + d.getChobm())
-//				.reduce(0, Integer::sum);
-		Integer chTotalPes = 0;
-
-		Integer chTotalCurso = grade.getChobm() + grade.getChopm();
-
-		Integer chTotal = chTotalPes + chTotalCurso;
-
-		// TODO:
-//		Double horasCumpridasPes = ((PlanoCursoEnfase) planoCurso).getGradesParalelas().stream()
-//				.map(gradePes -> {
-//					Integer chTotalGradePes = gradePes.getChobm() + gradePes.getChopm();
-//					return gerarTaxaConclusaoGrade(planoCurso, gradePes) * chTotalGradePes;
-//				})
-//				.reduce(0.0, Double::sum);
-		Double horasCumpridasPes = 0.0;
-		Double taxaPesCumpridas = horasCumpridasPes / chTotal;
 		Double taxaCursoCumpridas = gerarTaxaConclusaoGrade(planoCurso, grade);
-
-		Double taxaPes = (double) chTotalPes / chTotal;
-		Double taxaCurso = (double) chTotalCurso / chTotal;
-
-		return (taxaPesCumpridas * taxaPes + taxaCursoCumpridas * taxaCurso) * 100;
+		return taxaCursoCumpridas * 100;
 	}
 
 	@Override
