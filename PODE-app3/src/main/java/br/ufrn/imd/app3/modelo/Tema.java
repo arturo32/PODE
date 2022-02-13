@@ -31,6 +31,13 @@ public class Tema extends ModeloAbstrato<Long> {
 	@NotNull
 	private Set<Topico> topicos = new HashSet<>();
 
+	public Tema() {
+	}
+
+	public Tema(String nome) {
+		this.nome = nome;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

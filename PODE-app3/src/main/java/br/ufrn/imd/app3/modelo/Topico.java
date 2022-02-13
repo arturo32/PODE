@@ -29,6 +29,14 @@ public class Topico extends ModeloAbstrato<Long> {
 	@NotNull
 	private Tema tema;
 
+	public Topico() {
+	}
+
+	public Topico(String nome, Tema tema) {
+		this.nome = nome;
+		this.tema = tema;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

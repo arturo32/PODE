@@ -28,6 +28,17 @@ public class Curso extends GradeCurricular {
 	)
 	private Set<Tema> temas;
 
+	public Curso() {
+	}
+
+	public Curso(String nome, Integer chm, Integer chobm, Integer chopm) {
+		this.nome = nome;
+		this.chm = chm;
+		this.chobm = chobm;
+		this.chopm = chopm;
+
+	}
+
 	public Integer getChm() {
 		return chm;
 	}
