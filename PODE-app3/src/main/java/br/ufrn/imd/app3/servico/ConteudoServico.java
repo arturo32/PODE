@@ -150,4 +150,8 @@ public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 		return repositorio;
 	}
 
+	public Collection<Conteudo> buscarPorTema(Tema tema) {
+		return repositorio.findConteudosByAtivoIsTrueAndTema_Id(tema.getId());
+	}
+
 }
