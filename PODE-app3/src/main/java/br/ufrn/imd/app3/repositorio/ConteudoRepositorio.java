@@ -13,4 +13,6 @@ import br.ufrn.imd.app3.modelo.Conteudo;
 public interface ConteudoRepositorio extends DisciplinaRepositorio<Conteudo> {
 
 	List<Conteudo> findConteudosByAtivoIsTrueAndTema_Id(Long tema_id);
+
+	List<Conteudo> findConteudosByAtivoIsTrueAndTopico_Id(Long topico_id);
 }

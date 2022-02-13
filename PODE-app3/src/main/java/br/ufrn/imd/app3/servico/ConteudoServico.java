@@ -1,5 +1,6 @@
 package br.ufrn.imd.app3.servico;
 
+import br.ufrn.imd.app3.modelo.Topico;
 import org.mvel2.MVEL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -157,6 +158,16 @@ public class ConteudoServico extends DisciplinaServico<Conteudo, ConteudoDTO> {
 	public Collection<Conteudo> buscarPorTemas(Collection<Tema> temas) {
 		Set<Conteudo> conteudos = new HashSet<>();
 		temas.forEach(tema -> conteudos.addAll(this.buscarPorTema(tema)));
+		return conteudos;
+	}
+
+	public Collection<Conteudo> buscarPorTopico(Topico topico) {
+		return repositorio.findConteudosByAtivoIsTrueAndTopico_Id(topico.getId());
+	}
+
+	public Collection<Conteudo> buscarPorTopicos(Collection<Topico> topicos) {
+		Set<Conteudo> conteudos = new HashSet<>();
+		topicos.forEach(topico -> conteudos.addAll(this.buscarPorTopico(topico)));
 		return conteudos;
 	}
 

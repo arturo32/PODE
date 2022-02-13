@@ -1,5 +1,6 @@
 package br.ufrn.imd.app3.servico;
 
+import br.ufrn.imd.app3.modelo.Tema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,8 @@ import br.ufrn.imd.pode.servico.TipoPersistencia;
 import br.ufrn.imd.app3.modelo.Topico;
 import br.ufrn.imd.app3.modelo.dto.TopicoDTO;
 import br.ufrn.imd.app3.repositorio.TopicoRepositorio;
+
+import java.util.Set;
 
 @Service
 public class TopicoServico extends GenericoServico<Topico, TopicoDTO, Long> {
@@ -85,5 +88,9 @@ public class TopicoServico extends GenericoServico<Topico, TopicoDTO, Long> {
 	@Override
 	protected GenericoRepositorio<Topico, Long> repositorio() {
 		return repositorio;
+	}
+
+	public Set<Topico> buscarTopicosPorNome(String nome) {
+		return this.repositorio.findTopicosByNomeAndAtivoIsTrue(nome);
 	}
 }
