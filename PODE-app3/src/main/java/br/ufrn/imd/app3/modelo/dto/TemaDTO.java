@@ -12,6 +12,9 @@ public class TemaDTO extends AbstratoDTO {
 	private String nome;
 	private Set<Long> topicos;
 
+	public TemaDTO() {
+	}
+
 	public TemaDTO(Tema tema) {
 		this.setId(tema.getId());
 		this.setNome(tema.getNome());

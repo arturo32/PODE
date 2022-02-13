@@ -8,6 +8,9 @@ public class TopicoDTO extends AbstratoDTO {
 	private String nome;
 	private Long tema;
 
+	public TopicoDTO() {
+	}
+
 	public TopicoDTO(Topico topico) {
 		this.setId(topico.getId());
 		this.setNome(topico.getNome());

@@ -8,10 +8,12 @@ import br.ufrn.imd.pode.modelo.dto.VinculoDTO;
 import br.ufrn.imd.app3.modelo.VinculoPlataforma;
 import br.ufrn.imd.app3.modelo.Tema;
 
-public class VinculoPlataformaTO extends VinculoDTO {
+public class VinculoPlataformaDTO extends VinculoDTO {
 	private Set<Long> temasInteresse;
 
-	public VinculoPlataformaTO(VinculoPlataforma vinculo) {
+	public VinculoPlataformaDTO() {}
+
+	public VinculoPlataformaDTO(VinculoPlataforma vinculo) {
 		super(vinculo);
 		this.temasInteresse = vinculo.getTemasInteresse().stream().map(Tema::getId).collect(Collectors.toSet());
 	}

@@ -8,12 +8,12 @@ import br.ufrn.imd.pode.controle.VinculoControlador;
 import br.ufrn.imd.pode.servico.GenericoServico;
 
 import br.ufrn.imd.app3.modelo.VinculoPlataforma;
-import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaTO;
+import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaDTO;
 import br.ufrn.imd.app3.servico.VinculoPlataformaServico;
 
 @RestController
 @RequestMapping("/vinculos")
-public class VinculoPlataformaControlador extends VinculoControlador<VinculoPlataforma, VinculoPlataformaTO> {
+public class VinculoPlataformaControlador extends VinculoControlador<VinculoPlataforma, VinculoPlataformaDTO> {
 
 	private VinculoPlataformaServico vinculoPlataformaServico;
 
@@ -23,7 +23,7 @@ public class VinculoPlataformaControlador extends VinculoControlador<VinculoPlat
 	}
 
 	@Override
-	protected GenericoServico<VinculoPlataforma, VinculoPlataformaTO, Long> servico() {
+	protected GenericoServico<VinculoPlataforma, VinculoPlataformaDTO, Long> servico() {
 		return this.vinculoPlataformaServico;
 	}
 }

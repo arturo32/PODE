@@ -46,7 +46,7 @@ public class TopicoServico extends GenericoServico<Topico, TopicoDTO, Long> {
 		}
 
 		topico.setId(dto.getId());
-		if (StringUtils.isEmpty(dto.getNome())) {
+		if (!StringUtils.isEmpty(dto.getNome())) {
 			topico.setNome(dto.getNome());
 		}
 

@@ -3,6 +3,7 @@ package br.ufrn.imd.app3.modelo;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 import br.ufrn.imd.pode.modelo.ModeloAbstrato;
@@ -28,7 +29,7 @@ public class Tema extends ModeloAbstrato<Long> {
 
 	@OneToMany
 	@NotNull
-	private Set<Topico> topicos;
+	private Set<Topico> topicos = new HashSet<>();
 
 	@Override
 	public Long getId() {

@@ -21,14 +21,14 @@ import br.ufrn.imd.pode.modelo.DisciplinaCursada;
 import br.ufrn.imd.pode.modelo.GradeCurricular;
 import br.ufrn.imd.pode.modelo.PlanoCurso;
 
-import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaTO;
+import br.ufrn.imd.app3.modelo.dto.VinculoPlataformaDTO;
 import br.ufrn.imd.app3.repositorio.VinculoPlataformaRepositorio;
 import org.springframework.util.StringUtils;
 import br.ufrn.imd.app3.modelo.*;
 
 @Service
 @Transactional
-public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, VinculoPlataformaTO> {
+public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, VinculoPlataformaDTO> {
 
 	private VinculoPlataformaRepositorio repositorio;
 	private CursoServico cursoServico;
@@ -134,12 +134,12 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 	}
 
 	@Override
-	public VinculoPlataformaTO converterParaDTO(VinculoPlataforma entity) {
-		return new VinculoPlataformaTO(entity);
+	public VinculoPlataformaDTO converterParaDTO(VinculoPlataforma entity) {
+		return new VinculoPlataformaDTO(entity);
 	}
 
 	@Override
-	public VinculoPlataforma converterParaEntidade(VinculoPlataformaTO dto) {
+	public VinculoPlataforma converterParaEntidade(VinculoPlataformaDTO dto) {
 		VinculoPlataforma vinculo = new VinculoPlataforma();
 
 		//Se for uma edição
@@ -202,7 +202,7 @@ public class VinculoPlataformaServico extends VinculoServico<VinculoPlataforma, 
 	}
 
 	@Override
-	protected void validar(VinculoPlataformaTO dto) {
+	protected void validar(VinculoPlataformaDTO dto) {
 		ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 		if (dto.getIdEstudante() != null) {

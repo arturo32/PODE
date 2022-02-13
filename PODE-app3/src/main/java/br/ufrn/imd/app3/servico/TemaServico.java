@@ -84,22 +84,6 @@ public class TemaServico extends GenericoServico<Tema, TemaDTO, Long> {
 			exceptionHelper.add("nome inválido");
 		}
 
-		if (temaDTO.getTopicos() == null || temaDTO.getTopicos().isEmpty()) {
-			exceptionHelper.add("nenhum topico cadastrado");
-		} else {
-			for (Long id: temaDTO.getTopicos()) {
-				if (id == null || id < 0) {
-					exceptionHelper.add("topico inconsistente");
-				} else {
-					try {
-						this.topicoServico.buscarPorId(id);
-					} catch (EntityNotFoundException entityNotFoundException) {
-						exceptionHelper.add("topico(id=" + id + ") inexistente");
-					}
-				}
-			}
-		}
-
 		if (!exceptionHelper.getMessage().isEmpty()) {
 			throw new ValidacaoException(exceptionHelper.getMessage());
 		}
