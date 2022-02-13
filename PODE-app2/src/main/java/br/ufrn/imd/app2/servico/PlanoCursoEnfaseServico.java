@@ -224,7 +224,7 @@ public class PlanoCursoEnfaseServico extends PlanoCursoServico<PlanoCursoEnfase,
 		return this.repositorio.save(planoCurso);
 	}
 
-	public PlanoCursoEnfase atualizaEnfase(Long planoCursoId, Long enfaseId) {
+	public PlanoCursoEnfase escolheEnfase(Long planoCursoId, Long enfaseId) {
 		PlanoCursoEnfase planoCurso = this.buscarPorId(planoCursoId);
 		Vinculo vinculo = this.vinculoBTIServico.buscarPorPlanoCursoId(planoCursoId);
 		Enfase enfase = this.enfaseServico.buscarPorId(enfaseId);
