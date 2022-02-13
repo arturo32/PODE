@@ -14,3 +14,38 @@ id,nome,tema_id
 13,Idade Média,3
 14,Idade Moderna,3
 15,Idade Contemporânea,3
+16,Matéria,4
+17,Substâncias e Misturas,4
+18,Átomos,4
+19,Tabela Periódica,4
+20,Ligações Quimicas,4
+21,Mecânica,5
+22,Eletricidade,5
+23,Termodinâmica,5
+24,Termologia,5
+25,Óptica,5
+26,Microeconomia,6
+27,Macroeconomia,6
+28,"Produção, Custo e Eficiência",6
+29,Mercado,6
+30,Oferta e demanda,6
+31,Teoria Sociologica,7
+32,Estruturalismo,7
+33,Positivismo,7
+34,Gênero,7
+35,Fato social,7
+36,Metafísica,8
+37,Epistemologia,8
+38,Ética,8
+39,Estética,8
+40,Lógica,8
+41,Formas de governo,9
+42,Regimes e sistemas,9
+43,Tipos de poder,9
+44,Ideologia do poder,9
+45,Fontes de poder,9
+46,Natalidade,10
+47,Mortalidade,10
+48,Fertilidade,10
+49,Migração,10
+50,Transição Demografica,10

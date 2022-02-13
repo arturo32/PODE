@@ -1,11 +1,32 @@
-codigo,nome,ch,prerequisitos,tema_id,topico_id
-MAT0001,Operações Matemáticas,60,,1,2
-MAT0002,Funções do 2º Grau,60,,1,1
-MAT0003,Combinação,60,,1,4
-BIO0001,Organelas,60,,2,7
-BIO0002,Proteinas,60,,2,6
-BIO0003,DNA,60,,2,8
-HST0001,Egito Antigo,60,,3,12
-HST0002,Nobreza Feudal,60,,3,13
-HST0003,2ª Guerra Mundial,60,,3,15
+id,codigo,nome,ch,prerequisitos,tema_id,topico_id
+1,MAT0001,Funções do 1º Grau,60,,1,1
+2,MAT0002,Funções do 2º Grau,60,,1,1
+3,MAT0003,Polinomios,60,,1,1
+4,MAT0004,Aritmética I,60,,1,2
+5,MAT0005,Aritmética II,60,,1,2
+6,MAT0006,Aritmética III,60,,1,2
+7,MAT0007,Álgebra I,60,,1,3
+8,MAT0008,Álgebra II,60,,1,3
+9,MAT0009,Álgebra III,60,,1,3
+10,MAT0010,Probabilidade I,60,,1,4
+11,MAT0011,Probabilidade II,60,,1,4
+12,MAT0012,Probabilidade III,60,,1,4
+13,MAT0013,Geometria I,60,,1,5
+14,MAT0014,Geometria II,60,,1,5
+15,MAT0015,Geometria III,60,,1,5
 
+16,BIO0001,I,60,,2,1
+17,BIO0002,II,60,,2,1
+18,BIO0003,III60,,2,1
+19,BIO0004,I,60,,2,2
+20,BIO0005,II,60,,2,2
+21,BIO0006,III,60,,2,2
+22,BIO0007,I,60,,2,3
+23,BIO0008,II,60,,2,3
+24,BIO0009,III,60,,2,3
+25,BIO0010,I,60,,2,3
+26,BIO0011,II,60,,2,3
+27,BIO0012,III,60,,2,3
+28,BIO0013,I,60,,2,3
+29,BIO0014,II,60,,2,3
+30,BIO0015,III,60,,2,3
